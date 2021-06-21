@@ -46,9 +46,9 @@ fn exit(button: *Button) !void {
 
 Resulting in this:
 
-![Hello World](docs/HelloWorld.jpg)
+![Hello World](docs/HelloWorld.JPG)
 
-Please refer to the sources code for more examples (still in progress ...) 
+Please refer to the [sources code for more examples](https://github.com/batiati/IUPforZig/blob/master/src/example.zig) (still in progress ...) 
 
 ![Simple Notepad](docs/SimpleNotepad.gif)
 
@@ -141,7 +141,7 @@ https://sourceforge.net/projects/iup/files/3.30/
 
 - [ ] Support for indexed attributes (list items for example)
 
-- [ ] Complete the [Simple Notepad](http://to.do) example.
+- [ ] Complete the [Simple Notepad](https://github.com/batiati/IUPforZig/blob/master/src/example.zig) example.
 
 - [ ] Support Linux and investigate how to build IUP from sources in Zig.
 
