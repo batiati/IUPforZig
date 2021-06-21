@@ -1,0 +1,9 @@
+.vscode
+lib/mingw
+lib/ucrt
+lib/um
+lib/uwp
+lib/win64
+zig-cache
+zig-out
+ziup.code-workspace
