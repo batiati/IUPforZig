@@ -141,8 +141,10 @@ The `build.zig` file is the bare minimum for link against IUP shared libraries o
 Please visit IUP's download page for your platform:
 https://sourceforge.net/projects/iup/files/3.30/
 
-Dependencies for `libim` and `libcd` are also required
+Dependencies for `libim` and `libcd` are also required:
+
 https://sourceforge.net/projects/imtoolkit/files/3.15/
+
 https://sourceforge.net/projects/canvasdraw/files/5.14/
 
 ## Pending work
