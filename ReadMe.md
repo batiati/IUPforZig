@@ -14,7 +14,7 @@ pub fn main() !void {
     try MainLoop.open();
     defer MainLoop.close();
 
-    var mainDialog = try (Dialog.init()
+    var main_dialog = try (Dialog.init()
         .setTitle("Hello World")
         .setChildren(
         .{
@@ -33,9 +33,9 @@ pub fn main() !void {
             ),
         },
     ).unwrap());
-    defer mainDialog.deinit();
+    defer main_dialog.deinit();
 
-    try mainDialog.showXY(.Center, .Center);
+    try main_dialog.showXY(.Center, .Center);
     try MainLoop.beginLoop();
 }
 
@@ -62,7 +62,7 @@ Most of the hard/repetitive work was done by code-gen tool, however, the API gui
 
 Zig does not require any special treatment to use C libraries, so to use IUP in Zig, it is as simple as adding `@cInclude("iup.h") ` in your source code, no need for special bindings!
 
-This project attempts to create IUP binding with idiomatic and type-checked API in Zig, where none of the original IUP's declarations are exposed in the public interface, only names and concepts are kept as close as possible.
+This project attempts to create Zig bindings for IUP Toolkit with idiomatic and type-checked API, where none of the original IUP's declarations are exposed in the public interface, only names and concepts are kept as close as possible.
 
 ## Comparison:
 
@@ -108,7 +108,7 @@ pub fn main() !void {
     try MainLoop.open();
     defer MainLoop.close();
 
-    var mainDialog = try (Dialog.init()
+    var main_dialog = try (Dialog.init()
         .setTitle("Simple Notepad")
         .setSize(.Quarter, .Quarter)
         .setChildren(
@@ -123,27 +123,33 @@ pub fn main() !void {
             ),
         },
     ).unwrap());
-    defer mainDialog.deinit();
+    defer main_dialog.deinit();
 
-    try mainDialog.showXY(.Center, .Center);
+    try main_dialog.showXY(.Center, .Center);
     try MainLoop.beginLoop();
 }
 ```
 
 ## How to build
 
-The `build.zig` file is the bare minimum for link statically against IUP libraries on Windows only;
+The `build.zig` file is the bare minimum for link against IUP shared libraries on Linux and Windows.
 
-Please visit IUP's download page:
+Please visit IUP's download page for your platform:
 https://sourceforge.net/projects/iup/files/3.30/
+
+Dependencies for `libim` and `libcd` are also required
+https://sourceforge.net/projects/imtoolkit/files/3.15/
+https://sourceforge.net/projects/canvasdraw/files/5.14/
 
 ## Pending work
 
-- [ ] Support for indexed attributes (list items for example)
+- [ ] Support for collections and indexed attributes (list items for example)
 
 - [ ] Complete the [Simple Notepad](https://github.com/batiati/IUPforZig/blob/master/src/example.zig) example.
 
-- [ ] Support Linux and investigate how to build IUP from sources in Zig.
+- [X] Support Linux and Windows (using shared libs)
+
+- [ ] Investigate how to build IUP from C sources in Zig.
 
 - [ ] More tests, and sanitize failing tests.
 
