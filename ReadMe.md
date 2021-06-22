@@ -50,7 +50,9 @@ Resulting in this:
 
 Please refer to the [sources code for more examples](https://github.com/batiati/IUPforZig/blob/master/src/example.zig) (still in progress ...) 
 
-![Simple Notepad](docs/SimpleNotepad.gif)
+![Simple Notepad](docs/SimpleNotepadWindows.gif)
+
+![Simple Notepad](docs/SimpleNotepadUbuntu.gif)
 
 ## IUP Metadata
 
@@ -153,6 +155,6 @@ Feel free to place any comments/issues/PRs, it will be very nice to receive any 
 
 ## License
 
-* The zIUP Project is a free and unencumbered software released into the public domain. Plese visit [unlicense.org](https://unlicense.org/) for more details.
+* This project is a free and unencumbered software released into the public domain. Plese visit [unlicense.org](https://unlicense.org/) for more details.
 
 * IUP is a [Tecgraf](http://www.tecgraf.puc-rio.br)/[PUC-Rio](http://www.puc-rio.br) project licensed under the terms of the [MIT license](http://www.opensource.org/licenses/mit-license.html). Please visit https://www.tecgraf.puc-rio.br/iup/ for more details.
