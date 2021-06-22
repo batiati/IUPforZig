@@ -46,13 +46,15 @@ fn exit(button: *Button) !void {
 
 Resulting in this:
 
-![Hello World](docs/HelloWorld.JPG)
+![Hello World Windows](docs/HelloWorldWindows.jpg)
+
+![Hello World Ubuntu](docs/HelloWorldUbuntu.jpg)
 
 Please refer to the [sources code for more examples](https://github.com/batiati/IUPforZig/blob/master/src/example.zig) (still in progress ...) 
 
-![Simple Notepad](docs/SimpleNotepadWindows.gif)
+![Simple Notepad Windows](docs/SimpleNotepadWindows.gif)
 
-![Simple Notepad](docs/SimpleNotepadUbuntu.gif)
+![Simple Notepad Ubuntu](docs/SimpleNotepadUbuntu.gif)
 
 ## IUP Metadata
 
