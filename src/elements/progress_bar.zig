@@ -452,7 +452,6 @@ pub const ProgressBar = opaque {
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
         c.IupDestroy(c.getHandle(self));
-        self.* = undefined;
     }
 
     pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
