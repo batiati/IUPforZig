@@ -34,6 +34,12 @@ pub const Dialog = opaque {
 
     pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
 
+    /// 
+    /// FOCUS_CB: Called when the dialog or any of its children gets the focus, or
+    /// when another dialog or any control in another dialog gets the focus.
+    /// It is called after the common callbacks GETFOCUS_CB and KILL_FOCUS_CB.
+    /// (since 3.21) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+    /// number) -> (ret: number) [in Lua]
     pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
@@ -95,6 +101,12 @@ pub const Dialog = opaque {
 
     pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
+    /// 
+    /// MDIACTIVATE_CB [Windows Only]: Called when a MDI child window is activated.
+    /// Only the MDI child receive this message.
+    /// It is not called when the child is shown for the first time.
+    /// int function(Ihandle *ih); [in C]elem:mdiactivate_cb() -> (ret: number) [in
+    /// Lua] ih: identifier of the element that activated the event.
     pub const OnMdiActivateFn = fn (self: *Self) anyerror!void;
 
     /// 
@@ -155,12 +167,31 @@ pub const Dialog = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// CUSTOMFRAMEACTIVATE_CB [Windows Only]: Called when the dialog active state
+    /// is changed (for instance the user Alt+Tab to another application, or
+    /// clicked in another window).
+    /// Works only when CUSTOMFRAME or CUSTOMFRAMEEX is defined.
+    /// (since 3.23) int function(Ihandle *ih, int active); [in
+    /// C]ih:customframeactivate_cb(active: number) -> (ret: number) [in Lua]
     pub const OnCustomFrameActivateFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub const OnCustomFrameDrawFn = fn (self: *Self) anyerror!void;
 
     /// 
@@ -225,6 +256,11 @@ pub const Dialog = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// TRAYCLICK_CB [Windows and GTK Only]: Called right after the mouse button is
+    /// pressed or released over the tray icon.
+    /// (GTK 2.10) int function(Ihandle *ih, int but, int pressed, int dclick); [in
+    /// C]elem:trayclick_cb(but, pressed, dclick: number) -> (ret: number) [in Lua]
     pub const OnTrayClickFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32) anyerror!void;
 
     /// 
@@ -273,13 +309,28 @@ pub const Dialog = opaque {
         VerticalFree,
         No,
     };
-
+    /// 
+    /// PLACEMENT: Changes how the dialog will be shown.
+    /// Values: "FULL", "MAXIMIZED", "MINIMIZED" and "NORMAL".
+    /// Default: NORMAL.
+    /// After IupShow/IupPopup the attribute is set back to "NORMAL".
+    /// FULL is similar to FULLSCREEN but only the dialog client area covers the
+    /// screen area, menu and decorations will be there but out of the screen.
+    /// In UNIX there is a chance that the placement won't work correctly, that
+    /// depends on the Window Manager.
+    /// In Windows, the SHOWNOACTIVATE attribute can be set to Yes to prevent the
+    /// window from being activated (since 3.15).
+    /// In Windows, the SHOWMINIMIZENEXT attribute can be set to Yes to activate
+    /// the next top-level window in the Z order when minimizing (since 3.15).
     pub const Placement = enum {
         Maximized,
         Minimized,
         Full,
     };
-
+    /// 
+    /// MDIARRANGE [Windows Only] (write-only): Action to arrange MDI child windows.
+    /// Possible values: TILEHORIZONTAL, TILEVERTICAL, CASCADE and ICON (arrange
+    /// the minimized icons).
     pub const MdiArrange = enum {
         TileHorizontal,
         TileVertical,
@@ -292,12 +343,23 @@ pub const Dialog = opaque {
         Ignore,
         No,
     };
-
+    /// 
+    /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
+    /// to be shown on the taskbar even if the dialog does not have decorations.
+    /// If set to HIDE force the application button to be hidden from the taskbar,
+    /// but also in this case the system menu, the maximize and minimize buttons
+    /// will be hidden.
+    /// (since 3.28)
     pub const TaskbarButton = enum {
         Show,
         Hide,
     };
-
+    /// 
+    /// TASKBARPROGRESSSTATE [Windows Only] (write-only): sets the type and state
+    /// of the progress indicator displayed on a taskbar button.
+    /// Possible values: NORMAL (a green bar), PAUSED (a yellow bar), ERROR (a red
+    /// bar), INDETERMINATE (a green marquee) and NOPROGRESS (no bar).
+    /// Default: NORMAL (since 3.10).
     pub const TaskbarProgressState = enum {
         NoProgress,
         Indeterminate,
@@ -378,16 +440,35 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// MDICLIENT (creation only) [Windows Only] (non inheritable): Configure the
+        /// canvas as a MDI client.
+        /// Can be YES or NO.
+        /// No callbacks will be called.
+        /// This canvas will be used internally only by the MDI Frame and its MDI Children.
+        /// The MDI frame must have one and only one MDI client.
+        /// Default: NO.
         pub fn setMdiClient(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MDICLIENT", arg);
             return self.*;
         }
 
+
+        /// 
+        /// CONTROL [Windows Only] (creation only): Embeds the dialog inside another window.
         pub fn setControl(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "CONTROL", arg);
             return self.*;
         }
 
+
+        /// 
+        /// MENU: Name of a menu.
+        /// Associates a menu to the dialog as a menu bar.
+        /// The previous menu, if any, is unmapped.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate a menu to a name.
+        /// See also IupMenu.
         pub fn setMenu(self: *Initializer, arg: *iup.Menu) Initializer {
             c.setHandleAttribute(self.ref, "MENU", arg);
             return self.*;
@@ -398,6 +479,12 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
+        /// The windowing system will not be able to change the size beyond this limit.
+        /// Default: 65535x65535.
+        /// (since 3.0)
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -405,31 +492,73 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TRAYTIPBALLOONTITLEICON [Windows Only]: When using the balloon format, the
+        /// tip can also has a pre-defined icon in the title area.
+        /// Must be set before setting the TRAYTIP attribute.
+        /// (since 3.6)
         pub fn setTrayTipBalloonTitleIcon(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "TRAYTIPBALLOONTITLEICON", arg);
             return self.*;
         }
 
+
+        /// 
+        /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
+        /// it is possible to create a non rectangle window with transparency, but it
+        /// can not have children.
+        /// Used usually for splash screens.
+        /// It must be set before map so the native window would be properly
+        /// initialized when mapped.
+        /// Works also for GTK but as the SHAPEIMAGE attribute.
+        /// (since 3.16)
         pub fn setOpacityImage(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "OPACITYIMAGE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// HELPBUTTON [Windows Only] (creation only): Inserts a help button in the
+        /// same place of the maximize button.
+        /// It can only be used for dialogs without the minimize and maximize buttons,
+        /// and with the menu box.
+        /// For the next interaction of the user with a control in the dialog, the
+        /// callback HELP_CB will be called instead of the control defined ACTION callback.
+        /// Possible values: YES, NO.
+        /// Default: NO.
         pub fn setHelpButton(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "HELPBUTTON", arg);
             return self.*;
         }
 
+
+        /// 
+        /// SHOWNOFOCUS: do not set focus after show.
+        /// (since 3.30)
         pub fn setShowNoFocus(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SHOWNOFOCUS", arg);
             return self.*;
         }
 
+
+        /// 
+        /// MAXIMIZEATPARENT [Windows Only]: when using multiple monitors, maximize the
+        /// dialog in the same monitor that the parent dialog is.
+        /// (since 3.28)
         pub fn setMaximizeAtParent(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MAXIMIZEATPARENT", arg);
             return self.*;
         }
 
+
+        /// 
+        /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
+        /// Valid values range from 0 (completely transparent) to 255 (opaque).
+        /// In Windows must be set before map so the native window would be properly
+        /// initialized when mapped (since 3.16).
+        /// (GTK 2.12)
         pub fn setOpacity(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "OPACITY", arg);
             return self.*;
@@ -442,11 +571,26 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// COMPOSITED [Windows Only] (creation only): controls if the window will have
+        /// an automatic double buffer for all children.
+        /// Default is "NO".
+        /// In Windows Vista it is NOT working as expected.
+        /// It is NOT compatible with IupCanvas and all derived IUP controls such as
+        /// IupFlat*, IupGL*, IupPlot and IupMatrix, because IupCanvas uses CS_OWNDC in
+        /// the window class.
         pub fn setComposited(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "COMPOSITED", arg);
             return self.*;
         }
 
+
+        /// 
+        /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
+        /// the drop of files.
+        /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
+        /// it will be automatically enabled.
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DROPFILESTARGET", arg);
             return self.*;
@@ -467,6 +611,11 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ICON: Dialogs icon.
+        /// The Windows SDK recommends that cursors and icons should be implemented as
+        /// resources rather than created at run time.
         pub fn setIcon(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "ICON", arg);
             return self.*;
@@ -480,6 +629,19 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+        /// customize the dialog frame elements (the title and its buttons) by drawing
+        /// them with the CUSTOMFRAMEDRAW_CB callback.
+        /// Can be Yes or No.
+        /// The Window client area is expanded to include the whole window.
+        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+        /// TITLE must still be defined.
+        /// But maximize, minimize and close buttons must be manually implemented in
+        /// the BUTTON_CB callback.
+        /// One drawback is that menu bars will not work.
+        /// (since 3.18) (renamed in 3.22)
         pub fn setCustomFrameDraw(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "CUSTOMFRAMEDRAW", arg);
             return self.*;
@@ -493,6 +655,14 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// MENUBOX (creation only): Requires a system menu box from the window manager.
+        /// If hidden will also remove the Close button.
+        /// Default: YES.
+        /// In Motif the decorations are controlled by the Window Manager and may not
+        /// be possible to be changed from IUP.
+        /// In Windows if hidden will hide also MAXBOX and MINBOX.
         pub fn setMenuBox(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MENUBOX", arg);
             return self.*;
@@ -508,6 +678,19 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+        /// customize the dialog frame elements (the title and its buttons) by drawing
+        /// them with the CUSTOMFRAMEDRAW_CB callback.
+        /// Can be Yes or No.
+        /// The Window client area is expanded to include the whole window.
+        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+        /// TITLE must still be defined.
+        /// But maximize, minimize and close buttons must be manually implemented in
+        /// the BUTTON_CB callback.
+        /// One drawback is that menu bars will not work.
+        /// (since 3.18) (renamed in 3.22)
         pub fn setMaxBox(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MAXBOX", arg);
             return self.*;
@@ -518,6 +701,10 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
+        /// to a dialog hint.
         pub fn setDialogHint(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DIALOGHINT", arg);
             return self.*;
@@ -528,6 +715,12 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// DIALOGFRAME: Set the common decorations for modal dialogs.
+        /// This means RESIZE=NO, MINBOX=NO and MAXBOX=NO.
+        /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
+        /// removed, but the Close button remains.
         pub fn setDialogFrame(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DIALOGFRAME", arg);
             return self.*;
@@ -543,6 +736,12 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TRAYTIPBALLOONTITLE [Windows Only]: When using the balloon format, the tip
+        /// can also has a title in a separate area.
+        /// Must be set before setting the TRAYTIP attribute.
+        /// (since 3.6)
         pub fn setTrayTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TRAYTIPBALLOONTITLE", arg);
             return self.*;
@@ -553,11 +752,26 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// SAVEUNDER [Windows and Motif Only] (creation only): When this attribute is
+        /// true (YES), the dialog stores the original image of the desktop region it
+        /// occupies (if the system has enough memory to store the image).
+        /// In this case, when the dialog is closed or moved, a redrawing event is not
+        /// generated for the windows that were shadowed by it.
+        /// Its default value is YES if the dialog has a parent dialog (since 3.24).
+        /// To save memory disable it for your main dialog.
+        /// Not available in GTK.
         pub fn setSaveUnder(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SAVEUNDER", arg);
             return self.*;
         }
 
+
+        /// 
+        /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
+        /// system tray.
+        /// (GTK 2.10 and GTK < 3.14)
         pub fn setTray(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "TRAY", arg);
             return self.*;
@@ -568,6 +782,12 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TASKBARPROGRESS [Windows Only] (write-only): this functionality enables the
+        /// use of progress bar on a taskbar button (Windows 7 or earlier version)
+        /// (Available only for Visual C++ 10 and above).
+        /// Default: NO (since 3.10).
         pub fn setTaskbarProgress(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "TASKBARPROGRESS", arg);
             return self.*;
@@ -609,15 +829,18 @@ pub const Dialog = opaque {
 
 
         /// 
-        /// SIZE (non inheritable): Dialogs size.
-        /// Additionally the following values can also be defined for width and/or
-        /// height: "FULL": Defines the dialogs width (or height) equal to the screen's
-        /// width (or height) "HALF": Defines the dialogs width (or height) equal to
-        /// half the screen's width (or height) "THIRD": Defines the dialogs width (or
-        /// height) equal to 1/3 the screen's width (or height) "QUARTER": Defines the
-        /// dialogs width (or height) equal to 1/4 of the screen's width (or height)
-        /// "EIGHTH": Defines the dialogs width (or height) equal to 1/8 of the
-        /// screen's width (or height)
+        /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+        /// accepted, regardless of the minimum size required by its children.
+        /// For a dialog to have the minimum necessary size to fit all elements
+        /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+        /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+        /// dialog, its contents will be limited to this size as the minimum size, if
+        /// you do not want that, then after showing the dialog reset this size to NULL
+        /// so the dialog can be resized to smaller values.
+        /// But notice that its contents will still be limited by the Natural size, to
+        /// also remove that limitation set SHRINK=YES.
+        /// To only change the User size in pixels, without resetting the Current size,
+        /// set the USERSIZE attribute (since 3.12).
         pub fn setSize(self: *Initializer, width: ?iup.ScreenSize, height: ?iup.ScreenSize) Initializer {
             var buffer: [128]u8 = undefined;
             var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
@@ -625,11 +848,24 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// MDIMENU (creation only) [Windows Only]: Name of a IupMenu to be used as the
+        /// Window list of a MDI frame.
+        /// The system will automatically add the list of MDI child windows there.
         pub fn setMdiMenu(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "MDIMENU", arg);
             return self.*;
         }
 
+
+        /// 
+        /// STARTFOCUS: Name of the element that must receive the focus right after the
+        /// dialog is shown using IupShow or IupPopup.
+        /// If not defined then the first control than can receive the focus is
+        /// selected (same effect of calling IupNextField for the dialog).
+        /// Updated after SHOW_CB is called and only if the focus was not changed
+        /// during the callback.
         pub fn setStartFocus(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "STARTFOCUS", arg);
             return self.*;
@@ -662,6 +898,18 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CUSTOMFRAMECAPTIONLIMITS [Windows Only] (non inheritable): limits of the
+        /// caption area at left and at right.
+        /// The caption area is always expanded inside the limits when the dialog is resized.
+        /// Format is "left:right" or in C "%d:%d".
+        /// Default: "0:0".
+        /// This will allow the dialog to be moved by the system when the user click
+        /// and drag the caption area.
+        /// If not defined but CUSTOMFRAMECAPTION is defined, then it will use the
+        /// caption element horizontal position and size for the limits (since 3.22).
+        /// (since 3.18)
         pub fn setCustomFrameCaptionLimits(self: *Initializer, begin: i32, end: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.Range.intIntToString(&buffer, begin, end, ',');
@@ -676,6 +924,22 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
+        /// application to customize the dialog frame elements (the title and its
+        /// buttons) by using IUP controls for its elements like caption, minimize
+        /// button, maximize button, and close buttons.
+        /// The custom frame support uses the native system support for custom frames.
+        /// The application is responsible for leaving space for the borders.
+        /// One drawback is that menu bars will not work.
+        /// For the dialog to be able to be moved an IupLabel or an IupCanvas must be
+        /// at the top of the dialog and must have the NAME attribute set to
+        /// CUSTOMFRAMECAPTION (since 3.22).
+        /// Native custom frames are supported only in Windows and in GTK version 3.10,
+        /// so for older GTK versions we have to simulate the support using CUSTOMFRAMESIMULATE.
+        /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
+        /// Frame notes bellow.
         pub fn setCustomFrame(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "CUSTOMFRAME", arg);
             return self.*;
@@ -683,21 +947,46 @@ pub const Dialog = opaque {
 
 
         /// 
-        /// TITLE (non inheritable): Dialogs title.
-        /// Default: NULL.
-        /// If you want to remove the title bar you must also set MENUBOX=NO, MAXBOX=NO
-        /// and MINBOX=NO, before map.
-        /// But in Motif and GTK it will hide it only if RESIZE=NO also.
+        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+        /// customize the dialog frame elements (the title and its buttons) by drawing
+        /// them with the CUSTOMFRAMEDRAW_CB callback.
+        /// Can be Yes or No.
+        /// The Window client area is expanded to include the whole window.
+        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+        /// TITLE must still be defined.
+        /// But maximize, minimize and close buttons must be manually implemented in
+        /// the BUTTON_CB callback.
+        /// One drawback is that menu bars will not work.
+        /// (since 3.18) (renamed in 3.22)
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TITLE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// DEFAULTESC: Name of the button activated when the user press Esc when focus
+        /// is in another control of the dialog.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
         pub fn setDefaultEsc(self: *Initializer, arg: *iup.Button) Initializer {
             c.setHandleAttribute(self.ref, "DEFAULTESC", arg);
             return self.*;
         }
 
+
+        /// 
+        /// PLACEMENT: Changes how the dialog will be shown.
+        /// Values: "FULL", "MAXIMIZED", "MINIMIZED" and "NORMAL".
+        /// Default: NORMAL.
+        /// After IupShow/IupPopup the attribute is set back to "NORMAL".
+        /// FULL is similar to FULLSCREEN but only the dialog client area covers the
+        /// screen area, menu and decorations will be there but out of the screen.
+        /// In UNIX there is a chance that the placement won't work correctly, that
+        /// depends on the Window Manager.
+        /// In Windows, the SHOWNOACTIVATE attribute can be set to Yes to prevent the
+        /// window from being activated (since 3.15).
+        /// In Windows, the SHOWMINIMIZENEXT attribute can be set to Yes to activate
+        /// the next top-level window in the Z order when minimizing (since 3.15).
         pub fn setPlacement(self: *Initializer, arg: ?Placement) Initializer {
             if (arg) |value| switch (value) {
                 .Maximized => c.setStrAttribute(self.ref, "PLACEMENT", "MAXIMIZED"),
@@ -734,6 +1023,13 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TRAYTIPBALLOON [Windows Only]: The tip window will have the appearance of a
+        /// cartoon "balloon" with rounded corners and a stem pointing to the item.
+        /// Default: NO.
+        /// Must be set before setting the TRAYTIP attribute.
+        /// (since 3.6)
         pub fn setTrayTipBalloon(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "TRAYTIPBALLOON", arg);
             return self.*;
@@ -744,11 +1040,29 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+        /// customize the dialog frame elements (the title and its buttons) by drawing
+        /// them with the CUSTOMFRAMEDRAW_CB callback.
+        /// Can be Yes or No.
+        /// The Window client area is expanded to include the whole window.
+        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+        /// TITLE must still be defined.
+        /// But maximize, minimize and close buttons must be manually implemented in
+        /// the BUTTON_CB callback.
+        /// One drawback is that menu bars will not work.
+        /// (since 3.18) (renamed in 3.22)
         pub fn setResize(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "RESIZE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// MDIARRANGE [Windows Only] (write-only): Action to arrange MDI child windows.
+        /// Possible values: TILEHORIZONTAL, TILEVERTICAL, CASCADE and ICON (arrange
+        /// the minimized icons).
         pub fn setMdiArrange(self: *Initializer, arg: ?MdiArrange) Initializer {
             if (arg) |value| switch (value) {
                 .TileHorizontal => c.setStrAttribute(self.ref, "MDIARRANGE", "TILEHORIZONTAL"),
@@ -777,6 +1091,20 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+        /// accepted, regardless of the minimum size required by its children.
+        /// For a dialog to have the minimum necessary size to fit all elements
+        /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+        /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+        /// dialog, its contents will be limited to this size as the minimum size, if
+        /// you do not want that, then after showing the dialog reset this size to NULL
+        /// so the dialog can be resized to smaller values.
+        /// But notice that its contents will still be limited by the Natural size, to
+        /// also remove that limitation set SHRINK=YES.
+        /// To only change the User size in pixels, without resetting the Current size,
+        /// set the USERSIZE attribute (since 3.12).
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -784,6 +1112,13 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
+        /// it is possible to create a non rectangle window with children.
+        /// (GTK 2.12) Only the fully transparent pixels will be transparent.
+        /// The pixels colors will be ignored, only the alpha channel is used.
+        /// (since 3.26)
         pub fn setShapeImage(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "SHAPEIMAGE", arg);
             return self.*;
@@ -814,11 +1149,24 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TOPMOST [Windows and GTK Only]: puts the dialog always in front of all
+        /// other dialogs in all applications.
+        /// Default: NO.
         pub fn setTopMost(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "TOPMOST", arg);
             return self.*;
         }
 
+
+        /// 
+        /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
+        /// to be shown on the taskbar even if the dialog does not have decorations.
+        /// If set to HIDE force the application button to be hidden from the taskbar,
+        /// but also in this case the system menu, the maximize and minimize buttons
+        /// will be hidden.
+        /// (since 3.28)
         pub fn setTaskbarButton(self: *Initializer, arg: ?TaskbarButton) Initializer {
             if (arg) |value| switch (value) {
                 .Show => c.setStrAttribute(self.ref, "TASKBARBUTTON", "SHOW"),
@@ -829,16 +1177,50 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
+        /// application to customize the dialog frame elements (the title and its
+        /// buttons) by using IUP controls for its elements like caption, minimize
+        /// button, maximize button, and close buttons.
+        /// The custom frame support uses the native system support for custom frames.
+        /// The application is responsible for leaving space for the borders.
+        /// One drawback is that menu bars will not work.
+        /// For the dialog to be able to be moved an IupLabel or an IupCanvas must be
+        /// at the top of the dialog and must have the NAME attribute set to
+        /// CUSTOMFRAMECAPTION (since 3.22).
+        /// Native custom frames are supported only in Windows and in GTK version 3.10,
+        /// so for older GTK versions we have to simulate the support using CUSTOMFRAMESIMULATE.
+        /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
+        /// Frame notes bellow.
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "NAME", arg);
             return self.*;
         }
 
+
+        /// 
+        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+        /// customize the dialog frame elements (the title and its buttons) by drawing
+        /// them with the CUSTOMFRAMEDRAW_CB callback.
+        /// Can be Yes or No.
+        /// The Window client area is expanded to include the whole window.
+        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+        /// TITLE must still be defined.
+        /// But maximize, minimize and close buttons must be manually implemented in
+        /// the BUTTON_CB callback.
+        /// One drawback is that menu bars will not work.
+        /// (since 3.18) (renamed in 3.22)
         pub fn setMinBox(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MINBOX", arg);
             return self.*;
         }
 
+
+        /// 
+        /// DEFAULTENTER: Name of the button activated when the user press Enter when
+        /// focus is in another control of the dialog.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
         pub fn setDefaultEnter(self: *Initializer, arg: *iup.Button) Initializer {
             c.setHandleAttribute(self.ref, "DEFAULTENTER", arg);
             return self.*;
@@ -849,6 +1231,9 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
         pub fn setParentDialog(self: *Initializer, arg: *iup.Dialog) Initializer {
             c.setHandleAttribute(self.ref, "PARENTDIALOG", arg);
             return self.*;
@@ -868,16 +1253,38 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
+        /// set to "YES", hides the dialog, but does not decrement the visible dialog
+        /// count, does not call SHOW_CB and does not mark the dialog as hidden inside IUP.
+        /// It is usually used to hide the dialog and keep the tray icon working
+        /// without closing the main loop.
+        /// It has the same effect as setting LOCKLOOP=Yes and normally hiding the dialog.
+        /// IMPORTANT: when you hide using HIDETASKBAR, you must show using HIDETASKBAR also.
+        /// Possible values: YES, NO.
         pub fn setHideTaskbar(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "HIDETASKBAR", arg);
             return self.*;
         }
 
+
+        /// 
+        /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
+        /// Use "YES" to activate it.
+        /// Useful for multithreaded applications.
         pub fn setBringFront(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "BRINGFRONT", arg);
             return self.*;
         }
 
+
+        /// 
+        /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
+        /// tray icon.
+        /// The Windows SDK recommends that cursors and icons should be implemented as
+        /// resources rather than created at run time.
+        /// (GTK 2.10 and GTK < 3.14)
         pub fn setTrayImage(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TRAYIMAGE", arg);
             return self.*;
@@ -904,6 +1311,14 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// MINSIZE: Minimum size for the dialog in raster units (pixels).
+        /// The windowing system will not be able to change the size beyond this limit.
+        /// Default: 1x1.
+        /// Some systems define a very minimum size greater than this, for instance in
+        /// Windows the horizontal minimum size includes the window decoration buttons.
+        /// (since 3.0)
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -911,6 +1326,12 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CUSTOMFRAMECAPTIONHEIGHT [Windows Only] (non inheritable): height of the
+        /// caption area.
+        /// If not defined it will use the system size.
+        /// (since 3.18) (renamed in 3.22)
         pub fn setCustomFrameCaptionHeight(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "CUSTOMFRAMECAPTIONHEIGHT", arg);
             return self.*;
@@ -923,25 +1344,57 @@ pub const Dialog = opaque {
 
 
         /// 
-        /// BORDER (non inheritable) (creation only): Shows a resize border around the dialog.
-        /// Default: "YES".
-        /// BORDER=NO is useful only when RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
-        /// and TITLE=NULL, if any of these are defined there will be always some border.
+        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+        /// customize the dialog frame elements (the title and its buttons) by drawing
+        /// them with the CUSTOMFRAMEDRAW_CB callback.
+        /// Can be Yes or No.
+        /// The Window client area is expanded to include the whole window.
+        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+        /// TITLE must still be defined.
+        /// But maximize, minimize and close buttons must be manually implemented in
+        /// the BUTTON_CB callback.
+        /// One drawback is that menu bars will not work.
+        /// (since 3.18) (renamed in 3.22)
         pub fn setBorder(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "BORDER", arg);
             return self.*;
         }
 
+
+        /// 
+        /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
+        /// elements (the title and its buttons) by using IUP controls for its elements
+        /// like caption, minimize button, maximize button, and close buttons.
+        /// The custom frame support is entirely simulated by IUP, no native support
+        /// for custom frame is used (this seems to have less drawbacks on the
+        /// application behavior).
+        /// The application is responsible for leaving space for the borders.
+        /// One drawback is that menu bars will not work.
+        /// For the dialog to be able to be moved an IupLabel, or a IupFlatLabel or an
+        /// IupCanvas must be at the top of the dialog and must have the NAME attribute
+        /// set to CUSTOMFRAMECAPTION.
+        /// See the Custom Frame notes bellow.
+        /// (since 3.28)
         pub fn setCustomFramesImulate(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "CUSTOMFRAMESIMULATE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// MDICLOSEALL [Windows Only] (write-only): Action to close and destroy all
+        /// MDI child windows.
+        /// The CLOSE_CB callback will be called for each child.
         pub fn mdiCloseAll(self: *Initializer) Initializer {
             c.setStrAttribute(self.ref, "MDICLOSEALL", null);
             return self.*;
         }
 
+
+        /// 
+        /// SHRINK: Allows changing the elements distribution when the dialog is
+        /// smaller than the minimum size.
+        /// Default: NO.
         pub fn setShrink(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SHRINK", arg);
             return self.*;
@@ -954,6 +1407,10 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
+        /// (GTK 2.10 and GTK < 3.14)
         pub fn setTrayTip(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TRAYTIP", arg);
             return self.*;
@@ -964,11 +1421,23 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TOOLBOX [Windows Only] (creation only): makes the dialog look like a
+        /// toolbox with a smaller title bar.
+        /// It is only valid if the PARENTDIALOG or NATIVEPARENT attribute is also defined.
+        /// Default: NO.
         pub fn setToolBox(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "TOOLBOX", arg);
             return self.*;
         }
 
+
+        /// 
+        /// MDIFRAME (creation only) [Windows Only] (non inheritable): Configure this
+        /// dialog as a MDI frame.
+        /// Can be YES or NO.
+        /// Default: NO.
         pub fn setMdiFrame(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MDIFRAME", arg);
             return self.*;
@@ -984,11 +1453,25 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// MDICHILD (creation only) [Windows Only]: Configure this dialog to be a MDI child.
+        /// Can be YES or NO.
+        /// The PARENTDIALOG attribute must also be defined.
+        /// Each MDI child is automatically named if it does not have one.
+        /// Default: NO.
         pub fn setMdiChild(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MDICHILD", arg);
             return self.*;
         }
 
+
+        /// 
+        /// TASKBARPROGRESSSTATE [Windows Only] (write-only): sets the type and state
+        /// of the progress indicator displayed on a taskbar button.
+        /// Possible values: NORMAL (a green bar), PAUSED (a yellow bar), ERROR (a red
+        /// bar), INDETERMINATE (a green marquee) and NOPROGRESS (no bar).
+        /// Default: NORMAL (since 3.10).
         pub fn setTaskbarProgressState(self: *Initializer, arg: ?TaskbarProgressState) Initializer {
             if (arg) |value| switch (value) {
                 .NoProgress => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", "NOPROGRESS"),
@@ -1002,11 +1485,26 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TASKBARPROGRESSVALUE [Windows Only] (write-only): updates a progress bar
+        /// hosted in a taskbar button to show the specific percentage completed of the
+        /// full operation.
+        /// The value must be between 0 and 100 (since 3.10).
         pub fn setTaskbarProgressValue(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "TASKBARPROGRESSVALUE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// FULLSCREEN: Makes the dialog occupy the whole screen over any system bars
+        /// in the main monitor.
+        /// All dialog details, such as title bar, borders, maximize button, etc, are removed.
+        /// Possible values: YES, NO.
+        /// In Motif you may have to click in the dialog to set its focus.
+        /// In Motif if set to YES when the dialog is hidden, then it can not be
+        /// changed after it is visible.
         pub fn setFullScreen(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "FULLSCREEN", arg);
             return self.*;
@@ -1027,6 +1525,11 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// SIMULATEMODAL (write-only): disable all other visible dialogs, just like
+        /// when the dialog is made modal.
+        /// (since 3.21)
         pub fn setSimulateModal(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SIMULATEMODAL", arg);
             return self.*;
@@ -1038,6 +1541,12 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+        /// 
+        /// FOCUS_CB: Called when the dialog or any of its children gets the focus, or
+        /// when another dialog or any control in another dialog gets the focus.
+        /// It is called after the common callbacks GETFOCUS_CB and KILL_FOCUS_CB.
+        /// (since 3.21) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+        /// number) -> (ret: number) [in Lua]
         pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
@@ -1131,6 +1640,12 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+        /// 
+        /// MDIACTIVATE_CB [Windows Only]: Called when a MDI child window is activated.
+        /// Only the MDI child receive this message.
+        /// It is not called when the child is shown for the first time.
+        /// int function(Ihandle *ih); [in C]elem:mdiactivate_cb() -> (ret: number) [in
+        /// Lua] ih: identifier of the element that activated the event.
         pub fn setMdiActivateCallback(self: *Initializer, callback: ?OnMdiActivateFn) Initializer {
             const Handler = CallbackHandler(Self, OnMdiActivateFn, "MDIACTIVATE_CB");
             Handler.setCallback(self.ref, callback);
@@ -1215,6 +1730,13 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+        /// 
+        /// CUSTOMFRAMEACTIVATE_CB [Windows Only]: Called when the dialog active state
+        /// is changed (for instance the user Alt+Tab to another application, or
+        /// clicked in another window).
+        /// Works only when CUSTOMFRAME or CUSTOMFRAMEEX is defined.
+        /// (since 3.23) int function(Ihandle *ih, int active); [in
+        /// C]ih:customframeactivate_cb(active: number) -> (ret: number) [in Lua]
         pub fn setCustomFrameActivateCallback(self: *Initializer, callback: ?OnCustomFrameActivateFn) Initializer {
             const Handler = CallbackHandler(Self, OnCustomFrameActivateFn, "CUSTOMFRAMEACTIVATE_CB");
             Handler.setCallback(self.ref, callback);
@@ -1233,6 +1755,18 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+        /// 
+        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+        /// customize the dialog frame elements (the title and its buttons) by drawing
+        /// them with the CUSTOMFRAMEDRAW_CB callback.
+        /// Can be Yes or No.
+        /// The Window client area is expanded to include the whole window.
+        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+        /// TITLE must still be defined.
+        /// But maximize, minimize and close buttons must be manually implemented in
+        /// the BUTTON_CB callback.
+        /// One drawback is that menu bars will not work.
+        /// (since 3.18) (renamed in 3.22)
         pub fn setCustomFrameDrawCallback(self: *Initializer, callback: ?OnCustomFrameDrawFn) Initializer {
             const Handler = CallbackHandler(Self, OnCustomFrameDrawFn, "CUSTOMFRAMEDRAW_CB");
             Handler.setCallback(self.ref, callback);
@@ -1317,6 +1851,11 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+        /// 
+        /// TRAYCLICK_CB [Windows and GTK Only]: Called right after the mouse button is
+        /// pressed or released over the tray icon.
+        /// (GTK 2.10) int function(Ihandle *ih, int but, int pressed, int dclick); [in
+        /// C]elem:trayclick_cb(but, pressed, dclick: number) -> (ret: number) [in Lua]
         pub fn setTrayClickCallback(self: *Initializer, callback: ?OnTrayClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnTrayClickFn, "TRAYCLICK_CB");
             Handler.setCallback(self.ref, callback);
@@ -1502,22 +2041,13 @@ pub const Dialog = opaque {
         c.setRgb(self, "TIPBGCOLOR", rgb);
     }
 
-    pub fn getMdiClient(self: *Self) bool {
-        return c.getBoolAttribute(self, "MDICLIENT");
-    }
 
-    pub fn setMdiClient(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MDICLIENT", arg);
-    }
-
-    pub fn getControl(self: *Self) bool {
-        return c.getBoolAttribute(self, "CONTROL");
-    }
-
-    pub fn setControl(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CONTROL", arg);
-    }
-
+    /// 
+    /// MENU: Name of a menu.
+    /// Associates a menu to the dialog as a menu bar.
+    /// The previous menu, if any, is unmapped.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a menu to a name.
+    /// See also IupMenu.
     pub fn getMenu(self: *Self) ?*iup.Menu {
         if (c.getHandleAttribute(self, "MENU")) |handle| {
             return @ptrCast(*iup.Menu, handle);
@@ -1526,6 +2056,13 @@ pub const Dialog = opaque {
         }
     }
 
+
+    /// 
+    /// MENU: Name of a menu.
+    /// Associates a menu to the dialog as a menu bar.
+    /// The previous menu, if any, is unmapped.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a menu to a name.
+    /// See also IupMenu.
     pub fn setMenu(self: *Self, arg: *iup.Menu) void {
         c.setHandleAttribute(self, "MENU", arg);
     }
@@ -1538,45 +2075,89 @@ pub const Dialog = opaque {
         c.setBoolAttribute(self, "NOFLUSH", arg);
     }
 
+
+    /// 
+    /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
+    /// The windowing system will not be able to change the size beyond this limit.
+    /// Default: 65535x65535.
+    /// (since 3.0)
     pub fn getMaxSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "MAXSIZE");
         return Size.parse(str);
     }
 
+
+    /// 
+    /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
+    /// The windowing system will not be able to change the size beyond this limit.
+    /// Default: 65535x65535.
+    /// (since 3.0)
     pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
         c.setStrAttribute(self, "MAXSIZE", value);
     }
 
+
+    /// 
+    /// TRAYTIPBALLOONTITLEICON [Windows Only]: When using the balloon format, the
+    /// tip can also has a pre-defined icon in the title area.
+    /// Must be set before setting the TRAYTIP attribute.
+    /// (since 3.6)
     pub fn getTrayTipBalloonTitleIcon(self: *Self) i32 {
         return c.getIntAttribute(self, "TRAYTIPBALLOONTITLEICON");
     }
 
+
+    /// 
+    /// TRAYTIPBALLOONTITLEICON [Windows Only]: When using the balloon format, the
+    /// tip can also has a pre-defined icon in the title area.
+    /// Must be set before setting the TRAYTIP attribute.
+    /// (since 3.6)
     pub fn setTrayTipBalloonTitleIcon(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "TRAYTIPBALLOONTITLEICON", arg);
     }
 
+
+    /// 
+    /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
+    /// it is possible to create a non rectangle window with transparency, but it
+    /// can not have children.
+    /// Used usually for splash screens.
+    /// It must be set before map so the native window would be properly
+    /// initialized when mapped.
+    /// Works also for GTK but as the SHAPEIMAGE attribute.
+    /// (since 3.16)
     pub fn getOpacityImage(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "OPACITYIMAGE");
     }
 
+
+    /// 
+    /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
+    /// it is possible to create a non rectangle window with transparency, but it
+    /// can not have children.
+    /// Used usually for splash screens.
+    /// It must be set before map so the native window would be properly
+    /// initialized when mapped.
+    /// Works also for GTK but as the SHAPEIMAGE attribute.
+    /// (since 3.16)
     pub fn setOpacityImage(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "OPACITYIMAGE", arg);
     }
 
-    pub fn getHelpButton(self: *Self) bool {
-        return c.getBoolAttribute(self, "HELPBUTTON");
-    }
 
-    pub fn setHelpButton(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "HELPBUTTON", arg);
-    }
-
+    /// 
+    /// SHOWNOFOCUS: do not set focus after show.
+    /// (since 3.30)
     pub fn getShowNoFocus(self: *Self) bool {
         return c.getBoolAttribute(self, "SHOWNOFOCUS");
     }
 
+
+    /// 
+    /// SHOWNOFOCUS: do not set focus after show.
+    /// (since 3.30)
     pub fn setShowNoFocus(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "SHOWNOFOCUS", arg);
     }
@@ -1586,18 +2167,42 @@ pub const Dialog = opaque {
         return iup.XYPos.parse(str, ',');
     }
 
+
+    /// 
+    /// MAXIMIZEATPARENT [Windows Only]: when using multiple monitors, maximize the
+    /// dialog in the same monitor that the parent dialog is.
+    /// (since 3.28)
     pub fn getMaximizeAtParent(self: *Self) bool {
         return c.getBoolAttribute(self, "MAXIMIZEATPARENT");
     }
 
+
+    /// 
+    /// MAXIMIZEATPARENT [Windows Only]: when using multiple monitors, maximize the
+    /// dialog in the same monitor that the parent dialog is.
+    /// (since 3.28)
     pub fn setMaximizeAtParent(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "MAXIMIZEATPARENT", arg);
     }
 
+
+    /// 
+    /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
+    /// Valid values range from 0 (completely transparent) to 255 (opaque).
+    /// In Windows must be set before map so the native window would be properly
+    /// initialized when mapped (since 3.16).
+    /// (GTK 2.12)
     pub fn getOpacity(self: *Self) i32 {
         return c.getIntAttribute(self, "OPACITY");
     }
 
+
+    /// 
+    /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
+    /// Valid values range from 0 (completely transparent) to 255 (opaque).
+    /// In Windows must be set before map so the native window would be properly
+    /// initialized when mapped (since 3.16).
+    /// (GTK 2.12)
     pub fn setOpacity(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "OPACITY", arg);
     }
@@ -1613,18 +2218,22 @@ pub const Dialog = opaque {
         c.setStrAttribute(self, "POSITION", value);
     }
 
-    pub fn getComposited(self: *Self) bool {
-        return c.getBoolAttribute(self, "COMPOSITED");
-    }
 
-    pub fn setComposited(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "COMPOSITED", arg);
-    }
-
+    /// 
+    /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
+    /// the drop of files.
+    /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
+    /// it will be automatically enabled.
     pub fn getDropFilesTarget(self: *Self) bool {
         return c.getBoolAttribute(self, "DROPFILESTARGET");
     }
 
+
+    /// 
+    /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
+    /// the drop of files.
+    /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
+    /// it will be automatically enabled.
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "DROPFILESTARGET", arg);
     }
@@ -1661,10 +2270,20 @@ pub const Dialog = opaque {
         c.setBoolAttribute(self, "DRAGSOURCEMOVE", arg);
     }
 
+
+    /// 
+    /// ICON: Dialogs icon.
+    /// The Windows SDK recommends that cursors and icons should be implemented as
+    /// resources rather than created at run time.
     pub fn getIcon(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "ICON");
     }
 
+
+    /// 
+    /// ICON: Dialogs icon.
+    /// The Windows SDK recommends that cursors and icons should be implemented as
+    /// resources rather than created at run time.
     pub fn setIcon(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "ICON", arg);
     }
@@ -1683,10 +2302,36 @@ pub const Dialog = opaque {
         c.setBoolAttribute(self, "VISIBLE", arg);
     }
 
+
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn getCustomFrameDraw(self: *Self) bool {
         return c.getBoolAttribute(self, "CUSTOMFRAMEDRAW");
     }
 
+
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn setCustomFrameDraw(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "CUSTOMFRAMEDRAW", arg);
     }
@@ -1703,14 +2348,6 @@ pub const Dialog = opaque {
     /// CURSOR (non inheritable): Defines a cursor for the dialog.
     pub fn setCursor(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "CURSOR", arg);
-    }
-
-    pub fn getMenuBox(self: *Self) bool {
-        return c.getBoolAttribute(self, "MENUBOX");
-    }
-
-    pub fn setMenuBox(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MENUBOX", arg);
     }
 
     pub fn setZOrder(self: *Self, arg: ?ZOrder) void {
@@ -1730,14 +2367,45 @@ pub const Dialog = opaque {
         return c.getIntAttribute(self, "Y");
     }
 
+
+    /// 
+    /// MDIACTIVE [Windows Only] (read-only): Returns the name of the current
+    /// active MDI child.
+    /// Use IupGetAttributeHandle to directly retrieve the child handle.
     pub fn getMdiActive(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "MDIACTIVE");
     }
 
+
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn getMaxBox(self: *Self) bool {
         return c.getBoolAttribute(self, "MAXBOX");
     }
 
+
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn setMaxBox(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "MAXBOX", arg);
     }
@@ -1750,10 +2418,18 @@ pub const Dialog = opaque {
         c.setBoolAttribute(self, "DRAGDROP", arg);
     }
 
+
+    /// 
+    /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
+    /// to a dialog hint.
     pub fn getDialogHint(self: *Self) bool {
         return c.getBoolAttribute(self, "DIALOGHINT");
     }
 
+
+    /// 
+    /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
+    /// to a dialog hint.
     pub fn setDialogHint(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "DIALOGHINT", arg);
     }
@@ -1766,10 +2442,22 @@ pub const Dialog = opaque {
         c.setBoolAttribute(self, "SHOWMINIMIZENEXT", arg);
     }
 
+
+    /// 
+    /// DIALOGFRAME: Set the common decorations for modal dialogs.
+    /// This means RESIZE=NO, MINBOX=NO and MAXBOX=NO.
+    /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
+    /// removed, but the Close button remains.
     pub fn getDialogFrame(self: *Self) bool {
         return c.getBoolAttribute(self, "DIALOGFRAME");
     }
 
+
+    /// 
+    /// DIALOGFRAME: Set the common decorations for modal dialogs.
+    /// This means RESIZE=NO, MINBOX=NO and MAXBOX=NO.
+    /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
+    /// removed, but the Close button remains.
     pub fn setDialogFrame(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "DIALOGFRAME", arg);
     }
@@ -1792,10 +2480,22 @@ pub const Dialog = opaque {
         c.setBoolAttribute(self, "NACTIVE", arg);
     }
 
+
+    /// 
+    /// TRAYTIPBALLOONTITLE [Windows Only]: When using the balloon format, the tip
+    /// can also has a title in a separate area.
+    /// Must be set before setting the TRAYTIP attribute.
+    /// (since 3.6)
     pub fn getTrayTipBalloonTitle(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TRAYTIPBALLOONTITLE");
     }
 
+
+    /// 
+    /// TRAYTIPBALLOONTITLE [Windows Only]: When using the balloon format, the tip
+    /// can also has a title in a separate area.
+    /// Must be set before setting the TRAYTIP attribute.
+    /// (since 3.6)
     pub fn setTrayTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TRAYTIPBALLOONTITLE", arg);
     }
@@ -1808,18 +2508,20 @@ pub const Dialog = opaque {
         c.setStrAttribute(self, "THEME", arg);
     }
 
-    pub fn getSaveUnder(self: *Self) bool {
-        return c.getBoolAttribute(self, "SAVEUNDER");
-    }
 
-    pub fn setSaveUnder(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SAVEUNDER", arg);
-    }
-
+    /// 
+    /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
+    /// system tray.
+    /// (GTK 2.10 and GTK < 3.14)
     pub fn getTray(self: *Self) bool {
         return c.getBoolAttribute(self, "TRAY");
     }
 
+
+    /// 
+    /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
+    /// system tray.
+    /// (GTK 2.10 and GTK < 3.14)
     pub fn setTray(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "TRAY", arg);
     }
@@ -1832,10 +2534,22 @@ pub const Dialog = opaque {
         c.setStrAttribute(self, "DRAGCURSORCOPY", arg);
     }
 
+
+    /// 
+    /// TASKBARPROGRESS [Windows Only] (write-only): this functionality enables the
+    /// use of progress bar on a taskbar button (Windows 7 or earlier version)
+    /// (Available only for Visual C++ 10 and above).
+    /// Default: NO (since 3.10).
     pub fn getTaskbarProgress(self: *Self) i32 {
         return c.getIntAttribute(self, "TASKBARPROGRESS");
     }
 
+
+    /// 
+    /// TASKBARPROGRESS [Windows Only] (write-only): this functionality enables the
+    /// use of progress bar on a taskbar button (Windows 7 or earlier version)
+    /// (Available only for Visual C++ 10 and above).
+    /// Default: NO (since 3.10).
     pub fn setTaskbarProgress(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "TASKBARPROGRESS", arg);
     }
@@ -1904,15 +2618,18 @@ pub const Dialog = opaque {
 
 
     /// 
-    /// SIZE (non inheritable): Dialogs size.
-    /// Additionally the following values can also be defined for width and/or
-    /// height: "FULL": Defines the dialogs width (or height) equal to the screen's
-    /// width (or height) "HALF": Defines the dialogs width (or height) equal to
-    /// half the screen's width (or height) "THIRD": Defines the dialogs width (or
-    /// height) equal to 1/3 the screen's width (or height) "QUARTER": Defines the
-    /// dialogs width (or height) equal to 1/4 of the screen's width (or height)
-    /// "EIGHTH": Defines the dialogs width (or height) equal to 1/8 of the
-    /// screen's width (or height)
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
     pub fn getSize(self: *Self) iup.DialogSize {
         var str = c.getStrAttribute(self, "SIZE");
         return iup.DialogSize.parse(str);
@@ -1920,15 +2637,18 @@ pub const Dialog = opaque {
 
 
     /// 
-    /// SIZE (non inheritable): Dialogs size.
-    /// Additionally the following values can also be defined for width and/or
-    /// height: "FULL": Defines the dialogs width (or height) equal to the screen's
-    /// width (or height) "HALF": Defines the dialogs width (or height) equal to
-    /// half the screen's width (or height) "THIRD": Defines the dialogs width (or
-    /// height) equal to 1/3 the screen's width (or height) "QUARTER": Defines the
-    /// dialogs width (or height) equal to 1/4 of the screen's width (or height)
-    /// "EIGHTH": Defines the dialogs width (or height) equal to 1/8 of the
-    /// screen's width (or height)
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
     pub fn setSize(self: *Self, width: ?iup.ScreenSize, height: ?iup.ScreenSize) void {
         var buffer: [128]u8 = undefined;
         var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
@@ -1939,18 +2659,26 @@ pub const Dialog = opaque {
         return c.getIntAttribute(self, "WID");
     }
 
-    pub fn getMdiMenu(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "MDIMENU");
-    }
 
-    pub fn setMdiMenu(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "MDIMENU", arg);
-    }
-
+    /// 
+    /// STARTFOCUS: Name of the element that must receive the focus right after the
+    /// dialog is shown using IupShow or IupPopup.
+    /// If not defined then the first control than can receive the focus is
+    /// selected (same effect of calling IupNextField for the dialog).
+    /// Updated after SHOW_CB is called and only if the focus was not changed
+    /// during the callback.
     pub fn getStartFocus(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "STARTFOCUS");
     }
 
+
+    /// 
+    /// STARTFOCUS: Name of the element that must receive the focus right after the
+    /// dialog is shown using IupShow or IupPopup.
+    /// If not defined then the first control than can receive the focus is
+    /// selected (same effect of calling IupNextField for the dialog).
+    /// Updated after SHOW_CB is called and only if the focus was not changed
+    /// during the callback.
     pub fn setStartFocus(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "STARTFOCUS", arg);
     }
@@ -2003,11 +2731,35 @@ pub const Dialog = opaque {
         c.setIntAttribute(self, "TIPDELAY", arg);
     }
 
+
+    /// 
+    /// CUSTOMFRAMECAPTIONLIMITS [Windows Only] (non inheritable): limits of the
+    /// caption area at left and at right.
+    /// The caption area is always expanded inside the limits when the dialog is resized.
+    /// Format is "left:right" or in C "%d:%d".
+    /// Default: "0:0".
+    /// This will allow the dialog to be moved by the system when the user click
+    /// and drag the caption area.
+    /// If not defined but CUSTOMFRAMECAPTION is defined, then it will use the
+    /// caption element horizontal position and size for the limits (since 3.22).
+    /// (since 3.18)
     pub fn getCustomFrameCaptionLimits(self: *Self) iup.Range {
         var str = c.getStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS");
         return iup.Range.parse(str, ',');
     }
 
+
+    /// 
+    /// CUSTOMFRAMECAPTIONLIMITS [Windows Only] (non inheritable): limits of the
+    /// caption area at left and at right.
+    /// The caption area is always expanded inside the limits when the dialog is resized.
+    /// Format is "left:right" or in C "%d:%d".
+    /// Default: "0:0".
+    /// This will allow the dialog to be moved by the system when the user click
+    /// and drag the caption area.
+    /// If not defined but CUSTOMFRAMECAPTION is defined, then it will use the
+    /// caption element horizontal position and size for the limits (since 3.22).
+    /// (since 3.18)
     pub fn setCustomFrameCaptionLimits(self: *Self, begin: i32, end: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.Range.intIntToString(&buffer, begin, end, ',');
@@ -2025,40 +2777,97 @@ pub const Dialog = opaque {
         c.setStrAttribute(self, "DRAGSTART", value);
     }
 
+
+    /// 
+    /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
+    /// application to customize the dialog frame elements (the title and its
+    /// buttons) by using IUP controls for its elements like caption, minimize
+    /// button, maximize button, and close buttons.
+    /// The custom frame support uses the native system support for custom frames.
+    /// The application is responsible for leaving space for the borders.
+    /// One drawback is that menu bars will not work.
+    /// For the dialog to be able to be moved an IupLabel or an IupCanvas must be
+    /// at the top of the dialog and must have the NAME attribute set to
+    /// CUSTOMFRAMECAPTION (since 3.22).
+    /// Native custom frames are supported only in Windows and in GTK version 3.10,
+    /// so for older GTK versions we have to simulate the support using CUSTOMFRAMESIMULATE.
+    /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
+    /// Frame notes bellow.
     pub fn getCustomFrame(self: *Self) bool {
         return c.getBoolAttribute(self, "CUSTOMFRAME");
     }
 
+
+    /// 
+    /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
+    /// application to customize the dialog frame elements (the title and its
+    /// buttons) by using IUP controls for its elements like caption, minimize
+    /// button, maximize button, and close buttons.
+    /// The custom frame support uses the native system support for custom frames.
+    /// The application is responsible for leaving space for the borders.
+    /// One drawback is that menu bars will not work.
+    /// For the dialog to be able to be moved an IupLabel or an IupCanvas must be
+    /// at the top of the dialog and must have the NAME attribute set to
+    /// CUSTOMFRAMECAPTION (since 3.22).
+    /// Native custom frames are supported only in Windows and in GTK version 3.10,
+    /// so for older GTK versions we have to simulate the support using CUSTOMFRAMESIMULATE.
+    /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
+    /// Frame notes bellow.
     pub fn setCustomFrame(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "CUSTOMFRAME", arg);
     }
 
+
+    /// 
+    /// MDINEXT [Windows Only] (read-only): Returns the name of the next available
+    /// MDI child.
+    /// Use IupGetAttributeHandle to directly retrieve the child handle.
+    /// Must use MDIACTIVE to retrieve the first child.
+    /// If the application is going to destroy the child retrieve the next child
+    /// before destroying the current.
     pub fn getMdiNext(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "MDINEXT");
     }
 
 
     /// 
-    /// TITLE (non inheritable): Dialogs title.
-    /// Default: NULL.
-    /// If you want to remove the title bar you must also set MENUBOX=NO, MAXBOX=NO
-    /// and MINBOX=NO, before map.
-    /// But in Motif and GTK it will hide it only if RESIZE=NO also.
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn getTitle(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TITLE");
     }
 
 
     /// 
-    /// TITLE (non inheritable): Dialogs title.
-    /// Default: NULL.
-    /// If you want to remove the title bar you must also set MENUBOX=NO, MAXBOX=NO
-    /// and MINBOX=NO, before map.
-    /// But in Motif and GTK it will hide it only if RESIZE=NO also.
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TITLE", arg);
     }
 
+
+    /// 
+    /// DEFAULTESC: Name of the button activated when the user press Esc when focus
+    /// is in another control of the dialog.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn getDefaultEsc(self: *Self) ?*iup.Button {
         if (c.getHandleAttribute(self, "DEFAULTESC")) |handle| {
             return @ptrCast(*iup.Button, handle);
@@ -2067,10 +2876,29 @@ pub const Dialog = opaque {
         }
     }
 
+
+    /// 
+    /// DEFAULTESC: Name of the button activated when the user press Esc when focus
+    /// is in another control of the dialog.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn setDefaultEsc(self: *Self, arg: *iup.Button) void {
         c.setHandleAttribute(self, "DEFAULTESC", arg);
     }
 
+
+    /// 
+    /// PLACEMENT: Changes how the dialog will be shown.
+    /// Values: "FULL", "MAXIMIZED", "MINIMIZED" and "NORMAL".
+    /// Default: NORMAL.
+    /// After IupShow/IupPopup the attribute is set back to "NORMAL".
+    /// FULL is similar to FULLSCREEN but only the dialog client area covers the
+    /// screen area, menu and decorations will be there but out of the screen.
+    /// In UNIX there is a chance that the placement won't work correctly, that
+    /// depends on the Window Manager.
+    /// In Windows, the SHOWNOACTIVATE attribute can be set to Yes to prevent the
+    /// window from being activated (since 3.15).
+    /// In Windows, the SHOWMINIMIZENEXT attribute can be set to Yes to activate
+    /// the next top-level window in the Z order when minimizing (since 3.15).
     pub fn getPlacement(self: *Self) ?Placement {
         var ret = c.getStrAttribute(self, "PLACEMENT");
 
@@ -2080,6 +2908,20 @@ pub const Dialog = opaque {
         return null;
     }
 
+
+    /// 
+    /// PLACEMENT: Changes how the dialog will be shown.
+    /// Values: "FULL", "MAXIMIZED", "MINIMIZED" and "NORMAL".
+    /// Default: NORMAL.
+    /// After IupShow/IupPopup the attribute is set back to "NORMAL".
+    /// FULL is similar to FULLSCREEN but only the dialog client area covers the
+    /// screen area, menu and decorations will be there but out of the screen.
+    /// In UNIX there is a chance that the placement won't work correctly, that
+    /// depends on the Window Manager.
+    /// In Windows, the SHOWNOACTIVATE attribute can be set to Yes to prevent the
+    /// window from being activated (since 3.15).
+    /// In Windows, the SHOWMINIMIZENEXT attribute can be set to Yes to activate
+    /// the next top-level window in the Z order when minimizing (since 3.15).
     pub fn setPlacement(self: *Self, arg: ?Placement) void {
         if (arg) |value| switch (value) {
             .Maximized => c.setStrAttribute(self, "PLACEMENT", "MAXIMIZED"),
@@ -2130,10 +2972,24 @@ pub const Dialog = opaque {
         c.setBoolAttribute(self, "DROPTARGET", arg);
     }
 
+
+    /// 
+    /// TRAYTIPBALLOON [Windows Only]: The tip window will have the appearance of a
+    /// cartoon "balloon" with rounded corners and a stem pointing to the item.
+    /// Default: NO.
+    /// Must be set before setting the TRAYTIP attribute.
+    /// (since 3.6)
     pub fn getTrayTipBalloon(self: *Self) bool {
         return c.getBoolAttribute(self, "TRAYTIPBALLOON");
     }
 
+
+    /// 
+    /// TRAYTIPBALLOON [Windows Only]: The tip window will have the appearance of a
+    /// cartoon "balloon" with rounded corners and a stem pointing to the item.
+    /// Default: NO.
+    /// Must be set before setting the TRAYTIP attribute.
+    /// (since 3.6)
     pub fn setTrayTipBalloon(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "TRAYTIPBALLOON", arg);
     }
@@ -2146,14 +3002,45 @@ pub const Dialog = opaque {
         c.setBoolAttribute(self, "DRAGSOURCE", arg);
     }
 
+
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn getResize(self: *Self) bool {
         return c.getBoolAttribute(self, "RESIZE");
     }
 
+
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn setResize(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "RESIZE", arg);
     }
 
+
+    /// 
+    /// MDIARRANGE [Windows Only] (write-only): Action to arrange MDI child windows.
+    /// Possible values: TILEHORIZONTAL, TILEVERTICAL, CASCADE and ICON (arrange
+    /// the minimized icons).
     pub fn setMdiArrange(self: *Self, arg: ?MdiArrange) void {
         if (arg) |value| switch (value) {
             .TileHorizontal => c.setStrAttribute(self, "MDIARRANGE", "TILEHORIZONTAL"),
@@ -2165,6 +3052,11 @@ pub const Dialog = opaque {
         }
     }
 
+
+    /// 
+    /// MAXIMIZED [Windows and GTK Only] (read-only): indicates if the dialog is maximized.
+    /// Can be YES or NO.
+    /// (since 3.12)
     pub fn getMaximized(self: *Self) bool {
         return c.getBoolAttribute(self, "MAXIMIZED");
     }
@@ -2196,21 +3088,63 @@ pub const Dialog = opaque {
         c.setStrAttribute(self, "NORMALIZERGROUP", arg);
     }
 
+
+    /// 
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
     pub fn getRasterSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "RASTERSIZE");
         return Size.parse(str);
     }
 
+
+    /// 
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
         c.setStrAttribute(self, "RASTERSIZE", value);
     }
 
+
+    /// 
+    /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
+    /// it is possible to create a non rectangle window with children.
+    /// (GTK 2.12) Only the fully transparent pixels will be transparent.
+    /// The pixels colors will be ignored, only the alpha channel is used.
+    /// (since 3.26)
     pub fn getShapeImage(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "SHAPEIMAGE");
     }
 
+
+    /// 
+    /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
+    /// it is possible to create a non rectangle window with children.
+    /// (GTK 2.12) Only the fully transparent pixels will be transparent.
+    /// The pixels colors will be ignored, only the alpha channel is used.
+    /// (since 3.26)
     pub fn setShapeImage(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "SHAPEIMAGE", arg);
     }
@@ -2255,10 +3189,23 @@ pub const Dialog = opaque {
         c.setBoolAttribute(self, "MAXIMIZEATDIALOG", arg);
     }
 
+
+    /// 
+    /// TOPMOST [Windows and GTK Only]: puts the dialog always in front of all
+    /// other dialogs in all applications.
+    /// Default: NO.
     pub fn setTopMost(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "TOPMOST", arg);
     }
 
+
+    /// 
+    /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
+    /// to be shown on the taskbar even if the dialog does not have decorations.
+    /// If set to HIDE force the application button to be hidden from the taskbar,
+    /// but also in this case the system menu, the maximize and minimize buttons
+    /// will be hidden.
+    /// (since 3.28)
     pub fn getTaskbarButton(self: *Self) ?TaskbarButton {
         var ret = c.getStrAttribute(self, "TASKBARBUTTON");
 
@@ -2267,6 +3214,14 @@ pub const Dialog = opaque {
         return null;
     }
 
+
+    /// 
+    /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
+    /// to be shown on the taskbar even if the dialog does not have decorations.
+    /// If set to HIDE force the application button to be hidden from the taskbar,
+    /// but also in this case the system menu, the maximize and minimize buttons
+    /// will be hidden.
+    /// (since 3.28)
     pub fn setTaskbarButton(self: *Self, arg: ?TaskbarButton) void {
         if (arg) |value| switch (value) {
             .Show => c.setStrAttribute(self, "TASKBARBUTTON", "SHOW"),
@@ -2276,22 +3231,85 @@ pub const Dialog = opaque {
         }
     }
 
+
+    /// 
+    /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
+    /// application to customize the dialog frame elements (the title and its
+    /// buttons) by using IUP controls for its elements like caption, minimize
+    /// button, maximize button, and close buttons.
+    /// The custom frame support uses the native system support for custom frames.
+    /// The application is responsible for leaving space for the borders.
+    /// One drawback is that menu bars will not work.
+    /// For the dialog to be able to be moved an IupLabel or an IupCanvas must be
+    /// at the top of the dialog and must have the NAME attribute set to
+    /// CUSTOMFRAMECAPTION (since 3.22).
+    /// Native custom frames are supported only in Windows and in GTK version 3.10,
+    /// so for older GTK versions we have to simulate the support using CUSTOMFRAMESIMULATE.
+    /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
+    /// Frame notes bellow.
     pub fn getName(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "NAME");
     }
 
+
+    /// 
+    /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
+    /// application to customize the dialog frame elements (the title and its
+    /// buttons) by using IUP controls for its elements like caption, minimize
+    /// button, maximize button, and close buttons.
+    /// The custom frame support uses the native system support for custom frames.
+    /// The application is responsible for leaving space for the borders.
+    /// One drawback is that menu bars will not work.
+    /// For the dialog to be able to be moved an IupLabel or an IupCanvas must be
+    /// at the top of the dialog and must have the NAME attribute set to
+    /// CUSTOMFRAMECAPTION (since 3.22).
+    /// Native custom frames are supported only in Windows and in GTK version 3.10,
+    /// so for older GTK versions we have to simulate the support using CUSTOMFRAMESIMULATE.
+    /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
+    /// Frame notes bellow.
     pub fn setName(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "NAME", arg);
     }
 
+
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn getMinBox(self: *Self) bool {
         return c.getBoolAttribute(self, "MINBOX");
     }
 
+
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn setMinBox(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "MINBOX", arg);
     }
 
+
+    /// 
+    /// DEFAULTENTER: Name of the button activated when the user press Enter when
+    /// focus is in another control of the dialog.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn getDefaultEnter(self: *Self) ?*iup.Button {
         if (c.getHandleAttribute(self, "DEFAULTENTER")) |handle| {
             return @ptrCast(*iup.Button, handle);
@@ -2300,10 +3318,22 @@ pub const Dialog = opaque {
         }
     }
 
+
+    /// 
+    /// DEFAULTENTER: Name of the button activated when the user press Enter when
+    /// focus is in another control of the dialog.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn setDefaultEnter(self: *Self, arg: *iup.Button) void {
         c.setHandleAttribute(self, "DEFAULTENTER", arg);
     }
 
+
+    /// 
+    /// MODAL (read-only): Returns the popup state.
+    /// It is "YES" if the dialog was shown using IupPopup.
+    /// It is "NO" if IupShow was used or it is not visible.
+    /// At the first time the dialog is shown, MODAL is not set yet when SHOW_CB is called.
+    /// (since 3.0)
     pub fn getModal(self: *Self) bool {
         return c.getBoolAttribute(self, "MODAL");
     }
@@ -2314,18 +3344,6 @@ pub const Dialog = opaque {
 
     pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "TIPBALLOONTITLEICON", arg);
-    }
-
-    pub fn getParentDialog(self: *Self) ?*iup.Dialog {
-        if (c.getHandleAttribute(self, "PARENTDIALOG")) |handle| {
-            return @ptrCast(*iup.Dialog, handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setParentDialog(self: *Self, arg: *iup.Dialog) void {
-        c.setHandleAttribute(self, "PARENTDIALOG", arg);
     }
 
 
@@ -2354,26 +3372,70 @@ pub const Dialog = opaque {
         c.setRgb(self, "BACKGROUND", rgb);
     }
 
+
+    /// 
+    /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
+    /// set to "YES", hides the dialog, but does not decrement the visible dialog
+    /// count, does not call SHOW_CB and does not mark the dialog as hidden inside IUP.
+    /// It is usually used to hide the dialog and keep the tray icon working
+    /// without closing the main loop.
+    /// It has the same effect as setting LOCKLOOP=Yes and normally hiding the dialog.
+    /// IMPORTANT: when you hide using HIDETASKBAR, you must show using HIDETASKBAR also.
+    /// Possible values: YES, NO.
     pub fn getHideTaskbar(self: *Self) bool {
         return c.getBoolAttribute(self, "HIDETASKBAR");
     }
 
+
+    /// 
+    /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
+    /// set to "YES", hides the dialog, but does not decrement the visible dialog
+    /// count, does not call SHOW_CB and does not mark the dialog as hidden inside IUP.
+    /// It is usually used to hide the dialog and keep the tray icon working
+    /// without closing the main loop.
+    /// It has the same effect as setting LOCKLOOP=Yes and normally hiding the dialog.
+    /// IMPORTANT: when you hide using HIDETASKBAR, you must show using HIDETASKBAR also.
+    /// Possible values: YES, NO.
     pub fn setHideTaskbar(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "HIDETASKBAR", arg);
     }
 
+
+    /// 
+    /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
+    /// Use "YES" to activate it.
+    /// Useful for multithreaded applications.
     pub fn getBringFront(self: *Self) bool {
         return c.getBoolAttribute(self, "BRINGFRONT");
     }
 
+
+    /// 
+    /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
+    /// Use "YES" to activate it.
+    /// Useful for multithreaded applications.
     pub fn setBringFront(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "BRINGFRONT", arg);
     }
 
+
+    /// 
+    /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
+    /// tray icon.
+    /// The Windows SDK recommends that cursors and icons should be implemented as
+    /// resources rather than created at run time.
+    /// (GTK 2.10 and GTK < 3.14)
     pub fn getTrayImage(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TRAYIMAGE");
     }
 
+
+    /// 
+    /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
+    /// tray icon.
+    /// The Windows SDK recommends that cursors and icons should be implemented as
+    /// resources rather than created at run time.
+    /// (GTK 2.10 and GTK < 3.14)
     pub fn setTrayImage(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TRAYIMAGE", arg);
     }
@@ -2414,25 +3476,59 @@ pub const Dialog = opaque {
         c.setDoubleAttribute(self, "EXPANDWEIGHT", arg);
     }
 
+
+    /// 
+    /// MINSIZE: Minimum size for the dialog in raster units (pixels).
+    /// The windowing system will not be able to change the size beyond this limit.
+    /// Default: 1x1.
+    /// Some systems define a very minimum size greater than this, for instance in
+    /// Windows the horizontal minimum size includes the window decoration buttons.
+    /// (since 3.0)
     pub fn getMinSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "MINSIZE");
         return Size.parse(str);
     }
 
+
+    /// 
+    /// MINSIZE: Minimum size for the dialog in raster units (pixels).
+    /// The windowing system will not be able to change the size beyond this limit.
+    /// Default: 1x1.
+    /// Some systems define a very minimum size greater than this, for instance in
+    /// Windows the horizontal minimum size includes the window decoration buttons.
+    /// (since 3.0)
     pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
         c.setStrAttribute(self, "MINSIZE", value);
     }
 
+
+    /// 
+    /// ACTIVEWINDOW [Windows and GTK Only] (read-only): informs if the dialog is
+    /// the active window (the window with focus).
+    /// Can be Yes or No.
+    /// (since 3.4)
     pub fn getActiveWindow(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVEWINDOW");
     }
 
+
+    /// 
+    /// CUSTOMFRAMECAPTIONHEIGHT [Windows Only] (non inheritable): height of the
+    /// caption area.
+    /// If not defined it will use the system size.
+    /// (since 3.18) (renamed in 3.22)
     pub fn getCustomFrameCaptionHeight(self: *Self) i32 {
         return c.getIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT");
     }
 
+
+    /// 
+    /// CUSTOMFRAMECAPTIONHEIGHT [Windows Only] (non inheritable): height of the
+    /// caption area.
+    /// If not defined it will use the system size.
+    /// (since 3.18) (renamed in 3.22)
     pub fn setCustomFrameCaptionHeight(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", arg);
     }
@@ -2445,22 +3541,101 @@ pub const Dialog = opaque {
         c.setStrAttribute(self, "NTHEME", arg);
     }
 
+
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
+    pub fn getBorder(self: *Self) bool {
+        return c.getBoolAttribute(self, "BORDER");
+    }
+
+
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
+    pub fn setBorder(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "BORDER", arg);
+    }
+
+
+    /// 
+    /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
+    /// elements (the title and its buttons) by using IUP controls for its elements
+    /// like caption, minimize button, maximize button, and close buttons.
+    /// The custom frame support is entirely simulated by IUP, no native support
+    /// for custom frame is used (this seems to have less drawbacks on the
+    /// application behavior).
+    /// The application is responsible for leaving space for the borders.
+    /// One drawback is that menu bars will not work.
+    /// For the dialog to be able to be moved an IupLabel, or a IupFlatLabel or an
+    /// IupCanvas must be at the top of the dialog and must have the NAME attribute
+    /// set to CUSTOMFRAMECAPTION.
+    /// See the Custom Frame notes bellow.
+    /// (since 3.28)
     pub fn getCustomFramesImulate(self: *Self) bool {
         return c.getBoolAttribute(self, "CUSTOMFRAMESIMULATE");
     }
 
+
+    /// 
+    /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
+    /// elements (the title and its buttons) by using IUP controls for its elements
+    /// like caption, minimize button, maximize button, and close buttons.
+    /// The custom frame support is entirely simulated by IUP, no native support
+    /// for custom frame is used (this seems to have less drawbacks on the
+    /// application behavior).
+    /// The application is responsible for leaving space for the borders.
+    /// One drawback is that menu bars will not work.
+    /// For the dialog to be able to be moved an IupLabel, or a IupFlatLabel or an
+    /// IupCanvas must be at the top of the dialog and must have the NAME attribute
+    /// set to CUSTOMFRAMECAPTION.
+    /// See the Custom Frame notes bellow.
+    /// (since 3.28)
     pub fn setCustomFramesImulate(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "CUSTOMFRAMESIMULATE", arg);
     }
 
+
+    /// 
+    /// MDICLOSEALL [Windows Only] (write-only): Action to close and destroy all
+    /// MDI child windows.
+    /// The CLOSE_CB callback will be called for each child.
     pub fn mdiCloseAll(self: *Self) void {
         c.setStrAttribute(self, "MDICLOSEALL", null);
     }
 
+
+    /// 
+    /// SHRINK: Allows changing the elements distribution when the dialog is
+    /// smaller than the minimum size.
+    /// Default: NO.
     pub fn getShrink(self: *Self) bool {
         return c.getBoolAttribute(self, "SHRINK");
     }
 
+
+    /// 
+    /// SHRINK: Allows changing the elements distribution when the dialog is
+    /// smaller than the minimum size.
+    /// Default: NO.
     pub fn setShrink(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "SHRINK", arg);
     }
@@ -2486,10 +3661,18 @@ pub const Dialog = opaque {
         return Size.parse(str);
     }
 
+
+    /// 
+    /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
+    /// (GTK 2.10 and GTK < 3.14)
     pub fn getTrayTip(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TRAYTIP");
     }
 
+
+    /// 
+    /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
+    /// (GTK 2.10 and GTK < 3.14)
     pub fn setTrayTip(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TRAYTIP", arg);
     }
@@ -2500,22 +3683,6 @@ pub const Dialog = opaque {
 
     pub fn setDragTypes(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "DRAGTYPES", arg);
-    }
-
-    pub fn getToolBox(self: *Self) bool {
-        return c.getBoolAttribute(self, "TOOLBOX");
-    }
-
-    pub fn setToolBox(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TOOLBOX", arg);
-    }
-
-    pub fn getMdiFrame(self: *Self) bool {
-        return c.getBoolAttribute(self, "MDIFRAME");
-    }
-
-    pub fn setMdiFrame(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MDIFRAME", arg);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
@@ -2534,14 +3701,13 @@ pub const Dialog = opaque {
         c.setBoolAttribute(self, "TOUCH", arg);
     }
 
-    pub fn getMdiChild(self: *Self) bool {
-        return c.getBoolAttribute(self, "MDICHILD");
-    }
 
-    pub fn setMdiChild(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MDICHILD", arg);
-    }
-
+    /// 
+    /// TASKBARPROGRESSSTATE [Windows Only] (write-only): sets the type and state
+    /// of the progress indicator displayed on a taskbar button.
+    /// Possible values: NORMAL (a green bar), PAUSED (a yellow bar), ERROR (a red
+    /// bar), INDETERMINATE (a green marquee) and NOPROGRESS (no bar).
+    /// Default: NORMAL (since 3.10).
     pub fn setTaskbarProgressState(self: *Self, arg: ?TaskbarProgressState) void {
         if (arg) |value| switch (value) {
             .NoProgress => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", "NOPROGRESS"),
@@ -2554,10 +3720,25 @@ pub const Dialog = opaque {
         }
     }
 
+
+    /// 
+    /// TASKBARPROGRESSVALUE [Windows Only] (write-only): updates a progress bar
+    /// hosted in a taskbar button to show the specific percentage completed of the
+    /// full operation.
+    /// The value must be between 0 and 100 (since 3.10).
     pub fn setTaskbarProgressValue(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "TASKBARPROGRESSVALUE", arg);
     }
 
+
+    /// 
+    /// FULLSCREEN: Makes the dialog occupy the whole screen over any system bars
+    /// in the main monitor.
+    /// All dialog details, such as title bar, borders, maximize button, etc, are removed.
+    /// Possible values: YES, NO.
+    /// In Motif you may have to click in the dialog to set its focus.
+    /// In Motif if set to YES when the dialog is hidden, then it can not be
+    /// changed after it is visible.
     pub fn setFullScreen(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "FULLSCREEN", arg);
     }
@@ -2578,6 +3759,11 @@ pub const Dialog = opaque {
         c.setStrAttribute(self, "DRAGCURSOR", arg);
     }
 
+
+    /// 
+    /// MINIMIZED [Windows and GTK Only] (read-only): indicates if the dialog is minimized.
+    /// Can be YES or NO.
+    /// (since 3.15)
     pub fn getMinimized(self: *Self) bool {
         return c.getBoolAttribute(self, "MINIMIZED");
     }
@@ -2590,6 +3776,11 @@ pub const Dialog = opaque {
         c.setStrAttribute(self, "FONT", arg);
     }
 
+
+    /// 
+    /// SIMULATEMODAL (write-only): disable all other visible dialogs, just like
+    /// when the dialog is made modal.
+    /// (since 3.21)
     pub fn setSimulateModal(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "SIMULATEMODAL", arg);
     }
@@ -2599,6 +3790,12 @@ pub const Dialog = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// FOCUS_CB: Called when the dialog or any of its children gets the focus, or
+    /// when another dialog or any control in another dialog gets the focus.
+    /// It is called after the common callbacks GETFOCUS_CB and KILL_FOCUS_CB.
+    /// (since 3.21) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+    /// number) -> (ret: number) [in Lua]
     pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
         const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
@@ -2684,6 +3881,12 @@ pub const Dialog = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// MDIACTIVATE_CB [Windows Only]: Called when a MDI child window is activated.
+    /// Only the MDI child receive this message.
+    /// It is not called when the child is shown for the first time.
+    /// int function(Ihandle *ih); [in C]elem:mdiactivate_cb() -> (ret: number) [in
+    /// Lua] ih: identifier of the element that activated the event.
     pub fn setMdiActivateCallback(self: *Self, callback: ?OnMdiActivateFn) void {
         const Handler = CallbackHandler(Self, OnMdiActivateFn, "MDIACTIVATE_CB");
         Handler.setCallback(self, callback);
@@ -2762,6 +3965,13 @@ pub const Dialog = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// CUSTOMFRAMEACTIVATE_CB [Windows Only]: Called when the dialog active state
+    /// is changed (for instance the user Alt+Tab to another application, or
+    /// clicked in another window).
+    /// Works only when CUSTOMFRAME or CUSTOMFRAMEEX is defined.
+    /// (since 3.23) int function(Ihandle *ih, int active); [in
+    /// C]ih:customframeactivate_cb(active: number) -> (ret: number) [in Lua]
     pub fn setCustomFrameActivateCallback(self: *Self, callback: ?OnCustomFrameActivateFn) void {
         const Handler = CallbackHandler(Self, OnCustomFrameActivateFn, "CUSTOMFRAMEACTIVATE_CB");
         Handler.setCallback(self, callback);
@@ -2777,6 +3987,18 @@ pub const Dialog = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
+    /// customize the dialog frame elements (the title and its buttons) by drawing
+    /// them with the CUSTOMFRAMEDRAW_CB callback.
+    /// Can be Yes or No.
+    /// The Window client area is expanded to include the whole window.
+    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
+    /// TITLE must still be defined.
+    /// But maximize, minimize and close buttons must be manually implemented in
+    /// the BUTTON_CB callback.
+    /// One drawback is that menu bars will not work.
+    /// (since 3.18) (renamed in 3.22)
     pub fn setCustomFrameDrawCallback(self: *Self, callback: ?OnCustomFrameDrawFn) void {
         const Handler = CallbackHandler(Self, OnCustomFrameDrawFn, "CUSTOMFRAMEDRAW_CB");
         Handler.setCallback(self, callback);
@@ -2856,6 +4078,11 @@ pub const Dialog = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// TRAYCLICK_CB [Windows and GTK Only]: Called right after the mouse button is
+    /// pressed or released over the tray icon.
+    /// (GTK 2.10) int function(Ihandle *ih, int but, int pressed, int dclick); [in
+    /// C]elem:trayclick_cb(but, pressed, dclick: number) -> (ret: number) [in Lua]
     pub fn setTrayClickCallback(self: *Self, callback: ?OnTrayClickFn) void {
         const Handler = CallbackHandler(Self, OnTrayClickFn, "TRAYCLICK_CB");
         Handler.setCallback(self, callback);
@@ -2942,30 +4169,6 @@ test "Dialog TipBgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Dialog MdiClient" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setMdiClient(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMdiClient();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Dialog Control" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setControl(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControl();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Dialog NoFlush" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3014,18 +4217,6 @@ test "Dialog OpacityImage" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Dialog HelpButton" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setHelpButton(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getHelpButton();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Dialog ShowNoFocus" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3072,18 +4263,6 @@ test "Dialog Position" {
     var ret = item.getPosition();
 
     try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
-test "Dialog Composited" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setComposited(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getComposited();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Dialog DropFilesTarget" {
@@ -3182,18 +4361,6 @@ test "Dialog Cursor" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Dialog MenuBox" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setMenuBox(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMenuBox();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Dialog MaxBox" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3290,18 +4457,6 @@ test "Dialog Theme" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Dialog SaveUnder" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setSaveUnder(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getSaveUnder();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Dialog Tray" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3360,18 +4515,6 @@ test "Dialog Expand" {
     var ret = item.getExpand();
 
     try std.testing.expect(ret != null and ret.? == .Yes);
-}
-
-test "Dialog MdiMenu" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setMdiMenu("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getMdiMenu();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Dialog StartFocus" {
@@ -3878,6 +5021,18 @@ test "Dialog NTheme" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "Dialog Border" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Dialog.init().setBorder(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getBorder();
+
+    try std.testing.expect(ret == true);
+}
+
 test "Dialog CustomFramesImulate" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3938,30 +5093,6 @@ test "Dialog DragTypes" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Dialog ToolBox" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setToolBox(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getToolBox();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Dialog MdiFrame" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setMdiFrame(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMdiFrame();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Dialog FontStyle" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3982,18 +5113,6 @@ test "Dialog Touch" {
     defer item.deinit();
 
     var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Dialog MdiChild" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setMdiChild(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMdiChild();
 
     try std.testing.expect(ret == true);
 }

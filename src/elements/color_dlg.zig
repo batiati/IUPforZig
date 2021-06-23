@@ -140,6 +140,11 @@ pub const ColorDlg = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// COLORUPDATE_CB: Action generated when the color is updated in the dialog.
+    /// It is also called when the color is updated programmatically.
+    /// (since 3.11) int function(Ihandle* ih); [in C] elem:colorupdate_cb() ->
+    /// (ret: number) [in Lua]
     pub const OnColorUpDateFn = fn (self: *Self) anyerror!void;
 
     pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
@@ -1139,6 +1144,11 @@ pub const ColorDlg = opaque {
             return self.*;
         }
 
+        /// 
+        /// COLORUPDATE_CB: Action generated when the color is updated in the dialog.
+        /// It is also called when the color is updated programmatically.
+        /// (since 3.11) int function(Ihandle* ih); [in C] elem:colorupdate_cb() ->
+        /// (ret: number) [in Lua]
         pub fn setColorUpDateCallback(self: *Initializer, callback: ?OnColorUpDateFn) Initializer {
             const Handler = CallbackHandler(Self, OnColorUpDateFn, "COLORUPDATE_CB");
             Handler.setCallback(self.ref, callback);
@@ -2589,6 +2599,11 @@ pub const ColorDlg = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// COLORUPDATE_CB: Action generated when the color is updated in the dialog.
+    /// It is also called when the color is updated programmatically.
+    /// (since 3.11) int function(Ihandle* ih); [in C] elem:colorupdate_cb() ->
+    /// (ret: number) [in Lua]
     pub fn setColorUpDateCallback(self: *Self, callback: ?OnColorUpDateFn) void {
         const Handler = CallbackHandler(Self, OnColorUpDateFn, "COLORUPDATE_CB");
         Handler.setCallback(self, callback);

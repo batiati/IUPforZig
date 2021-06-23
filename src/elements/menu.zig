@@ -369,6 +369,9 @@ pub const Menu = opaque {
         c.setStrAttribute(self, "NAME", arg);
     }
 
+
+    /// 
+    /// WID (non inheritable): In Windows, returns the HMENU of the menu.
     pub fn getWId(self: *Self) i32 {
         return c.getIntAttribute(self, "WID");
     }

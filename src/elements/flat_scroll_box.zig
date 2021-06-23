@@ -355,6 +355,9 @@ pub const FlatScrollBox = opaque {
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
     pub const OnButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
 
+    /// 
+    /// LAYOUTUPDATE_CB: Action generated when the layout is updated after a scroll operation.
+    /// (since 3.24)
     pub const OnLayoutUpDateFn = fn (self: *Self) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -480,6 +483,14 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CANVASBOX (non inheritable): enable the behavior of a canvas box instead of
+        /// a regular container.
+        /// This will affect the EXPAND attribute, the Natural size computation, and
+        /// child layout distribution.
+        /// Can be Yes or No.
+        /// Default: No.
         pub fn setCanvasBox(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "CANVASBOX", arg);
             return self.*;
@@ -618,6 +629,10 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// SCROLLTOCHILD_HANDLE (write-only): same as SCROLLTOCHILD but directly using
+        /// the child handle.
         pub fn setScrollToChild(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "SCROLLTOCHILD", arg);
             return self.*;
@@ -804,6 +819,13 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// SCROLLTO (write-only): position the scroll at the given x,y coordinates
+        /// relative to the box top-left corner.
+        /// Format "x,y".
+        /// Value can also be TOP or BOTTOM for a vertical scroll to the top or to the
+        /// bottom of the scroll range.
         pub fn setScrollTo(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "SCROLLTO", arg);
             return self.*;
@@ -910,6 +932,10 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// WHEELDROPFOCUS: set to Yes.
+        /// (since 3.28)
         pub fn setWheelDropFocus(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "WHEELDROPFOCUS", arg);
             return self.*;
@@ -1362,6 +1388,9 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
+        /// 
+        /// LAYOUTUPDATE_CB: Action generated when the layout is updated after a scroll operation.
+        /// (since 3.24)
         pub fn setLayoutUpDateCallback(self: *Initializer, callback: ?OnLayoutUpDateFn) Initializer {
             const Handler = CallbackHandler(Self, OnLayoutUpDateFn, "LAYOUTUPDATE_CB");
             Handler.setCallback(self.ref, callback);
@@ -1517,10 +1546,26 @@ pub const FlatScrollBox = opaque {
         c.setStrAttribute(self, "HANDLENAME", arg);
     }
 
+
+    /// 
+    /// CANVASBOX (non inheritable): enable the behavior of a canvas box instead of
+    /// a regular container.
+    /// This will affect the EXPAND attribute, the Natural size computation, and
+    /// child layout distribution.
+    /// Can be Yes or No.
+    /// Default: No.
     pub fn getCanvasBox(self: *Self) bool {
         return c.getBoolAttribute(self, "CANVASBOX");
     }
 
+
+    /// 
+    /// CANVASBOX (non inheritable): enable the behavior of a canvas box instead of
+    /// a regular container.
+    /// This will affect the EXPAND attribute, the Natural size computation, and
+    /// child layout distribution.
+    /// Can be Yes or No.
+    /// Default: No.
     pub fn setCanvasBox(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "CANVASBOX", arg);
     }
@@ -1746,6 +1791,10 @@ pub const FlatScrollBox = opaque {
         c.setBoolAttribute(self, "HTTRANSPARENT", arg);
     }
 
+
+    /// 
+    /// SCROLLTOCHILD_HANDLE (write-only): same as SCROLLTOCHILD but directly using
+    /// the child handle.
     pub fn setScrollToChild(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "SCROLLTOCHILD", arg);
     }
@@ -2078,6 +2127,13 @@ pub const FlatScrollBox = opaque {
         c.setStrAttribute(self, "RASTERSIZE", value);
     }
 
+
+    /// 
+    /// SCROLLTO (write-only): position the scroll at the given x,y coordinates
+    /// relative to the box top-left corner.
+    /// Format "x,y".
+    /// Value can also be TOP or BOTTOM for a vertical scroll to the top or to the
+    /// bottom of the scroll range.
     pub fn setScrollTo(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "SCROLLTO", arg);
     }
@@ -2260,6 +2316,9 @@ pub const FlatScrollBox = opaque {
         return Size.parse(str);
     }
 
+
+    /// 
+    /// CLIENTSIZE, CLIENTOFFSET: also accepted.
     pub fn getClientSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "CLIENTSIZE");
         return Size.parse(str);
@@ -2278,10 +2337,18 @@ pub const FlatScrollBox = opaque {
         c.setStrAttribute(self, "DRAGTYPES", arg);
     }
 
+
+    /// 
+    /// WHEELDROPFOCUS: set to Yes.
+    /// (since 3.28)
     pub fn getWheelDropFocus(self: *Self) bool {
         return c.getBoolAttribute(self, "WHEELDROPFOCUS");
     }
 
+
+    /// 
+    /// WHEELDROPFOCUS: set to Yes.
+    /// (since 3.28)
     pub fn setWheelDropFocus(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "WHEELDROPFOCUS", arg);
     }
@@ -2719,6 +2786,9 @@ pub const FlatScrollBox = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// LAYOUTUPDATE_CB: Action generated when the layout is updated after a scroll operation.
+    /// (since 3.24)
     pub fn setLayoutUpDateCallback(self: *Self, callback: ?OnLayoutUpDateFn) void {
         const Handler = CallbackHandler(Self, OnLayoutUpDateFn, "LAYOUTUPDATE_CB");
         Handler.setCallback(self, callback);

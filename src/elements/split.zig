@@ -72,6 +72,10 @@ pub const Split = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// (since 3.12) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+    /// number) [in Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
     /// 
@@ -213,6 +217,14 @@ pub const Split = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// When AUTOHIDE=Yes the control will set FLOATING=IGNORE and VISIBLE=NO for
+        /// the child to be auto-hidden, then back to FLOATING=NO and VISIBLE=Yes when shown.
+        /// So if the child has several children with different combinations of VISIBLE
+        /// it is recommended that this child to be a native container like
+        /// IupBackgroundBox or IupFrame, so the VISIBLE attribute will be not be
+        /// propagated to its children.
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "VISIBLE", arg);
             return self.*;
@@ -256,6 +268,10 @@ pub const Split = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+        /// MAXSIZE, THEME: also accepted.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "FONT", arg);
             return self.*;
@@ -457,6 +473,10 @@ pub const Split = opaque {
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+        /// (since 3.12) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+        /// number) [in Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
@@ -647,10 +667,26 @@ pub const Split = opaque {
         return Size.parse(str);
     }
 
+
+    /// 
+    /// When AUTOHIDE=Yes the control will set FLOATING=IGNORE and VISIBLE=NO for
+    /// the child to be auto-hidden, then back to FLOATING=NO and VISIBLE=Yes when shown.
+    /// So if the child has several children with different combinations of VISIBLE
+    /// it is recommended that this child to be a native container like
+    /// IupBackgroundBox or IupFrame, so the VISIBLE attribute will be not be
+    /// propagated to its children.
     pub fn getVisible(self: *Self) bool {
         return c.getBoolAttribute(self, "VISIBLE");
     }
 
+
+    /// 
+    /// When AUTOHIDE=Yes the control will set FLOATING=IGNORE and VISIBLE=NO for
+    /// the child to be auto-hidden, then back to FLOATING=NO and VISIBLE=Yes when shown.
+    /// So if the child has several children with different combinations of VISIBLE
+    /// it is recommended that this child to be a native container like
+    /// IupBackgroundBox or IupFrame, so the VISIBLE attribute will be not be
+    /// propagated to its children.
     pub fn setVisible(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "VISIBLE", arg);
     }
@@ -728,10 +764,18 @@ pub const Split = opaque {
         c.setBoolAttribute(self, "LAYOUTDRAG", arg);
     }
 
+
+    /// 
+    /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "FONT");
     }
 
+
+    /// 
+    /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "FONT", arg);
     }
@@ -1012,6 +1056,10 @@ pub const Split = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// (since 3.12) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+    /// number) [in Lua]
     pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);

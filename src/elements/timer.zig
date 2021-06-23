@@ -31,6 +31,14 @@ pub const Timer = opaque {
     pub const CLASS_NAME = "timer";
     const Self = @This();
 
+    /// 
+    /// ACTION_CB: Called every time the defined time interval is reached.
+    /// To stop the callback from being called simply stop de timer with RUN=NO.
+    /// Inside the callback the attribute ELAPSEDTIME returns the time elapsed
+    /// since the timer was started in milliseconds (since 3.15).
+    /// int function(Ihandle *ih); [in C] ih:action_cb() -> (ret: number) [in Lua]
+    /// ih: identifier of the element that activated the event.
+    /// Returns: IUP_CLOSE will be processed.
     pub const OnActionFn = fn (self: *Self) anyerror!void;
 
     pub const Initializer = struct {
@@ -80,6 +88,14 @@ pub const Timer = opaque {
             return self.*;
         }
 
+        /// 
+        /// ACTION_CB: Called every time the defined time interval is reached.
+        /// To stop the callback from being called simply stop de timer with RUN=NO.
+        /// Inside the callback the attribute ELAPSEDTIME returns the time elapsed
+        /// since the timer was started in milliseconds (since 3.15).
+        /// int function(Ihandle *ih); [in C] ih:action_cb() -> (ret: number) [in Lua]
+        /// ih: identifier of the element that activated the event.
+        /// Returns: IUP_CLOSE will be processed.
         pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnActionFn, "ACTION_CB");
             Handler.setCallback(self.ref, callback);
@@ -168,10 +184,23 @@ pub const Timer = opaque {
         try Impl(Self).refresh(self);
     }
 
+
+    /// 
+    /// WID (read-only): Returns the native serial number of the timer.
+    /// Returns -1 if not running.
+    /// A timer is mapped only when it is running.
     pub fn getWId(self: *Self) i32 {
         return c.getIntAttribute(self, "WID");
     }
 
+    /// 
+    /// ACTION_CB: Called every time the defined time interval is reached.
+    /// To stop the callback from being called simply stop de timer with RUN=NO.
+    /// Inside the callback the attribute ELAPSEDTIME returns the time elapsed
+    /// since the timer was started in milliseconds (since 3.15).
+    /// int function(Ihandle *ih); [in C] ih:action_cb() -> (ret: number) [in Lua]
+    /// ih: identifier of the element that activated the event.
+    /// Returns: IUP_CLOSE will be processed.
     pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
         const Handler = CallbackHandler(Self, OnActionFn, "ACTION_CB");
         Handler.setCallback(self, callback);

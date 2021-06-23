@@ -97,7 +97,11 @@ pub const HBox = opaque {
         VerticalFree,
         No,
     };
-
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
     pub const Floating = enum {
         Yes,
         Ignore,
@@ -194,6 +198,11 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
+        /// expand weight, then it is used to multiply the free space used for expansion.
+        /// (since 3.1)
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
             c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", arg);
             return self.*;
@@ -360,6 +369,9 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "FONT", arg);
             return self.*;
@@ -422,6 +434,12 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+        /// then its size and position will be ignored by the layout processing.
+        /// Default: "NO".
+        /// (since 3.0)
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
                 .Yes => c.setStrAttribute(self.ref, "FLOATING", "YES"),
@@ -668,10 +686,20 @@ pub const HBox = opaque {
         c.setIntAttribute(self, "FONTSIZE", arg);
     }
 
+
+    /// 
+    /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
+    /// expand weight, then it is used to multiply the free space used for expansion.
+    /// (since 3.1)
     pub fn getExpandWeight(self: *Self) f64 {
         return c.getDoubleAttribute(self, "EXPANDWEIGHT");
     }
 
+
+    /// 
+    /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
+    /// expand weight, then it is used to multiply the free space used for expansion.
+    /// (since 3.1)
     pub fn setExpandWeight(self: *Self, arg: f64) void {
         c.setDoubleAttribute(self, "EXPANDWEIGHT", arg);
     }
@@ -975,10 +1003,16 @@ pub const HBox = opaque {
         c.setIntAttribute(self, "CGAP", arg);
     }
 
+
+    /// 
+    /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "FONT");
     }
 
+
+    /// 
+    /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "FONT", arg);
     }
@@ -1081,6 +1115,12 @@ pub const HBox = opaque {
         c.setStrAttribute(self, "RASTERSIZE", value);
     }
 
+
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
     pub fn getFloating(self: *Self) ?Floating {
         var ret = c.getStrAttribute(self, "FLOATING");
 
@@ -1090,6 +1130,12 @@ pub const HBox = opaque {
         return null;
     }
 
+
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
             .Yes => c.setStrAttribute(self, "FLOATING", "YES"),

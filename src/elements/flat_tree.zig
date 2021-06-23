@@ -138,6 +138,24 @@ pub const FlatTree = opaque {
     /// Affects IupCanvas, IupGLCanvas, SCROLLBAR
     pub const OnScrollFn = fn (self: *Self, arg0: i32, arg1: f32, arg2: f32) anyerror!void;
 
+    /// 
+    /// SELECTION_CB: Action generated when an node is selected or deselected.
+    /// MULTISELECTION_CB: Action generated when multiple nodes are selected with
+    /// the mouse and the shift key pressed.
+    /// MULTIUNSELECTION_CB: Action generated before multiple nodes are unselected
+    /// in one single operation.
+    /// BRANCHOPEN_CB: Action generated when a branch is expanded.
+    /// BRANCHCLOSE_CB: Action generated when a branch is collapsed.
+    /// EXECUTELEAF_CB: Action generated when a leaf is executed.
+    /// EXECUTEBRANCH_CB: Action generated when a branch is executed.
+    /// SHOWRENAME_CB: Action generated before a node is renamed.
+    /// RENAME_CB: Action generated after a node is renamed.
+    /// DRAGDROP_CB: Action generated when an internal drag & drop is executed.
+    /// NODEREMOVED_CB: Action generated when a node is about to be removed.
+    /// RIGHTCLICK_CB: Action generated when the right mouse button is pressed over
+    /// a node.
+    /// TOGGLEVALUE_CB: Action generated when the toggle&#39;s state was changed.
+    /// The callback also receives the new toggle&#39;s state.
     pub const OnSelectionFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
     pub const OnExecuteBranchFn = fn (self: *Self, arg0: i32) anyerror!void;
@@ -445,7 +463,9 @@ pub const FlatTree = opaque {
         StrokeDashDotdot,
         DrawStroke,
     };
-
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+    /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub const State = enum {
         Expanded,
         Collapsed,
@@ -664,6 +684,12 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// AUTOREDRAW BGCOLOR BORDERCOLOR(*)BORDERWIDTH(*)COUNT
+        /// EXPANDEXTRATEXTWIDTH(*) FGCOLORHLCOLOR(*)
+        /// HLCOLORALPHA(*)PSCOLOR(*)TEXTPSCOLOR(*)ICONSPACING(*) INDENTATION
+        /// RASTERSIZE SPACING TOPITEM
         pub fn setAutoRedraw(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "AUTOREDRAW", arg);
             return self.*;
@@ -694,6 +720,12 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// AUTOREDRAW BGCOLOR BORDERCOLOR(*)BORDERWIDTH(*)COUNT
+        /// EXPANDEXTRATEXTWIDTH(*) FGCOLORHLCOLOR(*)
+        /// HLCOLORALPHA(*)PSCOLOR(*)TEXTPSCOLOR(*)ICONSPACING(*) INDENTATION
+        /// RASTERSIZE SPACING TOPITEM
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "BGCOLOR", rgb);
             return self.*;
@@ -791,11 +823,18 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
         pub fn rename(self: *Initializer) Initializer {
             c.setStrAttribute(self.ref, "RENAME", null);
             return self.*;
         }
 
+
+        /// 
+        /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+        /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
         pub fn setState(self: *Initializer, arg: ?State) Initializer {
             if (arg) |value| switch (value) {
                 .Expanded => c.setStrAttribute(self.ref, "STATE", "EXPANDED"),
@@ -988,6 +1027,9 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DROPFILESTARGET", arg);
             return self.*;
@@ -1018,6 +1060,10 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+        /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TITLE", arg);
             return self.*;
@@ -1100,11 +1146,18 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setShowDragDrop(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SHOWDRAGDROP", arg);
             return self.*;
         }
 
+
+        /// 
+        /// The SPACING attribute is simply the vertical space between each node,
+        /// different from the IupTree.
         pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "SPACING", arg);
             return self.*;
@@ -1254,6 +1307,24 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+        /// 
+        /// SELECTION_CB: Action generated when an node is selected or deselected.
+        /// MULTISELECTION_CB: Action generated when multiple nodes are selected with
+        /// the mouse and the shift key pressed.
+        /// MULTIUNSELECTION_CB: Action generated before multiple nodes are unselected
+        /// in one single operation.
+        /// BRANCHOPEN_CB: Action generated when a branch is expanded.
+        /// BRANCHCLOSE_CB: Action generated when a branch is collapsed.
+        /// EXECUTELEAF_CB: Action generated when a leaf is executed.
+        /// EXECUTEBRANCH_CB: Action generated when a branch is executed.
+        /// SHOWRENAME_CB: Action generated before a node is renamed.
+        /// RENAME_CB: Action generated after a node is renamed.
+        /// DRAGDROP_CB: Action generated when an internal drag & drop is executed.
+        /// NODEREMOVED_CB: Action generated when a node is about to be removed.
+        /// RIGHTCLICK_CB: Action generated when the right mouse button is pressed over
+        /// a node.
+        /// TOGGLEVALUE_CB: Action generated when the toggle&#39;s state was changed.
+        /// The callback also receives the new toggle&#39;s state.
         pub fn setSelectionCallback(self: *Initializer, callback: ?OnSelectionFn) Initializer {
             const Handler = CallbackHandler(Self, OnSelectionFn, "SELECTION_CB");
             Handler.setCallback(self.ref, callback);
@@ -2039,6 +2110,12 @@ pub const FlatTree = opaque {
         c.setBoolAttribute(self, "BACKIMAGEZOOM", arg);
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR BORDERCOLOR(*)BORDERWIDTH(*)COUNT
+    /// EXPANDEXTRATEXTWIDTH(*) FGCOLORHLCOLOR(*)
+    /// HLCOLORALPHA(*)PSCOLOR(*)TEXTPSCOLOR(*)ICONSPACING(*) INDENTATION
+    /// RASTERSIZE SPACING TOPITEM
     pub fn setAutoRedraw(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "AUTOREDRAW", arg);
     }
@@ -2080,10 +2157,22 @@ pub const FlatTree = opaque {
         c.setBoolAttribute(self, "VISIBLE", arg);
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR BORDERCOLOR(*)BORDERWIDTH(*)COUNT
+    /// EXPANDEXTRATEXTWIDTH(*) FGCOLORHLCOLOR(*)
+    /// HLCOLORALPHA(*)PSCOLOR(*)TEXTPSCOLOR(*)ICONSPACING(*) INDENTATION
+    /// RASTERSIZE SPACING TOPITEM
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "BGCOLOR");
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR BORDERCOLOR(*)BORDERWIDTH(*)COUNT
+    /// EXPANDEXTRATEXTWIDTH(*) FGCOLORHLCOLOR(*)
+    /// HLCOLORALPHA(*)PSCOLOR(*)TEXTPSCOLOR(*)ICONSPACING(*) INDENTATION
+    /// RASTERSIZE SPACING TOPITEM
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "BGCOLOR", rgb);
     }
@@ -2247,14 +2336,25 @@ pub const FlatTree = opaque {
         c.setStrAttribute(self, "FONTFACE", arg);
     }
 
+
+    /// 
+    /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
     pub fn rename(self: *Self) void {
         c.setStrAttribute(self, "RENAME", null);
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+    /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn getTotalChildCount(self: *Self) i32 {
         return c.getIntAttribute(self, "TOTALCHILDCOUNT");
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+    /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn getState(self: *Self) ?State {
         var ret = c.getStrAttribute(self, "STATE");
 
@@ -2263,6 +2363,10 @@ pub const FlatTree = opaque {
         return null;
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+    /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn setState(self: *Self, arg: ?State) void {
         if (arg) |value| switch (value) {
             .Expanded => c.setStrAttribute(self, "STATE", "EXPANDED"),
@@ -2575,10 +2679,16 @@ pub const FlatTree = opaque {
         c.setRgb(self, "BACKCOLOR", rgb);
     }
 
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDropFilesTarget(self: *Self) bool {
         return c.getBoolAttribute(self, "DROPFILESTARGET");
     }
 
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "DROPFILESTARGET", arg);
     }
@@ -2619,10 +2729,18 @@ pub const FlatTree = opaque {
         c.setStrAttribute(self, "RENAMECARET", arg);
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+    /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn getTitle(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TITLE");
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+    /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TITLE", arg);
     }
@@ -2757,18 +2875,32 @@ pub const FlatTree = opaque {
         c.setStrAttribute(self, "RENAMESELECTION", arg);
     }
 
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getShowDragDrop(self: *Self) bool {
         return c.getBoolAttribute(self, "SHOWDRAGDROP");
     }
 
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setShowDragDrop(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "SHOWDRAGDROP", arg);
     }
 
+
+    /// 
+    /// The SPACING attribute is simply the vertical space between each node,
+    /// different from the IupTree.
     pub fn getSpacing(self: *Self) i32 {
         return c.getIntAttribute(self, "SPACING");
     }
 
+
+    /// 
+    /// The SPACING attribute is simply the vertical space between each node,
+    /// different from the IupTree.
     pub fn setSpacing(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "SPACING", arg);
     }
@@ -2918,6 +3050,24 @@ pub const FlatTree = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// SELECTION_CB: Action generated when an node is selected or deselected.
+    /// MULTISELECTION_CB: Action generated when multiple nodes are selected with
+    /// the mouse and the shift key pressed.
+    /// MULTIUNSELECTION_CB: Action generated before multiple nodes are unselected
+    /// in one single operation.
+    /// BRANCHOPEN_CB: Action generated when a branch is expanded.
+    /// BRANCHCLOSE_CB: Action generated when a branch is collapsed.
+    /// EXECUTELEAF_CB: Action generated when a leaf is executed.
+    /// EXECUTEBRANCH_CB: Action generated when a branch is executed.
+    /// SHOWRENAME_CB: Action generated before a node is renamed.
+    /// RENAME_CB: Action generated after a node is renamed.
+    /// DRAGDROP_CB: Action generated when an internal drag & drop is executed.
+    /// NODEREMOVED_CB: Action generated when a node is about to be removed.
+    /// RIGHTCLICK_CB: Action generated when the right mouse button is pressed over
+    /// a node.
+    /// TOGGLEVALUE_CB: Action generated when the toggle&#39;s state was changed.
+    /// The callback also receives the new toggle&#39;s state.
     pub fn setSelectionCallback(self: *Self, callback: ?OnSelectionFn) void {
         const Handler = CallbackHandler(Self, OnSelectionFn, "SELECTION_CB");
         Handler.setCallback(self, callback);

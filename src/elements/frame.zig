@@ -32,6 +32,11 @@ pub const Frame = opaque {
 
     pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
 
+    /// 
+    /// FOCUS_CB: Called when a child of the container gets or looses the focus.
+    /// It is called only if PROPAGATEFOCUS is defined in the child.
+    /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+    /// number) -> (ret: number) [in Lua]
     pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
@@ -338,6 +343,10 @@ pub const Frame = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+        /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -386,6 +395,11 @@ pub const Frame = opaque {
             return self.*;
         }
 
+        /// 
+        /// FOCUS_CB: Called when a child of the container gets or looses the focus.
+        /// It is called only if PROPAGATEFOCUS is defined in the child.
+        /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+        /// number) -> (ret: number) [in Lua]
         pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
@@ -884,10 +898,18 @@ pub const Frame = opaque {
         c.setBoolAttribute(self, "TIPBALLOONTITLEICON", arg);
     }
 
+
+    /// 
+    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+    /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+    /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }
@@ -971,6 +993,11 @@ pub const Frame = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// FOCUS_CB: Called when a child of the container gets or looses the focus.
+    /// It is called only if PROPAGATEFOCUS is defined in the child.
+    /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+    /// number) -> (ret: number) [in Lua]
     pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
         const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);

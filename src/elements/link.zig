@@ -352,6 +352,9 @@ pub const Link = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// URL: the default value is "YES".
         pub fn setUrl(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "URL", arg);
             return self.*;
@@ -1044,10 +1047,16 @@ pub const Link = opaque {
         return c.getIntAttribute(self, "Y");
     }
 
+
+    /// 
+    /// URL: the default value is "YES".
     pub fn getUrl(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "URL");
     }
 
+
+    /// 
+    /// URL: the default value is "YES".
     pub fn setUrl(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "URL", arg);
     }

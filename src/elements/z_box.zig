@@ -83,7 +83,11 @@ pub const ZBox = opaque {
         VerticalFree,
         No,
     };
-
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
     pub const Floating = enum {
         Yes,
         Ignore,
@@ -200,6 +204,13 @@ pub const ZBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// The ZBOX relies on the VISIBLE attribute.
+        /// If a child that is hidden by the zbox has its VISIBLE attribute changed
+        /// then it can be made visible regardless of the zbox configuration.
+        /// For the zbox behave as a IupTabs use native containers as immediate
+        /// children of the zbox, like IupScrollBox, IupTabs, IupFrame or IupBackgroundBox.
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "VISIBLE", arg);
             return self.*;
@@ -261,6 +272,9 @@ pub const ZBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "FONT", arg);
             return self.*;
@@ -313,6 +327,12 @@ pub const ZBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+        /// then its size and position will be ignored by the layout processing.
+        /// Default: "NO".
+        /// (since 3.0)
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
                 .Yes => c.setStrAttribute(self.ref, "FLOATING", "YES"),
@@ -589,10 +609,24 @@ pub const ZBox = opaque {
         return Size.parse(str);
     }
 
+
+    /// 
+    /// The ZBOX relies on the VISIBLE attribute.
+    /// If a child that is hidden by the zbox has its VISIBLE attribute changed
+    /// then it can be made visible regardless of the zbox configuration.
+    /// For the zbox behave as a IupTabs use native containers as immediate
+    /// children of the zbox, like IupScrollBox, IupTabs, IupFrame or IupBackgroundBox.
     pub fn getVisible(self: *Self) bool {
         return c.getBoolAttribute(self, "VISIBLE");
     }
 
+
+    /// 
+    /// The ZBOX relies on the VISIBLE attribute.
+    /// If a child that is hidden by the zbox has its VISIBLE attribute changed
+    /// then it can be made visible regardless of the zbox configuration.
+    /// For the zbox behave as a IupTabs use native containers as immediate
+    /// children of the zbox, like IupScrollBox, IupTabs, IupFrame or IupBackgroundBox.
     pub fn setVisible(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "VISIBLE", arg);
     }
@@ -704,10 +738,16 @@ pub const ZBox = opaque {
         c.setStrAttribute(self, "NORMALIZERGROUP", arg);
     }
 
+
+    /// 
+    /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "FONT");
     }
 
+
+    /// 
+    /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "FONT", arg);
     }
@@ -794,6 +834,12 @@ pub const ZBox = opaque {
         c.setStrAttribute(self, "RASTERSIZE", value);
     }
 
+
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
     pub fn getFloating(self: *Self) ?Floating {
         var ret = c.getStrAttribute(self, "FLOATING");
 
@@ -803,6 +849,12 @@ pub const ZBox = opaque {
         return null;
     }
 
+
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
             .Yes => c.setStrAttribute(self, "FLOATING", "YES"),

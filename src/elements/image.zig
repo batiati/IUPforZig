@@ -135,8 +135,14 @@ pub const Image = opaque {
 
 
         /// 
-        /// BGCOLOR: The color used for transparency.
-        /// If not defined uses the BGCOLOR of the control that contains the image.
+        /// In Motif, the alpha channel in RGBA images is always composed with the
+        /// control BGCOLOR by IUP prior to setting the image at the control.
+        /// In Windows and in GTK, the alpha channel is composed internally by the system.
+        /// But in Windows for some controls the alpha must be composed a priori also,
+        /// it includes: IupItem and IupSubmenu always; and IupToggle when NOT using
+        /// Visual Styles.
+        /// This implies that if the control background is not uniform then probably
+        /// there will be a visible difference where it should be transparent.
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "BGCOLOR", rgb);
             return self.*;
@@ -328,16 +334,28 @@ pub const Image = opaque {
 
 
     /// 
-    /// BGCOLOR: The color used for transparency.
-    /// If not defined uses the BGCOLOR of the control that contains the image.
+    /// In Motif, the alpha channel in RGBA images is always composed with the
+    /// control BGCOLOR by IUP prior to setting the image at the control.
+    /// In Windows and in GTK, the alpha channel is composed internally by the system.
+    /// But in Windows for some controls the alpha must be composed a priori also,
+    /// it includes: IupItem and IupSubmenu always; and IupToggle when NOT using
+    /// Visual Styles.
+    /// This implies that if the control background is not uniform then probably
+    /// there will be a visible difference where it should be transparent.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "BGCOLOR");
     }
 
 
     /// 
-    /// BGCOLOR: The color used for transparency.
-    /// If not defined uses the BGCOLOR of the control that contains the image.
+    /// In Motif, the alpha channel in RGBA images is always composed with the
+    /// control BGCOLOR by IUP prior to setting the image at the control.
+    /// In Windows and in GTK, the alpha channel is composed internally by the system.
+    /// But in Windows for some controls the alpha must be composed a priori also,
+    /// it includes: IupItem and IupSubmenu always; and IupToggle when NOT using
+    /// Visual Styles.
+    /// This implies that if the control background is not uniform then probably
+    /// there will be a visible difference where it should be transparent.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "BGCOLOR", rgb);
     }
@@ -352,6 +370,9 @@ pub const Image = opaque {
         return Size.parse(str);
     }
 
+
+    /// 
+    /// WIDTH (read-only): Image width in pixels.
     pub fn getWidth(self: *Self) i32 {
         return c.getIntAttribute(self, "WIDTH");
     }
@@ -367,8 +388,8 @@ pub const Image = opaque {
 
 
     /// 
-    /// WID (read-only): returns the internal pixels data pointer.
-    /// (since 3.0)
+    /// If the image was created in C then there is no way to access its pixels
+    /// values in Lua, except as an userdata using the WID attribute.
     pub fn getWId(self: *Self) i32 {
         return c.getIntAttribute(self, "WID");
     }

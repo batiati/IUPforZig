@@ -69,6 +69,11 @@ pub const Param = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
+    /// FILE parameter dialog.
+    /// See IupFileDlg.
+    /// For 'f' parameter.
     pub const DialogType = enum {
         Save,
         Dir,
@@ -132,11 +137,20 @@ pub const Param = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TITLE: text of the parameter, used as label.
+        /// For all parameters.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TITLE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// MULTILINE: can be Yes or No.
+        /// Defines if the edit box can have more than one line.
+        /// For 'm' parameter.
         pub fn setMultiline(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MULTILINE", arg);
             return self.*;
@@ -147,6 +161,10 @@ pub const Param = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TIP: text of the tip.
+        /// For all parameters.
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TIP", arg);
             return self.*;
@@ -157,6 +175,12 @@ pub const Param = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// BUTTON1, BUTTON2, BUTTON3: button titles.
+        /// Default is "OK/Cancel/Help" for regular IupGetParam, and "Apply/Reset/Help"
+        /// when IupParamBox is directly used.
+        /// For 'u' parameter.
         pub fn setButton1(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "BUTTON1", arg);
             return self.*;
@@ -167,6 +191,10 @@ pub const Param = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// MASK: mask for the edit box input.
+        /// For 's' and 'm' parameters.
         pub fn setMask(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "MASK", arg);
             return self.*;
@@ -177,16 +205,36 @@ pub const Param = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
+        /// 'r'), STRING ('m', 's'), INTEGER ('i'), DATE ('d'), FILE ('f'), COLOR
+        /// ('c'), SEPARATOR ('t'), BUTTONNAMES ('u'), PARAMBOX ('x') and HANDLE ('h').
+        /// And describe the type of the parameter.
+        /// For all parameters.
         pub fn setType(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TYPE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// VALUE - the value of the parameter.
+        /// IupGetFloat and IupGetInt can also be used.
+        /// For the current parameter inside the callback contains the new value that
+        /// will be applied to the control, to get the old value use the VALUE
+        /// attribute for the CONTROL returned Ihandle*.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "VALUE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
+        /// FILE parameter dialog.
+        /// See IupFileDlg.
+        /// For 'f' parameter.
         pub fn setDialogType(self: *Initializer, arg: ?DialogType) Initializer {
             if (arg) |value| switch (value) {
                 .Save => c.setStrAttribute(self.ref, "DIALOGTYPE", "SAVE"),
@@ -368,18 +416,36 @@ pub const Param = opaque {
         c.setBoolAttribute(self, "NOOVERWRITEPROMPT", arg);
     }
 
+
+    /// 
+    /// TITLE: text of the parameter, used as label.
+    /// For all parameters.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TITLE");
     }
 
+
+    /// 
+    /// TITLE: text of the parameter, used as label.
+    /// For all parameters.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TITLE", arg);
     }
 
+
+    /// 
+    /// MULTILINE: can be Yes or No.
+    /// Defines if the edit box can have more than one line.
+    /// For 'm' parameter.
     pub fn getMultiline(self: *Self) bool {
         return c.getBoolAttribute(self, "MULTILINE");
     }
 
+
+    /// 
+    /// MULTILINE: can be Yes or No.
+    /// Defines if the edit box can have more than one line.
+    /// For 'm' parameter.
     pub fn setMultiline(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "MULTILINE", arg);
     }
@@ -392,10 +458,18 @@ pub const Param = opaque {
         c.setStrAttribute(self, "FILTER", arg);
     }
 
+
+    /// 
+    /// TIP: text of the tip.
+    /// For all parameters.
     pub fn getTip(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TIP");
     }
 
+
+    /// 
+    /// TIP: text of the tip.
+    /// For all parameters.
     pub fn setTip(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TIP", arg);
     }
@@ -408,10 +482,22 @@ pub const Param = opaque {
         c.setDoubleAttribute(self, "MAX", arg);
     }
 
+
+    /// 
+    /// BUTTON1, BUTTON2, BUTTON3: button titles.
+    /// Default is "OK/Cancel/Help" for regular IupGetParam, and "Apply/Reset/Help"
+    /// when IupParamBox is directly used.
+    /// For 'u' parameter.
     pub fn getButton1(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "BUTTON1");
     }
 
+
+    /// 
+    /// BUTTON1, BUTTON2, BUTTON3: button titles.
+    /// Default is "OK/Cancel/Help" for regular IupGetParam, and "Apply/Reset/Help"
+    /// when IupParamBox is directly used.
+    /// For 'u' parameter.
     pub fn setButton1(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "BUTTON1", arg);
     }
@@ -424,10 +510,18 @@ pub const Param = opaque {
         c.setStrAttribute(self, "BUTTON2", arg);
     }
 
+
+    /// 
+    /// MASK: mask for the edit box input.
+    /// For 's' and 'm' parameters.
     pub fn getMask(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "MASK");
     }
 
+
+    /// 
+    /// MASK: mask for the edit box input.
+    /// For 's' and 'm' parameters.
     pub fn setMask(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "MASK", arg);
     }
@@ -440,22 +534,56 @@ pub const Param = opaque {
         c.setStrAttribute(self, "BUTTON3", arg);
     }
 
+
+    /// 
+    /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
+    /// 'r'), STRING ('m', 's'), INTEGER ('i'), DATE ('d'), FILE ('f'), COLOR
+    /// ('c'), SEPARATOR ('t'), BUTTONNAMES ('u'), PARAMBOX ('x') and HANDLE ('h').
+    /// And describe the type of the parameter.
+    /// For all parameters.
     pub fn getType(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TYPE");
     }
 
+
+    /// 
+    /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
+    /// 'r'), STRING ('m', 's'), INTEGER ('i'), DATE ('d'), FILE ('f'), COLOR
+    /// ('c'), SEPARATOR ('t'), BUTTONNAMES ('u'), PARAMBOX ('x') and HANDLE ('h').
+    /// And describe the type of the parameter.
+    /// For all parameters.
     pub fn setType(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TYPE", arg);
     }
 
+
+    /// 
+    /// VALUE - the value of the parameter.
+    /// IupGetFloat and IupGetInt can also be used.
+    /// For the current parameter inside the callback contains the new value that
+    /// will be applied to the control, to get the old value use the VALUE
+    /// attribute for the CONTROL returned Ihandle*.
     pub fn getValue(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "VALUE");
     }
 
+
+    /// 
+    /// VALUE - the value of the parameter.
+    /// IupGetFloat and IupGetInt can also be used.
+    /// For the current parameter inside the callback contains the new value that
+    /// will be applied to the control, to get the old value use the VALUE
+    /// attribute for the CONTROL returned Ihandle*.
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "VALUE", arg);
     }
 
+
+    /// 
+    /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
+    /// FILE parameter dialog.
+    /// See IupFileDlg.
+    /// For 'f' parameter.
     pub fn getDialogType(self: *Self) ?DialogType {
         var ret = c.getStrAttribute(self, "DIALOGTYPE");
 
@@ -465,6 +593,12 @@ pub const Param = opaque {
         return null;
     }
 
+
+    /// 
+    /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
+    /// FILE parameter dialog.
+    /// See IupFileDlg.
+    /// For 'f' parameter.
     pub fn setDialogType(self: *Self, arg: ?DialogType) void {
         if (arg) |value| switch (value) {
             .Save => c.setStrAttribute(self, "DIALOGTYPE", "SAVE"),

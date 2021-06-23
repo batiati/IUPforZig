@@ -43,8 +43,21 @@ pub const Expander = opaque {
     /// IupToggle
     pub const OnActionFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
+    /// (since 3.11) int function(Ihandle* ih, int button, int pressed); [in C]
+    /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua] ih:
+    /// identifies the element that activated the event.
+    /// button: identifies the extra button.
+    /// can be 1, 2 or 3.
+    /// (this is not the same as BUTTON_CB)pressed: indicates the state of the
+    /// button: 0 - mouse button was released; 1 - mouse button was pressed.
     pub const OnExtraButtonFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
+    /// 
+    /// OPENCLOSE_CB: Action generated before the expander state is interactively changed.
+    /// (Since 3.11) int function(Ihandle* ih, int state); [in
+    /// C]ih:openclose_cb(state: number) -> (ret: number) [in Lua]
     pub const OnOpenCloseFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
@@ -305,10 +318,9 @@ pub const Expander = opaque {
 
 
         /// 
-        /// TITLE (non inheritable): title text, shown in the bar handler near the
-        /// expand/collapse button.
-        /// When set it will reset TITLEIMAGE.
-        /// Shown only when BARPOSITION=TOP.
+        /// When the TITLE is defined and BARPOSITION=TOP then the expand/collapse
+        /// button is left aligned.
+        /// In all other situations the expand/collapse button is centered.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TITLE", arg);
             return self.*;
@@ -485,6 +497,10 @@ pub const Expander = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+        /// MAXSIZE, THEME: also accepted.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "FONT", arg);
             return self.*;
@@ -505,12 +521,25 @@ pub const Expander = opaque {
             return self.*;
         }
 
+        /// 
+        /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
+        /// (since 3.11) int function(Ihandle* ih, int button, int pressed); [in C]
+        /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua] ih:
+        /// identifies the element that activated the event.
+        /// button: identifies the extra button.
+        /// can be 1, 2 or 3.
+        /// (this is not the same as BUTTON_CB)pressed: indicates the state of the
+        /// button: 0 - mouse button was released; 1 - mouse button was pressed.
         pub fn setExtraButtonCallback(self: *Initializer, callback: ?OnExtraButtonFn) Initializer {
             const Handler = CallbackHandler(Self, OnExtraButtonFn, "EXTRABUTTON_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
+        /// 
+        /// OPENCLOSE_CB: Action generated before the expander state is interactively changed.
+        /// (Since 3.11) int function(Ihandle* ih, int state); [in
+        /// C]ih:openclose_cb(state: number) -> (ret: number) [in Lua]
         pub fn setOpenCloseCallback(self: *Initializer, callback: ?OnOpenCloseFn) Initializer {
             const Handler = CallbackHandler(Self, OnOpenCloseFn, "OPENCLOSE_CB");
             Handler.setCallback(self.ref, callback);
@@ -896,20 +925,18 @@ pub const Expander = opaque {
 
 
     /// 
-    /// TITLE (non inheritable): title text, shown in the bar handler near the
-    /// expand/collapse button.
-    /// When set it will reset TITLEIMAGE.
-    /// Shown only when BARPOSITION=TOP.
+    /// When the TITLE is defined and BARPOSITION=TOP then the expand/collapse
+    /// button is left aligned.
+    /// In all other situations the expand/collapse button is centered.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TITLE");
     }
 
 
     /// 
-    /// TITLE (non inheritable): title text, shown in the bar handler near the
-    /// expand/collapse button.
-    /// When set it will reset TITLEIMAGE.
-    /// Shown only when BARPOSITION=TOP.
+    /// When the TITLE is defined and BARPOSITION=TOP then the expand/collapse
+    /// button is left aligned.
+    /// In all other situations the expand/collapse button is centered.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TITLE", arg);
     }
@@ -1202,10 +1229,18 @@ pub const Expander = opaque {
         c.setBoolAttribute(self, "FRAME", arg);
     }
 
+
+    /// 
+    /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "FONT");
     }
 
+
+    /// 
+    /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "FONT", arg);
     }
@@ -1224,11 +1259,24 @@ pub const Expander = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
+    /// (since 3.11) int function(Ihandle* ih, int button, int pressed); [in C]
+    /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua] ih:
+    /// identifies the element that activated the event.
+    /// button: identifies the extra button.
+    /// can be 1, 2 or 3.
+    /// (this is not the same as BUTTON_CB)pressed: indicates the state of the
+    /// button: 0 - mouse button was released; 1 - mouse button was pressed.
     pub fn setExtraButtonCallback(self: *Self, callback: ?OnExtraButtonFn) void {
         const Handler = CallbackHandler(Self, OnExtraButtonFn, "EXTRABUTTON_CB");
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// OPENCLOSE_CB: Action generated before the expander state is interactively changed.
+    /// (Since 3.11) int function(Ihandle* ih, int state); [in
+    /// C]ih:openclose_cb(state: number) -> (ret: number) [in Lua]
     pub fn setOpenCloseCallback(self: *Self, callback: ?OnOpenCloseFn) void {
         const Handler = CallbackHandler(Self, OnOpenCloseFn, "OPENCLOSE_CB");
         Handler.setCallback(self, callback);

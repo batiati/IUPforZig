@@ -63,6 +63,12 @@ pub const Dial = opaque {
 
     pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
+    /// 
+    /// BUTTON_RELEASE_CB: Called when the user releases the left mouse button
+    /// after pressing it over the dial.
+    /// int function(Ihandle *ih, double angle) ih:button_release_cb(angle: number)
+    /// -> (ret: number) [in Lua] ih: identifier of the element that activated the event.
+    /// angle: the dial value converted according to UNIT.
     pub const OnButtonReleaseFn = fn (self: *Self, arg0: f64) anyerror!void;
 
     /// 
@@ -248,10 +254,22 @@ pub const Dial = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// MOUSEMOVE_CB: Called each time the user moves the dial with the mouse
+    /// button pressed.
+    /// The angle the dial rotated since it was initialized is passed as a parameter.
+    /// int function(Ihandle *ih, double angle); [in C] ih:mousemove_cb(angle:
+    /// number) -> (ret: number) [in Lua]
     pub const OnMouseMoveFn = fn (self: *Self, arg0: f64) anyerror!void;
 
     pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
 
+    /// 
+    /// BUTTON_PRESS_CB: Called when the user presses the left mouse button over
+    /// the dial.
+    /// The angle here is always zero, except for the circular dial.
+    /// int function(Ihandle *ih, double angle) ih:button_press_cb(angle: number)
+    /// -> (ret: number) [in Lua]
     pub const OnButtonPressFn = fn (self: *Self, arg0: f64) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
@@ -362,6 +380,13 @@ pub const Dial = opaque {
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
     pub const OnButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// It is called whenever a BUTTON_PRESS_CB, a BUTTON_RELEASE_CB or a
+    /// MOUSEMOVE_CB would also be called, but if defined those callbacks will not
+    /// be called.
+    /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+    /// number) [in Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -624,6 +649,11 @@ pub const Dial = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FLATCOLOR: color of the border when FLAT=Yes.
+        /// Default: "160 160 160".
+        /// (since 3.24)
         pub fn setFlatColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "FLATCOLOR", rgb);
             return self.*;
@@ -900,6 +930,10 @@ pub const Dial = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
+        /// TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -1015,6 +1049,12 @@ pub const Dial = opaque {
             return self.*;
         }
 
+        /// 
+        /// BUTTON_RELEASE_CB: Called when the user releases the left mouse button
+        /// after pressing it over the dial.
+        /// int function(Ihandle *ih, double angle) ih:button_release_cb(angle: number)
+        /// -> (ret: number) [in Lua] ih: identifier of the element that activated the event.
+        /// angle: the dial value converted according to UNIT.
         pub fn setButtonReleaseCallback(self: *Initializer, callback: ?OnButtonReleaseFn) Initializer {
             const Handler = CallbackHandler(Self, OnButtonReleaseFn, "BUTTON_RELEASE_CB");
             Handler.setCallback(self.ref, callback);
@@ -1268,6 +1308,12 @@ pub const Dial = opaque {
             return self.*;
         }
 
+        /// 
+        /// MOUSEMOVE_CB: Called each time the user moves the dial with the mouse
+        /// button pressed.
+        /// The angle the dial rotated since it was initialized is passed as a parameter.
+        /// int function(Ihandle *ih, double angle); [in C] ih:mousemove_cb(angle:
+        /// number) -> (ret: number) [in Lua]
         pub fn setMouseMoveCallback(self: *Initializer, callback: ?OnMouseMoveFn) Initializer {
             const Handler = CallbackHandler(Self, OnMouseMoveFn, "MOUSEMOVE_CB");
             Handler.setCallback(self.ref, callback);
@@ -1280,6 +1326,12 @@ pub const Dial = opaque {
             return self.*;
         }
 
+        /// 
+        /// BUTTON_PRESS_CB: Called when the user presses the left mouse button over
+        /// the dial.
+        /// The angle here is always zero, except for the circular dial.
+        /// int function(Ihandle *ih, double angle) ih:button_press_cb(angle: number)
+        /// -> (ret: number) [in Lua]
         pub fn setButtonPressCallback(self: *Initializer, callback: ?OnButtonPressFn) Initializer {
             const Handler = CallbackHandler(Self, OnButtonPressFn, "BUTTON_PRESS_CB");
             Handler.setCallback(self.ref, callback);
@@ -1418,6 +1470,13 @@ pub const Dial = opaque {
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+        /// It is called whenever a BUTTON_PRESS_CB, a BUTTON_RELEASE_CB or a
+        /// MOUSEMOVE_CB would also be called, but if defined those callbacks will not
+        /// be called.
+        /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+        /// number) [in Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
@@ -1779,10 +1838,20 @@ pub const Dial = opaque {
         c.setStrAttribute(self, "THEME", arg);
     }
 
+
+    /// 
+    /// FLATCOLOR: color of the border when FLAT=Yes.
+    /// Default: "160 160 160".
+    /// (since 3.24)
     pub fn getFlatColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "FLATCOLOR");
     }
 
+
+    /// 
+    /// FLATCOLOR: color of the border when FLAT=Yes.
+    /// Default: "160 160 160".
+    /// (since 3.24)
     pub fn setFlatColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "FLATCOLOR", rgb);
     }
@@ -2228,10 +2297,18 @@ pub const Dial = opaque {
         c.setStrAttribute(self, "VALUE", arg);
     }
 
+
+    /// 
+    /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
+    /// TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
+    /// TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }
@@ -2395,6 +2472,12 @@ pub const Dial = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// BUTTON_RELEASE_CB: Called when the user releases the left mouse button
+    /// after pressing it over the dial.
+    /// int function(Ihandle *ih, double angle) ih:button_release_cb(angle: number)
+    /// -> (ret: number) [in Lua] ih: identifier of the element that activated the event.
+    /// angle: the dial value converted according to UNIT.
     pub fn setButtonReleaseCallback(self: *Self, callback: ?OnButtonReleaseFn) void {
         const Handler = CallbackHandler(Self, OnButtonReleaseFn, "BUTTON_RELEASE_CB");
         Handler.setCallback(self, callback);
@@ -2631,6 +2714,12 @@ pub const Dial = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// MOUSEMOVE_CB: Called each time the user moves the dial with the mouse
+    /// button pressed.
+    /// The angle the dial rotated since it was initialized is passed as a parameter.
+    /// int function(Ihandle *ih, double angle); [in C] ih:mousemove_cb(angle:
+    /// number) -> (ret: number) [in Lua]
     pub fn setMouseMoveCallback(self: *Self, callback: ?OnMouseMoveFn) void {
         const Handler = CallbackHandler(Self, OnMouseMoveFn, "MOUSEMOVE_CB");
         Handler.setCallback(self, callback);
@@ -2641,6 +2730,12 @@ pub const Dial = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// BUTTON_PRESS_CB: Called when the user presses the left mouse button over
+    /// the dial.
+    /// The angle here is always zero, except for the circular dial.
+    /// int function(Ihandle *ih, double angle) ih:button_press_cb(angle: number)
+    /// -> (ret: number) [in Lua]
     pub fn setButtonPressCallback(self: *Self, callback: ?OnButtonPressFn) void {
         const Handler = CallbackHandler(Self, OnButtonPressFn, "BUTTON_PRESS_CB");
         Handler.setCallback(self, callback);
@@ -2772,6 +2867,13 @@ pub const Dial = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// It is called whenever a BUTTON_PRESS_CB, a BUTTON_RELEASE_CB or a
+    /// MOUSEMOVE_CB would also be called, but if defined those callbacks will not
+    /// be called.
+    /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+    /// number) [in Lua]
     pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);

@@ -151,6 +151,10 @@ pub const Calendar = opaque {
     /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnGetFocusFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+    /// Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -607,6 +611,10 @@ pub const Calendar = opaque {
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+        /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+        /// Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
@@ -1242,6 +1250,10 @@ pub const Calendar = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+    /// Lua]
     pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);

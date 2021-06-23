@@ -33,6 +33,10 @@ pub const Thread = opaque {
     pub const CLASS_NAME = "thread";
     const Self = @This();
 
+    /// 
+    /// THREAD_CB: Action generated when the thread is started.
+    /// If this callback returns or does not exist the thread is terminated.
+    /// int function(Ihandle* ih); [in C]ih:thread_cb() -> (ret: number) [in Lua]
     pub const OnThreadFn = fn (self: *Self) anyerror!void;
 
     pub const Initializer = struct {
@@ -92,6 +96,10 @@ pub const Thread = opaque {
             return self.*;
         }
 
+        /// 
+        /// THREAD_CB: Action generated when the thread is started.
+        /// If this callback returns or does not exist the thread is terminated.
+        /// int function(Ihandle* ih); [in C]ih:thread_cb() -> (ret: number) [in Lua]
         pub fn setThreadCallback(self: *Initializer, callback: ?OnThreadFn) Initializer {
             const Handler = CallbackHandler(Self, OnThreadFn, "THREAD_CB");
             Handler.setCallback(self.ref, callback);
@@ -189,6 +197,10 @@ pub const Thread = opaque {
         c.setBoolAttribute(self, "START", arg);
     }
 
+    /// 
+    /// THREAD_CB: Action generated when the thread is started.
+    /// If this callback returns or does not exist the thread is terminated.
+    /// int function(Ihandle* ih); [in C]ih:thread_cb() -> (ret: number) [in Lua]
     pub fn setThreadCallback(self: *Self, callback: ?OnThreadFn) void {
         const Handler = CallbackHandler(Self, OnThreadFn, "THREAD_CB");
         Handler.setCallback(self, callback);

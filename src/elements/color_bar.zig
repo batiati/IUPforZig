@@ -84,6 +84,12 @@ pub const ColorBar = opaque {
     /// Affects IupDialog, IupCanvas, IupGLCanvas
     pub const OnWomFn = fn (self: *Self, arg0: i32) anyerror!void;
 
+    /// 
+    /// SELECT_CB: called when a color is selected.
+    /// The primary color is selected with the left mouse button, and if existent
+    /// the secondary is selected with the right mouse button.
+    /// int function(Ihandle* ih, int cell, int type); [in C] ih:select_cb(cell,
+    /// type: number) -> (ret: number) [in Lua]
     pub const OnSelectFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
     /// 
@@ -206,6 +212,12 @@ pub const ColorBar = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// SWITCH_CB: called when the user double clicks the preview area outside the
+    /// preview cells to switch the primary and secondary selections.
+    /// It is only called if SHOW_SECONDARY=YES.
+    /// int function(Ihandle* ih, int prim_cell, int sec_cell); [in C]
+    /// ih:switch_cb(prim_cell, sec_cell: number) -> (ret: number) [in Lua]
     pub const OnSwitchFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
     /// 
@@ -299,6 +311,11 @@ pub const ColorBar = opaque {
     /// Affects IupCanvas, IupGLCanvas, IupDialog
     pub const OnResizeFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
+    /// 
+    /// EXTENDED_CB: called when the user right click a cell with the Shift key pressed.
+    /// It is independent of the SHOW_SECONDARY attribute.
+    /// int function(Ihandle* ih, int cell); [in C] ih:extended_cb(cell: number) ->
+    /// (ret: number) [in Lua]
     pub const OnExtEndedFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
@@ -367,6 +384,10 @@ pub const ColorBar = opaque {
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
     pub const OnButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
 
+    /// 
+    /// CELL_CB: called when the user double clicks a color cell to change its value.
+    /// char* function(Ihandle* ih, int cell); [in C] ih:cell_cb(cell: number) ->
+    /// (ret: string) [in Lua]
     pub const OnCellFn = fn (self: *Self, arg0: i32) anyerror![:0]const u8;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -408,7 +429,10 @@ pub const ColorBar = opaque {
         VerticalFree,
         No,
     };
-
+    /// 
+    /// ORIENTATION: Controls the orientation.
+    /// It can be "VERTICAL" or "HORIZONTAL".
+    /// Default: "VERTICAL".
     pub const Orientation = enum {
         Horizontal,
         Vertical,
@@ -503,6 +527,10 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// SHOW_PREVIEW: Controls the display of the preview area.
+        /// Default: "YES".
         pub fn setShowPreview(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SHOW_PREVIEW", arg);
             return self.*;
@@ -611,6 +639,11 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FLATCOLOR: color of the border when FLAT=Yes and the preview area borders.
+        /// Default: "0 0 0".
+        /// (since 3.24)
         pub fn setFlatColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "FLATCOLOR", rgb);
             return self.*;
@@ -671,6 +704,11 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ORIENTATION: Controls the orientation.
+        /// It can be "VERTICAL" or "HORIZONTAL".
+        /// Default: "VERTICAL".
         pub fn setOrientation(self: *Initializer, arg: ?Orientation) Initializer {
             if (arg) |value| switch (value) {
                 .Horizontal => c.setStrAttribute(self.ref, "ORIENTATION", "HORIZONTAL"),
@@ -862,6 +900,10 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
+        /// TIP, EXPAND, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -998,6 +1040,12 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+        /// 
+        /// SELECT_CB: called when a color is selected.
+        /// The primary color is selected with the left mouse button, and if existent
+        /// the secondary is selected with the right mouse button.
+        /// int function(Ihandle* ih, int cell, int type); [in C] ih:select_cb(cell,
+        /// type: number) -> (ret: number) [in Lua]
         pub fn setSelectCallback(self: *Initializer, callback: ?OnSelectFn) Initializer {
             const Handler = CallbackHandler(Self, OnSelectFn, "SELECT_CB");
             Handler.setCallback(self.ref, callback);
@@ -1168,6 +1216,12 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+        /// 
+        /// SWITCH_CB: called when the user double clicks the preview area outside the
+        /// preview cells to switch the primary and secondary selections.
+        /// It is only called if SHOW_SECONDARY=YES.
+        /// int function(Ihandle* ih, int prim_cell, int sec_cell); [in C]
+        /// ih:switch_cb(prim_cell, sec_cell: number) -> (ret: number) [in Lua]
         pub fn setSwitchCallback(self: *Initializer, callback: ?OnSwitchFn) Initializer {
             const Handler = CallbackHandler(Self, OnSwitchFn, "SWITCH_CB");
             Handler.setCallback(self.ref, callback);
@@ -1297,6 +1351,11 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+        /// 
+        /// EXTENDED_CB: called when the user right click a cell with the Shift key pressed.
+        /// It is independent of the SHOW_SECONDARY attribute.
+        /// int function(Ihandle* ih, int cell); [in C] ih:extended_cb(cell: number) ->
+        /// (ret: number) [in Lua]
         pub fn setExtEndedCallback(self: *Initializer, callback: ?OnExtEndedFn) Initializer {
             const Handler = CallbackHandler(Self, OnExtEndedFn, "EXTENDED_CB");
             Handler.setCallback(self.ref, callback);
@@ -1381,6 +1440,10 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+        /// 
+        /// CELL_CB: called when the user double clicks a color cell to change its value.
+        /// char* function(Ihandle* ih, int cell); [in C] ih:cell_cb(cell: number) ->
+        /// (ret: string) [in Lua]
         pub fn setCellCallback(self: *Initializer, callback: ?OnCellFn) Initializer {
             const Handler = CallbackHandler(Self, OnCellFn, "CELL_CB");
             Handler.setCallback(self.ref, callback);
@@ -1552,10 +1615,18 @@ pub const ColorBar = opaque {
         c.setStrAttribute(self, "MAXSIZE", value);
     }
 
+
+    /// 
+    /// SHOW_PREVIEW: Controls the display of the preview area.
+    /// Default: "YES".
     pub fn getShowPreview(self: *Self) bool {
         return c.getBoolAttribute(self, "SHOW_PREVIEW");
     }
 
+
+    /// 
+    /// SHOW_PREVIEW: Controls the display of the preview area.
+    /// Default: "YES".
     pub fn setShowPreview(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "SHOW_PREVIEW", arg);
     }
@@ -1732,10 +1803,20 @@ pub const ColorBar = opaque {
         c.setStrAttribute(self, "THEME", arg);
     }
 
+
+    /// 
+    /// FLATCOLOR: color of the border when FLAT=Yes and the preview area borders.
+    /// Default: "0 0 0".
+    /// (since 3.24)
     pub fn getFlatColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "FLATCOLOR");
     }
 
+
+    /// 
+    /// FLATCOLOR: color of the border when FLAT=Yes and the preview area borders.
+    /// Default: "0 0 0".
+    /// (since 3.24)
     pub fn setFlatColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "FLATCOLOR", rgb);
     }
@@ -1836,6 +1917,11 @@ pub const ColorBar = opaque {
         c.setIntAttribute(self, "YMIN", arg);
     }
 
+
+    /// 
+    /// ORIENTATION: Controls the orientation.
+    /// It can be "VERTICAL" or "HORIZONTAL".
+    /// Default: "VERTICAL".
     pub fn getOrientation(self: *Self) ?Orientation {
         var ret = c.getStrAttribute(self, "ORIENTATION");
 
@@ -1844,6 +1930,11 @@ pub const ColorBar = opaque {
         return null;
     }
 
+
+    /// 
+    /// ORIENTATION: Controls the orientation.
+    /// It can be "VERTICAL" or "HORIZONTAL".
+    /// Default: "VERTICAL".
     pub fn setOrientation(self: *Self, arg: ?Orientation) void {
         if (arg) |value| switch (value) {
             .Horizontal => c.setStrAttribute(self, "ORIENTATION", "HORIZONTAL"),
@@ -2168,10 +2259,18 @@ pub const ColorBar = opaque {
         }
     }
 
+
+    /// 
+    /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
+    /// TIP, EXPAND, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
+    /// TIP, EXPAND, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }
@@ -2356,6 +2455,12 @@ pub const ColorBar = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// SELECT_CB: called when a color is selected.
+    /// The primary color is selected with the left mouse button, and if existent
+    /// the secondary is selected with the right mouse button.
+    /// int function(Ihandle* ih, int cell, int type); [in C] ih:select_cb(cell,
+    /// type: number) -> (ret: number) [in Lua]
     pub fn setSelectCallback(self: *Self, callback: ?OnSelectFn) void {
         const Handler = CallbackHandler(Self, OnSelectFn, "SELECT_CB");
         Handler.setCallback(self, callback);
@@ -2514,6 +2619,12 @@ pub const ColorBar = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// SWITCH_CB: called when the user double clicks the preview area outside the
+    /// preview cells to switch the primary and secondary selections.
+    /// It is only called if SHOW_SECONDARY=YES.
+    /// int function(Ihandle* ih, int prim_cell, int sec_cell); [in C]
+    /// ih:switch_cb(prim_cell, sec_cell: number) -> (ret: number) [in Lua]
     pub fn setSwitchCallback(self: *Self, callback: ?OnSwitchFn) void {
         const Handler = CallbackHandler(Self, OnSwitchFn, "SWITCH_CB");
         Handler.setCallback(self, callback);
@@ -2634,6 +2745,11 @@ pub const ColorBar = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// EXTENDED_CB: called when the user right click a cell with the Shift key pressed.
+    /// It is independent of the SHOW_SECONDARY attribute.
+    /// int function(Ihandle* ih, int cell); [in C] ih:extended_cb(cell: number) ->
+    /// (ret: number) [in Lua]
     pub fn setExtEndedCallback(self: *Self, callback: ?OnExtEndedFn) void {
         const Handler = CallbackHandler(Self, OnExtEndedFn, "EXTENDED_CB");
         Handler.setCallback(self, callback);
@@ -2714,6 +2830,10 @@ pub const ColorBar = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// CELL_CB: called when the user double clicks a color cell to change its value.
+    /// char* function(Ihandle* ih, int cell); [in C] ih:cell_cb(cell: number) ->
+    /// (ret: string) [in Lua]
     pub fn setCellCallback(self: *Self, callback: ?OnCellFn) void {
         const Handler = CallbackHandler(Self, OnCellFn, "CELL_CB");
         Handler.setCallback(self, callback);

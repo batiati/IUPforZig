@@ -479,6 +479,15 @@ pub const BackgroundBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CANVASBOX (non inheritable): enable the behavior of a canvas box instead of
+        /// a regular container.
+        /// This will affect the EXPAND attribute, the Natural size computation, and
+        /// children layout distribution.
+        /// Can be Yes or No.
+        /// Default: No.
+        /// (since 3.19)
         pub fn setCanvasBox(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "CANVASBOX", arg);
             return self.*;
@@ -1584,10 +1593,28 @@ pub const BackgroundBox = opaque {
         c.setStrAttribute(self, "HANDLENAME", arg);
     }
 
+
+    /// 
+    /// CANVASBOX (non inheritable): enable the behavior of a canvas box instead of
+    /// a regular container.
+    /// This will affect the EXPAND attribute, the Natural size computation, and
+    /// children layout distribution.
+    /// Can be Yes or No.
+    /// Default: No.
+    /// (since 3.19)
     pub fn getCanvasBox(self: *Self) bool {
         return c.getBoolAttribute(self, "CANVASBOX");
     }
 
+
+    /// 
+    /// CANVASBOX (non inheritable): enable the behavior of a canvas box instead of
+    /// a regular container.
+    /// This will affect the EXPAND attribute, the Natural size computation, and
+    /// children layout distribution.
+    /// Can be Yes or No.
+    /// Default: No.
+    /// (since 3.19)
     pub fn setCanvasBox(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "CANVASBOX", arg);
     }
@@ -2437,6 +2464,9 @@ pub const BackgroundBox = opaque {
         return Size.parse(str);
     }
 
+
+    /// 
+    /// CLIENTSIZE, CLIENTOFFSET, THEME: also accepted.
     pub fn getClientSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "CLIENTSIZE");
         return Size.parse(str);

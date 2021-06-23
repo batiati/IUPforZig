@@ -671,11 +671,8 @@ pub const FlatLabel = opaque {
 
 
         /// 
-        /// PADDING: internal margin.
-        /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
-        /// but uses a different name to avoid inheritance problems.
-        /// Default value: "0x0".
-        /// Alignment does not includes the padding area.
+        /// The natural size will be a combination of the size of the image and the
+        /// title, if any, plus PADDING and SPACING (if both image and title are present).
         pub fn setPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -835,8 +832,8 @@ pub const FlatLabel = opaque {
 
 
         /// 
-        /// SPACING (non inheritable): spacing between the image and the text.
-        /// Default: "2".
+        /// The natural size will be a combination of the size of the image and the
+        /// title, if any, plus PADDING and SPACING (if both image and title are present).
         pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "SPACING", arg);
             return self.*;
@@ -961,6 +958,11 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
+        /// The text size will adapt to include the rotated space.
+        /// (since 3.25)
         pub fn setTextOrientation(self: *Initializer, arg: f64) Initializer {
             c.setDoubleAttribute(self.ref, "TEXTORIENTATION", arg);
             return self.*;
@@ -978,6 +980,10 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+        /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -1966,11 +1972,8 @@ pub const FlatLabel = opaque {
 
 
     /// 
-    /// PADDING: internal margin.
-    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
-    /// but uses a different name to avoid inheritance problems.
-    /// Default value: "0x0".
-    /// Alignment does not includes the padding area.
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn getPadding(self: *Self) Size {
         var str = c.getStrAttribute(self, "PADDING");
         return Size.parse(str);
@@ -1978,11 +1981,8 @@ pub const FlatLabel = opaque {
 
 
     /// 
-    /// PADDING: internal margin.
-    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
-    /// but uses a different name to avoid inheritance problems.
-    /// Default value: "0x0".
-    /// Alignment does not includes the padding area.
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn setPadding(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
@@ -2251,16 +2251,16 @@ pub const FlatLabel = opaque {
 
 
     /// 
-    /// SPACING (non inheritable): spacing between the image and the text.
-    /// Default: "2".
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn getSpacing(self: *Self) i32 {
         return c.getIntAttribute(self, "SPACING");
     }
 
 
     /// 
-    /// SPACING (non inheritable): spacing between the image and the text.
-    /// Default: "2".
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn setSpacing(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "SPACING", arg);
     }
@@ -2481,10 +2481,20 @@ pub const FlatLabel = opaque {
         c.setStrAttribute(self, "CPADDING", value);
     }
 
+
+    /// 
+    /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
+    /// The text size will adapt to include the rotated space.
+    /// (since 3.25)
     pub fn getTextOrientation(self: *Self) f64 {
         return c.getDoubleAttribute(self, "TEXTORIENTATION");
     }
 
+
+    /// 
+    /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
+    /// The text size will adapt to include the rotated space.
+    /// (since 3.25)
     pub fn setTextOrientation(self: *Self, arg: f64) void {
         c.setDoubleAttribute(self, "TEXTORIENTATION", arg);
     }
@@ -2511,10 +2521,18 @@ pub const FlatLabel = opaque {
         c.setBoolAttribute(self, "FITTOBACKIMAGE", arg);
     }
 
+
+    /// 
+    /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+    /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+    /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }

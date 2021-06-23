@@ -55,6 +55,13 @@ pub const Spin = opaque {
 
     pub const OnUpDateAttribfromFontFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// SPIN_CB: Called each time the user clicks in the buttons.
+    /// It will increment 1 and decrement -1 by default.
+    /// Holding the Shift key will set a factor of 2, holding Ctrl a factor of 10,
+    /// and both a factor of 100.
+    /// int function(Ihandle *ih, int inc); [in C] ih:spin_cb(inc: number) -> (ret:
+    /// number) [in Lua]
     pub const OnSpinFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
@@ -389,6 +396,13 @@ pub const Spin = opaque {
             return self.*;
         }
 
+        /// 
+        /// SPIN_CB: Called each time the user clicks in the buttons.
+        /// It will increment 1 and decrement -1 by default.
+        /// Holding the Shift key will set a factor of 2, holding Ctrl a factor of 10,
+        /// and both a factor of 100.
+        /// int function(Ihandle *ih, int inc); [in C] ih:spin_cb(inc: number) -> (ret:
+        /// number) [in Lua]
         pub fn setSpinCallback(self: *Initializer, callback: ?OnSpinFn) Initializer {
             const Handler = CallbackHandler(Self, OnSpinFn, "SPIN_CB");
             Handler.setCallback(self.ref, callback);
@@ -904,6 +918,13 @@ pub const Spin = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// SPIN_CB: Called each time the user clicks in the buttons.
+    /// It will increment 1 and decrement -1 by default.
+    /// Holding the Shift key will set a factor of 2, holding Ctrl a factor of 10,
+    /// and both a factor of 100.
+    /// int function(Ihandle *ih, int inc); [in C] ih:spin_cb(inc: number) -> (ret:
+    /// number) [in Lua]
     pub fn setSpinCallback(self: *Self, callback: ?OnSpinFn) void {
         const Handler = CallbackHandler(Self, OnSpinFn, "SPIN_CB");
         Handler.setCallback(self, callback);

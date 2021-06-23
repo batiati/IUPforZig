@@ -257,6 +257,11 @@ pub const FlatVal = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// VALUECHANGING_CB: Called when the value starts or ends to be interactively
+    /// changed by the user.
+    /// int function(Ihandle *ih, int start); [in C]elem:valuechanging_cb(start:
+    /// number) -> (ret: number) [in Lua]
     pub const OnValueChangIngFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
@@ -373,6 +378,10 @@ pub const FlatVal = opaque {
 
     pub const OnFlatMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+    /// Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -1018,6 +1027,10 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+        /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -1433,6 +1446,11 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGING_CB: Called when the value starts or ends to be interactively
+        /// changed by the user.
+        /// int function(Ihandle *ih, int start); [in C]elem:valuechanging_cb(start:
+        /// number) -> (ret: number) [in Lua]
         pub fn setValueChangIngCallback(self: *Initializer, callback: ?OnValueChangIngFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangIngFn, "VALUECHANGING_CB");
             Handler.setCallback(self.ref, callback);
@@ -1589,6 +1607,10 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+        /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+        /// Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
@@ -2589,10 +2611,18 @@ pub const FlatVal = opaque {
         c.setBoolAttribute(self, "FITTOBACKIMAGE", arg);
     }
 
+
+    /// 
+    /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+    /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+    /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }
@@ -3055,6 +3085,11 @@ pub const FlatVal = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGING_CB: Called when the value starts or ends to be interactively
+    /// changed by the user.
+    /// int function(Ihandle *ih, int start); [in C]elem:valuechanging_cb(start:
+    /// number) -> (ret: number) [in Lua]
     pub fn setValueChangIngCallback(self: *Self, callback: ?OnValueChangIngFn) void {
         const Handler = CallbackHandler(Self, OnValueChangIngFn, "VALUECHANGING_CB");
         Handler.setCallback(self, callback);
@@ -3201,6 +3236,10 @@ pub const FlatVal = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+    /// Lua]
     pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);

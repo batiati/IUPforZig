@@ -150,6 +150,12 @@ pub const ColorBrowser = opaque {
 
     pub const OnDragEndFn = fn (self: *Self, arg0: i32) anyerror!void;
 
+    /// 
+    /// DRAG_CB: Called several times while the color is being changed by dragging
+    /// the mouse over the control.
+    /// int drag(Ihandle *ih, unsigned char r, unsigned char g, unsigned char b);
+    /// [in C] ih:drag_cb(r: number, g: number, b: number) -> (ret: number) [in
+    /// Lua]
     pub const OnDragFn = fn (self: *Self, arg0: u8, arg1: u8, arg2: u8) anyerror!void;
 
     pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
@@ -370,8 +376,20 @@ pub const ColorBrowser = opaque {
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
     pub const OnButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
 
+    /// 
+    /// CHANGE_CB: Called when the user releases the left mouse button over the
+    /// control, defining the selected color.
+    /// int change(Ihandle *ih, unsigned char r, unsigned char g, unsigned char b);
+    /// [in C] ih:change_cb(r: number, g: number, b: number) -> (ret: number) [in
+    /// Lua]
     pub const OnChangeFn = fn (self: *Self, arg0: u8, arg1: u8, arg2: u8) anyerror!void;
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// It is called whenever a CHANGE_CB or a DRAG_CB would also be called, it is
+    /// just called after them.
+    /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+    /// number) [in Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -846,6 +864,10 @@ pub const ColorBrowser = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, BGCOLOR, FONT, X, Y, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
+        /// ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -1049,6 +1071,12 @@ pub const ColorBrowser = opaque {
             return self.*;
         }
 
+        /// 
+        /// DRAG_CB: Called several times while the color is being changed by dragging
+        /// the mouse over the control.
+        /// int drag(Ihandle *ih, unsigned char r, unsigned char g, unsigned char b);
+        /// [in C] ih:drag_cb(r: number, g: number, b: number) -> (ret: number) [in
+        /// Lua]
         pub fn setDragCallback(self: *Initializer, callback: ?OnDragFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragFn, "DRAG_CB");
             Handler.setCallback(self.ref, callback);
@@ -1341,12 +1369,24 @@ pub const ColorBrowser = opaque {
             return self.*;
         }
 
+        /// 
+        /// CHANGE_CB: Called when the user releases the left mouse button over the
+        /// control, defining the selected color.
+        /// int change(Ihandle *ih, unsigned char r, unsigned char g, unsigned char b);
+        /// [in C] ih:change_cb(r: number, g: number, b: number) -> (ret: number) [in
+        /// Lua]
         pub fn setChangeCallback(self: *Initializer, callback: ?OnChangeFn) Initializer {
             const Handler = CallbackHandler(Self, OnChangeFn, "CHANGE_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+        /// It is called whenever a CHANGE_CB or a DRAG_CB would also be called, it is
+        /// just called after them.
+        /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+        /// number) [in Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
@@ -2099,10 +2139,18 @@ pub const ColorBrowser = opaque {
         }
     }
 
+
+    /// 
+    /// ACTIVE, BGCOLOR, FONT, X, Y, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
+    /// ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, BGCOLOR, FONT, X, Y, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
+    /// ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }
@@ -2339,6 +2387,12 @@ pub const ColorBrowser = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// DRAG_CB: Called several times while the color is being changed by dragging
+    /// the mouse over the control.
+    /// int drag(Ihandle *ih, unsigned char r, unsigned char g, unsigned char b);
+    /// [in C] ih:drag_cb(r: number, g: number, b: number) -> (ret: number) [in
+    /// Lua]
     pub fn setDragCallback(self: *Self, callback: ?OnDragFn) void {
         const Handler = CallbackHandler(Self, OnDragFn, "DRAG_CB");
         Handler.setCallback(self, callback);
@@ -2613,11 +2667,23 @@ pub const ColorBrowser = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// CHANGE_CB: Called when the user releases the left mouse button over the
+    /// control, defining the selected color.
+    /// int change(Ihandle *ih, unsigned char r, unsigned char g, unsigned char b);
+    /// [in C] ih:change_cb(r: number, g: number, b: number) -> (ret: number) [in
+    /// Lua]
     pub fn setChangeCallback(self: *Self, callback: ?OnChangeFn) void {
         const Handler = CallbackHandler(Self, OnChangeFn, "CHANGE_CB");
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// It is called whenever a CHANGE_CB or a DRAG_CB would also be called, it is
+    /// just called after them.
+    /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+    /// number) [in Lua]
     pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);

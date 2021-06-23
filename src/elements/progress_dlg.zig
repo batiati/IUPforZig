@@ -95,6 +95,9 @@ pub const ProgressDlg = opaque {
 
     pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
+    /// 
+    /// CANCEL_CB: Action generated when the user clicked on the Cancel button.
+    /// int function(Ihandle* ih); [in C]elem:cancel_cb() -> (ret: number) [in Lua]
     pub const OnCanCelFn = fn (self: *Self) anyerror!void;
 
     pub const OnMdiActivateFn = fn (self: *Self) anyerror!void;
@@ -298,7 +301,16 @@ pub const ProgressDlg = opaque {
         Show,
         Hide,
     };
-
+    /// 
+    /// STATE: describe the state of the iteration.
+    /// Can be: IDLE, PROCESSING, UNDEFINED or ABORTED.
+    /// Default is IDLE.
+    /// When INC, COUNT or PERCENT are set the state is changed to PROCESSING.
+    /// If the user pressed the Cancel button the state is changed to ABORTED, but
+    /// check the CANCEL_CB callback for other options.
+    /// If the state is set to UNDEFINED by the application the progress bar will
+    /// display an undefined state animation (same as setting MARQUEE=Yes in
+    /// IupProgressBar), to resume processing set the state attribute to PROCESSING.
     pub const State = enum {
         Aborted,
         Processing,
@@ -361,6 +373,9 @@ pub const ProgressDlg = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// COUNT: current count of iterations.
         pub fn setCount(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "COUNT", arg);
             return self.*;
@@ -714,6 +729,9 @@ pub const ProgressDlg = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
         pub fn setResize(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "RESIZE", arg);
             return self.*;
@@ -804,6 +822,17 @@ pub const ProgressDlg = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// STATE: describe the state of the iteration.
+        /// Can be: IDLE, PROCESSING, UNDEFINED or ABORTED.
+        /// Default is IDLE.
+        /// When INC, COUNT or PERCENT are set the state is changed to PROCESSING.
+        /// If the user pressed the Cancel button the state is changed to ABORTED, but
+        /// check the CANCEL_CB callback for other options.
+        /// If the state is set to UNDEFINED by the application the progress bar will
+        /// display an undefined state animation (same as setting MARQUEE=Yes in
+        /// IupProgressBar), to resume processing set the state attribute to PROCESSING.
         pub fn setState(self: *Initializer, arg: ?State) Initializer {
             if (arg) |value| switch (value) {
                 .Aborted => c.setStrAttribute(self.ref, "STATE", "ABORTED"),
@@ -1096,6 +1125,9 @@ pub const ProgressDlg = opaque {
             return self.*;
         }
 
+        /// 
+        /// CANCEL_CB: Action generated when the user clicked on the Cancel button.
+        /// int function(Ihandle* ih); [in C]elem:cancel_cb() -> (ret: number) [in Lua]
         pub fn setCanCelCallback(self: *Initializer, callback: ?OnCanCelFn) Initializer {
             const Handler = CallbackHandler(Self, OnCanCelFn, "CANCEL_CB");
             Handler.setCallback(self.ref, callback);
@@ -1430,10 +1462,16 @@ pub const ProgressDlg = opaque {
         try Impl(Self).refresh(self);
     }
 
+
+    /// 
+    /// COUNT: current count of iterations.
     pub fn getCount(self: *Self) i32 {
         return c.getIntAttribute(self, "COUNT");
     }
 
+
+    /// 
+    /// COUNT: current count of iterations.
     pub fn setCount(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "COUNT", arg);
     }
@@ -2036,10 +2074,16 @@ pub const ProgressDlg = opaque {
         c.setBoolAttribute(self, "DRAGSOURCE", arg);
     }
 
+
+    /// 
+    /// RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
     pub fn getResize(self: *Self) bool {
         return c.getBoolAttribute(self, "RESIZE");
     }
 
+
+    /// 
+    /// RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
     pub fn setResize(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "RESIZE", arg);
     }
@@ -2174,6 +2218,17 @@ pub const ProgressDlg = opaque {
         c.setStrAttribute(self, "NAME", arg);
     }
 
+
+    /// 
+    /// STATE: describe the state of the iteration.
+    /// Can be: IDLE, PROCESSING, UNDEFINED or ABORTED.
+    /// Default is IDLE.
+    /// When INC, COUNT or PERCENT are set the state is changed to PROCESSING.
+    /// If the user pressed the Cancel button the state is changed to ABORTED, but
+    /// check the CANCEL_CB callback for other options.
+    /// If the state is set to UNDEFINED by the application the progress bar will
+    /// display an undefined state animation (same as setting MARQUEE=Yes in
+    /// IupProgressBar), to resume processing set the state attribute to PROCESSING.
     pub fn getState(self: *Self) ?State {
         var ret = c.getStrAttribute(self, "STATE");
 
@@ -2184,6 +2239,17 @@ pub const ProgressDlg = opaque {
         return null;
     }
 
+
+    /// 
+    /// STATE: describe the state of the iteration.
+    /// Can be: IDLE, PROCESSING, UNDEFINED or ABORTED.
+    /// Default is IDLE.
+    /// When INC, COUNT or PERCENT are set the state is changed to PROCESSING.
+    /// If the user pressed the Cancel button the state is changed to ABORTED, but
+    /// check the CANCEL_CB callback for other options.
+    /// If the state is set to UNDEFINED by the application the progress bar will
+    /// display an undefined state animation (same as setting MARQUEE=Yes in
+    /// IupProgressBar), to resume processing set the state attribute to PROCESSING.
     pub fn setState(self: *Self, arg: ?State) void {
         if (arg) |value| switch (value) {
             .Aborted => c.setStrAttribute(self, "STATE", "ABORTED"),
@@ -2561,6 +2627,9 @@ pub const ProgressDlg = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// CANCEL_CB: Action generated when the user clicked on the Cancel button.
+    /// int function(Ihandle* ih); [in C]elem:cancel_cb() -> (ret: number) [in Lua]
     pub fn setCanCelCallback(self: *Self, callback: ?OnCanCelFn) void {
         const Handler = CallbackHandler(Self, OnCanCelFn, "CANCEL_CB");
         Handler.setCallback(self, callback);

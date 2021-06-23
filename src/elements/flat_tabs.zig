@@ -132,6 +132,10 @@ pub const FlatTabs = opaque {
     /// Affects IupCanvas, IupGLCanvas, SCROLLBAR
     pub const OnScrollFn = fn (self: *Self, arg0: i32, arg1: f32, arg2: f32) anyerror!void;
 
+    /// 
+    /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
+    /// (since 3.22) int function(Ihandle* ih, int button, int pressed); [in C]
+    /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua]
     pub const OnExtraButtonFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
     /// 
@@ -185,6 +189,10 @@ pub const FlatTabs = opaque {
     /// Affects All elements with keyboard interaction.
     pub const OnKAnyFn = fn (self: *Self, arg0: i32) anyerror!void;
 
+    /// 
+    /// TABCHANGE_CB: Callback called when the user changes the current tab.
+    /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
+    /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
     pub const OnTabChangeFn = fn (self: *Self, arg0: iup.Element, arg1: iup.Element) anyerror!void;
 
     /// 
@@ -194,6 +202,11 @@ pub const FlatTabs = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// TABCLOSE_CB: Callback called when the user clicks on the close button.
+    /// Called only when SHOWCLOSE=Yes.
+    /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+    /// (ret: number) [in Lua]
     pub const OnTabCloseFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
@@ -253,6 +266,11 @@ pub const FlatTabs = opaque {
 
     pub const OnDropMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
+    /// 
+    /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
+    /// Called only when TABCHANGE_CB is not defined.
+    /// int function(Ihandle* ih, int new_pos, int old_pos); [in C]
+    /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
     pub const OnTabChangePosFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
     /// 
@@ -399,8 +417,15 @@ pub const FlatTabs = opaque {
 
     pub const OnFlatGetFocusFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
+    /// right mouse button.
+    /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
+    /// (ret: number) [in Lua]
     pub const OnRightClickFn = fn (self: *Self, arg0: i32) anyerror!void;
 
+    /// 
+    /// EXPAND: The default value is "YES".
     pub const Expand = enum {
         Yes,
         Horizontal,
@@ -415,7 +440,12 @@ pub const FlatTabs = opaque {
         ARight,
         ALeft,
     };
-
+    /// 
+    /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
+    /// "HORIZONTAL" or "VERTICAL".
+    /// Default is "HORIZONTAL".
+    /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
+    /// (since 3.25)
     pub const TabOrientation = enum {
         Horizontal,
         Vertical,
@@ -434,14 +464,25 @@ pub const FlatTabs = opaque {
         StrokeDashDotdot,
         DrawStroke,
     };
-
+    /// 
+    /// TABTYPE (non inheritable): the type of tabs, which can be "TOP", "BOTTOM",
+    /// "LEFT" or "RIGHT".
+    /// Default is "TOP".
+    /// It will not automatically change the TABORIENTATION.
+    /// When changed with the dialog visible the application should call IupRefresh
+    /// or IupRefresh children to updated the layout when ready.
+    /// (since 3.27)
     pub const TabType = enum {
         Bottom,
         Left,
         Right,
         Top,
     };
-
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.27)
     pub const Floating = enum {
         Yes,
         Ignore,
@@ -520,6 +561,10 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// SIZE: The default size is the smallest size that fits its largest child.
+        /// All child elements are considered even invisible ones.
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -527,11 +572,22 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// VALUEPOS: Changes the current tab by its position, starting at 0.
         pub fn setValuePos(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "VALUEPOS", arg);
             return self.*;
         }
 
+
+        /// 
+        /// VALUE: Changes the current tab by its name.
+        /// The value passed must be the name of one of the elements contained in the tabs.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
+        /// In Lua you can also use the element reference directly.
+        /// When the tabs is created, the first element inserted is set as the current tab.
+        /// When the current tab is changed is also scrolled to be visible (since 3.23).
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "VALUE", arg);
             return self.*;
@@ -542,6 +598,9 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// EXPAND: The default value is "YES".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (arg) |value| switch (value) {
                 .Yes => c.setStrAttribute(self.ref, "EXPAND", "YES"),
@@ -561,6 +620,10 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FORECOLOR: text color for the current Tab.
+        /// Default: "50 150 255".
         pub fn setForeColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "FORECOLOR", rgb);
             return self.*;
@@ -614,21 +677,45 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
+        /// Can be Yes or No.
+        /// Default: Yes.
+        /// (since 3.27)
         pub fn setFocusFeedback(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "FOCUSFEEDBACK", arg);
             return self.*;
         }
 
+
+        /// 
+        /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        /// It is not updated if TABTITLEn is changed.
         pub fn setTabTitle(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TABTITLE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
+        /// the control.
+        /// Default: YES.
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "CANFOCUS", arg);
             return self.*;
         }
 
+
+        /// 
+        /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
+        /// "HORIZONTAL" or "VERTICAL".
+        /// Default is "HORIZONTAL".
+        /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
+        /// (since 3.25)
         pub fn setTabOrientation(self: *Initializer, arg: ?TabOrientation) Initializer {
             if (arg) |value| switch (value) {
                 .Horizontal => c.setStrAttribute(self.ref, "TABORIENTATION", "HORIZONTAL"),
@@ -669,6 +756,12 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// BGCOLOR: background color for the current Tab and the children.
+        /// Default: "255 255 255".
+        /// It is non inheritable, but when set will internally propagate to the
+        /// children (since 3.25).
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "BGCOLOR", rgb);
             return self.*;
@@ -705,6 +798,11 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// HIGHCOLOR: text color for the highlighted Tab.
+        /// The current Tab is never highlighted, so it affects only the other tabs.
+        /// If not defined FORECOLOR will be used.
         pub fn setHighColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "HIGHCOLOR", rgb);
             return self.*;
@@ -751,6 +849,12 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// SHOWCLOSE: enables the close button on each tab.
+        /// Default value: "NO".
+        /// By default when closed the tab is hidden.
+        /// To change that behavior use the TABCLOSE_CB callback.
         pub fn setShowClose(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SHOWCLOSE", arg);
             return self.*;
@@ -771,6 +875,10 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TABFONTSIZEn: text font size.
+        /// When change will actually set TABFONTn.
         pub fn setTabFontSize(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "TABFONTSIZE", arg);
             return self.*;
@@ -783,6 +891,15 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TABTYPE (non inheritable): the type of tabs, which can be "TOP", "BOTTOM",
+        /// "LEFT" or "RIGHT".
+        /// Default is "TOP".
+        /// It will not automatically change the TABORIENTATION.
+        /// When changed with the dialog visible the application should call IupRefresh
+        /// or IupRefresh children to updated the layout when ready.
+        /// (since 3.27)
         pub fn setTabType(self: *Initializer, arg: ?TabType) Initializer {
             if (arg) |value| switch (value) {
                 .Bottom => c.setStrAttribute(self.ref, "TABTYPE", "BOTTOM"),
@@ -815,6 +932,12 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TABVISIBLEn: controls the visibility of a tab.
+        /// When a tab is hidden the tabs indices are not changed.
+        /// Can be Yes or No.
+        /// Default: Yes.
         pub fn setTabVisible(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "TABVISIBLE", arg);
             return self.*;
@@ -870,6 +993,10 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+        /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -885,6 +1012,12 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
+        /// If set to NO will compute using only the current tab.
+        /// Default: Yes.
+        /// (since 3.27)
         pub fn setChildSizeAll(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "CHILDSIZEALL", arg);
             return self.*;
@@ -940,11 +1073,24 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TABSFONTSIZE: text font size.
+        /// When change will actually set TABSFONT.
         pub fn setTabsFontSize(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "TABSFONTSIZE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// CHILDOFFSET: Allow to specify a position offset for the child.
+        /// Available for native containers only.
+        /// It will not affect the natural size, and allows to position controls
+        /// outside the client area.
+        /// Format "dxxdy", where dx and dy are integer values corresponding to the
+        /// horizontal and vertical offsets, respectively, in pixels.
+        /// Default: 0x0.
         pub fn setChildOffset(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -977,6 +1123,12 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+        /// then its size and position will be ignored by the layout processing.
+        /// Default: "NO".
+        /// (since 3.27)
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
                 .Yes => c.setStrAttribute(self.ref, "FLOATING", "YES"),
@@ -988,6 +1140,12 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        /// It is not updated if TABIMAGEn is changed.
         pub fn setTabImage(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TABIMAGE", arg);
             return self.*;
@@ -1003,11 +1161,24 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// EXTRABUTTONS: sets the number of extra image buttons at right in the free
+        /// space area.
+        /// There can be any number of buttons.
+        /// See the EXTRABUTTON_CB callback.
+        /// Default: 0.
         pub fn setExtraButtons(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "EXTRABUTTONS", arg);
             return self.*;
         }
 
+
+        /// 
+        /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
+        /// the next native parent with FOCUS_CB defined.
+        /// Default: NO.
+        /// (since 3.23)
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", arg);
             return self.*;
@@ -1140,6 +1311,10 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+        /// 
+        /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
+        /// (since 3.22) int function(Ihandle* ih, int button, int pressed); [in C]
+        /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua]
         pub fn setExtraButtonCallback(self: *Initializer, callback: ?OnExtraButtonFn) Initializer {
             const Handler = CallbackHandler(Self, OnExtraButtonFn, "EXTRABUTTON_CB");
             Handler.setCallback(self.ref, callback);
@@ -1213,6 +1388,10 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+        /// 
+        /// TABCHANGE_CB: Callback called when the user changes the current tab.
+        /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
+        /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
         pub fn setTabChangeCallback(self: *Initializer, callback: ?OnTabChangeFn) Initializer {
             const Handler = CallbackHandler(Self, OnTabChangeFn, "TABCHANGE_CB");
             Handler.setCallback(self.ref, callback);
@@ -1230,6 +1409,11 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+        /// 
+        /// TABCLOSE_CB: Callback called when the user clicks on the close button.
+        /// Called only when SHOWCLOSE=Yes.
+        /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+        /// (ret: number) [in Lua]
         pub fn setTabCloseCallback(self: *Initializer, callback: ?OnTabCloseFn) Initializer {
             const Handler = CallbackHandler(Self, OnTabCloseFn, "TABCLOSE_CB");
             Handler.setCallback(self.ref, callback);
@@ -1333,6 +1517,11 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+        /// 
+        /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
+        /// Called only when TABCHANGE_CB is not defined.
+        /// int function(Ihandle* ih, int new_pos, int old_pos); [in C]
+        /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
         pub fn setTabChangePosCallback(self: *Initializer, callback: ?OnTabChangePosFn) Initializer {
             const Handler = CallbackHandler(Self, OnTabChangePosFn, "TABCHANGEPOS_CB");
             Handler.setCallback(self.ref, callback);
@@ -1531,6 +1720,11 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+        /// 
+        /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
+        /// right mouse button.
+        /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
+        /// (ret: number) [in Lua]
         pub fn setRightClickCallback(self: *Initializer, callback: ?OnRightClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
             Handler.setCallback(self.ref, callback);
@@ -1662,11 +1856,19 @@ pub const FlatTabs = opaque {
         c.setIntAttribute(self, "XMAX", arg);
     }
 
+
+    /// 
+    /// SIZE: The default size is the smallest size that fits its largest child.
+    /// All child elements are considered even invisible ones.
     pub fn getSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "SIZE");
         return Size.parse(str);
     }
 
+
+    /// 
+    /// SIZE: The default size is the smallest size that fits its largest child.
+    /// All child elements are considered even invisible ones.
     pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
@@ -1686,18 +1888,40 @@ pub const FlatTabs = opaque {
         return c.getIntAttribute(self, "Y");
     }
 
+
+    /// 
+    /// VALUEPOS: Changes the current tab by its position, starting at 0.
     pub fn getValuePos(self: *Self) i32 {
         return c.getIntAttribute(self, "VALUEPOS");
     }
 
+
+    /// 
+    /// VALUEPOS: Changes the current tab by its position, starting at 0.
     pub fn setValuePos(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "VALUEPOS", arg);
     }
 
+
+    /// 
+    /// VALUE: Changes the current tab by its name.
+    /// The value passed must be the name of one of the elements contained in the tabs.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
+    /// In Lua you can also use the element reference directly.
+    /// When the tabs is created, the first element inserted is set as the current tab.
+    /// When the current tab is changed is also scrolled to be visible (since 3.23).
     pub fn getValue(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "VALUE");
     }
 
+
+    /// 
+    /// VALUE: Changes the current tab by its name.
+    /// The value passed must be the name of one of the elements contained in the tabs.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
+    /// In Lua you can also use the element reference directly.
+    /// When the tabs is created, the first element inserted is set as the current tab.
+    /// When the current tab is changed is also scrolled to be visible (since 3.23).
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "VALUE", arg);
     }
@@ -1710,6 +1934,9 @@ pub const FlatTabs = opaque {
         c.setRgb(self, "TIPFGCOLOR", rgb);
     }
 
+
+    /// 
+    /// EXPAND: The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
         var ret = c.getStrAttribute(self, "EXPAND");
 
@@ -1722,6 +1949,9 @@ pub const FlatTabs = opaque {
         return null;
     }
 
+
+    /// 
+    /// EXPAND: The default value is "YES".
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
             .Yes => c.setStrAttribute(self, "EXPAND", "YES"),
@@ -1743,10 +1973,18 @@ pub const FlatTabs = opaque {
         c.setDoubleAttribute(self, "DRAWTEXTORIENTATION", arg);
     }
 
+
+    /// 
+    /// FORECOLOR: text color for the current Tab.
+    /// Default: "50 150 255".
     pub fn getForeColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "FORECOLOR");
     }
 
+
+    /// 
+    /// FORECOLOR: text color for the current Tab.
+    /// Default: "50 150 255".
     pub fn setForeColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "FORECOLOR", rgb);
     }
@@ -1826,6 +2064,11 @@ pub const FlatTabs = opaque {
         c.setBoolAttribute(self, "DRAWTEXTELLIPSIS", arg);
     }
 
+
+    /// 
+    /// HASFOCUS (read-only): returns the tabs state if it has focus.
+    /// Can be Yes or No.
+    /// (since 3.25)
     pub fn getHasFocus(self: *Self) bool {
         return c.getBoolAttribute(self, "HASFOCUS");
     }
@@ -1838,18 +2081,42 @@ pub const FlatTabs = opaque {
         c.setIntAttribute(self, "CONTROLID", arg);
     }
 
+
+    /// 
+    /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
+    /// Can be Yes or No.
+    /// Default: Yes.
+    /// (since 3.27)
     pub fn getFocusFeedback(self: *Self) bool {
         return c.getBoolAttribute(self, "FOCUSFEEDBACK");
     }
 
+
+    /// 
+    /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
+    /// Can be Yes or No.
+    /// Default: Yes.
+    /// (since 3.27)
     pub fn setFocusFeedback(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "FOCUSFEEDBACK", arg);
     }
 
+
+    /// 
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    /// It is not updated if TABTITLEn is changed.
     pub fn getTabTitle(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TABTITLE");
     }
 
+
+    /// 
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    /// It is not updated if TABTITLEn is changed.
     pub fn setTabTitle(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TABTITLE", arg);
     }
@@ -1863,14 +2130,13 @@ pub const FlatTabs = opaque {
         return c.getBoolAttribute(self, "BORDER");
     }
 
-    pub fn getCanFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "CANFOCUS");
-    }
 
-    pub fn setCanFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CANFOCUS", arg);
-    }
-
+    /// 
+    /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
+    /// "HORIZONTAL" or "VERTICAL".
+    /// Default is "HORIZONTAL".
+    /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
+    /// (since 3.25)
     pub fn getTabOrientation(self: *Self) ?TabOrientation {
         var ret = c.getStrAttribute(self, "TABORIENTATION");
 
@@ -1879,6 +2145,13 @@ pub const FlatTabs = opaque {
         return null;
     }
 
+
+    /// 
+    /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
+    /// "HORIZONTAL" or "VERTICAL".
+    /// Default is "HORIZONTAL".
+    /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
+    /// (since 3.25)
     pub fn setTabOrientation(self: *Self, arg: ?TabOrientation) void {
         if (arg) |value| switch (value) {
             .Horizontal => c.setStrAttribute(self, "TABORIENTATION", "HORIZONTAL"),
@@ -1929,10 +2202,22 @@ pub const FlatTabs = opaque {
         c.setBoolAttribute(self, "VISIBLE", arg);
     }
 
+
+    /// 
+    /// BGCOLOR: background color for the current Tab and the children.
+    /// Default: "255 255 255".
+    /// It is non inheritable, but when set will internally propagate to the
+    /// children (since 3.25).
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "BGCOLOR");
     }
 
+
+    /// 
+    /// BGCOLOR: background color for the current Tab and the children.
+    /// Default: "255 255 255".
+    /// It is non inheritable, but when set will internally propagate to the
+    /// children (since 3.25).
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "BGCOLOR", rgb);
     }
@@ -1994,10 +2279,20 @@ pub const FlatTabs = opaque {
         c.setBoolAttribute(self, "DRAWMAKEINACTIVE", arg);
     }
 
+
+    /// 
+    /// HIGHCOLOR: text color for the highlighted Tab.
+    /// The current Tab is never highlighted, so it affects only the other tabs.
+    /// If not defined FORECOLOR will be used.
     pub fn getHighColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "HIGHCOLOR");
     }
 
+
+    /// 
+    /// HIGHCOLOR: text color for the highlighted Tab.
+    /// The current Tab is never highlighted, so it affects only the other tabs.
+    /// If not defined FORECOLOR will be used.
     pub fn setHighColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "HIGHCOLOR", rgb);
     }
@@ -2072,10 +2367,22 @@ pub const FlatTabs = opaque {
         c.setDoubleAttribute(self, "LINEY", arg);
     }
 
+
+    /// 
+    /// SHOWCLOSE: enables the close button on each tab.
+    /// Default value: "NO".
+    /// By default when closed the tab is hidden.
+    /// To change that behavior use the TABCLOSE_CB callback.
     pub fn getShowClose(self: *Self) bool {
         return c.getBoolAttribute(self, "SHOWCLOSE");
     }
 
+
+    /// 
+    /// SHOWCLOSE: enables the close button on each tab.
+    /// Default value: "NO".
+    /// By default when closed the tab is hidden.
+    /// To change that behavior use the TABCLOSE_CB callback.
     pub fn setShowClose(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "SHOWCLOSE", arg);
     }
@@ -2104,10 +2411,18 @@ pub const FlatTabs = opaque {
         c.setStrAttribute(self, "FONTFACE", arg);
     }
 
+
+    /// 
+    /// TABFONTSIZEn: text font size.
+    /// When change will actually set TABFONTn.
     pub fn getTabFontSize(self: *Self) i32 {
         return c.getIntAttribute(self, "TABFONTSIZE");
     }
 
+
+    /// 
+    /// TABFONTSIZEn: text font size.
+    /// When change will actually set TABFONTn.
     pub fn setTabFontSize(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "TABFONTSIZE", arg);
     }
@@ -2123,6 +2438,15 @@ pub const FlatTabs = opaque {
         c.setStrAttribute(self, "MAXSIZE", value);
     }
 
+
+    /// 
+    /// TABTYPE (non inheritable): the type of tabs, which can be "TOP", "BOTTOM",
+    /// "LEFT" or "RIGHT".
+    /// Default is "TOP".
+    /// It will not automatically change the TABORIENTATION.
+    /// When changed with the dialog visible the application should call IupRefresh
+    /// or IupRefresh children to updated the layout when ready.
+    /// (since 3.27)
     pub fn getTabType(self: *Self) ?TabType {
         var ret = c.getStrAttribute(self, "TABTYPE");
 
@@ -2133,6 +2457,15 @@ pub const FlatTabs = opaque {
         return null;
     }
 
+
+    /// 
+    /// TABTYPE (non inheritable): the type of tabs, which can be "TOP", "BOTTOM",
+    /// "LEFT" or "RIGHT".
+    /// Default is "TOP".
+    /// It will not automatically change the TABORIENTATION.
+    /// When changed with the dialog visible the application should call IupRefresh
+    /// or IupRefresh children to updated the layout when ready.
+    /// (since 3.27)
     pub fn setTabType(self: *Self, arg: ?TabType) void {
         if (arg) |value| switch (value) {
             .Bottom => c.setStrAttribute(self, "TABTYPE", "BOTTOM"),
@@ -2176,10 +2509,22 @@ pub const FlatTabs = opaque {
         c.setStrAttribute(self, "CURSOR", arg);
     }
 
+
+    /// 
+    /// TABVISIBLEn: controls the visibility of a tab.
+    /// When a tab is hidden the tabs indices are not changed.
+    /// Can be Yes or No.
+    /// Default: Yes.
     pub fn getTabVisible(self: *Self) bool {
         return c.getBoolAttribute(self, "TABVISIBLE");
     }
 
+
+    /// 
+    /// TABVISIBLEn: controls the visibility of a tab.
+    /// When a tab is hidden the tabs indices are not changed.
+    /// Can be Yes or No.
+    /// Default: Yes.
     pub fn setTabVisible(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "TABVISIBLE", arg);
     }
@@ -2273,10 +2618,18 @@ pub const FlatTabs = opaque {
         c.setBoolAttribute(self, "DRAGSOURCEMOVE", arg);
     }
 
+
+    /// 
+    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+    /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+    /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }
@@ -2301,10 +2654,22 @@ pub const FlatTabs = opaque {
         c.setDoubleAttribute(self, "POSY", arg);
     }
 
+
+    /// 
+    /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
+    /// If set to NO will compute using only the current tab.
+    /// Default: Yes.
+    /// (since 3.27)
     pub fn getChildSizeAll(self: *Self) bool {
         return c.getBoolAttribute(self, "CHILDSIZEALL");
     }
 
+
+    /// 
+    /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
+    /// If set to NO will compute using only the current tab.
+    /// Default: Yes.
+    /// (since 3.27)
     pub fn setChildSizeAll(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "CHILDSIZEALL", arg);
     }
@@ -2393,19 +2758,45 @@ pub const FlatTabs = opaque {
         c.setStrAttribute(self, "TIPBALLOONTITLE", arg);
     }
 
+
+    /// 
+    /// TABSFONTSIZE: text font size.
+    /// When change will actually set TABSFONT.
     pub fn getTabsFontSize(self: *Self) i32 {
         return c.getIntAttribute(self, "TABSFONTSIZE");
     }
 
+
+    /// 
+    /// TABSFONTSIZE: text font size.
+    /// When change will actually set TABSFONT.
     pub fn setTabsFontSize(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "TABSFONTSIZE", arg);
     }
 
+
+    /// 
+    /// CHILDOFFSET: Allow to specify a position offset for the child.
+    /// Available for native containers only.
+    /// It will not affect the natural size, and allows to position controls
+    /// outside the client area.
+    /// Format "dxxdy", where dx and dy are integer values corresponding to the
+    /// horizontal and vertical offsets, respectively, in pixels.
+    /// Default: 0x0.
     pub fn getChildOffset(self: *Self) Size {
         var str = c.getStrAttribute(self, "CHILDOFFSET");
         return Size.parse(str);
     }
 
+
+    /// 
+    /// CHILDOFFSET: Allow to specify a position offset for the child.
+    /// Available for native containers only.
+    /// It will not affect the natural size, and allows to position controls
+    /// outside the client area.
+    /// Format "dxxdy", where dx and dy are integer values corresponding to the
+    /// horizontal and vertical offsets, respectively, in pixels.
+    /// Default: 0x0.
     pub fn setChildOffset(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
@@ -2420,6 +2811,10 @@ pub const FlatTabs = opaque {
         c.setBoolAttribute(self, "DRAWTEXTWRAP", arg);
     }
 
+
+    /// 
+    /// COUNT (read-only): returns the number of tabs.
+    /// Same value returned by IupGetChildCount.
     pub fn getCount(self: *Self) i32 {
         return c.getIntAttribute(self, "COUNT");
     }
@@ -2460,6 +2855,12 @@ pub const FlatTabs = opaque {
         return c.getBoolAttribute(self, "YHIDDEN");
     }
 
+
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.27)
     pub fn getFloating(self: *Self) ?Floating {
         var ret = c.getStrAttribute(self, "FLOATING");
 
@@ -2469,6 +2870,12 @@ pub const FlatTabs = opaque {
         return null;
     }
 
+
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.27)
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
             .Yes => c.setStrAttribute(self, "FLOATING", "YES"),
@@ -2479,10 +2886,22 @@ pub const FlatTabs = opaque {
         }
     }
 
+
+    /// 
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    /// It is not updated if TABIMAGEn is changed.
     pub fn getTabImage(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TABIMAGE");
     }
 
+
+    /// 
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    /// It is not updated if TABIMAGEn is changed.
     pub fn setTabImage(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TABIMAGE", arg);
     }
@@ -2503,18 +2922,44 @@ pub const FlatTabs = opaque {
         c.setStrAttribute(self, "NAME", arg);
     }
 
+
+    /// 
+    /// EXTRABUTTONS: sets the number of extra image buttons at right in the free
+    /// space area.
+    /// There can be any number of buttons.
+    /// See the EXTRABUTTON_CB callback.
+    /// Default: 0.
     pub fn getExtraButtons(self: *Self) i32 {
         return c.getIntAttribute(self, "EXTRABUTTONS");
     }
 
+
+    /// 
+    /// EXTRABUTTONS: sets the number of extra image buttons at right in the free
+    /// space area.
+    /// There can be any number of buttons.
+    /// See the EXTRABUTTON_CB callback.
+    /// Default: 0.
     pub fn setExtraButtons(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "EXTRABUTTONS", arg);
     }
 
+
+    /// 
+    /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
+    /// the next native parent with FOCUS_CB defined.
+    /// Default: NO.
+    /// (since 3.23)
     pub fn getPropagateFocus(self: *Self) bool {
         return c.getBoolAttribute(self, "PROPAGATEFOCUS");
     }
 
+
+    /// 
+    /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
+    /// the next native parent with FOCUS_CB defined.
+    /// Default: NO.
+    /// (since 3.23)
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "PROPAGATEFOCUS", arg);
     }
@@ -2646,6 +3091,10 @@ pub const FlatTabs = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
+    /// (since 3.22) int function(Ihandle* ih, int button, int pressed); [in C]
+    /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua]
     pub fn setExtraButtonCallback(self: *Self, callback: ?OnExtraButtonFn) void {
         const Handler = CallbackHandler(Self, OnExtraButtonFn, "EXTRABUTTON_CB");
         Handler.setCallback(self, callback);
@@ -2714,6 +3163,10 @@ pub const FlatTabs = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// TABCHANGE_CB: Callback called when the user changes the current tab.
+    /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
+    /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
     pub fn setTabChangeCallback(self: *Self, callback: ?OnTabChangeFn) void {
         const Handler = CallbackHandler(Self, OnTabChangeFn, "TABCHANGE_CB");
         Handler.setCallback(self, callback);
@@ -2729,6 +3182,11 @@ pub const FlatTabs = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// TABCLOSE_CB: Callback called when the user clicks on the close button.
+    /// Called only when SHOWCLOSE=Yes.
+    /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+    /// (ret: number) [in Lua]
     pub fn setTabCloseCallback(self: *Self, callback: ?OnTabCloseFn) void {
         const Handler = CallbackHandler(Self, OnTabCloseFn, "TABCLOSE_CB");
         Handler.setCallback(self, callback);
@@ -2821,6 +3279,11 @@ pub const FlatTabs = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
+    /// Called only when TABCHANGE_CB is not defined.
+    /// int function(Ihandle* ih, int new_pos, int old_pos); [in C]
+    /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
     pub fn setTabChangePosCallback(self: *Self, callback: ?OnTabChangePosFn) void {
         const Handler = CallbackHandler(Self, OnTabChangePosFn, "TABCHANGEPOS_CB");
         Handler.setCallback(self, callback);
@@ -3006,6 +3469,11 @@ pub const FlatTabs = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
+    /// right mouse button.
+    /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
+    /// (ret: number) [in Lua]
     pub fn setRightClickCallback(self: *Self, callback: ?OnRightClickFn) void {
         const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
         Handler.setCallback(self, callback);
@@ -3250,18 +3718,6 @@ test "FlatTabs TabTitle" {
     var ret = item.getTabTitle();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs CanFocus" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setCanFocus(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getCanFocus();
-
-    try std.testing.expect(ret == true);
 }
 
 test "FlatTabs TabOrientation" {

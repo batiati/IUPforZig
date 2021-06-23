@@ -97,12 +97,8 @@ pub const Item = opaque {
     pub const OnHelpFn = fn (self: *Self) anyerror!void;
 
     /// 
-    /// VALUE (non inheritable): Indicates the item's state.
-    /// When the value is ON, a mark will be displayed to the left of the item.
-    /// Default: OFF.
-    /// An item in a menu bar cannot have a check mark.
-    /// When IMAGE is used, the checkmark is not shown.
-    /// See the item AUTOTOGGLE attribute and the menu RADIO attribute.
+    /// Since GTK 2.14 to have a menu item that can be marked you must set the
+    /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
     pub const Value = enum {
         On,
         Off,
@@ -155,6 +151,9 @@ pub const Item = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -236,12 +235,8 @@ pub const Item = opaque {
 
 
         /// 
-        /// VALUE (non inheritable): Indicates the item's state.
-        /// When the value is ON, a mark will be displayed to the left of the item.
-        /// Default: OFF.
-        /// An item in a menu bar cannot have a check mark.
-        /// When IMAGE is used, the checkmark is not shown.
-        /// See the item AUTOTOGGLE attribute and the menu RADIO attribute.
+        /// Since GTK 2.14 to have a menu item that can be marked you must set the
+        /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
         pub fn setValue(self: *Initializer, arg: ?Value) Initializer {
             if (arg) |value| switch (value) {
                 .On => c.setStrAttribute(self.ref, "VALUE", "ON"),
@@ -442,10 +437,16 @@ pub const Item = opaque {
         try Impl(Self).refresh(self);
     }
 
+
+    /// 
+    /// ACTIVE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }
@@ -584,12 +585,8 @@ pub const Item = opaque {
 
 
     /// 
-    /// VALUE (non inheritable): Indicates the item's state.
-    /// When the value is ON, a mark will be displayed to the left of the item.
-    /// Default: OFF.
-    /// An item in a menu bar cannot have a check mark.
-    /// When IMAGE is used, the checkmark is not shown.
-    /// See the item AUTOTOGGLE attribute and the menu RADIO attribute.
+    /// Since GTK 2.14 to have a menu item that can be marked you must set the
+    /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
     pub fn getValue(self: *Self) ?Value {
         var ret = c.getStrAttribute(self, "VALUE");
 
@@ -600,12 +597,8 @@ pub const Item = opaque {
 
 
     /// 
-    /// VALUE (non inheritable): Indicates the item's state.
-    /// When the value is ON, a mark will be displayed to the left of the item.
-    /// Default: OFF.
-    /// An item in a menu bar cannot have a check mark.
-    /// When IMAGE is used, the checkmark is not shown.
-    /// See the item AUTOTOGGLE attribute and the menu RADIO attribute.
+    /// Since GTK 2.14 to have a menu item that can be marked you must set the
+    /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
     pub fn setValue(self: *Self, arg: ?Value) void {
         if (arg) |value| switch (value) {
             .On => c.setStrAttribute(self, "VALUE", "ON"),

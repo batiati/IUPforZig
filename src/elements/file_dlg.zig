@@ -227,6 +227,15 @@ pub const FileDlg = opaque {
 
     pub const OnTrayClickFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32) anyerror!void;
 
+    /// 
+    /// When saving a file, the overwrite check is done before the FILE_CB callback
+    /// is called with status=OK.
+    /// If the application wants to add an extension to the file name inside the
+    /// FILE_CB callback when status=OK, then it must manually check if the file
+    /// with the extension exits and asks the user if the file should be replaced,
+    /// if not then the callback can set the FILE attribute and returns
+    /// IUP_CONTINUE, so the file dialog will remain open and the user will have an
+    /// opportunity to change the file name now that it contains the extension.
     pub const OnFileFn = fn (self: *Self, arg0: [:0]const u8, arg1: [:0]const u8) anyerror!void;
 
     /// 
@@ -1063,21 +1072,9 @@ pub const FileDlg = opaque {
 
 
         /// 
-        /// DIRECTORY: Initial directory.
-        /// When consulted after the dialog is closed and the user pressed the OK
-        /// button, it will contain the directory of the selected file.
-        /// When set the last separator does not need to be specified, but when get the
-        /// returned value will always contains the last separator.
-        /// In Motif or GTK, if not defined, the dialog opens in the current directory.
-        /// In Windows, if not defined and the application has used the dialog in the
-        /// past, the path most recently used is selected as the initial directory.
-        /// However, if an application is not run for a long time, its saved selected
-        /// path is discarded.
-        /// Also if not defined and the current directory contains any files of the
-        /// specified filter types, the initial directory is the current directory.
-        /// Otherwise, the initial directory is the "My Documents" directory of the
-        /// current user.
-        /// Otherwise, the initial directory is the Desktop folder.
+        /// In Windows, the FILE and the DIRECTORY attributes also accept strings
+        /// containing "/" as path separators, but the VALUE attribute will always
+        /// return strings using the "\" character.
         pub fn setDirectory(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "DIRECTORY", arg);
             return self.*;
@@ -1427,6 +1424,15 @@ pub const FileDlg = opaque {
             return self.*;
         }
 
+        /// 
+        /// When saving a file, the overwrite check is done before the FILE_CB callback
+        /// is called with status=OK.
+        /// If the application wants to add an extension to the file name inside the
+        /// FILE_CB callback when status=OK, then it must manually check if the file
+        /// with the extension exits and asks the user if the file should be replaced,
+        /// if not then the callback can set the FILE attribute and returns
+        /// IUP_CONTINUE, so the file dialog will remain open and the user will have an
+        /// opportunity to change the file name now that it contains the extension.
         pub fn setFileCallback(self: *Initializer, callback: ?OnFileFn) Initializer {
             const Handler = CallbackHandler(Self, OnFileFn, "FILE_CB");
             Handler.setCallback(self.ref, callback);
@@ -2576,17 +2582,9 @@ pub const FileDlg = opaque {
 
 
     /// 
-    /// VALUE (read-only): Name of the selected file(s), or NULL if no file was selected.
-    /// If FILE is not defined this is used as the initial value.
-    /// When MULTIPLEFILES=Yes it contains the path (but NOT the same value
-    /// returned in DIRECTORY, it does not contains the last separator) and several
-    /// file names separated by the '|' character.
-    /// The file list ends with character '|'.
-    /// BUT when the user selects just one file, the directory and the file are not
-    /// separated by '|'.
-    /// For example: "/tecgraf/iup/test|a.txt|b.txt|c.txt|" (MULTIPLEFILES=Yes and
-    /// more than one file is selected) "/tecgraf/iup/test/a.txt" (only one file is
-    /// selected)
+    /// In Windows, the FILE and the DIRECTORY attributes also accept strings
+    /// containing "/" as path separators, but the VALUE attribute will always
+    /// return strings using the "\" character.
     pub fn getValue(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "VALUE");
     }
@@ -2775,42 +2773,18 @@ pub const FileDlg = opaque {
 
 
     /// 
-    /// DIRECTORY: Initial directory.
-    /// When consulted after the dialog is closed and the user pressed the OK
-    /// button, it will contain the directory of the selected file.
-    /// When set the last separator does not need to be specified, but when get the
-    /// returned value will always contains the last separator.
-    /// In Motif or GTK, if not defined, the dialog opens in the current directory.
-    /// In Windows, if not defined and the application has used the dialog in the
-    /// past, the path most recently used is selected as the initial directory.
-    /// However, if an application is not run for a long time, its saved selected
-    /// path is discarded.
-    /// Also if not defined and the current directory contains any files of the
-    /// specified filter types, the initial directory is the current directory.
-    /// Otherwise, the initial directory is the "My Documents" directory of the
-    /// current user.
-    /// Otherwise, the initial directory is the Desktop folder.
+    /// In Windows, the FILE and the DIRECTORY attributes also accept strings
+    /// containing "/" as path separators, but the VALUE attribute will always
+    /// return strings using the "\" character.
     pub fn getDirectory(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "DIRECTORY");
     }
 
 
     /// 
-    /// DIRECTORY: Initial directory.
-    /// When consulted after the dialog is closed and the user pressed the OK
-    /// button, it will contain the directory of the selected file.
-    /// When set the last separator does not need to be specified, but when get the
-    /// returned value will always contains the last separator.
-    /// In Motif or GTK, if not defined, the dialog opens in the current directory.
-    /// In Windows, if not defined and the application has used the dialog in the
-    /// past, the path most recently used is selected as the initial directory.
-    /// However, if an application is not run for a long time, its saved selected
-    /// path is discarded.
-    /// Also if not defined and the current directory contains any files of the
-    /// specified filter types, the initial directory is the current directory.
-    /// Otherwise, the initial directory is the "My Documents" directory of the
-    /// current user.
-    /// Otherwise, the initial directory is the Desktop folder.
+    /// In Windows, the FILE and the DIRECTORY attributes also accept strings
+    /// containing "/" as path separators, but the VALUE attribute will always
+    /// return strings using the "\" character.
     pub fn setDirectory(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "DIRECTORY", arg);
     }
@@ -3150,6 +3124,15 @@ pub const FileDlg = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// When saving a file, the overwrite check is done before the FILE_CB callback
+    /// is called with status=OK.
+    /// If the application wants to add an extension to the file name inside the
+    /// FILE_CB callback when status=OK, then it must manually check if the file
+    /// with the extension exits and asks the user if the file should be replaced,
+    /// if not then the callback can set the FILE attribute and returns
+    /// IUP_CONTINUE, so the file dialog will remain open and the user will have an
+    /// opportunity to change the file name now that it contains the extension.
     pub fn setFileCallback(self: *Self, callback: ?OnFileFn) void {
         const Handler = CallbackHandler(Self, OnFileFn, "FILE_CB");
         Handler.setCallback(self, callback);

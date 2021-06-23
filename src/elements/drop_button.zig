@@ -65,6 +65,21 @@ pub const DropButton = opaque {
     /// Affects IupCanvas, IupGLCanvas, SCROLLBAR
     pub const OnScrollFn = fn (self: *Self, arg0: i32, arg1: f32, arg2: f32) anyerror!void;
 
+    /// 
+    /// The drop dialog is configured with no decorations and it is not resizable,
+    /// only the FOCUS_CB and K_ESC callbacks are set.
+    /// But this can be changed by the application.
+    /// It is a regular IupDialog.
+    /// To obtain the drop button handle from the handle of the dialog get the
+    /// "DROPBUTTON" attribute handle from the dialog, using IupGetAttributeHandle.
+    /// After performing some operation on the drop child, use SHOWDROPDOWN=NO on
+    /// the drop button, you may also update its TITLE, just like a regular IupList
+    /// with DROPDOWN=Yes, but this will not be performed automatically by the drop button.
+    /// For example, set the ACTION callback on the IupList used as drop child:
+    /// static int list_cb(Ihandle* list, char *text, int item, int state) { if
+    /// (state == 1) { Ihandle* ih = IupGetAttributeHandle(IupGetDialog(list),
+    /// "DROPBUTTON"); IupSetAttribute(ih, "SHOWDROPDOWN", "No");
+    /// IupSetStrAttribute(ih, "TITLE", text); } return IUP_DEFAULT; }
     pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
@@ -258,6 +273,11 @@ pub const DropButton = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// DROPSHOW_CB: Action generated right after the drop child is shown or hidden.
+    /// This callback is also called when SHOWDROPDOWN is set.
+    /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
+    /// -> (ret: number) [in Lua]
     pub const OnDropShowFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
@@ -311,6 +331,12 @@ pub const DropButton = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// FLAT_ACTION: Action generated when the button 1 (usually left) is selected.
+    /// This callback is called only after the mouse is released and when it is
+    /// released inside the button area.
+    /// Called only when DROPONARROW=Yes.
+    /// int function(Ihandle* ih); [in C]ih:action() -> (ret: number) [in Lua]
     pub const OnFlatActionFn = fn (self: *Self) anyerror!void;
 
     /// 
@@ -374,6 +400,11 @@ pub const DropButton = opaque {
 
     pub const OnFlatMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
+    /// 
+    /// DROPDOWN_CB: Action generated right before the drop child is shown or hidden.
+    /// This callback is also called when SHOWDROPDOWN is set.
+    /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
+    /// -> (ret: number) [in Lua]
     pub const OnDropDownFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -717,13 +748,9 @@ pub const DropButton = opaque {
 
 
         /// 
-        /// PADDING: internal margin.
-        /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
-        /// but uses a different name to avoid inheritance problems.
-        /// Alignment does not includes the padding area.
-        /// Default value: "3x3".
-        /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
-        /// will be used instead (since 3.29).
+        /// The natural size will be a combination of the size of the image and the
+        /// title, if any, plus PADDING and SPACING (if both image and title are
+        /// present), and plus the horizontal space occupied by the arrow.
         pub fn setPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -910,8 +937,9 @@ pub const DropButton = opaque {
 
 
         /// 
-        /// SPACING (non inheritable): spacing between the image and the text.
-        /// Default: "2".
+        /// The natural size will be a combination of the size of the image and the
+        /// title, if any, plus PADDING and SPACING (if both image and title are
+        /// present), and plus the horizontal space occupied by the arrow.
         pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "SPACING", arg);
             return self.*;
@@ -1088,6 +1116,11 @@ pub const DropButton = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
+        /// The text size will adapt to include the rotated space.
+        /// (since 3.25)
         pub fn setTextOrientation(self: *Initializer, arg: f64) Initializer {
             c.setDoubleAttribute(self.ref, "TEXTORIENTATION", arg);
             return self.*;
@@ -1105,6 +1138,10 @@ pub const DropButton = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+        /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -1321,6 +1358,21 @@ pub const DropButton = opaque {
             return self.*;
         }
 
+        /// 
+        /// The drop dialog is configured with no decorations and it is not resizable,
+        /// only the FOCUS_CB and K_ESC callbacks are set.
+        /// But this can be changed by the application.
+        /// It is a regular IupDialog.
+        /// To obtain the drop button handle from the handle of the dialog get the
+        /// "DROPBUTTON" attribute handle from the dialog, using IupGetAttributeHandle.
+        /// After performing some operation on the drop child, use SHOWDROPDOWN=NO on
+        /// the drop button, you may also update its TITLE, just like a regular IupList
+        /// with DROPDOWN=Yes, but this will not be performed automatically by the drop button.
+        /// For example, set the ACTION callback on the IupList used as drop child:
+        /// static int list_cb(Ihandle* list, char *text, int item, int state) { if
+        /// (state == 1) { Ihandle* ih = IupGetAttributeHandle(IupGetDialog(list),
+        /// "DROPBUTTON"); IupSetAttribute(ih, "SHOWDROPDOWN", "No");
+        /// IupSetStrAttribute(ih, "TITLE", text); } return IUP_DEFAULT; }
         pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
@@ -1598,6 +1650,11 @@ pub const DropButton = opaque {
             return self.*;
         }
 
+        /// 
+        /// DROPSHOW_CB: Action generated right after the drop child is shown or hidden.
+        /// This callback is also called when SHOWDROPDOWN is set.
+        /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
+        /// -> (ret: number) [in Lua]
         pub fn setDropShowCallback(self: *Initializer, callback: ?OnDropShowFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropShowFn, "DROPSHOW_CB");
             Handler.setCallback(self.ref, callback);
@@ -1675,6 +1732,12 @@ pub const DropButton = opaque {
             return self.*;
         }
 
+        /// 
+        /// FLAT_ACTION: Action generated when the button 1 (usually left) is selected.
+        /// This callback is called only after the mouse is released and when it is
+        /// released inside the button area.
+        /// Called only when DROPONARROW=Yes.
+        /// int function(Ihandle* ih); [in C]ih:action() -> (ret: number) [in Lua]
         pub fn setFlatActionCallback(self: *Initializer, callback: ?OnFlatActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnFlatActionFn, "FLAT_ACTION");
             Handler.setCallback(self.ref, callback);
@@ -1754,6 +1817,11 @@ pub const DropButton = opaque {
             return self.*;
         }
 
+        /// 
+        /// DROPDOWN_CB: Action generated right before the drop child is shown or hidden.
+        /// This callback is also called when SHOWDROPDOWN is set.
+        /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
+        /// -> (ret: number) [in Lua]
         pub fn setDropDownCallback(self: *Initializer, callback: ?OnDropDownFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropDownFn, "DROPDOWN_CB");
             Handler.setCallback(self.ref, callback);
@@ -2231,13 +2299,9 @@ pub const DropButton = opaque {
 
 
     /// 
-    /// PADDING: internal margin.
-    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
-    /// but uses a different name to avoid inheritance problems.
-    /// Alignment does not includes the padding area.
-    /// Default value: "3x3".
-    /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
-    /// will be used instead (since 3.29).
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are
+    /// present), and plus the horizontal space occupied by the arrow.
     pub fn getPadding(self: *Self) Size {
         var str = c.getStrAttribute(self, "PADDING");
         return Size.parse(str);
@@ -2245,13 +2309,9 @@ pub const DropButton = opaque {
 
 
     /// 
-    /// PADDING: internal margin.
-    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
-    /// but uses a different name to avoid inheritance problems.
-    /// Alignment does not includes the padding area.
-    /// Default value: "3x3".
-    /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
-    /// will be used instead (since 3.29).
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are
+    /// present), and plus the horizontal space occupied by the arrow.
     pub fn setPadding(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
@@ -2578,16 +2638,18 @@ pub const DropButton = opaque {
 
 
     /// 
-    /// SPACING (non inheritable): spacing between the image and the text.
-    /// Default: "2".
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are
+    /// present), and plus the horizontal space occupied by the arrow.
     pub fn getSpacing(self: *Self) i32 {
         return c.getIntAttribute(self, "SPACING");
     }
 
 
     /// 
-    /// SPACING (non inheritable): spacing between the image and the text.
-    /// Default: "2".
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are
+    /// present), and plus the horizontal space occupied by the arrow.
     pub fn setSpacing(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "SPACING", arg);
     }
@@ -2902,10 +2964,20 @@ pub const DropButton = opaque {
         c.setStrAttribute(self, "CPADDING", value);
     }
 
+
+    /// 
+    /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
+    /// The text size will adapt to include the rotated space.
+    /// (since 3.25)
     pub fn getTextOrientation(self: *Self) f64 {
         return c.getDoubleAttribute(self, "TEXTORIENTATION");
     }
 
+
+    /// 
+    /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
+    /// The text size will adapt to include the rotated space.
+    /// (since 3.25)
     pub fn setTextOrientation(self: *Self, arg: f64) void {
         c.setDoubleAttribute(self, "TEXTORIENTATION", arg);
     }
@@ -2932,10 +3004,18 @@ pub const DropButton = opaque {
         c.setBoolAttribute(self, "FITTOBACKIMAGE", arg);
     }
 
+
+    /// 
+    /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+    /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+    /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }
@@ -3267,6 +3347,21 @@ pub const DropButton = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// The drop dialog is configured with no decorations and it is not resizable,
+    /// only the FOCUS_CB and K_ESC callbacks are set.
+    /// But this can be changed by the application.
+    /// It is a regular IupDialog.
+    /// To obtain the drop button handle from the handle of the dialog get the
+    /// "DROPBUTTON" attribute handle from the dialog, using IupGetAttributeHandle.
+    /// After performing some operation on the drop child, use SHOWDROPDOWN=NO on
+    /// the drop button, you may also update its TITLE, just like a regular IupList
+    /// with DROPDOWN=Yes, but this will not be performed automatically by the drop button.
+    /// For example, set the ACTION callback on the IupList used as drop child:
+    /// static int list_cb(Ihandle* list, char *text, int item, int state) { if
+    /// (state == 1) { Ihandle* ih = IupGetAttributeHandle(IupGetDialog(list),
+    /// "DROPBUTTON"); IupSetAttribute(ih, "SHOWDROPDOWN", "No");
+    /// IupSetStrAttribute(ih, "TITLE", text); } return IUP_DEFAULT; }
     pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
         const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
@@ -3523,6 +3618,11 @@ pub const DropButton = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// DROPSHOW_CB: Action generated right after the drop child is shown or hidden.
+    /// This callback is also called when SHOWDROPDOWN is set.
+    /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
+    /// -> (ret: number) [in Lua]
     pub fn setDropShowCallback(self: *Self, callback: ?OnDropShowFn) void {
         const Handler = CallbackHandler(Self, OnDropShowFn, "DROPSHOW_CB");
         Handler.setCallback(self, callback);
@@ -3594,6 +3694,12 @@ pub const DropButton = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// FLAT_ACTION: Action generated when the button 1 (usually left) is selected.
+    /// This callback is called only after the mouse is released and when it is
+    /// released inside the button area.
+    /// Called only when DROPONARROW=Yes.
+    /// int function(Ihandle* ih); [in C]ih:action() -> (ret: number) [in Lua]
     pub fn setFlatActionCallback(self: *Self, callback: ?OnFlatActionFn) void {
         const Handler = CallbackHandler(Self, OnFlatActionFn, "FLAT_ACTION");
         Handler.setCallback(self, callback);
@@ -3669,6 +3775,11 @@ pub const DropButton = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// DROPDOWN_CB: Action generated right before the drop child is shown or hidden.
+    /// This callback is also called when SHOWDROPDOWN is set.
+    /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
+    /// -> (ret: number) [in Lua]
     pub fn setDropDownCallback(self: *Self, callback: ?OnDropDownFn) void {
         const Handler = CallbackHandler(Self, OnDropDownFn, "DROPDOWN_CB");
         Handler.setCallback(self, callback);

@@ -37,8 +37,18 @@ pub const Tabs = opaque {
 
     pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
 
+    /// 
+    /// FOCUS_CB: Called when a child of the container gets or looses the focus.
+    /// It is called only if PROPAGATEFOCUS is defined in the child.
+    /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+    /// number) -> (ret: number) [in Lua]
     pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
+    /// 
+    /// TABCHANGE_CB: Callback called when the user changes the current tab.
+    /// It is not called when the current tab is programmatically changed or removed.
+    /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
+    /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
     pub const OnTabChangeFn = fn (self: *Self, arg0: iup.Element, arg1: iup.Element) anyerror!void;
 
     /// 
@@ -83,6 +93,11 @@ pub const Tabs = opaque {
 
     pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
+    /// 
+    /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
+    /// right mouse button (since 3.10).
+    /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
+    /// (ret: number) [in Lua]
     pub const OnRightClickFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
@@ -148,8 +163,19 @@ pub const Tabs = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
+    /// Called only when TABCHANGE_CB is not defined.
+    /// (since 3.3) int function(Ihandle* ih, int new_pos, int old_pos); [in C]
+    /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
     pub const OnTabChangePosFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
+    /// 
+    /// TABCLOSE_CB [Windows and GTK Only]: Callback called when the user clicks on
+    /// the close button (since 3.10).
+    /// Called only when SHOWCLOSE=Yes.
+    /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+    /// (ret: number) [in Lua]
     pub const OnTabCloseFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
@@ -188,7 +214,9 @@ pub const Tabs = opaque {
         Top,
         Bottom,
     };
-
+    /// 
+    /// In Windows, the Visual Styles work only when TABTYPE is TOP.
+    /// Windows Classic Windows w/ Styles
     pub const TabType = enum {
         Bottom,
         Left,
@@ -205,7 +233,11 @@ pub const Tabs = opaque {
         VerticalFree,
         No,
     };
-
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.27)
     pub const Floating = enum {
         Yes,
         Ignore,
@@ -381,6 +413,10 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// In Windows, the Visual Styles work only when TABTYPE is TOP.
+        /// Windows Classic Windows w/ Styles
         pub fn setTabType(self: *Initializer, arg: ?TabType) Initializer {
             if (arg) |value| switch (value) {
                 .Bottom => c.setStrAttribute(self.ref, "TABTYPE", "BOTTOM"),
@@ -439,6 +475,14 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TABVISIBLEn (non inheritable): Allows to hide a tab.
+        /// n starts at 0.
+        /// When a tab is hidden the tabs indices are not changed.
+        /// Can be Yes or No.
+        /// Default: Yes.
+        /// (since 3.8)
         pub fn setTabVisible(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "TABVISIBLE", arg);
             return self.*;
@@ -476,6 +520,12 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+        /// then its size and position will be ignored by the layout processing.
+        /// Default: "NO".
+        /// (since 3.27)
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
                 .Yes => c.setStrAttribute(self.ref, "FLOATING", "YES"),
@@ -519,6 +569,13 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// VALUEPOS (non inheritable): Changes the current tab by its position,
+        /// starting at 0.
+        /// When the tabs is created, the first element inserted is set as the visible child.
+        /// In GTK, inside the callback the returned value is still the previous one.
+        /// (since 3.0)
         pub fn setValuePos(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "VALUEPOS", arg);
             return self.*;
@@ -529,11 +586,22 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// VALUE (non inheritable): Changes the current tab by its name.
+        /// The value passed must be the name of one of the elements contained in the tabs.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
+        /// In Lua you can also use the element reference directly.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "VALUE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
         pub fn setTabImage(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TABIMAGE", arg);
             return self.*;
@@ -552,6 +620,10 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+        /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -589,6 +661,11 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
         pub fn setTabTitle(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TABTITLE", arg);
             return self.*;
@@ -605,12 +682,22 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+        /// 
+        /// FOCUS_CB: Called when a child of the container gets or looses the focus.
+        /// It is called only if PROPAGATEFOCUS is defined in the child.
+        /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+        /// number) -> (ret: number) [in Lua]
         pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
+        /// 
+        /// TABCHANGE_CB: Callback called when the user changes the current tab.
+        /// It is not called when the current tab is programmatically changed or removed.
+        /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
+        /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
         pub fn setTabChangeCallback(self: *Initializer, callback: ?OnTabChangeFn) Initializer {
             const Handler = CallbackHandler(Self, OnTabChangeFn, "TABCHANGE_CB");
             Handler.setCallback(self.ref, callback);
@@ -671,6 +758,11 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+        /// 
+        /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
+        /// right mouse button (since 3.10).
+        /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
+        /// (ret: number) [in Lua]
         pub fn setRightClickCallback(self: *Initializer, callback: ?OnRightClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
             Handler.setCallback(self.ref, callback);
@@ -760,12 +852,23 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+        /// 
+        /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
+        /// Called only when TABCHANGE_CB is not defined.
+        /// (since 3.3) int function(Ihandle* ih, int new_pos, int old_pos); [in C]
+        /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
         pub fn setTabChangePosCallback(self: *Initializer, callback: ?OnTabChangePosFn) Initializer {
             const Handler = CallbackHandler(Self, OnTabChangePosFn, "TABCHANGEPOS_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
+        /// 
+        /// TABCLOSE_CB [Windows and GTK Only]: Callback called when the user clicks on
+        /// the close button (since 3.10).
+        /// Called only when SHOWCLOSE=Yes.
+        /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+        /// (ret: number) [in Lua]
         pub fn setTabCloseCallback(self: *Initializer, callback: ?OnTabCloseFn) Initializer {
             const Handler = CallbackHandler(Self, OnTabCloseFn, "TABCLOSE_CB");
             Handler.setCallback(self.ref, callback);
@@ -1103,6 +1206,10 @@ pub const Tabs = opaque {
         c.setStrAttribute(self, "CHILDOFFSET", value);
     }
 
+
+    /// 
+    /// In Windows, the Visual Styles work only when TABTYPE is TOP.
+    /// Windows Classic Windows w/ Styles
     pub fn getTabType(self: *Self) ?TabType {
         var ret = c.getStrAttribute(self, "TABTYPE");
 
@@ -1113,6 +1220,10 @@ pub const Tabs = opaque {
         return null;
     }
 
+
+    /// 
+    /// In Windows, the Visual Styles work only when TABTYPE is TOP.
+    /// Windows Classic Windows w/ Styles
     pub fn setTabType(self: *Self, arg: ?TabType) void {
         if (arg) |value| switch (value) {
             .Bottom => c.setStrAttribute(self, "TABTYPE", "BOTTOM"),
@@ -1212,10 +1323,26 @@ pub const Tabs = opaque {
         c.setIntAttribute(self, "TIPDELAY", arg);
     }
 
+
+    /// 
+    /// TABVISIBLEn (non inheritable): Allows to hide a tab.
+    /// n starts at 0.
+    /// When a tab is hidden the tabs indices are not changed.
+    /// Can be Yes or No.
+    /// Default: Yes.
+    /// (since 3.8)
     pub fn getTabVisible(self: *Self) bool {
         return c.getBoolAttribute(self, "TABVISIBLE");
     }
 
+
+    /// 
+    /// TABVISIBLEn (non inheritable): Allows to hide a tab.
+    /// n starts at 0.
+    /// When a tab is hidden the tabs indices are not changed.
+    /// Can be Yes or No.
+    /// Default: Yes.
+    /// (since 3.8)
     pub fn setTabVisible(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "TABVISIBLE", arg);
     }
@@ -1276,6 +1403,12 @@ pub const Tabs = opaque {
         c.setBoolAttribute(self, "CHILDSIZEALL", arg);
     }
 
+
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.27)
     pub fn getFloating(self: *Self) ?Floating {
         var ret = c.getStrAttribute(self, "FLOATING");
 
@@ -1285,6 +1418,12 @@ pub const Tabs = opaque {
         return null;
     }
 
+
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.27)
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
             .Yes => c.setStrAttribute(self, "FLOATING", "YES"),
@@ -1364,10 +1503,24 @@ pub const Tabs = opaque {
         c.setStrAttribute(self, "NAME", arg);
     }
 
+
+    /// 
+    /// VALUEPOS (non inheritable): Changes the current tab by its position,
+    /// starting at 0.
+    /// When the tabs is created, the first element inserted is set as the visible child.
+    /// In GTK, inside the callback the returned value is still the previous one.
+    /// (since 3.0)
     pub fn getValuePos(self: *Self) i32 {
         return c.getIntAttribute(self, "VALUEPOS");
     }
 
+
+    /// 
+    /// VALUEPOS (non inheritable): Changes the current tab by its position,
+    /// starting at 0.
+    /// When the tabs is created, the first element inserted is set as the visible child.
+    /// In GTK, inside the callback the returned value is still the previous one.
+    /// (since 3.0)
     pub fn setValuePos(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "VALUEPOS", arg);
     }
@@ -1380,18 +1533,40 @@ pub const Tabs = opaque {
         c.setBoolAttribute(self, "TIPBALLOONTITLEICON", arg);
     }
 
+
+    /// 
+    /// VALUE (non inheritable): Changes the current tab by its name.
+    /// The value passed must be the name of one of the elements contained in the tabs.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
+    /// In Lua you can also use the element reference directly.
     pub fn getValue(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "VALUE");
     }
 
+
+    /// 
+    /// VALUE (non inheritable): Changes the current tab by its name.
+    /// The value passed must be the name of one of the elements contained in the tabs.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
+    /// In Lua you can also use the element reference directly.
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "VALUE", arg);
     }
 
+
+    /// 
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
     pub fn getTabImage(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TABIMAGE");
     }
 
+
+    /// 
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
     pub fn setTabImage(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TABIMAGE", arg);
     }
@@ -1420,10 +1595,18 @@ pub const Tabs = opaque {
         c.setBoolAttribute(self, "MULTILINE", arg);
     }
 
+
+    /// 
+    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+    /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+    /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }
@@ -1494,10 +1677,20 @@ pub const Tabs = opaque {
         c.setBoolAttribute(self, "TOUCH", arg);
     }
 
+
+    /// 
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
     pub fn getTabTitle(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TABTITLE");
     }
 
+
+    /// 
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
     pub fn setTabTitle(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TABTITLE", arg);
     }
@@ -1515,11 +1708,21 @@ pub const Tabs = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// FOCUS_CB: Called when a child of the container gets or looses the focus.
+    /// It is called only if PROPAGATEFOCUS is defined in the child.
+    /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+    /// number) -> (ret: number) [in Lua]
     pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
         const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// TABCHANGE_CB: Callback called when the user changes the current tab.
+    /// It is not called when the current tab is programmatically changed or removed.
+    /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
+    /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
     pub fn setTabChangeCallback(self: *Self, callback: ?OnTabChangeFn) void {
         const Handler = CallbackHandler(Self, OnTabChangeFn, "TABCHANGE_CB");
         Handler.setCallback(self, callback);
@@ -1576,6 +1779,11 @@ pub const Tabs = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
+    /// right mouse button (since 3.10).
+    /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
+    /// (ret: number) [in Lua]
     pub fn setRightClickCallback(self: *Self, callback: ?OnRightClickFn) void {
         const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
         Handler.setCallback(self, callback);
@@ -1659,11 +1867,22 @@ pub const Tabs = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
+    /// Called only when TABCHANGE_CB is not defined.
+    /// (since 3.3) int function(Ihandle* ih, int new_pos, int old_pos); [in C]
+    /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
     pub fn setTabChangePosCallback(self: *Self, callback: ?OnTabChangePosFn) void {
         const Handler = CallbackHandler(Self, OnTabChangePosFn, "TABCHANGEPOS_CB");
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// TABCLOSE_CB [Windows and GTK Only]: Callback called when the user clicks on
+    /// the close button (since 3.10).
+    /// Called only when SHOWCLOSE=Yes.
+    /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+    /// (ret: number) [in Lua]
     pub fn setTabCloseCallback(self: *Self, callback: ?OnTabCloseFn) void {
         const Handler = CallbackHandler(Self, OnTabCloseFn, "TABCLOSE_CB");
         Handler.setCallback(self, callback);

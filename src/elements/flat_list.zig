@@ -203,6 +203,12 @@ pub const FlatList = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// DRAGDROP_CB: Action generated when an internal drag and drop is executed.
+    /// Only active if SHOWDRAGDROP=YES.
+    /// int function(Ihandle *ih, int drag_id, int drop_id, int isshift, int
+    /// iscontrol); [in C] ih:dragdrop_cb(drag_id, drop_id, isshift, iscontrol:
+    /// number) -> (ret: number) [in Lua]
     pub const OnDragDropFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32) anyerror!void;
 
     pub const OnFlatButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
@@ -254,6 +260,10 @@ pub const FlatList = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// DBLCLICK_CB: Action generated when the user double click an item.
+    /// int function (Ihandle *ih, int item, char *text); [in
+    /// C]ih:dblclick_cb(item: number, text: string) -> (ret: number) [in Lua]
     pub const OnDblClickFn = fn (self: *Self, arg0: i32, arg1: [:0]const u8) anyerror!void;
 
     pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
@@ -307,6 +317,11 @@ pub const FlatList = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// FLAT_ACTION: Action generated when the state of an item in the list is
+    /// interactively changed.
+    /// int function (Ihandle *ih, char *text, int item, int state); [in
+    /// C]ih:action(text: string, item, state: number) -> (ret: number) [in Lua]
     pub const OnFlatActionFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: i32) anyerror!void;
 
     /// 
@@ -370,8 +385,18 @@ pub const FlatList = opaque {
 
     pub const OnFlatMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
+    /// 
+    /// VALUECHANGED_CB: Called after the selection was interactively changed.
+    /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+    /// Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// MULTISELECT_CB: Action generated when the state of an item in the multiple
+    /// selection list is interactively changed.
+    /// But it is called only when the interaction is over.
+    /// int function (Ihandle *ih, char *value); [in C]ih:multiselect_cb(value:
+    /// string) -> (ret: number) [in Lua]
     pub const OnMultiSelectFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -699,6 +724,10 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// VISIBLELINES: Defines the number of visible lines for the Natural Size,
+        /// this means that will act also as minimum number of visible lines.
         pub fn setVisibleLines(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "VISIBLELINES", arg);
             return self.*;
@@ -1114,16 +1143,11 @@ pub const FlatList = opaque {
 
 
         /// 
-        /// VALUE (non inheritable): Depends on the selection mode: MULTIPLE=YES:
-        /// Sequence of '+' and '-' symbols indicating the state of each item.
-        /// When setting this value, the user must provide the same amount of '+' and
-        /// '-' symbols as the amount of items in the list.
-        /// It can use ' ' (space) or another character so the current selection on
-        /// that item will remain the same (since 3.28).
-        /// MULTIPLE=NO: Integer number representing the selected item in the list
-        /// (begins at 1).
-        /// It returns NULL if there is no selected item.
-        /// For both cases, when setting NULL all items are deselected.
+        /// The non changed items marked with 'x' are simulated internally by IUP in
+        /// all systems.
+        /// If you add or remove items to/from the list and you count on the 'x'
+        /// values, then after adding/removing items set the VALUE attribute to ensure
+        /// proper 'x' values.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "VALUE", arg);
             return self.*;
@@ -1557,6 +1581,12 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+        /// 
+        /// DRAGDROP_CB: Action generated when an internal drag and drop is executed.
+        /// Only active if SHOWDRAGDROP=YES.
+        /// int function(Ihandle *ih, int drag_id, int drop_id, int isshift, int
+        /// iscontrol); [in C] ih:dragdrop_cb(drag_id, drop_id, isshift, iscontrol:
+        /// number) -> (ret: number) [in Lua]
         pub fn setDragDropCallback(self: *Initializer, callback: ?OnDragDropFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDropFn, "DRAGDROP_CB");
             Handler.setCallback(self.ref, callback);
@@ -1632,6 +1662,10 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+        /// 
+        /// DBLCLICK_CB: Action generated when the user double click an item.
+        /// int function (Ihandle *ih, int item, char *text); [in
+        /// C]ih:dblclick_cb(item: number, text: string) -> (ret: number) [in Lua]
         pub fn setDblClickCallback(self: *Initializer, callback: ?OnDblClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnDblClickFn, "DBLCLICK_CB");
             Handler.setCallback(self.ref, callback);
@@ -1709,6 +1743,11 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+        /// 
+        /// FLAT_ACTION: Action generated when the state of an item in the list is
+        /// interactively changed.
+        /// int function (Ihandle *ih, char *text, int item, int state); [in
+        /// C]ih:action(text: string, item, state: number) -> (ret: number) [in Lua]
         pub fn setFlatActionCallback(self: *Initializer, callback: ?OnFlatActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnFlatActionFn, "FLAT_ACTION");
             Handler.setCallback(self.ref, callback);
@@ -1788,12 +1827,22 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGED_CB: Called after the selection was interactively changed.
+        /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+        /// Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
+        /// 
+        /// MULTISELECT_CB: Action generated when the state of an item in the multiple
+        /// selection list is interactively changed.
+        /// But it is called only when the interaction is over.
+        /// int function (Ihandle *ih, char *value); [in C]ih:multiselect_cb(value:
+        /// string) -> (ret: number) [in Lua]
         pub fn setMultiSelectCallback(self: *Initializer, callback: ?OnMultiSelectFn) Initializer {
             const Handler = CallbackHandler(Self, OnMultiSelectFn, "MULTISELECT_CB");
             Handler.setCallback(self.ref, callback);
@@ -2273,10 +2322,18 @@ pub const FlatList = opaque {
         }
     }
 
+
+    /// 
+    /// VISIBLELINES: Defines the number of visible lines for the Natural Size,
+    /// this means that will act also as minimum number of visible lines.
     pub fn getVisibleLines(self: *Self) i32 {
         return c.getIntAttribute(self, "VISIBLELINES");
     }
 
+
+    /// 
+    /// VISIBLELINES: Defines the number of visible lines for the Natural Size,
+    /// this means that will act also as minimum number of visible lines.
     pub fn setVisibleLines(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "VISIBLELINES", arg);
     }
@@ -2950,32 +3007,22 @@ pub const FlatList = opaque {
 
 
     /// 
-    /// VALUE (non inheritable): Depends on the selection mode: MULTIPLE=YES:
-    /// Sequence of '+' and '-' symbols indicating the state of each item.
-    /// When setting this value, the user must provide the same amount of '+' and
-    /// '-' symbols as the amount of items in the list.
-    /// It can use ' ' (space) or another character so the current selection on
-    /// that item will remain the same (since 3.28).
-    /// MULTIPLE=NO: Integer number representing the selected item in the list
-    /// (begins at 1).
-    /// It returns NULL if there is no selected item.
-    /// For both cases, when setting NULL all items are deselected.
+    /// The non changed items marked with 'x' are simulated internally by IUP in
+    /// all systems.
+    /// If you add or remove items to/from the list and you count on the 'x'
+    /// values, then after adding/removing items set the VALUE attribute to ensure
+    /// proper 'x' values.
     pub fn getValue(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "VALUE");
     }
 
 
     /// 
-    /// VALUE (non inheritable): Depends on the selection mode: MULTIPLE=YES:
-    /// Sequence of '+' and '-' symbols indicating the state of each item.
-    /// When setting this value, the user must provide the same amount of '+' and
-    /// '-' symbols as the amount of items in the list.
-    /// It can use ' ' (space) or another character so the current selection on
-    /// that item will remain the same (since 3.28).
-    /// MULTIPLE=NO: Integer number representing the selected item in the list
-    /// (begins at 1).
-    /// It returns NULL if there is no selected item.
-    /// For both cases, when setting NULL all items are deselected.
+    /// The non changed items marked with 'x' are simulated internally by IUP in
+    /// all systems.
+    /// If you add or remove items to/from the list and you count on the 'x'
+    /// values, then after adding/removing items set the VALUE attribute to ensure
+    /// proper 'x' values.
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "VALUE", arg);
     }
@@ -3518,6 +3565,12 @@ pub const FlatList = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// DRAGDROP_CB: Action generated when an internal drag and drop is executed.
+    /// Only active if SHOWDRAGDROP=YES.
+    /// int function(Ihandle *ih, int drag_id, int drop_id, int isshift, int
+    /// iscontrol); [in C] ih:dragdrop_cb(drag_id, drop_id, isshift, iscontrol:
+    /// number) -> (ret: number) [in Lua]
     pub fn setDragDropCallback(self: *Self, callback: ?OnDragDropFn) void {
         const Handler = CallbackHandler(Self, OnDragDropFn, "DRAGDROP_CB");
         Handler.setCallback(self, callback);
@@ -3587,6 +3640,10 @@ pub const FlatList = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// DBLCLICK_CB: Action generated when the user double click an item.
+    /// int function (Ihandle *ih, int item, char *text); [in
+    /// C]ih:dblclick_cb(item: number, text: string) -> (ret: number) [in Lua]
     pub fn setDblClickCallback(self: *Self, callback: ?OnDblClickFn) void {
         const Handler = CallbackHandler(Self, OnDblClickFn, "DBLCLICK_CB");
         Handler.setCallback(self, callback);
@@ -3658,6 +3715,11 @@ pub const FlatList = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// FLAT_ACTION: Action generated when the state of an item in the list is
+    /// interactively changed.
+    /// int function (Ihandle *ih, char *text, int item, int state); [in
+    /// C]ih:action(text: string, item, state: number) -> (ret: number) [in Lua]
     pub fn setFlatActionCallback(self: *Self, callback: ?OnFlatActionFn) void {
         const Handler = CallbackHandler(Self, OnFlatActionFn, "FLAT_ACTION");
         Handler.setCallback(self, callback);
@@ -3733,11 +3795,21 @@ pub const FlatList = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGED_CB: Called after the selection was interactively changed.
+    /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+    /// Lua]
     pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// MULTISELECT_CB: Action generated when the state of an item in the multiple
+    /// selection list is interactively changed.
+    /// But it is called only when the interaction is over.
+    /// int function (Ihandle *ih, char *value); [in C]ih:multiselect_cb(value:
+    /// string) -> (ret: number) [in Lua]
     pub fn setMultiSelectCallback(self: *Self, callback: ?OnMultiSelectFn) void {
         const Handler = CallbackHandler(Self, OnMultiSelectFn, "MULTISELECT_CB");
         Handler.setCallback(self, callback);

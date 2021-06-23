@@ -916,9 +916,8 @@ pub const MessageDlg = opaque {
 
 
         /// 
-        /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
-        /// This dialog will be always in front of the parent dialog.
-        /// If not defined in Motif the dialog could not be modal.
+        /// In Windows, if PARENTDIALOG is specified then it will be modal relative
+        /// only to its parent.
         pub fn setParentDialog(self: *Initializer, arg: *iup.Dialog) Initializer {
             c.setHandleAttribute(self.ref, "PARENTDIALOG", arg);
             return self.*;
@@ -934,6 +933,9 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// VALUE: Message text.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "VALUE", arg);
             return self.*;
@@ -2403,6 +2405,26 @@ pub const MessageDlg = opaque {
         c.setBoolAttribute(self, "TIPBALLOONTITLEICON", arg);
     }
 
+
+    /// 
+    /// In Windows, if PARENTDIALOG is specified then it will be modal relative
+    /// only to its parent.
+    pub fn getParentDialog(self: *Self) ?*iup.Dialog {
+        if (c.getHandleAttribute(self, "PARENTDIALOG")) |handle| {
+            return @ptrCast(*iup.Dialog, handle);
+        } else {
+            return null;
+        }
+    }
+
+
+    /// 
+    /// In Windows, if PARENTDIALOG is specified then it will be modal relative
+    /// only to its parent.
+    pub fn setParentDialog(self: *Self, arg: *iup.Dialog) void {
+        c.setHandleAttribute(self, "PARENTDIALOG", arg);
+    }
+
     pub fn getBackground(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "BACKGROUND");
     }
@@ -2419,10 +2441,16 @@ pub const MessageDlg = opaque {
         c.setBoolAttribute(self, "HIDETASKBAR", arg);
     }
 
+
+    /// 
+    /// VALUE: Message text.
     pub fn getValue(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "VALUE");
     }
 
+
+    /// 
+    /// VALUE: Message text.
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "VALUE", arg);
     }

@@ -560,6 +560,11 @@ pub const Gauge = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CANFOCUS: enables the focus traversal of the control.
+        /// Default: NO.
+        /// (different from IupCanvas)
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "CANFOCUS", arg);
             return self.*;
@@ -620,6 +625,11 @@ pub const Gauge = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FLATCOLOR: color of the border when FLAT=Yes.
+        /// Default: "160 160 160".
+        /// (since 3.21)
         pub fn setFlatColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "FLATCOLOR", rgb);
             return self.*;
@@ -933,6 +943,10 @@ pub const Gauge = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, BGCOLOR, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE,
+        /// WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -1723,10 +1737,20 @@ pub const Gauge = opaque {
         c.setBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", arg);
     }
 
+
+    /// 
+    /// CANFOCUS: enables the focus traversal of the control.
+    /// Default: NO.
+    /// (different from IupCanvas)
     pub fn getCanFocus(self: *Self) bool {
         return c.getBoolAttribute(self, "CANFOCUS");
     }
 
+
+    /// 
+    /// CANFOCUS: enables the focus traversal of the control.
+    /// Default: NO.
+    /// (different from IupCanvas)
     pub fn setCanFocus(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "CANFOCUS", arg);
     }
@@ -1820,10 +1844,20 @@ pub const Gauge = opaque {
         c.setStrAttribute(self, "THEME", arg);
     }
 
+
+    /// 
+    /// FLATCOLOR: color of the border when FLAT=Yes.
+    /// Default: "160 160 160".
+    /// (since 3.21)
     pub fn getFlatColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "FLATCOLOR");
     }
 
+
+    /// 
+    /// FLATCOLOR: color of the border when FLAT=Yes.
+    /// Default: "160 160 160".
+    /// (since 3.21)
     pub fn setFlatColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "FLATCOLOR", rgb);
     }
@@ -2337,10 +2371,18 @@ pub const Gauge = opaque {
         c.setStrAttribute(self, "CPADDING", value);
     }
 
+
+    /// 
+    /// ACTIVE, BGCOLOR, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE,
+    /// WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, BGCOLOR, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE,
+    /// WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }

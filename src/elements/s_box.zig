@@ -250,6 +250,10 @@ pub const SBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+        /// MAXSIZE, THEME: also accepted.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "FONT", arg);
             return self.*;
@@ -688,10 +692,18 @@ pub const SBox = opaque {
         c.setBoolAttribute(self, "LAYOUTDRAG", arg);
     }
 
+
+    /// 
+    /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "FONT");
     }
 
+
+    /// 
+    /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "FONT", arg);
     }

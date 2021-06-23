@@ -176,6 +176,24 @@ pub const Tree = opaque {
 
     pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
 
+    /// 
+    /// SELECTION_CB: Action generated when an node is selected or deselected.
+    /// MULTISELECTION_CB: Action generated when multiple nodes are selected with
+    /// the mouse and the shift key pressed.
+    /// MULTIUNSELECTION_CB: Action generated before multiple nodes are unselected
+    /// in one single operation.
+    /// BRANCHOPEN_CB: Action generated when a branch is expanded.
+    /// BRANCHCLOSE_CB: Action generated when a branch is collapsed.
+    /// EXECUTELEAF_CB: Action generated when a leaf is executed.
+    /// EXECUTEBRANCH_CB: Action generated when a branch is executed.
+    /// SHOWRENAME_CB: Action generated before a node is renamed.
+    /// RENAME_CB: Action generated after a node is renamed.
+    /// DRAGDROP_CB: Action generated when an internal drag & drop is executed.
+    /// NODEREMOVED_CB: Action generated when a node is about to be removed.
+    /// RIGHTCLICK_CB: Action generated when the right mouse button is pressed over
+    /// a node.
+    /// TOGGLEVALUE_CB: Action generated when the toggle&#39;s state was changed.
+    /// The callback also receives the new toggle&#39;s state.
     pub const OnSelectionFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
@@ -303,7 +321,9 @@ pub const Tree = opaque {
         Top,
         Bottom,
     };
-
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub const Expand = enum {
         Yes,
         Horizontal,
@@ -318,7 +338,9 @@ pub const Tree = opaque {
         Ignore,
         No,
     };
-
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
     pub const State = enum {
         Expanded,
         Collapsed,
@@ -377,6 +399,10 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+        /// TOPITEM
         pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "FGCOLOR", rgb);
             return self.*;
@@ -416,6 +442,9 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DROPFILESTARGET", arg);
             return self.*;
@@ -481,6 +510,10 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+        /// TOPITEM
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (arg) |value| switch (value) {
                 .Yes => c.setStrAttribute(self.ref, "EXPAND", "YES"),
@@ -512,6 +545,10 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+        /// TOPITEM
         pub fn setTopItem(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "TOPITEM", arg);
             return self.*;
@@ -551,11 +588,18 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+        /// TITLEFONTUSERDATA
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TITLE", arg);
             return self.*;
         }
 
+
+        /// 
+        /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setShowDragDrop(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SHOWDRAGDROP", arg);
             return self.*;
@@ -566,11 +610,18 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// VALUECANFOCUS PROPAGATEFOCUS
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", arg);
             return self.*;
         }
 
+
+        /// 
+        /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+        /// TOPITEM
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "BGCOLOR", rgb);
             return self.*;
@@ -602,6 +653,10 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+        /// TITLEFONTUSERDATA
         pub fn setColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "COLOR", rgb);
             return self.*;
@@ -612,11 +667,19 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+        /// TOPITEM
         pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "SPACING", arg);
             return self.*;
         }
 
+
+        /// 
+        /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+        /// TOPITEM
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -664,6 +727,10 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+        /// TITLEFONTUSERDATA
         pub fn setState(self: *Initializer, arg: ?State) Initializer {
             if (arg) |value| switch (value) {
                 .Expanded => c.setStrAttribute(self.ref, "STATE", "EXPANDED"),
@@ -739,6 +806,9 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
         pub fn rename(self: *Initializer) Initializer {
             c.setStrAttribute(self.ref, "RENAME", null);
             return self.*;
@@ -749,6 +819,10 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+        /// TOPITEM
         pub fn setAutoRedraw(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "AUTOREDRAW", arg);
             return self.*;
@@ -987,6 +1061,24 @@ pub const Tree = opaque {
             return self.*;
         }
 
+        /// 
+        /// SELECTION_CB: Action generated when an node is selected or deselected.
+        /// MULTISELECTION_CB: Action generated when multiple nodes are selected with
+        /// the mouse and the shift key pressed.
+        /// MULTIUNSELECTION_CB: Action generated before multiple nodes are unselected
+        /// in one single operation.
+        /// BRANCHOPEN_CB: Action generated when a branch is expanded.
+        /// BRANCHCLOSE_CB: Action generated when a branch is collapsed.
+        /// EXECUTELEAF_CB: Action generated when a leaf is executed.
+        /// EXECUTEBRANCH_CB: Action generated when a branch is executed.
+        /// SHOWRENAME_CB: Action generated before a node is renamed.
+        /// RENAME_CB: Action generated after a node is renamed.
+        /// DRAGDROP_CB: Action generated when an internal drag & drop is executed.
+        /// NODEREMOVED_CB: Action generated when a node is about to be removed.
+        /// RIGHTCLICK_CB: Action generated when the right mouse button is pressed over
+        /// a node.
+        /// TOGGLEVALUE_CB: Action generated when the toggle&#39;s state was changed.
+        /// The callback also receives the new toggle&#39;s state.
         pub fn setSelectionCallback(self: *Initializer, callback: ?OnSelectionFn) Initializer {
             const Handler = CallbackHandler(Self, OnSelectionFn, "SELECTION_CB");
             Handler.setCallback(self.ref, callback);
@@ -1252,14 +1344,26 @@ pub const Tree = opaque {
         try Impl(Self).refresh(self);
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn getCount(self: *Self) i32 {
         return c.getIntAttribute(self, "COUNT");
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "FGCOLOR");
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "FGCOLOR", rgb);
     }
@@ -1323,10 +1427,16 @@ pub const Tree = opaque {
         c.setStrAttribute(self, "POSITION", value);
     }
 
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDropFilesTarget(self: *Self) bool {
         return c.getBoolAttribute(self, "DROPFILESTARGET");
     }
 
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "DROPFILESTARGET", arg);
     }
@@ -1424,6 +1534,10 @@ pub const Tree = opaque {
         c.setBoolAttribute(self, "TOGGLEVISIBLE", arg);
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn getExpand(self: *Self) ?Expand {
         var ret = c.getStrAttribute(self, "EXPAND");
 
@@ -1436,6 +1550,10 @@ pub const Tree = opaque {
         return null;
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
             .Yes => c.setStrAttribute(self, "EXPAND", "YES"),
@@ -1480,6 +1598,10 @@ pub const Tree = opaque {
         c.setBoolAttribute(self, "SHOWTOGGLE", arg);
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn setTopItem(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "TOPITEM", arg);
     }
@@ -1543,18 +1665,32 @@ pub const Tree = opaque {
         c.setStrAttribute(self, "DRAGSTART", value);
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
     pub fn getTitle(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TITLE");
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TITLE", arg);
     }
 
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getShowDragDrop(self: *Self) bool {
         return c.getBoolAttribute(self, "SHOWDRAGDROP");
     }
 
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setShowDragDrop(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "SHOWDRAGDROP", arg);
     }
@@ -1563,18 +1699,32 @@ pub const Tree = opaque {
         c.setStrAttribute(self, "EXPANDALL", null);
     }
 
+
+    /// 
+    /// VALUECANFOCUS PROPAGATEFOCUS
     pub fn getPropagateFocus(self: *Self) bool {
         return c.getBoolAttribute(self, "PROPAGATEFOCUS");
     }
 
+
+    /// 
+    /// VALUECANFOCUS PROPAGATEFOCUS
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "PROPAGATEFOCUS", arg);
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "BGCOLOR");
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "BGCOLOR", rgb);
     }
@@ -1622,10 +1772,18 @@ pub const Tree = opaque {
         }
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
     pub fn getColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "COLOR");
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
     pub fn setColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "COLOR", rgb);
     }
@@ -1638,19 +1796,35 @@ pub const Tree = opaque {
         c.setStrAttribute(self, "NORMALIZERGROUP", arg);
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn getSpacing(self: *Self) i32 {
         return c.getIntAttribute(self, "SPACING");
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn setSpacing(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "SPACING", arg);
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn getRasterSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "RASTERSIZE");
         return Size.parse(str);
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
@@ -1721,6 +1895,10 @@ pub const Tree = opaque {
         c.setStrAttribute(self, "NAME", arg);
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
     pub fn getState(self: *Self) ?State {
         var ret = c.getStrAttribute(self, "STATE");
 
@@ -1729,6 +1907,10 @@ pub const Tree = opaque {
         return null;
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
     pub fn setState(self: *Self, arg: ?State) void {
         if (arg) |value| switch (value) {
             .Expanded => c.setStrAttribute(self, "STATE", "EXPANDED"),
@@ -1831,6 +2013,10 @@ pub const Tree = opaque {
         c.setStrAttribute(self, "NTHEME", arg);
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
     pub fn getTotalChildCount(self: *Self) i32 {
         return c.getIntAttribute(self, "TOTALCHILDCOUNT");
     }
@@ -1856,6 +2042,9 @@ pub const Tree = opaque {
         c.setStrAttribute(self, "DRAGTYPES", arg);
     }
 
+
+    /// 
+    /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
     pub fn rename(self: *Self) void {
         c.setStrAttribute(self, "RENAME", null);
     }
@@ -1868,6 +2057,10 @@ pub const Tree = opaque {
         c.setStrAttribute(self, "FONTSTYLE", arg);
     }
 
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
     pub fn setAutoRedraw(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "AUTOREDRAW", arg);
     }
@@ -2094,6 +2287,24 @@ pub const Tree = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// SELECTION_CB: Action generated when an node is selected or deselected.
+    /// MULTISELECTION_CB: Action generated when multiple nodes are selected with
+    /// the mouse and the shift key pressed.
+    /// MULTIUNSELECTION_CB: Action generated before multiple nodes are unselected
+    /// in one single operation.
+    /// BRANCHOPEN_CB: Action generated when a branch is expanded.
+    /// BRANCHCLOSE_CB: Action generated when a branch is collapsed.
+    /// EXECUTELEAF_CB: Action generated when a leaf is executed.
+    /// EXECUTEBRANCH_CB: Action generated when a branch is executed.
+    /// SHOWRENAME_CB: Action generated before a node is renamed.
+    /// RENAME_CB: Action generated after a node is renamed.
+    /// DRAGDROP_CB: Action generated when an internal drag & drop is executed.
+    /// NODEREMOVED_CB: Action generated when a node is about to be removed.
+    /// RIGHTCLICK_CB: Action generated when the right mouse button is pressed over
+    /// a node.
+    /// TOGGLEVALUE_CB: Action generated when the toggle&#39;s state was changed.
+    /// The callback also receives the new toggle&#39;s state.
     pub fn setSelectionCallback(self: *Self, callback: ?OnSelectionFn) void {
         const Handler = CallbackHandler(Self, OnSelectionFn, "SELECTION_CB");
         Handler.setCallback(self, callback);

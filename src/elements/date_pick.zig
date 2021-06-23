@@ -153,6 +153,10 @@ pub const DatePick = opaque {
     /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnGetFocusFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+    /// Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -399,12 +403,8 @@ pub const DatePick = opaque {
 
 
         /// 
-        /// FORMAT [Windows Only]: Flexible format for the date in Windows.
-        /// For more information see "About Date and Time Picker Control" in the
-        /// Windows SDK.
-        /// The Windows control was configured to display date only without any time options.
-        /// Default: "d'/'M'/'yyyy".
-        /// See Noted bellow.
+        /// In Windows, FORMAT can have the following values, but other text in the
+        /// format string must be enclosed in single quotes:
         pub fn setFormat(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "FORMAT", arg);
             return self.*;
@@ -644,6 +644,10 @@ pub const DatePick = opaque {
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+        /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+        /// Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
@@ -1042,24 +1046,16 @@ pub const DatePick = opaque {
 
 
     /// 
-    /// FORMAT [Windows Only]: Flexible format for the date in Windows.
-    /// For more information see "About Date and Time Picker Control" in the
-    /// Windows SDK.
-    /// The Windows control was configured to display date only without any time options.
-    /// Default: "d'/'M'/'yyyy".
-    /// See Noted bellow.
+    /// In Windows, FORMAT can have the following values, but other text in the
+    /// format string must be enclosed in single quotes:
     pub fn getFormat(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "FORMAT");
     }
 
 
     /// 
-    /// FORMAT [Windows Only]: Flexible format for the date in Windows.
-    /// For more information see "About Date and Time Picker Control" in the
-    /// Windows SDK.
-    /// The Windows control was configured to display date only without any time options.
-    /// Default: "d'/'M'/'yyyy".
-    /// See Noted bellow.
+    /// In Windows, FORMAT can have the following values, but other text in the
+    /// format string must be enclosed in single quotes:
     pub fn setFormat(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "FORMAT", arg);
     }
@@ -1332,6 +1328,10 @@ pub const DatePick = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+    /// Lua]
     pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);

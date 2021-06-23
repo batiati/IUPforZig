@@ -308,6 +308,11 @@ pub const FlatButton = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// FLAT_ACTION: Action generated when the button 1 (usually left) is selected.
+    /// This callback is called only after the mouse is released and when it is
+    /// released inside the button area.
+    /// int function(Ihandle* ih); [in C]ih:action() -> (ret: number) [in Lua]
     pub const OnFlatActionFn = fn (self: *Self) anyerror!void;
 
     /// 
@@ -371,6 +376,12 @@ pub const FlatButton = opaque {
 
     pub const OnFlatMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// Called only when TOGGLE=Yes.
+    /// Called after the ACTION callback, but under the same context.
+    /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+    /// Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -714,13 +725,8 @@ pub const FlatButton = opaque {
 
 
         /// 
-        /// PADDING: internal margin.
-        /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
-        /// but uses a different name to avoid inheritance problems.
-        /// Alignment does not includes the padding area.
-        /// Default value: "0x0".
-        /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
-        /// will be used instead (since 3.29).
+        /// The natural size will be a combination of the size of the image and the
+        /// title, if any, plus PADDING and SPACING (if both image and title are present).
         pub fn setPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -909,8 +915,8 @@ pub const FlatButton = opaque {
 
 
         /// 
-        /// SPACING (non inheritable): spacing between the image and the text.
-        /// Default: "2".
+        /// The natural size will be a combination of the size of the image and the
+        /// title, if any, plus PADDING and SPACING (if both image and title are present).
         pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "SPACING", arg);
             return self.*;
@@ -1090,6 +1096,11 @@ pub const FlatButton = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
+        /// The text size will adapt to include the rotated space.
+        /// (since 3.25)
         pub fn setTextOrientation(self: *Initializer, arg: f64) Initializer {
             c.setDoubleAttribute(self.ref, "TEXTORIENTATION", arg);
             return self.*;
@@ -1107,6 +1118,10 @@ pub const FlatButton = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+        /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -1663,6 +1678,11 @@ pub const FlatButton = opaque {
             return self.*;
         }
 
+        /// 
+        /// FLAT_ACTION: Action generated when the button 1 (usually left) is selected.
+        /// This callback is called only after the mouse is released and when it is
+        /// released inside the button area.
+        /// int function(Ihandle* ih); [in C]ih:action() -> (ret: number) [in Lua]
         pub fn setFlatActionCallback(self: *Initializer, callback: ?OnFlatActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnFlatActionFn, "FLAT_ACTION");
             Handler.setCallback(self.ref, callback);
@@ -1742,6 +1762,12 @@ pub const FlatButton = opaque {
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+        /// Called only when TOGGLE=Yes.
+        /// Called after the ACTION callback, but under the same context.
+        /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+        /// Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
@@ -2220,13 +2246,8 @@ pub const FlatButton = opaque {
 
 
     /// 
-    /// PADDING: internal margin.
-    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
-    /// but uses a different name to avoid inheritance problems.
-    /// Alignment does not includes the padding area.
-    /// Default value: "0x0".
-    /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
-    /// will be used instead (since 3.29).
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn getPadding(self: *Self) Size {
         var str = c.getStrAttribute(self, "PADDING");
         return Size.parse(str);
@@ -2234,13 +2255,8 @@ pub const FlatButton = opaque {
 
 
     /// 
-    /// PADDING: internal margin.
-    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
-    /// but uses a different name to avoid inheritance problems.
-    /// Alignment does not includes the padding area.
-    /// Default value: "0x0".
-    /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
-    /// will be used instead (since 3.29).
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn setPadding(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
@@ -2581,16 +2597,16 @@ pub const FlatButton = opaque {
 
 
     /// 
-    /// SPACING (non inheritable): spacing between the image and the text.
-    /// Default: "2".
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn getSpacing(self: *Self) i32 {
         return c.getIntAttribute(self, "SPACING");
     }
 
 
     /// 
-    /// SPACING (non inheritable): spacing between the image and the text.
-    /// Default: "2".
+    /// The natural size will be a combination of the size of the image and the
+    /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn setSpacing(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "SPACING", arg);
     }
@@ -2911,10 +2927,20 @@ pub const FlatButton = opaque {
         c.setStrAttribute(self, "CPADDING", value);
     }
 
+
+    /// 
+    /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
+    /// The text size will adapt to include the rotated space.
+    /// (since 3.25)
     pub fn getTextOrientation(self: *Self) f64 {
         return c.getDoubleAttribute(self, "TEXTORIENTATION");
     }
 
+
+    /// 
+    /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
+    /// The text size will adapt to include the rotated space.
+    /// (since 3.25)
     pub fn setTextOrientation(self: *Self, arg: f64) void {
         c.setDoubleAttribute(self, "TEXTORIENTATION", arg);
     }
@@ -2941,10 +2967,18 @@ pub const FlatButton = opaque {
         c.setBoolAttribute(self, "FITTOBACKIMAGE", arg);
     }
 
+
+    /// 
+    /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+    /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+    /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }
@@ -3594,6 +3628,11 @@ pub const FlatButton = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// FLAT_ACTION: Action generated when the button 1 (usually left) is selected.
+    /// This callback is called only after the mouse is released and when it is
+    /// released inside the button area.
+    /// int function(Ihandle* ih); [in C]ih:action() -> (ret: number) [in Lua]
     pub fn setFlatActionCallback(self: *Self, callback: ?OnFlatActionFn) void {
         const Handler = CallbackHandler(Self, OnFlatActionFn, "FLAT_ACTION");
         Handler.setCallback(self, callback);
@@ -3669,6 +3708,12 @@ pub const FlatButton = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// Called only when TOGGLE=Yes.
+    /// Called after the ACTION callback, but under the same context.
+    /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
+    /// Lua]
     pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);

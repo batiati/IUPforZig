@@ -52,6 +52,10 @@ pub const DetachBox = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// DETACHED_CB: Callback called when the box is detached.
+    /// int function(Ihandle *ih, Ihandle *new_parent, int x, int y); [in C]
+    /// ih:detached_cb(new_parent: ihandle, x, y: number) -> (ret: number) [in Lua]
     pub const OnDetachedFn = fn (self: *Self, arg0: iup.Element, arg1: i32, arg2: i32) anyerror!void;
 
     /// 
@@ -74,6 +78,11 @@ pub const DetachBox = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// RESTORED_CB: Callback called when the box is restored if RESTOREWHENCLOSED=Yes.
+    /// (since 3.21) int function(Ihandle *ih, Ihandle *old_parent, int x, int y);
+    /// [in C] ih:restored_cb(old_parent: ihandle, x, y: number) -> (ret: number)
+    /// [in Lua]
     pub const OnRestoredFn = fn (self: *Self, arg0: iup.Element, arg1: i32, arg2: i32) anyerror!void;
 
     /// 
@@ -241,6 +250,10 @@ pub const DetachBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+        /// MAXSIZE, THEME: also accepted.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "FONT", arg);
             return self.*;
@@ -374,6 +387,10 @@ pub const DetachBox = opaque {
             return self.*;
         }
 
+        /// 
+        /// DETACHED_CB: Callback called when the box is detached.
+        /// int function(Ihandle *ih, Ihandle *new_parent, int x, int y); [in C]
+        /// ih:detached_cb(new_parent: ihandle, x, y: number) -> (ret: number) [in Lua]
         pub fn setDetachedCallback(self: *Initializer, callback: ?OnDetachedFn) Initializer {
             const Handler = CallbackHandler(Self, OnDetachedFn, "DETACHED_CB");
             Handler.setCallback(self.ref, callback);
@@ -412,6 +429,11 @@ pub const DetachBox = opaque {
             return self.*;
         }
 
+        /// 
+        /// RESTORED_CB: Callback called when the box is restored if RESTOREWHENCLOSED=Yes.
+        /// (since 3.21) int function(Ihandle *ih, Ihandle *old_parent, int x, int y);
+        /// [in C] ih:restored_cb(old_parent: ihandle, x, y: number) -> (ret: number)
+        /// [in Lua]
         pub fn setRestoredCallback(self: *Initializer, callback: ?OnRestoredFn) Initializer {
             const Handler = CallbackHandler(Self, OnRestoredFn, "RESTORED_CB");
             Handler.setCallback(self.ref, callback);
@@ -665,10 +687,18 @@ pub const DetachBox = opaque {
         c.setStrAttribute(self, "NORMALIZERGROUP", arg);
     }
 
+
+    /// 
+    /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "FONT");
     }
 
+
+    /// 
+    /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "FONT", arg);
     }
@@ -855,6 +885,10 @@ pub const DetachBox = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// DETACHED_CB: Callback called when the box is detached.
+    /// int function(Ihandle *ih, Ihandle *new_parent, int x, int y); [in C]
+    /// ih:detached_cb(new_parent: ihandle, x, y: number) -> (ret: number) [in Lua]
     pub fn setDetachedCallback(self: *Self, callback: ?OnDetachedFn) void {
         const Handler = CallbackHandler(Self, OnDetachedFn, "DETACHED_CB");
         Handler.setCallback(self, callback);
@@ -889,6 +923,11 @@ pub const DetachBox = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// RESTORED_CB: Callback called when the box is restored if RESTOREWHENCLOSED=Yes.
+    /// (since 3.21) int function(Ihandle *ih, Ihandle *old_parent, int x, int y);
+    /// [in C] ih:restored_cb(old_parent: ihandle, x, y: number) -> (ret: number)
+    /// [in Lua]
     pub fn setRestoredCallback(self: *Self, callback: ?OnRestoredFn) void {
         const Handler = CallbackHandler(Self, OnRestoredFn, "RESTORED_CB");
         Handler.setCallback(self, callback);

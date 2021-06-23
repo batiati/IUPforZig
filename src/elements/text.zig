@@ -197,6 +197,10 @@ pub const Text = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// CARET_CB: Action generated when the caret/cursor position is changed.
+    /// int function(Ihandle *ih, int lin, int col, int pos); [in
+    /// C]ih:caret_cb(lin, col, pos: number) -> (ret: number) [in Lua]
     pub const OnCaretFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32) anyerror!void;
 
     /// 
@@ -258,8 +262,19 @@ pub const Text = opaque {
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
     pub const OnButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+    /// number) [in Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// SPIN_CB: Action generated when a spin button is pressed.
+    /// Valid only when SPIN=YES.
+    /// When this callback is called the ACTION callback is not called.
+    /// The VALUE attribute can be changed during this callback only if SPINAUTO=NO.
+    /// (since 3.0) int function(Ihandle *ih, int pos); [in C]ih:spin_cb(pos:
+    /// number) -> (ret: number) [in Lua]
     pub const OnSpinFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -1019,10 +1034,7 @@ pub const Text = opaque {
 
 
         /// 
-        /// MULTILINE (creation only) (non inheritable): allows the edition of multiple lines.
-        /// In single line mode some characters are invalid, like "\t", "\r" and "\n".
-        /// Default: NO.
-        /// When set to Yes will also reset the SCROLLBAR attribute to Yes.
+        /// The values ALL and NONE are also accepted independently of MULTILINE (since 3.0).
         pub fn setMultiline(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MULTILINE", arg);
             return self.*;
@@ -1497,6 +1509,10 @@ pub const Text = opaque {
             return self.*;
         }
 
+        /// 
+        /// CARET_CB: Action generated when the caret/cursor position is changed.
+        /// int function(Ihandle *ih, int lin, int col, int pos); [in
+        /// C]ih:caret_cb(lin, col, pos: number) -> (ret: number) [in Lua]
         pub fn setCaretCallback(self: *Initializer, callback: ?OnCaretFn) Initializer {
             const Handler = CallbackHandler(Self, OnCaretFn, "CARET_CB");
             Handler.setCallback(self.ref, callback);
@@ -1570,12 +1586,23 @@ pub const Text = opaque {
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+        /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+        /// number) [in Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
+        /// 
+        /// SPIN_CB: Action generated when a spin button is pressed.
+        /// Valid only when SPIN=YES.
+        /// When this callback is called the ACTION callback is not called.
+        /// The VALUE attribute can be changed during this callback only if SPINAUTO=NO.
+        /// (since 3.0) int function(Ihandle *ih, int pos); [in C]ih:spin_cb(pos:
+        /// number) -> (ret: number) [in Lua]
         pub fn setSpinCallback(self: *Initializer, callback: ?OnSpinFn) Initializer {
             const Handler = CallbackHandler(Self, OnSpinFn, "SPIN_CB");
             Handler.setCallback(self.ref, callback);
@@ -2613,6 +2640,20 @@ pub const Text = opaque {
 
 
     /// 
+    /// The values ALL and NONE are also accepted independently of MULTILINE (since 3.0).
+    pub fn getMultiline(self: *Self) bool {
+        return c.getBoolAttribute(self, "MULTILINE");
+    }
+
+
+    /// 
+    /// The values ALL and NONE are also accepted independently of MULTILINE (since 3.0).
+    pub fn setMultiline(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "MULTILINE", arg);
+    }
+
+
+    /// 
     /// SELECTEDTEXT (non inheritable): Selection text.
     /// Returns NULL if there is no selection.
     /// When changed replaces the current selection.
@@ -3157,6 +3198,10 @@ pub const Text = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// CARET_CB: Action generated when the caret/cursor position is changed.
+    /// int function(Ihandle *ih, int lin, int col, int pos); [in
+    /// C]ih:caret_cb(lin, col, pos: number) -> (ret: number) [in Lua]
     pub fn setCaretCallback(self: *Self, callback: ?OnCaretFn) void {
         const Handler = CallbackHandler(Self, OnCaretFn, "CARET_CB");
         Handler.setCallback(self, callback);
@@ -3227,11 +3272,22 @@ pub const Text = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+    /// number) [in Lua]
     pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// SPIN_CB: Action generated when a spin button is pressed.
+    /// Valid only when SPIN=YES.
+    /// When this callback is called the ACTION callback is not called.
+    /// The VALUE attribute can be changed during this callback only if SPINAUTO=NO.
+    /// (since 3.0) int function(Ihandle *ih, int pos); [in C]ih:spin_cb(pos:
+    /// number) -> (ret: number) [in Lua]
     pub fn setSpinCallback(self: *Self, callback: ?OnSpinFn) void {
         const Handler = CallbackHandler(Self, OnSpinFn, "SPIN_CB");
         Handler.setCallback(self, callback);
@@ -3961,6 +4017,18 @@ test "Text SpinMax" {
     var ret = item.getSpinMax();
 
     try std.testing.expect(ret == 42);
+}
+
+test "Text Multiline" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Text.init().setMultiline(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMultiline();
+
+    try std.testing.expect(ret == true);
 }
 
 test "Text SelectedText" {

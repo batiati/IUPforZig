@@ -830,6 +830,11 @@ pub const FontDlg = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// VALUE: The initial font value and the selected value returned if the user
+        /// pressed the Ok button.
+        /// Has the same format as the FONT attribute.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "VALUE", arg);
             return self.*;
@@ -2211,10 +2216,20 @@ pub const FontDlg = opaque {
         c.setBoolAttribute(self, "HIDETASKBAR", arg);
     }
 
+
+    /// 
+    /// VALUE: The initial font value and the selected value returned if the user
+    /// pressed the Ok button.
+    /// Has the same format as the FONT attribute.
     pub fn getValue(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "VALUE");
     }
 
+
+    /// 
+    /// VALUE: The initial font value and the selected value returned if the user
+    /// pressed the Ok button.
+    /// Has the same format as the FONT attribute.
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "VALUE", arg);
     }

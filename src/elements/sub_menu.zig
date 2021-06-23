@@ -132,6 +132,9 @@ pub const SubMenu = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ACTIVE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "ACTIVE", arg);
             return self.*;
@@ -356,10 +359,16 @@ pub const SubMenu = opaque {
         try Impl(Self).refresh(self);
     }
 
+
+    /// 
+    /// ACTIVE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return c.getBoolAttribute(self, "ACTIVE");
     }
 
+
+    /// 
+    /// ACTIVE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "ACTIVE", arg);
     }

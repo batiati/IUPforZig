@@ -264,6 +264,10 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+        /// MAXSIZE, THEME: also accepted.
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -721,11 +725,19 @@ pub const MultiBox = opaque {
         c.setStrAttribute(self, "HANDLENAME", arg);
     }
 
+
+    /// 
+    /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
     pub fn getSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "SIZE");
         return Size.parse(str);
     }
 
+
+    /// 
+    /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
     pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);

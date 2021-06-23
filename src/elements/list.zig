@@ -122,6 +122,12 @@ pub const List = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// DRAGDROP_CB: Action generated when an internal drag and drop is executed.
+    /// Only active if SHOWDRAGDROP=YES.
+    /// (since 3.7) int function(Ihandle *ih, int drag_id, int drop_id, int
+    /// isshift, int iscontrol); [in C] ih:dragdrop_cb(drag_id, drop_id, isshift,
+    /// iscontrol: number) -> (ret: number) [in Lua]
     pub const OnDragDropFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32) anyerror!void;
 
     /// 
@@ -171,6 +177,11 @@ pub const List = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// DBLCLICK_CB: Action generated when the user double click an item.
+    /// Called only when DROPDOWN=NO.
+    /// (since 3.0) int function (Ihandle *ih, int item, char *text); [in
+    /// C]ih:dblclick_cb(item: number, text: string) -> (ret: number) [in Lua]
     pub const OnDblClickFn = fn (self: *Self, arg0: i32, arg1: [:0]const u8) anyerror!void;
 
     pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
@@ -205,6 +216,8 @@ pub const List = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// This is the same CARET_CB callback definition as for the IupText.
     pub const OnCaretFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32) anyerror!void;
 
     /// 
@@ -266,10 +279,26 @@ pub const List = opaque {
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
     pub const OnButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// Called when the selection is changed or when the text is edited.
+    /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+    /// number) [in Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// DROPDOWN_CB: Action generated when the list of a dropdown is shown or hidden.
+    /// Called only when DROPDOWN=YES.
+    /// (since 3.0) int function (Ihandle *ih, int state); [in
+    /// C]ih:dropdown_cb(state: boolean) -> (ret: number) [in Lua]
     pub const OnDropDownFn = fn (self: *Self, arg0: i32) anyerror!void;
 
+    /// 
+    /// MULTISELECT_CB: Action generated when the state of an item in the multiple
+    /// selection list is changed.
+    /// But it is called only when the interaction is over.
+    /// int function (Ihandle *ih, char *value); [in C]ih:multiselect_cb(value:
+    /// string) -> (ret: number) [in Lua]
     pub const OnMultiSelectFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -292,6 +321,12 @@ pub const List = opaque {
 
     pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
 
+    /// 
+    /// EDIT_CB: Action generated when the text in the text box is manually changed
+    /// by the user, but before its value is actually updated.
+    /// Valid only when EDITBOX=YES.
+    /// int function(Ihandle *ih, int c, char *new_value); [in C]ih:edit_cb(c:
+    /// number, new_value: string) -> (ret: number) [in Lua]
     pub const OnEditFn = fn (self: *Self, arg0: i32, arg1: [:0]const u8) anyerror!void;
 
     pub const ZOrder = enum {
@@ -377,8 +412,8 @@ pub const List = opaque {
 
 
         /// 
-        /// FGCOLOR: Text color.
-        /// Default: the global attribute TXTFGCOLOR.
+        /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
+        /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
         pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "FGCOLOR", rgb);
             return self.*;
@@ -645,14 +680,12 @@ pub const List = opaque {
 
 
         /// 
-        /// SCROLLBAR (creation only): Associates automatic scrollbars to the list when DROPDOWN=NO.
-        /// Can be: "YES" or "NO" (none).
-        /// Default: "YES".
-        /// For all systems, when SCROLLBAR=YES the natural size will always include
-        /// its size even if the native system hides the scrollbars.
-        /// If AUTOHIDE=YES scrollbars are shown only if they are necessary, by default AUTOHIDE=YES.
-        /// In Motif, SCROLLBAR=NO is not supported and if EDITBOX=YES the horizontal
-        /// scrollbar is never shown.
+        /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
+        /// the SCROLLBAR or AUTOHIDE attributes.
+        /// Usually the scrollbars are shown if necessary.
+        /// In GTK, scrollbars are never shown and all items are always visible.
+        /// In Motif, the horizontal scrollbar is never shown.
+        /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
         pub fn setScrollBar(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SCROLLBAR", arg);
             return self.*;
@@ -691,9 +724,8 @@ pub const List = opaque {
 
 
         /// 
-        /// BGCOLOR: Background color of the text.
-        /// Default: the global attribute TXTBGCOLOR.
-        /// In GTK does nothing when DROPDOWN=Yes.
+        /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
+        /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "BGCOLOR", rgb);
             return self.*;
@@ -869,20 +901,11 @@ pub const List = opaque {
 
 
         /// 
-        /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
-        /// EDITBOX=YES: Text entered by the user.
-        /// MULTIPLE=YES: Sequence of '+' and '-' symbols indicating the state of each item.
-        /// When setting this value, the user must provide the same amount of '+' and
-        /// '-' symbols as the amount of items in the list, otherwise the specified
-        /// items will be deselected.
-        /// Others: Integer number representing the selected item in the list (begins
-        /// at 1).
-        /// It can be zero if there is no selected item.
-        /// (In Motif when DROPDOWN=YES there is always an item selected, except when
-        /// the list is empty).
-        /// Should return a non NULL value, even when the list is empty or the text box
-        /// is empty.
-        /// It can be NULL when no item selected (since 3.0).
+        /// The non changed items marked with 'x' are simulated internally by IUP in
+        /// all systems.
+        /// If you add or remove items to/from the list and you count on the 'x'
+        /// values, then after adding/removing items set the VALUE attribute to ensure
+        /// proper 'x' values.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "VALUE", arg);
             return self.*;
@@ -975,8 +998,12 @@ pub const List = opaque {
 
 
         /// 
-        /// AUTOHIDE: scrollbars are shown only if they are necessary.
-        /// Default: "YES".
+        /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
+        /// the SCROLLBAR or AUTOHIDE attributes.
+        /// Usually the scrollbars are shown if necessary.
+        /// In GTK, scrollbars are never shown and all items are always visible.
+        /// In Motif, the horizontal scrollbar is never shown.
+        /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
         pub fn setAutoHide(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "AUTOHIDE", arg);
             return self.*;
@@ -1044,6 +1071,10 @@ pub const List = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
+        /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "FONT", arg);
             return self.*;
@@ -1177,6 +1208,12 @@ pub const List = opaque {
             return self.*;
         }
 
+        /// 
+        /// DRAGDROP_CB: Action generated when an internal drag and drop is executed.
+        /// Only active if SHOWDRAGDROP=YES.
+        /// (since 3.7) int function(Ihandle *ih, int drag_id, int drop_id, int
+        /// isshift, int iscontrol); [in C] ih:dragdrop_cb(drag_id, drop_id, isshift,
+        /// iscontrol: number) -> (ret: number) [in Lua]
         pub fn setDragDropCallback(self: *Initializer, callback: ?OnDragDropFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDropFn, "DRAGDROP_CB");
             Handler.setCallback(self.ref, callback);
@@ -1246,6 +1283,11 @@ pub const List = opaque {
             return self.*;
         }
 
+        /// 
+        /// DBLCLICK_CB: Action generated when the user double click an item.
+        /// Called only when DROPDOWN=NO.
+        /// (since 3.0) int function (Ihandle *ih, int item, char *text); [in
+        /// C]ih:dblclick_cb(item: number, text: string) -> (ret: number) [in Lua]
         pub fn setDblClickCallback(self: *Initializer, callback: ?OnDblClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnDblClickFn, "DBLCLICK_CB");
             Handler.setCallback(self.ref, callback);
@@ -1300,6 +1342,8 @@ pub const List = opaque {
             return self.*;
         }
 
+        /// 
+        /// This is the same CARET_CB callback definition as for the IupText.
         pub fn setCaretCallback(self: *Initializer, callback: ?OnCaretFn) Initializer {
             const Handler = CallbackHandler(Self, OnCaretFn, "CARET_CB");
             Handler.setCallback(self.ref, callback);
@@ -1373,18 +1417,34 @@ pub const List = opaque {
             return self.*;
         }
 
+        /// 
+        /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+        /// Called when the selection is changed or when the text is edited.
+        /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+        /// number) [in Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
+        /// 
+        /// DROPDOWN_CB: Action generated when the list of a dropdown is shown or hidden.
+        /// Called only when DROPDOWN=YES.
+        /// (since 3.0) int function (Ihandle *ih, int state); [in
+        /// C]ih:dropdown_cb(state: boolean) -> (ret: number) [in Lua]
         pub fn setDropDownCallback(self: *Initializer, callback: ?OnDropDownFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropDownFn, "DROPDOWN_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
+        /// 
+        /// MULTISELECT_CB: Action generated when the state of an item in the multiple
+        /// selection list is changed.
+        /// But it is called only when the interaction is over.
+        /// int function (Ihandle *ih, char *value); [in C]ih:multiselect_cb(value:
+        /// string) -> (ret: number) [in Lua]
         pub fn setMultiSelectCallback(self: *Initializer, callback: ?OnMultiSelectFn) Initializer {
             const Handler = CallbackHandler(Self, OnMultiSelectFn, "MULTISELECT_CB");
             Handler.setCallback(self.ref, callback);
@@ -1423,6 +1483,12 @@ pub const List = opaque {
             return self.*;
         }
 
+        /// 
+        /// EDIT_CB: Action generated when the text in the text box is manually changed
+        /// by the user, but before its value is actually updated.
+        /// Valid only when EDITBOX=YES.
+        /// int function(Ihandle *ih, int c, char *new_value); [in C]ih:edit_cb(c:
+        /// number, new_value: string) -> (ret: number) [in Lua]
         pub fn setEditCallback(self: *Initializer, callback: ?OnEditFn) Initializer {
             const Handler = CallbackHandler(Self, OnEditFn, "EDIT_CB");
             Handler.setCallback(self.ref, callback);
@@ -1522,16 +1588,16 @@ pub const List = opaque {
 
 
     /// 
-    /// FGCOLOR: Text color.
-    /// Default: the global attribute TXTFGCOLOR.
+    /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
+    /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "FGCOLOR");
     }
 
 
     /// 
-    /// FGCOLOR: Text color.
-    /// Default: the global attribute TXTFGCOLOR.
+    /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
+    /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "FGCOLOR", rgb);
     }
@@ -1948,6 +2014,30 @@ pub const List = opaque {
         c.setStrAttribute(self, "VISIBLEITEMS", arg);
     }
 
+
+    /// 
+    /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
+    /// the SCROLLBAR or AUTOHIDE attributes.
+    /// Usually the scrollbars are shown if necessary.
+    /// In GTK, scrollbars are never shown and all items are always visible.
+    /// In Motif, the horizontal scrollbar is never shown.
+    /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
+    pub fn getScrollBar(self: *Self) bool {
+        return c.getBoolAttribute(self, "SCROLLBAR");
+    }
+
+
+    /// 
+    /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
+    /// the SCROLLBAR or AUTOHIDE attributes.
+    /// Usually the scrollbars are shown if necessary.
+    /// In GTK, scrollbars are never shown and all items are always visible.
+    /// In Motif, the horizontal scrollbar is never shown.
+    /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
+    pub fn setScrollBar(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "SCROLLBAR", arg);
+    }
+
     pub fn getDragStart(self: *Self) iup.XYPos {
         var str = c.getStrAttribute(self, "DRAGSTART");
         return iup.XYPos.parse(str, ',');
@@ -1981,18 +2071,16 @@ pub const List = opaque {
 
 
     /// 
-    /// BGCOLOR: Background color of the text.
-    /// Default: the global attribute TXTBGCOLOR.
-    /// In GTK does nothing when DROPDOWN=Yes.
+    /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
+    /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "BGCOLOR");
     }
 
 
     /// 
-    /// BGCOLOR: Background color of the text.
-    /// Default: the global attribute TXTBGCOLOR.
-    /// In GTK does nothing when DROPDOWN=Yes.
+    /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
+    /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "BGCOLOR", rgb);
     }
@@ -2233,40 +2321,22 @@ pub const List = opaque {
 
 
     /// 
-    /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
-    /// EDITBOX=YES: Text entered by the user.
-    /// MULTIPLE=YES: Sequence of '+' and '-' symbols indicating the state of each item.
-    /// When setting this value, the user must provide the same amount of '+' and
-    /// '-' symbols as the amount of items in the list, otherwise the specified
-    /// items will be deselected.
-    /// Others: Integer number representing the selected item in the list (begins
-    /// at 1).
-    /// It can be zero if there is no selected item.
-    /// (In Motif when DROPDOWN=YES there is always an item selected, except when
-    /// the list is empty).
-    /// Should return a non NULL value, even when the list is empty or the text box
-    /// is empty.
-    /// It can be NULL when no item selected (since 3.0).
+    /// The non changed items marked with 'x' are simulated internally by IUP in
+    /// all systems.
+    /// If you add or remove items to/from the list and you count on the 'x'
+    /// values, then after adding/removing items set the VALUE attribute to ensure
+    /// proper 'x' values.
     pub fn getValue(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "VALUE");
     }
 
 
     /// 
-    /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
-    /// EDITBOX=YES: Text entered by the user.
-    /// MULTIPLE=YES: Sequence of '+' and '-' symbols indicating the state of each item.
-    /// When setting this value, the user must provide the same amount of '+' and
-    /// '-' symbols as the amount of items in the list, otherwise the specified
-    /// items will be deselected.
-    /// Others: Integer number representing the selected item in the list (begins
-    /// at 1).
-    /// It can be zero if there is no selected item.
-    /// (In Motif when DROPDOWN=YES there is always an item selected, except when
-    /// the list is empty).
-    /// Should return a non NULL value, even when the list is empty or the text box
-    /// is empty.
-    /// It can be NULL when no item selected (since 3.0).
+    /// The non changed items marked with 'x' are simulated internally by IUP in
+    /// all systems.
+    /// If you add or remove items to/from the list and you count on the 'x'
+    /// values, then after adding/removing items set the VALUE attribute to ensure
+    /// proper 'x' values.
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "VALUE", arg);
     }
@@ -2410,16 +2480,24 @@ pub const List = opaque {
 
 
     /// 
-    /// AUTOHIDE: scrollbars are shown only if they are necessary.
-    /// Default: "YES".
+    /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
+    /// the SCROLLBAR or AUTOHIDE attributes.
+    /// Usually the scrollbars are shown if necessary.
+    /// In GTK, scrollbars are never shown and all items are always visible.
+    /// In Motif, the horizontal scrollbar is never shown.
+    /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
     pub fn getAutoHide(self: *Self) bool {
         return c.getBoolAttribute(self, "AUTOHIDE");
     }
 
 
     /// 
-    /// AUTOHIDE: scrollbars are shown only if they are necessary.
-    /// Default: "YES".
+    /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
+    /// the SCROLLBAR or AUTOHIDE attributes.
+    /// Usually the scrollbars are shown if necessary.
+    /// In GTK, scrollbars are never shown and all items are always visible.
+    /// In Motif, the horizontal scrollbar is never shown.
+    /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
     pub fn setAutoHide(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "AUTOHIDE", arg);
     }
@@ -2510,10 +2588,18 @@ pub const List = opaque {
         c.setBoolAttribute(self, "MASKNOEMPTY", arg);
     }
 
+
+    /// 
+    /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
+    /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn getFont(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "FONT");
     }
 
+
+    /// 
+    /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
+    /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "FONT", arg);
     }
@@ -2636,6 +2722,12 @@ pub const List = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// DRAGDROP_CB: Action generated when an internal drag and drop is executed.
+    /// Only active if SHOWDRAGDROP=YES.
+    /// (since 3.7) int function(Ihandle *ih, int drag_id, int drop_id, int
+    /// isshift, int iscontrol); [in C] ih:dragdrop_cb(drag_id, drop_id, isshift,
+    /// iscontrol: number) -> (ret: number) [in Lua]
     pub fn setDragDropCallback(self: *Self, callback: ?OnDragDropFn) void {
         const Handler = CallbackHandler(Self, OnDragDropFn, "DRAGDROP_CB");
         Handler.setCallback(self, callback);
@@ -2700,6 +2792,11 @@ pub const List = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// DBLCLICK_CB: Action generated when the user double click an item.
+    /// Called only when DROPDOWN=NO.
+    /// (since 3.0) int function (Ihandle *ih, int item, char *text); [in
+    /// C]ih:dblclick_cb(item: number, text: string) -> (ret: number) [in Lua]
     pub fn setDblClickCallback(self: *Self, callback: ?OnDblClickFn) void {
         const Handler = CallbackHandler(Self, OnDblClickFn, "DBLCLICK_CB");
         Handler.setCallback(self, callback);
@@ -2749,6 +2846,8 @@ pub const List = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// This is the same CARET_CB callback definition as for the IupText.
     pub fn setCaretCallback(self: *Self, callback: ?OnCaretFn) void {
         const Handler = CallbackHandler(Self, OnCaretFn, "CARET_CB");
         Handler.setCallback(self, callback);
@@ -2819,16 +2918,32 @@ pub const List = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
+    /// Called when the selection is changed or when the text is edited.
+    /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
+    /// number) [in Lua]
     pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// DROPDOWN_CB: Action generated when the list of a dropdown is shown or hidden.
+    /// Called only when DROPDOWN=YES.
+    /// (since 3.0) int function (Ihandle *ih, int state); [in
+    /// C]ih:dropdown_cb(state: boolean) -> (ret: number) [in Lua]
     pub fn setDropDownCallback(self: *Self, callback: ?OnDropDownFn) void {
         const Handler = CallbackHandler(Self, OnDropDownFn, "DROPDOWN_CB");
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// MULTISELECT_CB: Action generated when the state of an item in the multiple
+    /// selection list is changed.
+    /// But it is called only when the interaction is over.
+    /// int function (Ihandle *ih, char *value); [in C]ih:multiselect_cb(value:
+    /// string) -> (ret: number) [in Lua]
     pub fn setMultiSelectCallback(self: *Self, callback: ?OnMultiSelectFn) void {
         const Handler = CallbackHandler(Self, OnMultiSelectFn, "MULTISELECT_CB");
         Handler.setCallback(self, callback);
@@ -2863,6 +2978,12 @@ pub const List = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// EDIT_CB: Action generated when the text in the text box is manually changed
+    /// by the user, but before its value is actually updated.
+    /// Valid only when EDITBOX=YES.
+    /// int function(Ihandle *ih, int c, char *new_value); [in C]ih:edit_cb(c:
+    /// number, new_value: string) -> (ret: number) [in Lua]
     pub fn setEditCallback(self: *Self, callback: ?OnEditFn) void {
         const Handler = CallbackHandler(Self, OnEditFn, "EDIT_CB");
         Handler.setCallback(self, callback);
@@ -3203,6 +3324,18 @@ test "List VisibleItems" {
     var ret = item.getVisibleItems();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "List ScrollBar" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.List.init().setScrollBar(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getScrollBar();
+
+    try std.testing.expect(ret == true);
 }
 
 test "List DragStart" {

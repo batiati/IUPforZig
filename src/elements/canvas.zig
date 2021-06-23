@@ -30,6 +30,13 @@ pub const Canvas = opaque {
     pub const CLASS_NAME = "canvas";
     const Self = @This();
 
+    /// 
+    /// TOUCH_CB [Windows 7 Only]: Action generated when a touch event occurred.
+    /// Multiple touch events will trigger several calls.
+    /// Must set TOUCH=Yes to receive this event.
+    /// (Since 3.3) int function(Ihandle* ih, int id, int x, int y, char* state);
+    /// [in C] ih:touch_cb(id, x, y: number, state: string) -> (ret: number) [in
+    /// Lua]
     pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
 
     /// 
@@ -58,6 +65,11 @@ pub const Canvas = opaque {
     /// Affects IupCanvas, IupGLCanvas, SCROLLBAR
     pub const OnScrollFn = fn (self: *Self, arg0: i32, arg1: f32, arg2: f32) anyerror!void;
 
+    /// 
+    /// FOCUS_CB: Called when the canvas gets or looses the focus.
+    /// It is called after the common callbacks GETFOCUS_CB and KILL_FOCUS_CB.
+    /// int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus: number) ->
+    /// (ret: number) [in Lua]
     pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
@@ -148,6 +160,12 @@ pub const Canvas = opaque {
     /// IupToggle
     pub const OnActionFn = fn (self: *Self, arg0: f32, arg1: f32) anyerror!void;
 
+    /// 
+    /// MULTITOUCH_CB [Windows 7 Only]: Action generated when multiple touch events occurred.
+    /// Must set TOUCH=Yes to receive this event.
+    /// (Since 3.3) int function(Ihandle *ih, int count, int* pid, int* px, int*
+    /// py, int* pstate) [in C] ih:multitouch_cb(count: number, pid, px, py,
+    /// pstate: table) -> (ret: number) [in Lua]
     pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
@@ -935,8 +953,8 @@ pub const Canvas = opaque {
 
 
         /// 
-        /// BORDER (creation only): Shows a border around the canvas.
-        /// Default: "YES".
+        /// Notice that the drawing area size is not the same as RASTERSIZE.
+        /// The SCROLLBAR and BORDER attributes affect the size of the drawing area.
         pub fn setBorder(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "BORDER", arg);
             return self.*;
@@ -981,6 +999,13 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+        /// 
+        /// TOUCH_CB [Windows 7 Only]: Action generated when a touch event occurred.
+        /// Multiple touch events will trigger several calls.
+        /// Must set TOUCH=Yes to receive this event.
+        /// (Since 3.3) int function(Ihandle* ih, int id, int x, int y, char* state);
+        /// [in C] ih:touch_cb(id, x, y: number, state: string) -> (ret: number) [in
+        /// Lua]
         pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
             const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
             Handler.setCallback(self.ref, callback);
@@ -1017,6 +1042,11 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+        /// 
+        /// FOCUS_CB: Called when the canvas gets or looses the focus.
+        /// It is called after the common callbacks GETFOCUS_CB and KILL_FOCUS_CB.
+        /// int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus: number) ->
+        /// (ret: number) [in Lua]
         pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
@@ -1143,6 +1173,12 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+        /// 
+        /// MULTITOUCH_CB [Windows 7 Only]: Action generated when multiple touch events occurred.
+        /// Must set TOUCH=Yes to receive this event.
+        /// (Since 3.3) int function(Ihandle *ih, int count, int* pid, int* px, int*
+        /// py, int* pstate) [in C] ih:multitouch_cb(count: number, pid, px, py,
+        /// pstate: table) -> (ret: number) [in Lua]
         pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
             const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
@@ -2324,6 +2360,22 @@ pub const Canvas = opaque {
         c.setStrAttribute(self, "NTHEME", arg);
     }
 
+
+    /// 
+    /// Notice that the drawing area size is not the same as RASTERSIZE.
+    /// The SCROLLBAR and BORDER attributes affect the size of the drawing area.
+    pub fn getBorder(self: *Self) bool {
+        return c.getBoolAttribute(self, "BORDER");
+    }
+
+
+    /// 
+    /// Notice that the drawing area size is not the same as RASTERSIZE.
+    /// The SCROLLBAR and BORDER attributes affect the size of the drawing area.
+    pub fn setBorder(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "BORDER", arg);
+    }
+
     pub fn getCharSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "CHARSIZE");
         return Size.parse(str);
@@ -2395,6 +2447,13 @@ pub const Canvas = opaque {
         c.setStrAttribute(self, "FONT", arg);
     }
 
+    /// 
+    /// TOUCH_CB [Windows 7 Only]: Action generated when a touch event occurred.
+    /// Multiple touch events will trigger several calls.
+    /// Must set TOUCH=Yes to receive this event.
+    /// (Since 3.3) int function(Ihandle* ih, int id, int x, int y, char* state);
+    /// [in C] ih:touch_cb(id, x, y: number, state: string) -> (ret: number) [in
+    /// Lua]
     pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
         const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
         Handler.setCallback(self, callback);
@@ -2429,6 +2488,11 @@ pub const Canvas = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// FOCUS_CB: Called when the canvas gets or looses the focus.
+    /// It is called after the common callbacks GETFOCUS_CB and KILL_FOCUS_CB.
+    /// int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus: number) ->
+    /// (ret: number) [in Lua]
     pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
         const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
@@ -2546,6 +2610,12 @@ pub const Canvas = opaque {
         Handler.setCallback(self, callback);
     }
 
+    /// 
+    /// MULTITOUCH_CB [Windows 7 Only]: Action generated when multiple touch events occurred.
+    /// Must set TOUCH=Yes to receive this event.
+    /// (Since 3.3) int function(Ihandle *ih, int count, int* pid, int* px, int*
+    /// py, int* pstate) [in C] ih:multitouch_cb(count: number, pid, px, py,
+    /// pstate: table) -> (ret: number) [in Lua]
     pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
         const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
@@ -3616,6 +3686,18 @@ test "Canvas NTheme" {
     var ret = item.getNTheme();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "Canvas Border" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Canvas.init().setBorder(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getBorder();
+
+    try std.testing.expect(ret == true);
 }
 
 test "Canvas DragTypes" {
