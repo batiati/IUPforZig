@@ -317,7 +317,7 @@ pub const Toggle = opaque {
         /// Unlike buttons, toggles always display the button border when IMAGE and
         /// IMPRESS are both defined.
         /// (GTK 2.6)
-        pub fn setImpress(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setImPress(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "IMPRESS", arg);
             return self.*;
         }
@@ -1014,7 +1014,7 @@ pub const Toggle = opaque {
     /// Unlike buttons, toggles always display the button border when IMAGE and
     /// IMPRESS are both defined.
     /// (GTK 2.6)
-    pub fn getImpress(self: *Self) [:0]const u8 {
+    pub fn getImPress(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "IMPRESS");
     }
 
@@ -1024,7 +1024,7 @@ pub const Toggle = opaque {
     /// Unlike buttons, toggles always display the button border when IMAGE and
     /// IMPRESS are both defined.
     /// (GTK 2.6)
-    pub fn setImpress(self: *Self, arg: [:0]const u8) void {
+    pub fn setImPress(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "IMPRESS", arg);
     }
 
@@ -1832,14 +1832,14 @@ test "Toggle Position" {
     try std.testing.expect(ret.x == 9 and ret.y == 10);
 }
 
-test "Toggle Impress" {
+test "Toggle ImPress" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Toggle.init().setImpress("Hello").unwrap());
+    var item = try (iup.Toggle.init().setImPress("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getImpress();
+    var ret = item.getImPress();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }

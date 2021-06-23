@@ -707,6 +707,8 @@ pub const Canvas = opaque {
 
 
         /// 
+        /// Notice that the drawing area size is not the same as RASTERSIZE.
+        /// The SCROLLBAR and BORDER attributes affect the size of the drawing area.
         /// SCROLLBAR (creation only): Associates a horizontal and/or vertical
         /// scrollbar to the canvas.
         /// Default: "NO".
@@ -953,6 +955,8 @@ pub const Canvas = opaque {
 
 
         /// 
+        /// BORDER (creation only): Shows a border around the canvas.
+        /// Default: "YES".
         /// Notice that the drawing area size is not the same as RASTERSIZE.
         /// The SCROLLBAR and BORDER attributes affect the size of the drawing area.
         pub fn setBorder(self: *Initializer, arg: bool) Initializer {
@@ -2362,6 +2366,8 @@ pub const Canvas = opaque {
 
 
     /// 
+    /// BORDER (creation only): Shows a border around the canvas.
+    /// Default: "YES".
     /// Notice that the drawing area size is not the same as RASTERSIZE.
     /// The SCROLLBAR and BORDER attributes affect the size of the drawing area.
     pub fn getBorder(self: *Self) bool {
@@ -2370,6 +2376,8 @@ pub const Canvas = opaque {
 
 
     /// 
+    /// BORDER (creation only): Shows a border around the canvas.
+    /// Default: "YES".
     /// Notice that the drawing area size is not the same as RASTERSIZE.
     /// The SCROLLBAR and BORDER attributes affect the size of the drawing area.
     pub fn setBorder(self: *Self, arg: bool) void {

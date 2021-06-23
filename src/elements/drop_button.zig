@@ -748,6 +748,13 @@ pub const DropButton = opaque {
 
 
         /// 
+        /// PADDING: internal margin.
+        /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
+        /// but uses a different name to avoid inheritance problems.
+        /// Alignment does not includes the padding area.
+        /// Default value: "3x3".
+        /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
+        /// will be used instead (since 3.29).
         /// The natural size will be a combination of the size of the image and the
         /// title, if any, plus PADDING and SPACING (if both image and title are
         /// present), and plus the horizontal space occupied by the arrow.
@@ -937,6 +944,8 @@ pub const DropButton = opaque {
 
 
         /// 
+        /// SPACING (non inheritable): spacing between the image and the text.
+        /// Default: "2".
         /// The natural size will be a combination of the size of the image and the
         /// title, if any, plus PADDING and SPACING (if both image and title are
         /// present), and plus the horizontal space occupied by the arrow.
@@ -2299,6 +2308,13 @@ pub const DropButton = opaque {
 
 
     /// 
+    /// PADDING: internal margin.
+    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
+    /// but uses a different name to avoid inheritance problems.
+    /// Alignment does not includes the padding area.
+    /// Default value: "3x3".
+    /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
+    /// will be used instead (since 3.29).
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are
     /// present), and plus the horizontal space occupied by the arrow.
@@ -2309,6 +2325,13 @@ pub const DropButton = opaque {
 
 
     /// 
+    /// PADDING: internal margin.
+    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
+    /// but uses a different name to avoid inheritance problems.
+    /// Alignment does not includes the padding area.
+    /// Default value: "3x3".
+    /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
+    /// will be used instead (since 3.29).
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are
     /// present), and plus the horizontal space occupied by the arrow.
@@ -2638,6 +2661,8 @@ pub const DropButton = opaque {
 
 
     /// 
+    /// SPACING (non inheritable): spacing between the image and the text.
+    /// Default: "2".
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are
     /// present), and plus the horizontal space occupied by the arrow.
@@ -2647,6 +2672,8 @@ pub const DropButton = opaque {
 
 
     /// 
+    /// SPACING (non inheritable): spacing between the image and the text.
+    /// Default: "2".
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are
     /// present), and plus the horizontal space occupied by the arrow.

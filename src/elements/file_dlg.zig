@@ -1072,6 +1072,21 @@ pub const FileDlg = opaque {
 
 
         /// 
+        /// DIRECTORY: Initial directory.
+        /// When consulted after the dialog is closed and the user pressed the OK
+        /// button, it will contain the directory of the selected file.
+        /// When set the last separator does not need to be specified, but when get the
+        /// returned value will always contains the last separator.
+        /// In Motif or GTK, if not defined, the dialog opens in the current directory.
+        /// In Windows, if not defined and the application has used the dialog in the
+        /// past, the path most recently used is selected as the initial directory.
+        /// However, if an application is not run for a long time, its saved selected
+        /// path is discarded.
+        /// Also if not defined and the current directory contains any files of the
+        /// specified filter types, the initial directory is the current directory.
+        /// Otherwise, the initial directory is the "My Documents" directory of the
+        /// current user.
+        /// Otherwise, the initial directory is the Desktop folder.
         /// In Windows, the FILE and the DIRECTORY attributes also accept strings
         /// containing "/" as path separators, but the VALUE attribute will always
         /// return strings using the "\" character.
@@ -2582,6 +2597,16 @@ pub const FileDlg = opaque {
 
 
     /// 
+    /// VALUE (read-only): Name of the selected file(s), or NULL if no file was selected.
+    /// If FILE is not defined this is used as the initial value.
+    /// When MULTIPLEFILES=Yes it contains the path (but NOT the same value
+    /// returned in DIRECTORY, it does not contains the last separator) and several
+    /// file names separated by the '|' character.
+    /// The file list ends with character '|'.
+    /// BUT when the user selects just one file, the directory and the file are not
+    /// separated by '|'.
+    /// For example: "/tecgraf/iup/test|a.txt|b.txt|c.txt|" (MULTIPLEFILES=Yes and
+    /// more than one file is selected) "/tecgraf/iup/test/a.txt" (only one file is selected).
     /// In Windows, the FILE and the DIRECTORY attributes also accept strings
     /// containing "/" as path separators, but the VALUE attribute will always
     /// return strings using the "\" character.
@@ -2773,6 +2798,21 @@ pub const FileDlg = opaque {
 
 
     /// 
+    /// DIRECTORY: Initial directory.
+    /// When consulted after the dialog is closed and the user pressed the OK
+    /// button, it will contain the directory of the selected file.
+    /// When set the last separator does not need to be specified, but when get the
+    /// returned value will always contains the last separator.
+    /// In Motif or GTK, if not defined, the dialog opens in the current directory.
+    /// In Windows, if not defined and the application has used the dialog in the
+    /// past, the path most recently used is selected as the initial directory.
+    /// However, if an application is not run for a long time, its saved selected
+    /// path is discarded.
+    /// Also if not defined and the current directory contains any files of the
+    /// specified filter types, the initial directory is the current directory.
+    /// Otherwise, the initial directory is the "My Documents" directory of the
+    /// current user.
+    /// Otherwise, the initial directory is the Desktop folder.
     /// In Windows, the FILE and the DIRECTORY attributes also accept strings
     /// containing "/" as path separators, but the VALUE attribute will always
     /// return strings using the "\" character.
@@ -2782,6 +2822,21 @@ pub const FileDlg = opaque {
 
 
     /// 
+    /// DIRECTORY: Initial directory.
+    /// When consulted after the dialog is closed and the user pressed the OK
+    /// button, it will contain the directory of the selected file.
+    /// When set the last separator does not need to be specified, but when get the
+    /// returned value will always contains the last separator.
+    /// In Motif or GTK, if not defined, the dialog opens in the current directory.
+    /// In Windows, if not defined and the application has used the dialog in the
+    /// past, the path most recently used is selected as the initial directory.
+    /// However, if an application is not run for a long time, its saved selected
+    /// path is discarded.
+    /// Also if not defined and the current directory contains any files of the
+    /// specified filter types, the initial directory is the current directory.
+    /// Otherwise, the initial directory is the "My Documents" directory of the
+    /// current user.
+    /// Otherwise, the initial directory is the Desktop folder.
     /// In Windows, the FILE and the DIRECTORY attributes also accept strings
     /// containing "/" as path separators, but the VALUE attribute will always
     /// return strings using the "\" character.

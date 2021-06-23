@@ -215,6 +215,12 @@ pub const Tabs = opaque {
         Bottom,
     };
     /// 
+    /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
+    /// tab, which can be "TOP", "BOTTOM", "LEFT" or "RIGHT".
+    /// Default is "TOP".
+    /// In Windows, if LEFT or RIGHT then MULTILINE=YES and TABORIENTATION=VERTICAL
+    /// are set, if TOP or BOTTOM then TABORIENTATION=HORIZONTAL is set.
+    /// In Windows, when not TOP, then visual style is removed from tabs.
     /// In Windows, the Visual Styles work only when TABTYPE is TOP.
     /// Windows Classic Windows w/ Styles
     pub const TabType = enum {
@@ -415,6 +421,12 @@ pub const Tabs = opaque {
 
 
         /// 
+        /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
+        /// tab, which can be "TOP", "BOTTOM", "LEFT" or "RIGHT".
+        /// Default is "TOP".
+        /// In Windows, if LEFT or RIGHT then MULTILINE=YES and TABORIENTATION=VERTICAL
+        /// are set, if TOP or BOTTOM then TABORIENTATION=HORIZONTAL is set.
+        /// In Windows, when not TOP, then visual style is removed from tabs.
         /// In Windows, the Visual Styles work only when TABTYPE is TOP.
         /// Windows Classic Windows w/ Styles
         pub fn setTabType(self: *Initializer, arg: ?TabType) Initializer {
@@ -599,6 +611,15 @@ pub const Tabs = opaque {
 
 
         /// 
+        /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+        /// n starts at 0.
+        /// See also IupImage.
+        /// In Motif, the image is shown only if TABTITLEn is NULL.
+        /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+        /// When set after map will update the TABIMAGE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
@@ -663,6 +684,19 @@ pub const Tabs = opaque {
 
 
         /// 
+        /// TABTITLEn (non inheritable): Contains the text to be shown in the
+        /// respective tab title.
+        /// n starts at 0.
+        /// If this value is NULL, it will remain empty.
+        /// The "&" character can be used to define a mnemonic, the next character will
+        /// be used as key.
+        /// Use "&&" to show the "&" character instead on defining a mnemonic.
+        /// The button can be activated from any control in the dialog using the
+        /// "Alt+key" combination.
+        /// (mnemonic support since 3.3).
+        /// When set after map will update the TABTITLE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
@@ -1208,6 +1242,12 @@ pub const Tabs = opaque {
 
 
     /// 
+    /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
+    /// tab, which can be "TOP", "BOTTOM", "LEFT" or "RIGHT".
+    /// Default is "TOP".
+    /// In Windows, if LEFT or RIGHT then MULTILINE=YES and TABORIENTATION=VERTICAL
+    /// are set, if TOP or BOTTOM then TABORIENTATION=HORIZONTAL is set.
+    /// In Windows, when not TOP, then visual style is removed from tabs.
     /// In Windows, the Visual Styles work only when TABTYPE is TOP.
     /// Windows Classic Windows w/ Styles
     pub fn getTabType(self: *Self) ?TabType {
@@ -1222,6 +1262,12 @@ pub const Tabs = opaque {
 
 
     /// 
+    /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
+    /// tab, which can be "TOP", "BOTTOM", "LEFT" or "RIGHT".
+    /// Default is "TOP".
+    /// In Windows, if LEFT or RIGHT then MULTILINE=YES and TABORIENTATION=VERTICAL
+    /// are set, if TOP or BOTTOM then TABORIENTATION=HORIZONTAL is set.
+    /// In Windows, when not TOP, then visual style is removed from tabs.
     /// In Windows, the Visual Styles work only when TABTYPE is TOP.
     /// Windows Classic Windows w/ Styles
     pub fn setTabType(self: *Self, arg: ?TabType) void {
@@ -1555,6 +1601,15 @@ pub const Tabs = opaque {
 
 
     /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
     /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
     /// each child.
     /// Works only if set before the child is added to the tabs.
@@ -1564,6 +1619,15 @@ pub const Tabs = opaque {
 
 
     /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
     /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
     /// each child.
     /// Works only if set before the child is added to the tabs.
@@ -1679,6 +1743,19 @@ pub const Tabs = opaque {
 
 
     /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
     /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
     /// each child.
     /// Works only if set before the child is added to the tabs.
@@ -1688,6 +1765,19 @@ pub const Tabs = opaque {
 
 
     /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
     /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
     /// each child.
     /// Works only if set before the child is added to the tabs.

@@ -318,6 +318,10 @@ pub const Expander = opaque {
 
 
         /// 
+        /// TITLE (non inheritable): title text, shown in the bar handler near the
+        /// expand/collapse button.
+        /// When set it will reset TITLEIMAGE.
+        /// Shown only when BARPOSITION=TOP.
         /// When the TITLE is defined and BARPOSITION=TOP then the expand/collapse
         /// button is left aligned.
         /// In all other situations the expand/collapse button is centered.
@@ -925,6 +929,10 @@ pub const Expander = opaque {
 
 
     /// 
+    /// TITLE (non inheritable): title text, shown in the bar handler near the
+    /// expand/collapse button.
+    /// When set it will reset TITLEIMAGE.
+    /// Shown only when BARPOSITION=TOP.
     /// When the TITLE is defined and BARPOSITION=TOP then the expand/collapse
     /// button is left aligned.
     /// In all other situations the expand/collapse button is centered.
@@ -934,6 +942,10 @@ pub const Expander = opaque {
 
 
     /// 
+    /// TITLE (non inheritable): title text, shown in the bar handler near the
+    /// expand/collapse button.
+    /// When set it will reset TITLEIMAGE.
+    /// Shown only when BARPOSITION=TOP.
     /// When the TITLE is defined and BARPOSITION=TOP then the expand/collapse
     /// button is left aligned.
     /// In all other situations the expand/collapse button is centered.

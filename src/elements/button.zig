@@ -348,10 +348,16 @@ pub const Button = opaque {
 
 
         /// 
+        /// IMPRESS (non inheritable): Image name of the pressed button.
+        /// If IMPRESS and IMAGE are defined, the button borders are not shown and not
+        /// computed in natural size.
+        /// When the button is clicked the pressed image does not offset.
+        /// In Motif the button will lose its focus feedback also.
+        /// (GTK 2.6).
         /// Buttons always have borders, except when IMAGE and IMPRESS are both defined
         /// and IMPRESSBORDER=NO.
         /// In this case in Windows TITLE can also be defined.
-        pub fn setImpress(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setImPress(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "IMPRESS", arg);
             return self.*;
         }
@@ -375,6 +381,11 @@ pub const Button = opaque {
 
 
         /// 
+        /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
+        /// the control.
+        /// In Windows the button will respect CANFOCUS differently to some other controls.
+        /// Default: YES.
+        /// (since 3.0).
         /// Buttons are not activated if the user clicks inside the button but moves
         /// the cursor and releases outside the button area.
         /// Also in Windows the highlight feedback when that happens is different if
@@ -391,6 +402,13 @@ pub const Button = opaque {
 
 
         /// 
+        /// IMAGE (non inheritable): Image name.
+        /// If set before map defines the behavior of the button to contain an image.
+        /// The natural size will be size of the image in pixels, plus the button borders.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+        /// See also IupImage.
+        /// If TITLE is also defined and not empty both will be shown (except in Motif).
+        /// (GTK 2.6).
         /// Buttons always have borders, except when IMAGE and IMPRESS are both defined
         /// and IMPRESSBORDER=NO.
         /// In this case in Windows TITLE can also be defined.
@@ -470,6 +488,21 @@ pub const Button = opaque {
 
 
         /// 
+        /// TITLE (non inheritable): Button's text.
+        /// If IMAGE is not defined before map, then the default behavior is to contain
+        /// only a text.
+        /// The button behavior can not be changed after map.
+        /// The natural size will be larger enough to include all the text in the
+        /// selected font, even using multiple lines, plus the button borders.
+        /// The '\n' character is accepted for line change.
+        /// The "&" character can be used to define a mnemonic, the next character will
+        /// be used as key.
+        /// Use "&&" to show the "&" character instead on defining a mnemonic.
+        /// The button can be activated from any control in the dialog using the
+        /// "Alt+key" combination.
+        /// In old Motif versions (2.1) using a '\n' causes an invalid memory access
+        /// inside Motif.
+        /// (mnemonic support since 3.0).
         /// Buttons always have borders, except when IMAGE and IMPRESS are both defined
         /// and IMPRESSBORDER=NO.
         /// In this case in Windows TITLE can also be defined.
@@ -491,6 +524,15 @@ pub const Button = opaque {
 
 
         /// 
+        /// BGCOLOR: Background color.
+        /// If text and image are not defined, the button is configured to simply show
+        /// a color, in this case set the button size because the natural size will be
+        /// very small.
+        /// In Windows and in GTK 3, the BGCOLOR attribute is ignored if text or image
+        /// is defined.
+        /// Default: the global attribute DLGBGCOLOR.
+        /// BGCOLOR is ignored when FLAT=YES because it will be used the background
+        /// from the native parent.
         /// The buttons with image and text simultaneous have PADDING=5x5, the other
         /// buttons have no padding.
         /// The buttons with no text and BGCOLOR defined have their RASTERSIZE set.
@@ -1088,19 +1130,31 @@ pub const Button = opaque {
 
 
     /// 
+    /// IMPRESS (non inheritable): Image name of the pressed button.
+    /// If IMPRESS and IMAGE are defined, the button borders are not shown and not
+    /// computed in natural size.
+    /// When the button is clicked the pressed image does not offset.
+    /// In Motif the button will lose its focus feedback also.
+    /// (GTK 2.6).
     /// Buttons always have borders, except when IMAGE and IMPRESS are both defined
     /// and IMPRESSBORDER=NO.
     /// In this case in Windows TITLE can also be defined.
-    pub fn getImpress(self: *Self) [:0]const u8 {
+    pub fn getImPress(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "IMPRESS");
     }
 
 
     /// 
+    /// IMPRESS (non inheritable): Image name of the pressed button.
+    /// If IMPRESS and IMAGE are defined, the button borders are not shown and not
+    /// computed in natural size.
+    /// When the button is clicked the pressed image does not offset.
+    /// In Motif the button will lose its focus feedback also.
+    /// (GTK 2.6).
     /// Buttons always have borders, except when IMAGE and IMPRESS are both defined
     /// and IMPRESSBORDER=NO.
     /// In this case in Windows TITLE can also be defined.
-    pub fn setImpress(self: *Self, arg: [:0]const u8) void {
+    pub fn setImPress(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "IMPRESS", arg);
     }
 
@@ -1136,6 +1190,11 @@ pub const Button = opaque {
 
 
     /// 
+    /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
+    /// the control.
+    /// In Windows the button will respect CANFOCUS differently to some other controls.
+    /// Default: YES.
+    /// (since 3.0).
     /// Buttons are not activated if the user clicks inside the button but moves
     /// the cursor and releases outside the button area.
     /// Also in Windows the highlight feedback when that happens is different if
@@ -1146,6 +1205,11 @@ pub const Button = opaque {
 
 
     /// 
+    /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
+    /// the control.
+    /// In Windows the button will respect CANFOCUS differently to some other controls.
+    /// Default: YES.
+    /// (since 3.0).
     /// Buttons are not activated if the user clicks inside the button but moves
     /// the cursor and releases outside the button area.
     /// Also in Windows the highlight feedback when that happens is different if
@@ -1164,6 +1228,13 @@ pub const Button = opaque {
 
 
     /// 
+    /// IMAGE (non inheritable): Image name.
+    /// If set before map defines the behavior of the button to contain an image.
+    /// The natural size will be size of the image in pixels, plus the button borders.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// See also IupImage.
+    /// If TITLE is also defined and not empty both will be shown (except in Motif).
+    /// (GTK 2.6).
     /// Buttons always have borders, except when IMAGE and IMPRESS are both defined
     /// and IMPRESSBORDER=NO.
     /// In this case in Windows TITLE can also be defined.
@@ -1173,6 +1244,13 @@ pub const Button = opaque {
 
 
     /// 
+    /// IMAGE (non inheritable): Image name.
+    /// If set before map defines the behavior of the button to contain an image.
+    /// The natural size will be size of the image in pixels, plus the button borders.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// See also IupImage.
+    /// If TITLE is also defined and not empty both will be shown (except in Motif).
+    /// (GTK 2.6).
     /// Buttons always have borders, except when IMAGE and IMPRESS are both defined
     /// and IMPRESSBORDER=NO.
     /// In this case in Windows TITLE can also be defined.
@@ -1308,6 +1386,21 @@ pub const Button = opaque {
 
 
     /// 
+    /// TITLE (non inheritable): Button's text.
+    /// If IMAGE is not defined before map, then the default behavior is to contain
+    /// only a text.
+    /// The button behavior can not be changed after map.
+    /// The natural size will be larger enough to include all the text in the
+    /// selected font, even using multiple lines, plus the button borders.
+    /// The '\n' character is accepted for line change.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// In old Motif versions (2.1) using a '\n' causes an invalid memory access
+    /// inside Motif.
+    /// (mnemonic support since 3.0).
     /// Buttons always have borders, except when IMAGE and IMPRESS are both defined
     /// and IMPRESSBORDER=NO.
     /// In this case in Windows TITLE can also be defined.
@@ -1317,6 +1410,21 @@ pub const Button = opaque {
 
 
     /// 
+    /// TITLE (non inheritable): Button's text.
+    /// If IMAGE is not defined before map, then the default behavior is to contain
+    /// only a text.
+    /// The button behavior can not be changed after map.
+    /// The natural size will be larger enough to include all the text in the
+    /// selected font, even using multiple lines, plus the button borders.
+    /// The '\n' character is accepted for line change.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// In old Motif versions (2.1) using a '\n' causes an invalid memory access
+    /// inside Motif.
+    /// (mnemonic support since 3.0).
     /// Buttons always have borders, except when IMAGE and IMPRESS are both defined
     /// and IMPRESSBORDER=NO.
     /// In this case in Windows TITLE can also be defined.
@@ -1346,6 +1454,15 @@ pub const Button = opaque {
 
 
     /// 
+    /// BGCOLOR: Background color.
+    /// If text and image are not defined, the button is configured to simply show
+    /// a color, in this case set the button size because the natural size will be
+    /// very small.
+    /// In Windows and in GTK 3, the BGCOLOR attribute is ignored if text or image
+    /// is defined.
+    /// Default: the global attribute DLGBGCOLOR.
+    /// BGCOLOR is ignored when FLAT=YES because it will be used the background
+    /// from the native parent.
     /// The buttons with image and text simultaneous have PADDING=5x5, the other
     /// buttons have no padding.
     /// The buttons with no text and BGCOLOR defined have their RASTERSIZE set.
@@ -1356,6 +1473,15 @@ pub const Button = opaque {
 
 
     /// 
+    /// BGCOLOR: Background color.
+    /// If text and image are not defined, the button is configured to simply show
+    /// a color, in this case set the button size because the natural size will be
+    /// very small.
+    /// In Windows and in GTK 3, the BGCOLOR attribute is ignored if text or image
+    /// is defined.
+    /// Default: the global attribute DLGBGCOLOR.
+    /// BGCOLOR is ignored when FLAT=YES because it will be used the background
+    /// from the native parent.
     /// The buttons with image and text simultaneous have PADDING=5x5, the other
     /// buttons have no padding.
     /// The buttons with no text and BGCOLOR defined have their RASTERSIZE set.
@@ -1953,14 +2079,14 @@ test "Button Position" {
     try std.testing.expect(ret.x == 9 and ret.y == 10);
 }
 
-test "Button Impress" {
+test "Button ImPress" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Button.init().setImpress("Hello").unwrap());
+    var item = try (iup.Button.init().setImPress("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getImpress();
+    var ret = item.getImPress();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }

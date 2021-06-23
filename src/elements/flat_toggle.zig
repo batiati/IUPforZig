@@ -724,6 +724,13 @@ pub const FlatToggle = opaque {
 
 
         /// 
+        /// PADDING: internal margin.
+        /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
+        /// but uses a different name to avoid inheritance problems.
+        /// Alignment does not includes the padding area.
+        /// Default value: "0x0".
+        /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
+        /// will be used instead (since 3.29).
         /// The natural size will be a combination of the size of the image and the
         /// title, if any, plus PADDING and SPACING (if both image and title are
         /// present), and the check box if visible.
@@ -913,6 +920,8 @@ pub const FlatToggle = opaque {
 
 
         /// 
+        /// SPACING (non inheritable): spacing between the image and the text.
+        /// Default: "2".
         /// The natural size will be a combination of the size of the image and the
         /// title, if any, plus PADDING and SPACING (if both image and title are
         /// present), and the check box if visible.
@@ -2242,6 +2251,13 @@ pub const FlatToggle = opaque {
 
 
     /// 
+    /// PADDING: internal margin.
+    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
+    /// but uses a different name to avoid inheritance problems.
+    /// Alignment does not includes the padding area.
+    /// Default value: "0x0".
+    /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
+    /// will be used instead (since 3.29).
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are
     /// present), and the check box if visible.
@@ -2252,6 +2268,13 @@ pub const FlatToggle = opaque {
 
 
     /// 
+    /// PADDING: internal margin.
+    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
+    /// but uses a different name to avoid inheritance problems.
+    /// Alignment does not includes the padding area.
+    /// Default value: "0x0".
+    /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
+    /// will be used instead (since 3.29).
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are
     /// present), and the check box if visible.
@@ -2589,6 +2612,8 @@ pub const FlatToggle = opaque {
 
 
     /// 
+    /// SPACING (non inheritable): spacing between the image and the text.
+    /// Default: "2".
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are
     /// present), and the check box if visible.
@@ -2598,6 +2623,8 @@ pub const FlatToggle = opaque {
 
 
     /// 
+    /// SPACING (non inheritable): spacing between the image and the text.
+    /// Default: "2".
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are
     /// present), and the check box if visible.

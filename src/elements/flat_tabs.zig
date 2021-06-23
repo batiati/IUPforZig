@@ -690,6 +690,9 @@ pub const FlatTabs = opaque {
 
 
         /// 
+        /// TABTITLEn: contains the text to be shown in the respective tab title.
+        /// n starts at 0.
+        /// If this value is NULL, it will remain empty.
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
@@ -1142,6 +1145,10 @@ pub const FlatTabs = opaque {
 
 
         /// 
+        /// TABIMAGEn: image name to be used in the respective tab.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+        /// n starts at 0.
+        /// See also IupImage.
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
@@ -2103,6 +2110,9 @@ pub const FlatTabs = opaque {
 
 
     /// 
+    /// TABTITLEn: contains the text to be shown in the respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
     /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
     /// each child.
     /// Works only if set before the child is added to the tabs.
@@ -2113,6 +2123,9 @@ pub const FlatTabs = opaque {
 
 
     /// 
+    /// TABTITLEn: contains the text to be shown in the respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
     /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
     /// each child.
     /// Works only if set before the child is added to the tabs.
@@ -2888,6 +2901,10 @@ pub const FlatTabs = opaque {
 
 
     /// 
+    /// TABIMAGEn: image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
     /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
     /// each child.
     /// Works only if set before the child is added to the tabs.
@@ -2898,6 +2915,10 @@ pub const FlatTabs = opaque {
 
 
     /// 
+    /// TABIMAGEn: image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
     /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
     /// each child.
     /// Works only if set before the child is added to the tabs.

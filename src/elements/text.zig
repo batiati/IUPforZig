@@ -1034,6 +1034,10 @@ pub const Text = opaque {
 
 
         /// 
+        /// MULTILINE (creation only) (non inheritable): allows the edition of multiple lines.
+        /// In single line mode some characters are invalid, like "\t", "\r" and "\n".
+        /// Default: NO.
+        /// When set to Yes will also reset the SCROLLBAR attribute to Yes.
         /// The values ALL and NONE are also accepted independently of MULTILINE (since 3.0).
         pub fn setMultiline(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MULTILINE", arg);
@@ -2640,6 +2644,10 @@ pub const Text = opaque {
 
 
     /// 
+    /// MULTILINE (creation only) (non inheritable): allows the edition of multiple lines.
+    /// In single line mode some characters are invalid, like "\t", "\r" and "\n".
+    /// Default: NO.
+    /// When set to Yes will also reset the SCROLLBAR attribute to Yes.
     /// The values ALL and NONE are also accepted independently of MULTILINE (since 3.0).
     pub fn getMultiline(self: *Self) bool {
         return c.getBoolAttribute(self, "MULTILINE");
@@ -2647,6 +2655,10 @@ pub const Text = opaque {
 
 
     /// 
+    /// MULTILINE (creation only) (non inheritable): allows the edition of multiple lines.
+    /// In single line mode some characters are invalid, like "\t", "\r" and "\n".
+    /// Default: NO.
+    /// When set to Yes will also reset the SCROLLBAR attribute to Yes.
     /// The values ALL and NONE are also accepted independently of MULTILINE (since 3.0).
     pub fn setMultiline(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "MULTILINE", arg);

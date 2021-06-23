@@ -672,6 +672,10 @@ pub const ProgressDlg = opaque {
 
 
         /// 
+        /// TITLE (non inheritable): Dialog’s title.
+        /// Default: NULL.
+        /// If not set the title bar will not be displayed and the dialog will occupy
+        /// less space on screen.
         /// TITLE: Dialog title.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TITLE", arg);
@@ -1975,6 +1979,10 @@ pub const ProgressDlg = opaque {
 
 
     /// 
+    /// TITLE (non inheritable): Dialog’s title.
+    /// Default: NULL.
+    /// If not set the title bar will not be displayed and the dialog will occupy
+    /// less space on screen.
     /// TITLE: Dialog title.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TITLE");
@@ -1982,6 +1990,10 @@ pub const ProgressDlg = opaque {
 
 
     /// 
+    /// TITLE (non inheritable): Dialog’s title.
+    /// Default: NULL.
+    /// If not set the title bar will not be displayed and the dialog will occupy
+    /// less space on screen.
     /// TITLE: Dialog title.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TITLE", arg);

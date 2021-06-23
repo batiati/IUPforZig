@@ -97,6 +97,12 @@ pub const Item = opaque {
     pub const OnHelpFn = fn (self: *Self) anyerror!void;
 
     /// 
+    /// VALUE (non inheritable): Indicates the item's state.
+    /// When the value is ON, a mark will be displayed to the left of the item.
+    /// Default: OFF.
+    /// An item in a menu bar cannot have a check mark.
+    /// When IMAGE is used, the checkmark is not shown.
+    /// See the item AUTOTOGGLE attribute and the menu RADIO attribute.
     /// Since GTK 2.14 to have a menu item that can be marked you must set the
     /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
     pub const Value = enum {
@@ -176,7 +182,7 @@ pub const Item = opaque {
         /// 
         /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
         /// mark image when VALUE=ON.
-        pub fn setImpress(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setImPress(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "IMPRESS", arg);
             return self.*;
         }
@@ -235,6 +241,12 @@ pub const Item = opaque {
 
 
         /// 
+        /// VALUE (non inheritable): Indicates the item's state.
+        /// When the value is ON, a mark will be displayed to the left of the item.
+        /// Default: OFF.
+        /// An item in a menu bar cannot have a check mark.
+        /// When IMAGE is used, the checkmark is not shown.
+        /// See the item AUTOTOGGLE attribute and the menu RADIO attribute.
         /// Since GTK 2.14 to have a menu item that can be marked you must set the
         /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
         pub fn setValue(self: *Initializer, arg: ?Value) Initializer {
@@ -479,7 +491,7 @@ pub const Item = opaque {
     /// 
     /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=ON.
-    pub fn getImpress(self: *Self) [:0]const u8 {
+    pub fn getImPress(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "IMPRESS");
     }
 
@@ -487,7 +499,7 @@ pub const Item = opaque {
     /// 
     /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=ON.
-    pub fn setImpress(self: *Self, arg: [:0]const u8) void {
+    pub fn setImPress(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "IMPRESS", arg);
     }
 
@@ -585,6 +597,12 @@ pub const Item = opaque {
 
 
     /// 
+    /// VALUE (non inheritable): Indicates the item's state.
+    /// When the value is ON, a mark will be displayed to the left of the item.
+    /// Default: OFF.
+    /// An item in a menu bar cannot have a check mark.
+    /// When IMAGE is used, the checkmark is not shown.
+    /// See the item AUTOTOGGLE attribute and the menu RADIO attribute.
     /// Since GTK 2.14 to have a menu item that can be marked you must set the
     /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
     pub fn getValue(self: *Self) ?Value {
@@ -597,6 +615,12 @@ pub const Item = opaque {
 
 
     /// 
+    /// VALUE (non inheritable): Indicates the item's state.
+    /// When the value is ON, a mark will be displayed to the left of the item.
+    /// Default: OFF.
+    /// An item in a menu bar cannot have a check mark.
+    /// When IMAGE is used, the checkmark is not shown.
+    /// See the item AUTOTOGGLE attribute and the menu RADIO attribute.
     /// Since GTK 2.14 to have a menu item that can be marked you must set the
     /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
     pub fn setValue(self: *Self, arg: ?Value) void {
@@ -749,14 +773,14 @@ test "Item Title" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Item Impress" {
+test "Item ImPress" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Item.init().setImpress("Hello").unwrap());
+    var item = try (iup.Item.init().setImPress("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getImpress();
+    var ret = item.getImPress();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }

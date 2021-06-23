@@ -135,6 +135,8 @@ pub const Image = opaque {
 
 
         /// 
+        /// BGCOLOR: The color used for transparency.
+        /// If not defined uses the BGCOLOR of the control that contains the image.
         /// In Motif, the alpha channel in RGBA images is always composed with the
         /// control BGCOLOR by IUP prior to setting the image at the control.
         /// In Windows and in GTK, the alpha channel is composed internally by the system.
@@ -334,6 +336,8 @@ pub const Image = opaque {
 
 
     /// 
+    /// BGCOLOR: The color used for transparency.
+    /// If not defined uses the BGCOLOR of the control that contains the image.
     /// In Motif, the alpha channel in RGBA images is always composed with the
     /// control BGCOLOR by IUP prior to setting the image at the control.
     /// In Windows and in GTK, the alpha channel is composed internally by the system.
@@ -348,6 +352,8 @@ pub const Image = opaque {
 
 
     /// 
+    /// BGCOLOR: The color used for transparency.
+    /// If not defined uses the BGCOLOR of the control that contains the image.
     /// In Motif, the alpha channel in RGBA images is always composed with the
     /// control BGCOLOR by IUP prior to setting the image at the control.
     /// In Windows and in GTK, the alpha channel is composed internally by the system.
@@ -388,6 +394,8 @@ pub const Image = opaque {
 
 
     /// 
+    /// WID (read-only): returns the internal pixels data pointer.
+    /// (since 3.0).
     /// If the image was created in C then there is no way to access its pixels
     /// values in Lua, except as an userdata using the WID attribute.
     pub fn getWId(self: *Self) i32 {

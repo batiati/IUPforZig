@@ -631,8 +631,10 @@ pub const FlatScrollBox = opaque {
 
 
         /// 
-        /// SCROLLTOCHILD_HANDLE (write-only): same as SCROLLTOCHILD but directly using
-        /// the child handle.
+        /// SCROLLTOCHILD (write-only): position the scroll at the top-left corner of
+        /// the given child located by its name.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an Ihandle* to a name.
+        /// The child must be contained in the Scrollbox hierarchy.
         pub fn setScrollToChild(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "SCROLLTOCHILD", arg);
             return self.*;
@@ -1793,8 +1795,10 @@ pub const FlatScrollBox = opaque {
 
 
     /// 
-    /// SCROLLTOCHILD_HANDLE (write-only): same as SCROLLTOCHILD but directly using
-    /// the child handle.
+    /// SCROLLTOCHILD (write-only): position the scroll at the top-left corner of
+    /// the given child located by its name.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an Ihandle* to a name.
+    /// The child must be contained in the Scrollbox hierarchy.
     pub fn setScrollToChild(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "SCROLLTOCHILD", arg);
     }

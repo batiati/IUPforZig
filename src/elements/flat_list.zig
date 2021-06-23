@@ -1143,6 +1143,16 @@ pub const FlatList = opaque {
 
 
         /// 
+        /// VALUE (non inheritable): Depends on the selection mode: MULTIPLE=YES:
+        /// Sequence of '+' and '-' symbols indicating the state of each item.
+        /// When setting this value, the user must provide the same amount of '+' and
+        /// '-' symbols as the amount of items in the list.
+        /// It can use ' ' (space) or another character so the current selection on
+        /// that item will remain the same (since 3.28).
+        /// MULTIPLE=NO: Integer number representing the selected item in the list
+        /// (begins at 1).
+        /// It returns NULL if there is no selected item.
+        /// For both cases, when setting NULL all items are deselected.
         /// The non changed items marked with 'x' are simulated internally by IUP in
         /// all systems.
         /// If you add or remove items to/from the list and you count on the 'x'
@@ -3007,6 +3017,16 @@ pub const FlatList = opaque {
 
 
     /// 
+    /// VALUE (non inheritable): Depends on the selection mode: MULTIPLE=YES:
+    /// Sequence of '+' and '-' symbols indicating the state of each item.
+    /// When setting this value, the user must provide the same amount of '+' and
+    /// '-' symbols as the amount of items in the list.
+    /// It can use ' ' (space) or another character so the current selection on
+    /// that item will remain the same (since 3.28).
+    /// MULTIPLE=NO: Integer number representing the selected item in the list
+    /// (begins at 1).
+    /// It returns NULL if there is no selected item.
+    /// For both cases, when setting NULL all items are deselected.
     /// The non changed items marked with 'x' are simulated internally by IUP in
     /// all systems.
     /// If you add or remove items to/from the list and you count on the 'x'
@@ -3018,6 +3038,16 @@ pub const FlatList = opaque {
 
 
     /// 
+    /// VALUE (non inheritable): Depends on the selection mode: MULTIPLE=YES:
+    /// Sequence of '+' and '-' symbols indicating the state of each item.
+    /// When setting this value, the user must provide the same amount of '+' and
+    /// '-' symbols as the amount of items in the list.
+    /// It can use ' ' (space) or another character so the current selection on
+    /// that item will remain the same (since 3.28).
+    /// MULTIPLE=NO: Integer number representing the selected item in the list
+    /// (begins at 1).
+    /// It returns NULL if there is no selected item.
+    /// For both cases, when setting NULL all items are deselected.
     /// The non changed items marked with 'x' are simulated internally by IUP in
     /// all systems.
     /// If you add or remove items to/from the list and you count on the 'x'

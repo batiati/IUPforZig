@@ -403,6 +403,12 @@ pub const DatePick = opaque {
 
 
         /// 
+        /// FORMAT [Windows Only]: Flexible format for the date in Windows.
+        /// For more information see "About Date and Time Picker Control" in the
+        /// Windows SDK.
+        /// The Windows control was configured to display date only without any time options.
+        /// Default: "d'/'M'/'yyyy".
+        /// See Noted bellow.
         /// In Windows, FORMAT can have the following values, but other text in the
         /// format string must be enclosed in single quotes:
         pub fn setFormat(self: *Initializer, arg: [:0]const u8) Initializer {
@@ -1046,6 +1052,12 @@ pub const DatePick = opaque {
 
 
     /// 
+    /// FORMAT [Windows Only]: Flexible format for the date in Windows.
+    /// For more information see "About Date and Time Picker Control" in the
+    /// Windows SDK.
+    /// The Windows control was configured to display date only without any time options.
+    /// Default: "d'/'M'/'yyyy".
+    /// See Noted bellow.
     /// In Windows, FORMAT can have the following values, but other text in the
     /// format string must be enclosed in single quotes:
     pub fn getFormat(self: *Self) [:0]const u8 {
@@ -1054,6 +1066,12 @@ pub const DatePick = opaque {
 
 
     /// 
+    /// FORMAT [Windows Only]: Flexible format for the date in Windows.
+    /// For more information see "About Date and Time Picker Control" in the
+    /// Windows SDK.
+    /// The Windows control was configured to display date only without any time options.
+    /// Default: "d'/'M'/'yyyy".
+    /// See Noted bellow.
     /// In Windows, FORMAT can have the following values, but other text in the
     /// format string must be enclosed in single quotes:
     pub fn setFormat(self: *Self, arg: [:0]const u8) void {

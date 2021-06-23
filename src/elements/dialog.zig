@@ -180,18 +180,6 @@ pub const Dialog = opaque {
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
-    /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
     pub const OnCustomFrameDrawFn = fn (self: *Self) anyerror!void;
 
     /// 
@@ -680,17 +668,13 @@ pub const Dialog = opaque {
 
 
         /// 
-        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-        /// customize the dialog frame elements (the title and its buttons) by drawing
-        /// them with the CUSTOMFRAMEDRAW_CB callback.
-        /// Can be Yes or No.
-        /// The Window client area is expanded to include the whole window.
-        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-        /// TITLE must still be defined.
-        /// But maximize, minimize and close buttons must be manually implemented in
-        /// the BUTTON_CB callback.
-        /// One drawback is that menu bars will not work.
-        /// (since 3.18) (renamed in 3.22)
+        /// MAXBOX (creation only): Requires a maximize button from the window manager.
+        /// If RESIZE=NO then MAXBOX will be set to NO.
+        /// Default: YES.
+        /// In Motif the decorations are controlled by the Window Manager and may not
+        /// be possible to be changed from IUP.
+        /// In Windows MAXBOX is hidden only if MINBOX is hidden as well, or else it
+        /// will be just disabled.
         pub fn setMaxBox(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MAXBOX", arg);
             return self.*;
@@ -829,6 +813,39 @@ pub const Dialog = opaque {
 
 
         /// 
+        /// SIZE (non inheritable): Dialogs size.
+        /// Additionally the following values can also be defined for width and/or
+        /// height: "FULL": Defines the dialogs width (or height) equal to the screen's
+        /// width (or height) "HALF": Defines the dialogs width (or height) equal to
+        /// half the screen's width (or height) "THIRD": Defines the dialogs width (or
+        /// height) equal to 1/3 the screen's width (or height) "QUARTER": Defines the
+        /// dialogs width (or height) equal to 1/4 of the screen's width (or height)
+        /// "EIGHTH": Defines the dialogs width (or height) equal to 1/8 of the
+        /// screen's width (or height).
+        /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+        /// accepted, regardless of the minimum size required by its children.
+        /// For a dialog to have the minimum necessary size to fit all elements
+        /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+        /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+        /// dialog, its contents will be limited to this size as the minimum size, if
+        /// you do not want that, then after showing the dialog reset this size to NULL
+        /// so the dialog can be resized to smaller values.
+        /// But notice that its contents will still be limited by the Natural size, to
+        /// also remove that limitation set SHRINK=YES.
+        /// To only change the User size in pixels, without resetting the Current size,
+        /// set the USERSIZE attribute (since 3.12).
+        /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+        /// accepted, regardless of the minimum size required by its children.
+        /// For a dialog to have the minimum necessary size to fit all elements
+        /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+        /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+        /// dialog, its contents will be limited to this size as the minimum size, if
+        /// you do not want that, then after showing the dialog reset this size to NULL
+        /// so the dialog can be resized to smaller values.
+        /// But notice that its contents will still be limited by the Natural size, to
+        /// also remove that limitation set SHRINK=YES.
+        /// To only change the User size in pixels, without resetting the Current size,
+        /// set the USERSIZE attribute (since 3.12).
         /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
         /// accepted, regardless of the minimum size required by its children.
         /// For a dialog to have the minimum necessary size to fit all elements
@@ -947,17 +964,11 @@ pub const Dialog = opaque {
 
 
         /// 
-        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-        /// customize the dialog frame elements (the title and its buttons) by drawing
-        /// them with the CUSTOMFRAMEDRAW_CB callback.
-        /// Can be Yes or No.
-        /// The Window client area is expanded to include the whole window.
-        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-        /// TITLE must still be defined.
-        /// But maximize, minimize and close buttons must be manually implemented in
-        /// the BUTTON_CB callback.
-        /// One drawback is that menu bars will not work.
-        /// (since 3.18) (renamed in 3.22)
+        /// TITLE (non inheritable): Dialogs title.
+        /// Default: NULL.
+        /// If you want to remove the title bar you must also set MENUBOX=NO, MAXBOX=NO
+        /// and MINBOX=NO, before map.
+        /// But in Motif and GTK it will hide it only if RESIZE=NO also.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "TITLE", arg);
             return self.*;
@@ -1042,17 +1053,11 @@ pub const Dialog = opaque {
 
 
         /// 
-        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-        /// customize the dialog frame elements (the title and its buttons) by drawing
-        /// them with the CUSTOMFRAMEDRAW_CB callback.
-        /// Can be Yes or No.
-        /// The Window client area is expanded to include the whole window.
-        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-        /// TITLE must still be defined.
-        /// But maximize, minimize and close buttons must be manually implemented in
-        /// the BUTTON_CB callback.
-        /// One drawback is that menu bars will not work.
-        /// (since 3.18) (renamed in 3.22)
+        /// RESIZE (creation only): Allows interactively changing the dialogs size.
+        /// Default: YES.
+        /// If RESIZE=NO then MAXBOX will be set to NO.
+        /// In Motif the decorations are controlled by the Window Manager and may not
+        /// be possible to be changed from IUP.
         pub fn setResize(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "RESIZE", arg);
             return self.*;
@@ -1093,6 +1098,30 @@ pub const Dialog = opaque {
 
 
         /// 
+        /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+        /// accepted, regardless of the minimum size required by its children.
+        /// For a dialog to have the minimum necessary size to fit all elements
+        /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+        /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+        /// dialog, its contents will be limited to this size as the minimum size, if
+        /// you do not want that, then after showing the dialog reset this size to NULL
+        /// so the dialog can be resized to smaller values.
+        /// But notice that its contents will still be limited by the Natural size, to
+        /// also remove that limitation set SHRINK=YES.
+        /// To only change the User size in pixels, without resetting the Current size,
+        /// set the USERSIZE attribute (since 3.12).
+        /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+        /// accepted, regardless of the minimum size required by its children.
+        /// For a dialog to have the minimum necessary size to fit all elements
+        /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+        /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+        /// dialog, its contents will be limited to this size as the minimum size, if
+        /// you do not want that, then after showing the dialog reset this size to NULL
+        /// so the dialog can be resized to smaller values.
+        /// But notice that its contents will still be limited by the Natural size, to
+        /// also remove that limitation set SHRINK=YES.
+        /// To only change the User size in pixels, without resetting the Current size,
+        /// set the USERSIZE attribute (since 3.12).
         /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
         /// accepted, regardless of the minimum size required by its children.
         /// For a dialog to have the minimum necessary size to fit all elements
@@ -1177,22 +1206,6 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-
-        /// 
-        /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
-        /// application to customize the dialog frame elements (the title and its
-        /// buttons) by using IUP controls for its elements like caption, minimize
-        /// button, maximize button, and close buttons.
-        /// The custom frame support uses the native system support for custom frames.
-        /// The application is responsible for leaving space for the borders.
-        /// One drawback is that menu bars will not work.
-        /// For the dialog to be able to be moved an IupLabel or an IupCanvas must be
-        /// at the top of the dialog and must have the NAME attribute set to
-        /// CUSTOMFRAMECAPTION (since 3.22).
-        /// Native custom frames are supported only in Windows and in GTK version 3.10,
-        /// so for older GTK versions we have to simulate the support using CUSTOMFRAMESIMULATE.
-        /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
-        /// Frame notes bellow.
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "NAME", arg);
             return self.*;
@@ -1200,17 +1213,12 @@ pub const Dialog = opaque {
 
 
         /// 
-        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-        /// customize the dialog frame elements (the title and its buttons) by drawing
-        /// them with the CUSTOMFRAMEDRAW_CB callback.
-        /// Can be Yes or No.
-        /// The Window client area is expanded to include the whole window.
-        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-        /// TITLE must still be defined.
-        /// But maximize, minimize and close buttons must be manually implemented in
-        /// the BUTTON_CB callback.
-        /// One drawback is that menu bars will not work.
-        /// (since 3.18) (renamed in 3.22)
+        /// MINBOX (creation only): Requires a minimize button from the window manager.
+        /// Default: YES.
+        /// In Motif the decorations are controlled by the Window Manager and may not
+        /// be possible to be changed from IUP.
+        /// In Windows MINBOX is hidden only if MAXBOX is hidden as well, or else it
+        /// will be just disabled.
         pub fn setMinBox(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "MINBOX", arg);
             return self.*;
@@ -1344,17 +1352,10 @@ pub const Dialog = opaque {
 
 
         /// 
-        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-        /// customize the dialog frame elements (the title and its buttons) by drawing
-        /// them with the CUSTOMFRAMEDRAW_CB callback.
-        /// Can be Yes or No.
-        /// The Window client area is expanded to include the whole window.
-        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-        /// TITLE must still be defined.
-        /// But maximize, minimize and close buttons must be manually implemented in
-        /// the BUTTON_CB callback.
-        /// One drawback is that menu bars will not work.
-        /// (since 3.18) (renamed in 3.22)
+        /// BORDER (non inheritable) (creation only): Shows a resize border around the dialog.
+        /// Default: "YES".
+        /// BORDER=NO is useful only when RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
+        /// and TITLE=NULL, if any of these are defined there will be always some border.
         pub fn setBorder(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "BORDER", arg);
             return self.*;
@@ -1755,18 +1756,6 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        /// 
-        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-        /// customize the dialog frame elements (the title and its buttons) by drawing
-        /// them with the CUSTOMFRAMEDRAW_CB callback.
-        /// Can be Yes or No.
-        /// The Window client area is expanded to include the whole window.
-        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-        /// TITLE must still be defined.
-        /// But maximize, minimize and close buttons must be manually implemented in
-        /// the BUTTON_CB callback.
-        /// One drawback is that menu bars will not work.
-        /// (since 3.18) (renamed in 3.22)
         pub fn setCustomFrameDrawCallback(self: *Initializer, callback: ?OnCustomFrameDrawFn) Initializer {
             const Handler = CallbackHandler(Self, OnCustomFrameDrawFn, "CUSTOMFRAMEDRAW_CB");
             Handler.setCallback(self.ref, callback);
@@ -2376,40 +2365,6 @@ pub const Dialog = opaque {
         return c.getStrAttribute(self, "MDIACTIVE");
     }
 
-
-    /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn getMaxBox(self: *Self) bool {
-        return c.getBoolAttribute(self, "MAXBOX");
-    }
-
-
-    /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn setMaxBox(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MAXBOX", arg);
-    }
-
     pub fn getDragDrop(self: *Self) bool {
         return c.getBoolAttribute(self, "DRAGDROP");
     }
@@ -2618,6 +2573,39 @@ pub const Dialog = opaque {
 
 
     /// 
+    /// SIZE (non inheritable): Dialogs size.
+    /// Additionally the following values can also be defined for width and/or
+    /// height: "FULL": Defines the dialogs width (or height) equal to the screen's
+    /// width (or height) "HALF": Defines the dialogs width (or height) equal to
+    /// half the screen's width (or height) "THIRD": Defines the dialogs width (or
+    /// height) equal to 1/3 the screen's width (or height) "QUARTER": Defines the
+    /// dialogs width (or height) equal to 1/4 of the screen's width (or height)
+    /// "EIGHTH": Defines the dialogs width (or height) equal to 1/8 of the
+    /// screen's width (or height).
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
     /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
     /// accepted, regardless of the minimum size required by its children.
     /// For a dialog to have the minimum necessary size to fit all elements
@@ -2637,6 +2625,39 @@ pub const Dialog = opaque {
 
 
     /// 
+    /// SIZE (non inheritable): Dialogs size.
+    /// Additionally the following values can also be defined for width and/or
+    /// height: "FULL": Defines the dialogs width (or height) equal to the screen's
+    /// width (or height) "HALF": Defines the dialogs width (or height) equal to
+    /// half the screen's width (or height) "THIRD": Defines the dialogs width (or
+    /// height) equal to 1/3 the screen's width (or height) "QUARTER": Defines the
+    /// dialogs width (or height) equal to 1/4 of the screen's width (or height)
+    /// "EIGHTH": Defines the dialogs width (or height) equal to 1/8 of the
+    /// screen's width (or height).
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
     /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
     /// accepted, regardless of the minimum size required by its children.
     /// For a dialog to have the minimum necessary size to fit all elements
@@ -2831,34 +2852,22 @@ pub const Dialog = opaque {
 
 
     /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
+    /// TITLE (non inheritable): Dialogs title.
+    /// Default: NULL.
+    /// If you want to remove the title bar you must also set MENUBOX=NO, MAXBOX=NO
+    /// and MINBOX=NO, before map.
+    /// But in Motif and GTK it will hide it only if RESIZE=NO also.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "TITLE");
     }
 
 
     /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
+    /// TITLE (non inheritable): Dialogs title.
+    /// Default: NULL.
+    /// If you want to remove the title bar you must also set MENUBOX=NO, MAXBOX=NO
+    /// and MINBOX=NO, before map.
+    /// But in Motif and GTK it will hide it only if RESIZE=NO also.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TITLE", arg);
     }
@@ -3004,40 +3013,6 @@ pub const Dialog = opaque {
 
 
     /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn getResize(self: *Self) bool {
-        return c.getBoolAttribute(self, "RESIZE");
-    }
-
-
-    /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn setResize(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "RESIZE", arg);
-    }
-
-
-    /// 
     /// MDIARRANGE [Windows Only] (write-only): Action to arrange MDI child windows.
     /// Possible values: TILEHORIZONTAL, TILEVERTICAL, CASCADE and ICON (arrange
     /// the minimized icons).
@@ -3102,6 +3077,30 @@ pub const Dialog = opaque {
     /// also remove that limitation set SHRINK=YES.
     /// To only change the User size in pixels, without resetting the Current size,
     /// set the USERSIZE attribute (since 3.12).
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
     pub fn getRasterSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "RASTERSIZE");
         return Size.parse(str);
@@ -3109,6 +3108,30 @@ pub const Dialog = opaque {
 
 
     /// 
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
+    /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
+    /// accepted, regardless of the minimum size required by its children.
+    /// For a dialog to have the minimum necessary size to fit all elements
+    /// contained in it, simply define SIZE or RASTERSIZE to NULL.
+    /// Also if you set SIZE or RASTERSIZE to be used as the initial size of the
+    /// dialog, its contents will be limited to this size as the minimum size, if
+    /// you do not want that, then after showing the dialog reset this size to NULL
+    /// so the dialog can be resized to smaller values.
+    /// But notice that its contents will still be limited by the Natural size, to
+    /// also remove that limitation set SHRINK=YES.
+    /// To only change the User size in pixels, without resetting the Current size,
+    /// set the USERSIZE attribute (since 3.12).
     /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
     /// accepted, regardless of the minimum size required by its children.
     /// For a dialog to have the minimum necessary size to fit all elements
@@ -3231,78 +3254,12 @@ pub const Dialog = opaque {
         }
     }
 
-
-    /// 
-    /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
-    /// application to customize the dialog frame elements (the title and its
-    /// buttons) by using IUP controls for its elements like caption, minimize
-    /// button, maximize button, and close buttons.
-    /// The custom frame support uses the native system support for custom frames.
-    /// The application is responsible for leaving space for the borders.
-    /// One drawback is that menu bars will not work.
-    /// For the dialog to be able to be moved an IupLabel or an IupCanvas must be
-    /// at the top of the dialog and must have the NAME attribute set to
-    /// CUSTOMFRAMECAPTION (since 3.22).
-    /// Native custom frames are supported only in Windows and in GTK version 3.10,
-    /// so for older GTK versions we have to simulate the support using CUSTOMFRAMESIMULATE.
-    /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
-    /// Frame notes bellow.
     pub fn getName(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "NAME");
     }
 
-
-    /// 
-    /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
-    /// application to customize the dialog frame elements (the title and its
-    /// buttons) by using IUP controls for its elements like caption, minimize
-    /// button, maximize button, and close buttons.
-    /// The custom frame support uses the native system support for custom frames.
-    /// The application is responsible for leaving space for the borders.
-    /// One drawback is that menu bars will not work.
-    /// For the dialog to be able to be moved an IupLabel or an IupCanvas must be
-    /// at the top of the dialog and must have the NAME attribute set to
-    /// CUSTOMFRAMECAPTION (since 3.22).
-    /// Native custom frames are supported only in Windows and in GTK version 3.10,
-    /// so for older GTK versions we have to simulate the support using CUSTOMFRAMESIMULATE.
-    /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
-    /// Frame notes bellow.
     pub fn setName(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "NAME", arg);
-    }
-
-
-    /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn getMinBox(self: *Self) bool {
-        return c.getBoolAttribute(self, "MINBOX");
-    }
-
-
-    /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn setMinBox(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MINBOX", arg);
     }
 
 
@@ -3539,40 +3496,6 @@ pub const Dialog = opaque {
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "NTHEME", arg);
-    }
-
-
-    /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn getBorder(self: *Self) bool {
-        return c.getBoolAttribute(self, "BORDER");
-    }
-
-
-    /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn setBorder(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "BORDER", arg);
     }
 
 
@@ -3987,18 +3910,6 @@ pub const Dialog = opaque {
         Handler.setCallback(self, callback);
     }
 
-    /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
     pub fn setCustomFrameDrawCallback(self: *Self, callback: ?OnCustomFrameDrawFn) void {
         const Handler = CallbackHandler(Self, OnCustomFrameDrawFn, "CUSTOMFRAMEDRAW_CB");
         Handler.setCallback(self, callback);
@@ -4361,18 +4272,6 @@ test "Dialog Cursor" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Dialog MaxBox" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setMaxBox(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMaxBox();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Dialog DragDrop" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4733,18 +4632,6 @@ test "Dialog DragSource" {
     try std.testing.expect(ret == true);
 }
 
-test "Dialog Resize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setResize(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getResize();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Dialog Floating" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4877,18 +4764,6 @@ test "Dialog Name" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Dialog MinBox" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setMinBox(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMinBox();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Dialog TipBalloonTitleIcon" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5019,18 +4894,6 @@ test "Dialog NTheme" {
     var ret = item.getNTheme();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Dialog Border" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setBorder(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getBorder();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Dialog CustomFramesImulate" {

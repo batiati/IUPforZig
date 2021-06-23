@@ -916,6 +916,9 @@ pub const MessageDlg = opaque {
 
 
         /// 
+        /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
+        /// This dialog will be always in front of the parent dialog.
+        /// If not defined in Motif the dialog could not be modal.
         /// In Windows, if PARENTDIALOG is specified then it will be modal relative
         /// only to its parent.
         pub fn setParentDialog(self: *Initializer, arg: *iup.Dialog) Initializer {
@@ -2407,6 +2410,9 @@ pub const MessageDlg = opaque {
 
 
     /// 
+    /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
+    /// This dialog will be always in front of the parent dialog.
+    /// If not defined in Motif the dialog could not be modal.
     /// In Windows, if PARENTDIALOG is specified then it will be modal relative
     /// only to its parent.
     pub fn getParentDialog(self: *Self) ?*iup.Dialog {
@@ -2419,6 +2425,9 @@ pub const MessageDlg = opaque {
 
 
     /// 
+    /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
+    /// This dialog will be always in front of the parent dialog.
+    /// If not defined in Motif the dialog could not be modal.
     /// In Windows, if PARENTDIALOG is specified then it will be modal relative
     /// only to its parent.
     pub fn setParentDialog(self: *Self, arg: *iup.Dialog) void {

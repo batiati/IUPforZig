@@ -725,6 +725,13 @@ pub const FlatButton = opaque {
 
 
         /// 
+        /// PADDING: internal margin.
+        /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
+        /// but uses a different name to avoid inheritance problems.
+        /// Alignment does not includes the padding area.
+        /// Default value: "0x0".
+        /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
+        /// will be used instead (since 3.29).
         /// The natural size will be a combination of the size of the image and the
         /// title, if any, plus PADDING and SPACING (if both image and title are present).
         pub fn setPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
@@ -915,6 +922,8 @@ pub const FlatButton = opaque {
 
 
         /// 
+        /// SPACING (non inheritable): spacing between the image and the text.
+        /// Default: "2".
         /// The natural size will be a combination of the size of the image and the
         /// title, if any, plus PADDING and SPACING (if both image and title are present).
         pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
@@ -2246,6 +2255,13 @@ pub const FlatButton = opaque {
 
 
     /// 
+    /// PADDING: internal margin.
+    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
+    /// but uses a different name to avoid inheritance problems.
+    /// Alignment does not includes the padding area.
+    /// Default value: "0x0".
+    /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
+    /// will be used instead (since 3.29).
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn getPadding(self: *Self) Size {
@@ -2255,6 +2271,13 @@ pub const FlatButton = opaque {
 
 
     /// 
+    /// PADDING: internal margin.
+    /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
+    /// but uses a different name to avoid inheritance problems.
+    /// Alignment does not includes the padding area.
+    /// Default value: "0x0".
+    /// Value can be DEFAULTBUTTONPADDING, so the global attribute of this name
+    /// will be used instead (since 3.29).
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn setPadding(self: *Self, width: ?i32, height: ?i32) void {
@@ -2597,6 +2620,8 @@ pub const FlatButton = opaque {
 
 
     /// 
+    /// SPACING (non inheritable): spacing between the image and the text.
+    /// Default: "2".
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn getSpacing(self: *Self) i32 {
@@ -2605,6 +2630,8 @@ pub const FlatButton = opaque {
 
 
     /// 
+    /// SPACING (non inheritable): spacing between the image and the text.
+    /// Default: "2".
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are present).
     pub fn setSpacing(self: *Self, arg: i32) void {

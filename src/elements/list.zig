@@ -412,6 +412,8 @@ pub const List = opaque {
 
 
         /// 
+        /// FGCOLOR: Text color.
+        /// Default: the global attribute TXTFGCOLOR.
         /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
         /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
         pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
@@ -525,6 +527,18 @@ pub const List = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// SHOWIMAGE (creation only) [Windows and GTK Only]: enables the use of an
+        /// image for each item.
+        /// Can be "YES" or "NO".
+        /// Ignored if set after map.
+        /// (since 3.6)
+        pub fn setShowImage(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "SHOWIMAGE", arg);
+            return self.*;
+        }
+
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DRAGDROP", arg);
             return self.*;
@@ -610,6 +624,17 @@ pub const List = opaque {
 
 
         /// 
+        /// DROPEXPAND [Windows Only]: When DROPDOWN=Yes the size of the dropped list
+        /// will expand to include the largest text.
+        /// Can be "YES" or "NO".
+        /// Default: "YES".
+        pub fn setDropExpand(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "DROPEXPAND", arg);
+            return self.*;
+        }
+
+
+        /// 
         /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
         /// support drag and drop of items between lists (IupList or IupFlatList), in
         /// the same IUP application.
@@ -673,13 +698,21 @@ pub const List = opaque {
         /// VISIBLEITEMS [Windows and Motif Only]: Number of items that are visible
         /// when DROPDOWN=YES is used for the dropdown list.
         /// Default: 5.
-        pub fn setVisibleItems(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "VISIBLEITEMS", arg);
+        pub fn setVisibleItems(self: *Initializer, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "VISIBLEITEMS", arg);
             return self.*;
         }
 
 
         /// 
+        /// SCROLLBAR (creation only): Associates automatic scrollbars to the list when DROPDOWN=NO.
+        /// Can be: "YES" or "NO" (none).
+        /// Default: "YES".
+        /// For all systems, when SCROLLBAR=YES the natural size will always include
+        /// its size even if the native system hides the scrollbars.
+        /// If AUTOHIDE=YES scrollbars are shown only if they are necessary, by default AUTOHIDE=YES.
+        /// In Motif, SCROLLBAR=NO is not supported and if EDITBOX=YES the horizontal
+        /// scrollbar is never shown.
         /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
         /// the SCROLLBAR or AUTOHIDE attributes.
         /// Usually the scrollbars are shown if necessary.
@@ -724,6 +757,9 @@ pub const List = opaque {
 
 
         /// 
+        /// BGCOLOR: Background color of the text.
+        /// Default: the global attribute TXTBGCOLOR.
+        /// In GTK does nothing when DROPDOWN=Yes.
         /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
         /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
@@ -738,6 +774,16 @@ pub const List = opaque {
 
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DROPTARGET", arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// EDITBOX (creation only): Adds an edit box to the list.
+        /// Can be "YES" or "NO".
+        /// Default "NO".
+        pub fn setEditBox(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "EDITBOX", arg);
             return self.*;
         }
 
@@ -901,6 +947,24 @@ pub const List = opaque {
 
 
         /// 
+        /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
+        /// EDITBOX=YES: Text entered by the user.
+        /// MULTIPLE=YES: Sequence of '+' and '-' symbols indicating the state of each item.
+        /// When setting this value, the user must provide the same amount of '+' and
+        /// '-' symbols as the amount of items in the list, otherwise the specified
+        /// items will be deselected.
+        /// Others: Integer number representing the selected item in the list (begins
+        /// at 1).
+        /// It can be zero if there is no selected item.
+        /// (In Motif when DROPDOWN=YES there is always an item selected, except when
+        /// the list is empty).
+        /// Should return a non NULL value, even when the list is empty or the text box
+        /// is empty.
+        /// It can be NULL when no item selected (since 3.0).
+        /// The state=0 is simulated internally by IUP in all systems.
+        /// If you add or remove items to/from the list and you count on the state=0
+        /// value, then after adding/removing items set the VALUE attribute to ensure
+        /// proper state=0 value.
         /// The non changed items marked with 'x' are simulated internally by IUP in
         /// all systems.
         /// If you add or remove items to/from the list and you count on the 'x'
@@ -998,6 +1062,8 @@ pub const List = opaque {
 
 
         /// 
+        /// AUTOHIDE: scrollbars are shown only if they are necessary.
+        /// Default: "YES".
         /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
         /// the SCROLLBAR or AUTOHIDE attributes.
         /// Usually the scrollbars are shown if necessary.
@@ -1042,6 +1108,20 @@ pub const List = opaque {
             } else {
                 c.clearAttribute(self.ref, "CLIPBOARD");
             }
+            return self.*;
+        }
+
+
+        /// 
+        /// DROPDOWN (creation only): Changes the appearance of the list for the user:
+        /// only the selected item is shown beside a button with the image of an arrow
+        /// pointing down.
+        /// To select another option, the user must press this button, which displays
+        /// all items in the list.
+        /// Can be "YES" or "NO".
+        /// Default "NO".
+        pub fn setDropDown(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "DROPDOWN", arg);
             return self.*;
         }
 
@@ -1588,6 +1668,8 @@ pub const List = opaque {
 
 
     /// 
+    /// FGCOLOR: Text color.
+    /// Default: the global attribute TXTFGCOLOR.
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn getFgColor(self: *Self) ?iup.Rgb {
@@ -1596,6 +1678,8 @@ pub const List = opaque {
 
 
     /// 
+    /// FGCOLOR: Text color.
+    /// Default: the global attribute TXTFGCOLOR.
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
@@ -1909,6 +1993,26 @@ pub const List = opaque {
 
 
     /// 
+    /// DROPEXPAND [Windows Only]: When DROPDOWN=Yes the size of the dropped list
+    /// will expand to include the largest text.
+    /// Can be "YES" or "NO".
+    /// Default: "YES".
+    pub fn getDropExpand(self: *Self) bool {
+        return c.getBoolAttribute(self, "DROPEXPAND");
+    }
+
+
+    /// 
+    /// DROPEXPAND [Windows Only]: When DROPDOWN=Yes the size of the dropped list
+    /// will expand to include the largest text.
+    /// Can be "YES" or "NO".
+    /// Default: "YES".
+    pub fn setDropExpand(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "DROPEXPAND", arg);
+    }
+
+
+    /// 
     /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
     /// support drag and drop of items between lists (IupList or IupFlatList), in
     /// the same IUP application.
@@ -2001,8 +2105,8 @@ pub const List = opaque {
     /// VISIBLEITEMS [Windows and Motif Only]: Number of items that are visible
     /// when DROPDOWN=YES is used for the dropdown list.
     /// Default: 5.
-    pub fn getVisibleItems(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "VISIBLEITEMS");
+    pub fn getVisibleItems(self: *Self) i32 {
+        return c.getIntAttribute(self, "VISIBLEITEMS");
     }
 
 
@@ -2010,12 +2114,20 @@ pub const List = opaque {
     /// VISIBLEITEMS [Windows and Motif Only]: Number of items that are visible
     /// when DROPDOWN=YES is used for the dropdown list.
     /// Default: 5.
-    pub fn setVisibleItems(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "VISIBLEITEMS", arg);
+    pub fn setVisibleItems(self: *Self, arg: i32) void {
+        c.setIntAttribute(self, "VISIBLEITEMS", arg);
     }
 
 
     /// 
+    /// SCROLLBAR (creation only): Associates automatic scrollbars to the list when DROPDOWN=NO.
+    /// Can be: "YES" or "NO" (none).
+    /// Default: "YES".
+    /// For all systems, when SCROLLBAR=YES the natural size will always include
+    /// its size even if the native system hides the scrollbars.
+    /// If AUTOHIDE=YES scrollbars are shown only if they are necessary, by default AUTOHIDE=YES.
+    /// In Motif, SCROLLBAR=NO is not supported and if EDITBOX=YES the horizontal
+    /// scrollbar is never shown.
     /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
     /// the SCROLLBAR or AUTOHIDE attributes.
     /// Usually the scrollbars are shown if necessary.
@@ -2028,6 +2140,14 @@ pub const List = opaque {
 
 
     /// 
+    /// SCROLLBAR (creation only): Associates automatic scrollbars to the list when DROPDOWN=NO.
+    /// Can be: "YES" or "NO" (none).
+    /// Default: "YES".
+    /// For all systems, when SCROLLBAR=YES the natural size will always include
+    /// its size even if the native system hides the scrollbars.
+    /// If AUTOHIDE=YES scrollbars are shown only if they are necessary, by default AUTOHIDE=YES.
+    /// In Motif, SCROLLBAR=NO is not supported and if EDITBOX=YES the horizontal
+    /// scrollbar is never shown.
     /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
     /// the SCROLLBAR or AUTOHIDE attributes.
     /// Usually the scrollbars are shown if necessary.
@@ -2071,6 +2191,9 @@ pub const List = opaque {
 
 
     /// 
+    /// BGCOLOR: Background color of the text.
+    /// Default: the global attribute TXTBGCOLOR.
+    /// In GTK does nothing when DROPDOWN=Yes.
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
@@ -2079,6 +2202,9 @@ pub const List = opaque {
 
 
     /// 
+    /// BGCOLOR: Background color of the text.
+    /// Default: the global attribute TXTBGCOLOR.
+    /// In GTK does nothing when DROPDOWN=Yes.
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
@@ -2321,6 +2447,24 @@ pub const List = opaque {
 
 
     /// 
+    /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
+    /// EDITBOX=YES: Text entered by the user.
+    /// MULTIPLE=YES: Sequence of '+' and '-' symbols indicating the state of each item.
+    /// When setting this value, the user must provide the same amount of '+' and
+    /// '-' symbols as the amount of items in the list, otherwise the specified
+    /// items will be deselected.
+    /// Others: Integer number representing the selected item in the list (begins
+    /// at 1).
+    /// It can be zero if there is no selected item.
+    /// (In Motif when DROPDOWN=YES there is always an item selected, except when
+    /// the list is empty).
+    /// Should return a non NULL value, even when the list is empty or the text box
+    /// is empty.
+    /// It can be NULL when no item selected (since 3.0).
+    /// The state=0 is simulated internally by IUP in all systems.
+    /// If you add or remove items to/from the list and you count on the state=0
+    /// value, then after adding/removing items set the VALUE attribute to ensure
+    /// proper state=0 value.
     /// The non changed items marked with 'x' are simulated internally by IUP in
     /// all systems.
     /// If you add or remove items to/from the list and you count on the 'x'
@@ -2332,6 +2476,24 @@ pub const List = opaque {
 
 
     /// 
+    /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
+    /// EDITBOX=YES: Text entered by the user.
+    /// MULTIPLE=YES: Sequence of '+' and '-' symbols indicating the state of each item.
+    /// When setting this value, the user must provide the same amount of '+' and
+    /// '-' symbols as the amount of items in the list, otherwise the specified
+    /// items will be deselected.
+    /// Others: Integer number representing the selected item in the list (begins
+    /// at 1).
+    /// It can be zero if there is no selected item.
+    /// (In Motif when DROPDOWN=YES there is always an item selected, except when
+    /// the list is empty).
+    /// Should return a non NULL value, even when the list is empty or the text box
+    /// is empty.
+    /// It can be NULL when no item selected (since 3.0).
+    /// The state=0 is simulated internally by IUP in all systems.
+    /// If you add or remove items to/from the list and you count on the state=0
+    /// value, then after adding/removing items set the VALUE attribute to ensure
+    /// proper state=0 value.
     /// The non changed items marked with 'x' are simulated internally by IUP in
     /// all systems.
     /// If you add or remove items to/from the list and you count on the 'x'
@@ -2480,6 +2642,8 @@ pub const List = opaque {
 
 
     /// 
+    /// AUTOHIDE: scrollbars are shown only if they are necessary.
+    /// Default: "YES".
     /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
     /// the SCROLLBAR or AUTOHIDE attributes.
     /// Usually the scrollbars are shown if necessary.
@@ -2492,6 +2656,8 @@ pub const List = opaque {
 
 
     /// 
+    /// AUTOHIDE: scrollbars are shown only if they are necessary.
+    /// Default: "YES".
     /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
     /// the SCROLLBAR or AUTOHIDE attributes.
     /// Usually the scrollbars are shown if necessary.
@@ -3062,6 +3228,18 @@ test "List MaskDecimalSymbol" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "List VisibleItems" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.List.init().setVisibleItems(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getVisibleItems();
+
+    try std.testing.expect(ret == 42);
+}
+
 test "List MaxSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3254,6 +3432,18 @@ test "List ValueString" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "List DropExpand" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.List.init().setDropExpand(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDropExpand();
+
+    try std.testing.expect(ret == true);
+}
+
 test "List DragDropList" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3318,12 +3508,12 @@ test "List VisibleItems" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.List.init().setVisibleItems("Hello").unwrap());
+    var item = try (iup.List.init().setVisibleItems(42).unwrap());
     defer item.deinit();
 
     var ret = item.getVisibleItems();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == 42);
 }
 
 test "List ScrollBar" {

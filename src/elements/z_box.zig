@@ -211,6 +211,11 @@ pub const ZBox = opaque {
         /// then it can be made visible regardless of the zbox configuration.
         /// For the zbox behave as a IupTabs use native containers as immediate
         /// children of the zbox, like IupScrollBox, IupTabs, IupFrame or IupBackgroundBox.
+        /// The ZBOX relies on the VISIBLE attribute.
+        /// If a child that is hidden by the zbox has its VISIBLE attribute changed
+        /// then it can be made visible regardless of the zbox configuration.
+        /// For the zbox behave as a IupTabs use native containers as immediate
+        /// children of the zbox, like IupScrollBox, IupTabs, IupFrame or IupBackgroundBox.
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "VISIBLE", arg);
             return self.*;
@@ -616,12 +621,22 @@ pub const ZBox = opaque {
     /// then it can be made visible regardless of the zbox configuration.
     /// For the zbox behave as a IupTabs use native containers as immediate
     /// children of the zbox, like IupScrollBox, IupTabs, IupFrame or IupBackgroundBox.
+    /// The ZBOX relies on the VISIBLE attribute.
+    /// If a child that is hidden by the zbox has its VISIBLE attribute changed
+    /// then it can be made visible regardless of the zbox configuration.
+    /// For the zbox behave as a IupTabs use native containers as immediate
+    /// children of the zbox, like IupScrollBox, IupTabs, IupFrame or IupBackgroundBox.
     pub fn getVisible(self: *Self) bool {
         return c.getBoolAttribute(self, "VISIBLE");
     }
 
 
     /// 
+    /// The ZBOX relies on the VISIBLE attribute.
+    /// If a child that is hidden by the zbox has its VISIBLE attribute changed
+    /// then it can be made visible regardless of the zbox configuration.
+    /// For the zbox behave as a IupTabs use native containers as immediate
+    /// children of the zbox, like IupScrollBox, IupTabs, IupFrame or IupBackgroundBox.
     /// The ZBOX relies on the VISIBLE attribute.
     /// If a child that is hidden by the zbox has its VISIBLE attribute changed
     /// then it can be made visible regardless of the zbox configuration.
