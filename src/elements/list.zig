@@ -417,22 +417,22 @@ pub const List = opaque {
         /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
         /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
         pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "FGCOLOR", rgb);
+            c.setRgb(self.ref, "FGCOLOR", void, void, rgb);
             return self.*;
         }
 
         pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPBALLOON", arg);
+            c.setBoolAttribute(self.ref, "TIPBALLOON", void, void, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "HANDLENAME", arg);
+            c.setStrAttribute(self.ref, "HANDLENAME", void, void, arg);
             return self.*;
         }
 
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TIPBGCOLOR", rgb);
+            c.setRgb(self.ref, "TIPBGCOLOR", void, void, rgb);
             return self.*;
         }
 
@@ -445,26 +445,26 @@ pub const List = opaque {
         pub fn setCaret(self: *Initializer, lin: i32, col: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.LinColPos.intIntToString(&buffer, lin, col, ',');
-            c.setStrAttribute(self.ref, "CARET", value);
+            c.setStrAttribute(self.ref, "CARET", void, void, value);
             return self.*;
         }
 
         pub fn setMaskDecimalSymbol(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "MASKDECIMALSYMBOL", arg);
+            c.setStrAttribute(self.ref, "MASKDECIMALSYMBOL", void, void, arg);
             return self.*;
         }
 
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MAXSIZE", value);
+            c.setStrAttribute(self.ref, "MAXSIZE", void, void, value);
             return self.*;
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "POSITION", value);
+            c.setStrAttribute(self.ref, "POSITION", void, void, value);
             return self.*;
         }
 
@@ -476,12 +476,12 @@ pub const List = opaque {
         /// it will be automatically enabled.
         /// (since 3.0)
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DROPFILESTARGET", arg);
+            c.setBoolAttribute(self.ref, "DROPFILESTARGET", void, void, arg);
             return self.*;
         }
 
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIP", arg);
+            c.setStrAttribute(self.ref, "TIP", void, void, arg);
             return self.*;
         }
 
@@ -493,36 +493,36 @@ pub const List = opaque {
         /// Default: YES.
         /// (since 3.0)
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CANFOCUS", arg);
+            c.setBoolAttribute(self.ref, "CANFOCUS", void, void, arg);
             return self.*;
         }
 
         pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", arg);
+            c.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", void, void, arg);
             return self.*;
         }
 
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "VISIBLE", arg);
+            c.setBoolAttribute(self.ref, "VISIBLE", void, void, arg);
             return self.*;
         }
 
-        pub fn setImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "IMAGE", arg);
+        pub fn image(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IMAGE", index, void, arg);
             return self.*;
         }
 
         pub fn setNc(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "NC", arg);
+            c.setIntAttribute(self.ref, "NC", void, void, arg);
             return self.*;
         }
 
-        pub fn setZOrder(self: *Initializer, arg: ?ZOrder) Initializer {
+        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
             if (arg) |value| switch (value) {
-                .Top => c.setStrAttribute(self.ref, "ZORDER", "TOP"),
-                .Bottom => c.setStrAttribute(self.ref, "ZORDER", "BOTTOM"),
+                .Top => c.setStrAttribute(self.ref, "ZORDER", void, void, "TOP"),
+                .Bottom => c.setStrAttribute(self.ref, "ZORDER", void, void, "BOTTOM"),
             } else {
-                c.clearAttribute(self.ref, "ZORDER");
+                c.clearAttribute(self.ref, "ZORDER", void, void);
             }
             return self.*;
         }
@@ -535,45 +535,45 @@ pub const List = opaque {
         /// Ignored if set after map.
         /// (since 3.6)
         pub fn setShowImage(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWIMAGE", arg);
+            c.setBoolAttribute(self.ref, "SHOWIMAGE", void, void, arg);
             return self.*;
         }
 
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGDROP", arg);
+            c.setBoolAttribute(self.ref, "DRAGDROP", void, void, arg);
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "THEME", arg);
+            c.setStrAttribute(self.ref, "THEME", void, void, arg);
             return self.*;
         }
 
         pub fn setMaskReal(self: *Initializer, arg: ?MaskReal) Initializer {
             if (arg) |value| switch (value) {
-                .Signed => c.setStrAttribute(self.ref, "MASKREAL", "SIGNED"),
-                .Unsigned => c.setStrAttribute(self.ref, "MASKREAL", "UNSIGNED"),
+                .Signed => c.setStrAttribute(self.ref, "MASKREAL", void, void, "SIGNED"),
+                .Unsigned => c.setStrAttribute(self.ref, "MASKREAL", void, void, "UNSIGNED"),
             } else {
-                c.clearAttribute(self.ref, "MASKREAL");
+                c.clearAttribute(self.ref, "MASKREAL", void, void);
             }
             return self.*;
         }
 
         pub fn setDragCursorCopy(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGCURSORCOPY", arg);
+            c.setStrAttribute(self.ref, "DRAGCURSORCOPY", void, void, arg);
             return self.*;
         }
 
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "EXPAND", "YES"),
-                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "EXPAND", "VERTICAL"),
-                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", "HORIZONTALFREE"),
-                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", "VERTICALFREE"),
-                .No => c.setStrAttribute(self.ref, "EXPAND", "NO"),
+                .Yes => c.setStrAttribute(self.ref, "EXPAND", void, void, "YES"),
+                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", void, void, "HORIZONTAL"),
+                .Vertical => c.setStrAttribute(self.ref, "EXPAND", void, void, "VERTICAL"),
+                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", void, void, "HORIZONTALFREE"),
+                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", void, void, "VERTICALFREE"),
+                .No => c.setStrAttribute(self.ref, "EXPAND", void, void, "NO"),
             } else {
-                c.clearAttribute(self.ref, "EXPAND");
+                c.clearAttribute(self.ref, "EXPAND", void, void);
             }
             return self.*;
         }
@@ -584,7 +584,7 @@ pub const List = opaque {
         /// Natural Size, this means that will act also as minimum number of visible lines.
         /// (since 3.0)
         pub fn setVisibleLines(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "VISIBLELINES", arg);
+            c.setIntAttribute(self.ref, "VISIBLELINES", void, void, arg);
             return self.*;
         }
 
@@ -599,14 +599,14 @@ pub const List = opaque {
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "SIZE", value);
+            c.setStrAttribute(self.ref, "SIZE", void, void, value);
             return self.*;
         }
 
         pub fn setPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "PADDING", value);
+            c.setStrAttribute(self.ref, "PADDING", void, void, value);
             return self.*;
         }
 
@@ -618,7 +618,7 @@ pub const List = opaque {
         /// When set it will search for the first item with the same string.
         /// (since 3.12)
         pub fn setValueString(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "VALUESTRING", arg);
+            c.setStrAttribute(self.ref, "VALUESTRING", void, void, arg);
             return self.*;
         }
 
@@ -629,7 +629,7 @@ pub const List = opaque {
         /// Can be "YES" or "NO".
         /// Default: "YES".
         pub fn setDropExpand(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DROPEXPAND", arg);
+            c.setBoolAttribute(self.ref, "DROPEXPAND", void, void, arg);
             return self.*;
         }
 
@@ -644,7 +644,7 @@ pub const List = opaque {
         /// Default: NO.
         /// (since 3.10)
         pub fn setDragDropList(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGDROPLIST", arg);
+            c.setBoolAttribute(self.ref, "DRAGDROPLIST", void, void, arg);
             return self.*;
         }
 
@@ -655,8 +655,8 @@ pub const List = opaque {
         /// If value is NULL or "ALL" removes all the items.
         /// Ignored if set before map.
         /// (since 3.0)
-        pub fn setRemoveItem(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "REMOVEITEM", arg);
+        pub fn removeItem(self: *Initializer, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "REMOVEITEM", void, void, arg);
             return self.*;
         }
 
@@ -666,30 +666,30 @@ pub const List = opaque {
         /// near to make it visible.
         /// Valid only when DROPDOWN=NO.
         /// (since 3.0)
-        pub fn setTopItem(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TOPITEM", arg);
+        pub fn topItem(self: *Initializer, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "TOPITEM", void, void, arg);
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "FONTSIZE", arg);
+            c.setIntAttribute(self.ref, "FONTSIZE", void, void, arg);
             return self.*;
         }
 
         pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DROPTYPES", arg);
+            c.setStrAttribute(self.ref, "DROPTYPES", void, void, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "USERSIZE", value);
+            c.setStrAttribute(self.ref, "USERSIZE", void, void, value);
             return self.*;
         }
 
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TIPDELAY", arg);
+            c.setIntAttribute(self.ref, "TIPDELAY", void, void, arg);
             return self.*;
         }
 
@@ -699,7 +699,7 @@ pub const List = opaque {
         /// when DROPDOWN=YES is used for the dropdown list.
         /// Default: 5.
         pub fn setVisibleItems(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "VISIBLEITEMS", arg);
+            c.setIntAttribute(self.ref, "VISIBLEITEMS", void, void, arg);
             return self.*;
         }
 
@@ -720,14 +720,14 @@ pub const List = opaque {
         /// In Motif, the horizontal scrollbar is never shown.
         /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
         pub fn setScrollBar(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SCROLLBAR", arg);
+            c.setBoolAttribute(self.ref, "SCROLLBAR", void, void, arg);
             return self.*;
         }
 
         pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "DRAGSTART", value);
+            c.setStrAttribute(self.ref, "DRAGSTART", void, void, value);
             return self.*;
         }
 
@@ -740,7 +740,7 @@ pub const List = opaque {
         /// Drag & Drop attributes are NOT used.
         /// (since 3.7)
         pub fn setShowDragDrop(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWDRAGDROP", arg);
+            c.setBoolAttribute(self.ref, "SHOWDRAGDROP", void, void, arg);
             return self.*;
         }
 
@@ -751,7 +751,7 @@ pub const List = opaque {
         /// Default: NO.
         /// (since 3.23)
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", arg);
+            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", void, void, arg);
             return self.*;
         }
 
@@ -763,17 +763,17 @@ pub const List = opaque {
         /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
         /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BGCOLOR", rgb);
+            c.setRgb(self.ref, "BGCOLOR", void, void, rgb);
             return self.*;
         }
 
         pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIPBALLOONTITLE", arg);
+            c.setStrAttribute(self.ref, "TIPBALLOONTITLE", void, void, arg);
             return self.*;
         }
 
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DROPTARGET", arg);
+            c.setBoolAttribute(self.ref, "DROPTARGET", void, void, arg);
             return self.*;
         }
 
@@ -783,7 +783,7 @@ pub const List = opaque {
         /// Can be "YES" or "NO".
         /// Default "NO".
         pub fn setEditBox(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "EDITBOX", arg);
+            c.setBoolAttribute(self.ref, "EDITBOX", void, void, arg);
             return self.*;
         }
 
@@ -794,29 +794,29 @@ pub const List = opaque {
         /// If not does nothing.
         /// Works only when EDITBOX=YES.
         /// (since 3.13)
-        pub fn setValueMasked(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "VALUEMASKED", arg);
+        pub fn valueMasked(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "VALUEMASKED", void, void, arg);
             return self.*;
         }
 
         pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGSOURCE", arg);
+            c.setBoolAttribute(self.ref, "DRAGSOURCE", void, void, arg);
             return self.*;
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "FLOATING", "YES"),
-                .Ignore => c.setStrAttribute(self.ref, "FLOATING", "IGNORE"),
-                .No => c.setStrAttribute(self.ref, "FLOATING", "NO"),
+                .Yes => c.setStrAttribute(self.ref, "FLOATING", void, void, "YES"),
+                .Ignore => c.setStrAttribute(self.ref, "FLOATING", void, void, "IGNORE"),
+                .No => c.setStrAttribute(self.ref, "FLOATING", void, void, "NO"),
             } else {
-                c.clearAttribute(self.ref, "FLOATING");
+                c.clearAttribute(self.ref, "FLOATING", void, void);
             }
             return self.*;
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NORMALIZERGROUP", arg);
+            c.setStrAttribute(self.ref, "NORMALIZERGROUP", void, void, arg);
             return self.*;
         }
 
@@ -830,39 +830,39 @@ pub const List = opaque {
         /// Valid only when DROPDOWN=NO.
         /// (since 3.0)
         pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "SPACING", arg);
+            c.setIntAttribute(self.ref, "SPACING", void, void, arg);
             return self.*;
         }
 
-        pub fn setInsertItem(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "INSERTITEM", arg);
+        pub fn insertItem(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "INSERTITEM", index, void, arg);
             return self.*;
         }
 
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RASTERSIZE", value);
+            c.setStrAttribute(self.ref, "RASTERSIZE", void, void, value);
             return self.*;
         }
 
-        pub fn setScrollTopOs(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "SCROLLTOPOS", arg);
+        pub fn scrollTopOs(self: *Initializer, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "SCROLLTOPOS", void, void, arg);
             return self.*;
         }
 
-        pub fn setScrollTo(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "SCROLLTO", arg);
+        pub fn scrollTo(self: *Initializer, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "SCROLLTO", void, void, arg);
             return self.*;
         }
 
         pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TIPFGCOLOR", rgb);
+            c.setRgb(self.ref, "TIPFGCOLOR", void, void, rgb);
             return self.*;
         }
 
         pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CONTROLID", arg);
+            c.setIntAttribute(self.ref, "CONTROLID", void, void, arg);
             return self.*;
         }
 
@@ -873,12 +873,12 @@ pub const List = opaque {
         /// It will actually set the SPACING attribute.
         /// (since 3.29)
         pub fn setCSpacing(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CSPACING", arg);
+            c.setIntAttribute(self.ref, "CSPACING", void, void, arg);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTFACE", arg);
+            c.setStrAttribute(self.ref, "FONTFACE", void, void, arg);
             return self.*;
         }
 
@@ -891,14 +891,14 @@ pub const List = opaque {
         /// Set this attribute to speed Natural Size computation for very large lists.
         /// (since 3.0)
         pub fn setVisibleColumns(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "VISIBLECOLUMNS", arg);
+            c.setIntAttribute(self.ref, "VISIBLECOLUMNS", void, void, arg);
             return self.*;
         }
 
         pub fn setMaskInt(self: *Initializer, begin: i32, end: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-            c.setStrAttribute(self.ref, "MASKINT", value);
+            c.setStrAttribute(self.ref, "MASKINT", void, void, value);
             return self.*;
         }
 
@@ -907,23 +907,23 @@ pub const List = opaque {
         /// APPENDITEM (write-only): inserts an item after the last item.
         /// Ignored if set before map.
         /// (since 3.0)
-        pub fn setAppendItem(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "APPENDITEM", arg);
+        pub fn appendItem(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "APPENDITEM", void, void, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", arg);
+            c.setStrAttribute(self.ref, "NAME", void, void, arg);
             return self.*;
         }
 
         pub fn setMaskCasei(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MASKCASEI", arg);
+            c.setBoolAttribute(self.ref, "MASKCASEI", void, void, arg);
             return self.*;
         }
 
         pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", arg);
+            c.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", void, void, arg);
             return self.*;
         }
 
@@ -934,14 +934,14 @@ pub const List = opaque {
         /// Default: "NO".
         /// Only valid when EDITBOX=NO and DROPDOWN=NO.
         pub fn setMultiple(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MULTIPLE", arg);
+            c.setBoolAttribute(self.ref, "MULTIPLE", void, void, arg);
             return self.*;
         }
 
         pub fn setSelectionPos(self: *Initializer, begin: i32, end: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-            c.setStrAttribute(self.ref, "SELECTIONPOS", value);
+            c.setStrAttribute(self.ref, "SELECTIONPOS", void, void, value);
             return self.*;
         }
 
@@ -971,24 +971,24 @@ pub const List = opaque {
         /// values, then after adding/removing items set the VALUE attribute to ensure
         /// proper 'x' values.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "VALUE", arg);
+            c.setStrAttribute(self.ref, "VALUE", void, void, arg);
             return self.*;
         }
 
         pub fn setFilter(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FILTER", arg);
+            c.setStrAttribute(self.ref, "FILTER", void, void, arg);
             return self.*;
         }
 
         pub fn setSelectedText(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "SELECTEDTEXT", arg);
+            c.setStrAttribute(self.ref, "SELECTEDTEXT", void, void, arg);
             return self.*;
         }
 
         pub fn setCPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "CPADDING", value);
+            c.setStrAttribute(self.ref, "CPADDING", void, void, value);
             return self.*;
         }
 
@@ -997,17 +997,17 @@ pub const List = opaque {
         /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
         /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", arg);
+            c.setBoolAttribute(self.ref, "ACTIVE", void, void, arg);
             return self.*;
         }
 
         pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPVISIBLE", arg);
+            c.setBoolAttribute(self.ref, "TIPVISIBLE", void, void, arg);
             return self.*;
         }
 
         pub fn setCueBanner(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "CUEBANNER", arg);
+            c.setStrAttribute(self.ref, "CUEBANNER", void, void, arg);
             return self.*;
         }
 
@@ -1017,25 +1017,25 @@ pub const List = opaque {
         /// Can be "YES" or "NO".
         /// Valid only when DROPDOWN=YES.
         /// Ignored if set before map.
-        pub fn setShowDropDown(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWDROPDOWN", arg);
+        pub fn showDropDown(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "SHOWDROPDOWN", void, void, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", arg);
+            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", void, void, arg);
             return self.*;
         }
 
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MINSIZE", value);
+            c.setStrAttribute(self.ref, "MINSIZE", void, void, value);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NTHEME", arg);
+            c.setStrAttribute(self.ref, "NTHEME", void, void, arg);
             return self.*;
         }
 
@@ -1046,17 +1046,17 @@ pub const List = opaque {
         /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
         /// EDITBOX=YES and effective only for the edit box inside the list.
         pub fn setCaretPos(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CARETPOS", arg);
+            c.setIntAttribute(self.ref, "CARETPOS", void, void, arg);
             return self.*;
         }
 
         pub fn setMask(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "MASK", arg);
+            c.setStrAttribute(self.ref, "MASK", void, void, arg);
             return self.*;
         }
 
         pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGTYPES", arg);
+            c.setStrAttribute(self.ref, "DRAGTYPES", void, void, arg);
             return self.*;
         }
 
@@ -1071,12 +1071,12 @@ pub const List = opaque {
         /// In Motif, the horizontal scrollbar is never shown.
         /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
         pub fn setAutoHide(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "AUTOHIDE", arg);
+            c.setBoolAttribute(self.ref, "AUTOHIDE", void, void, arg);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTSTYLE", arg);
+            c.setStrAttribute(self.ref, "FONTSTYLE", void, void, arg);
             return self.*;
         }
 
@@ -1087,26 +1087,26 @@ pub const List = opaque {
         /// Set to NO to add many items to the list without updating the display.
         /// Default: "YES".
         /// (since 3.3)
-        pub fn setAutoRedraw(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "AUTOREDRAW", arg);
+        pub fn autoRedraw(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "AUTOREDRAW", void, void, arg);
             return self.*;
         }
 
         pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TOUCH", arg);
+            c.setBoolAttribute(self.ref, "TOUCH", void, void, arg);
             return self.*;
         }
 
         pub fn setClipboard(self: *Initializer, arg: ?Clipboard) Initializer {
             if (arg) |value| switch (value) {
-                .Copy => c.setStrAttribute(self.ref, "CLIPBOARD", "COPY"),
-                .Cut => c.setStrAttribute(self.ref, "CLIPBOARD", "CUT"),
-                .Paste => c.setStrAttribute(self.ref, "CLIPBOARD", "PASTE"),
-                .Clear => c.setStrAttribute(self.ref, "CLIPBOARD", "CLEAR"),
-                .Undo => c.setStrAttribute(self.ref, "CLIPBOARD", "UNDO"),
-                .Redo => c.setStrAttribute(self.ref, "CLIPBOARD", "REDO"),
+                .Copy => c.setStrAttribute(self.ref, "CLIPBOARD", void, void, "COPY"),
+                .Cut => c.setStrAttribute(self.ref, "CLIPBOARD", void, void, "CUT"),
+                .Paste => c.setStrAttribute(self.ref, "CLIPBOARD", void, void, "PASTE"),
+                .Clear => c.setStrAttribute(self.ref, "CLIPBOARD", void, void, "CLEAR"),
+                .Undo => c.setStrAttribute(self.ref, "CLIPBOARD", void, void, "UNDO"),
+                .Redo => c.setStrAttribute(self.ref, "CLIPBOARD", void, void, "REDO"),
             } else {
-                c.clearAttribute(self.ref, "CLIPBOARD");
+                c.clearAttribute(self.ref, "CLIPBOARD", void, void);
             }
             return self.*;
         }
@@ -1121,12 +1121,12 @@ pub const List = opaque {
         /// Can be "YES" or "NO".
         /// Default "NO".
         pub fn setDropDown(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DROPDOWN", arg);
+            c.setBoolAttribute(self.ref, "DROPDOWN", void, void, arg);
             return self.*;
         }
 
         pub fn setReadonly(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "READONLY", arg);
+            c.setBoolAttribute(self.ref, "READONLY", void, void, arg);
             return self.*;
         }
 
@@ -1136,18 +1136,18 @@ pub const List = opaque {
         /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
         /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
         /// EDITBOX=YES and effective only for the edit box inside the list.
-        pub fn setAppend(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "APPEND", arg);
+        pub fn append(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "APPEND", void, void, arg);
             return self.*;
         }
 
         pub fn setDragCursor(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGCURSOR", arg);
+            c.setStrAttribute(self.ref, "DRAGCURSOR", void, void, arg);
             return self.*;
         }
 
         pub fn setMaskNoEmpty(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MASKNOEMPTY", arg);
+            c.setBoolAttribute(self.ref, "MASKNOEMPTY", void, void, arg);
             return self.*;
         }
 
@@ -1156,7 +1156,7 @@ pub const List = opaque {
         /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
         /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONT", arg);
+            c.setStrAttribute(self.ref, "FONT", void, void, arg);
             return self.*;
         }
 
@@ -1599,35 +1599,35 @@ pub const List = opaque {
     }
 
     pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, arg);
+        c.setStrAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName);
+        return c.getStrAttribute(self, attributeName, void, void);
     }
 
     pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, arg);
+        c.setIntAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName);
+        return c.getIntAttribute(self, attributeName, void, void);
     }
 
     pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, arg);
+        c.setBoolAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName);
+        return c.getBoolAttribute(self, attributeName, void, void);
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attributeName, void, void);
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attributeName, void, void, value);
     }
 
     ///
@@ -1663,7 +1663,7 @@ pub const List = opaque {
     /// Before mapping it counts the number of non NULL items before the first NULL item.
     /// (since 3.0)
     pub fn getCount(self: *Self) i32 {
-        return c.getIntAttribute(self, "COUNT");
+        return c.getIntAttribute(self, "COUNT", void, void);
     }
 
 
@@ -1673,7 +1673,7 @@ pub const List = opaque {
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn getFgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "FGCOLOR");
+        return c.getRgb(self, "FGCOLOR", void, void);
     }
 
 
@@ -1683,31 +1683,31 @@ pub const List = opaque {
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "FGCOLOR", rgb);
+        c.setRgb(self, "FGCOLOR", void, void, rgb);
     }
 
     pub fn getTipBalloon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPBALLOON");
+        return c.getBoolAttribute(self, "TIPBALLOON", void, void);
     }
 
     pub fn setTipBalloon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPBALLOON", arg);
+        c.setBoolAttribute(self, "TIPBALLOON", void, void, arg);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME");
+        return c.getStrAttribute(self, "HANDLENAME", void, void);
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "HANDLENAME", arg);
+        c.setStrAttribute(self, "HANDLENAME", void, void, arg);
     }
 
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TIPBGCOLOR");
+        return c.getRgb(self, "TIPBGCOLOR", void, void);
     }
 
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TIPBGCOLOR", rgb);
+        c.setRgb(self, "TIPBGCOLOR", void, void, rgb);
     }
 
 
@@ -1717,7 +1717,7 @@ pub const List = opaque {
     /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
     /// EDITBOX=YES and effective only for the edit box inside the list.
     pub fn getCaret(self: *Self) iup.LinColPos {
-        var str = c.getStrAttribute(self, "CARET");
+        var str = c.getStrAttribute(self, "CARET", void, void);
         return iup.LinColPos.parse(str, ',');
     }
 
@@ -1730,42 +1730,42 @@ pub const List = opaque {
     pub fn setCaret(self: *Self, lin: i32, col: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.LinColPos.intIntToString(&buffer, lin, col, ',');
-        c.setStrAttribute(self, "CARET", value);
+        c.setStrAttribute(self, "CARET", void, void, value);
     }
 
     pub fn getMaskDecimalSymbol(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "MASKDECIMALSYMBOL");
+        return c.getStrAttribute(self, "MASKDECIMALSYMBOL", void, void);
     }
 
     pub fn setMaskDecimalSymbol(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "MASKDECIMALSYMBOL", arg);
+        c.setStrAttribute(self, "MASKDECIMALSYMBOL", void, void, arg);
     }
 
     pub fn getMaxSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MAXSIZE");
+        var str = c.getStrAttribute(self, "MAXSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MAXSIZE", value);
+        c.setStrAttribute(self, "MAXSIZE", void, void, value);
     }
 
     pub fn getScreenPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "SCREENPOSITION");
+        var str = c.getStrAttribute(self, "SCREENPOSITION", void, void);
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn getPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "POSITION");
+        var str = c.getStrAttribute(self, "POSITION", void, void);
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setPosition(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "POSITION", value);
+        c.setStrAttribute(self, "POSITION", void, void, value);
     }
 
 
@@ -1776,7 +1776,7 @@ pub const List = opaque {
     /// it will be automatically enabled.
     /// (since 3.0)
     pub fn getDropFilesTarget(self: *Self) bool {
-        return c.getBoolAttribute(self, "DROPFILESTARGET");
+        return c.getBoolAttribute(self, "DROPFILESTARGET", void, void);
     }
 
 
@@ -1787,80 +1787,80 @@ pub const List = opaque {
     /// it will be automatically enabled.
     /// (since 3.0)
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DROPFILESTARGET", arg);
+        c.setBoolAttribute(self, "DROPFILESTARGET", void, void, arg);
     }
 
     pub fn getTip(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIP");
+        return c.getStrAttribute(self, "TIP", void, void);
     }
 
     pub fn setTip(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIP", arg);
+        c.setStrAttribute(self, "TIP", void, void, arg);
     }
 
     pub fn getDragSourceMove(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGSOURCEMOVE");
+        return c.getBoolAttribute(self, "DRAGSOURCEMOVE", void, void);
     }
 
     pub fn setDragSourceMove(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGSOURCEMOVE", arg);
+        c.setBoolAttribute(self, "DRAGSOURCEMOVE", void, void, arg);
     }
 
     pub fn getVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "VISIBLE");
+        return c.getBoolAttribute(self, "VISIBLE", void, void);
     }
 
     pub fn setVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "VISIBLE", arg);
+        c.setBoolAttribute(self, "VISIBLE", void, void, arg);
     }
 
-    pub fn setImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "IMAGE", arg);
+    pub fn image(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IMAGE", index, void, arg);
     }
 
     pub fn getNc(self: *Self) i32 {
-        return c.getIntAttribute(self, "NC");
+        return c.getIntAttribute(self, "NC", void, void);
     }
 
     pub fn setNc(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "NC", arg);
+        c.setIntAttribute(self, "NC", void, void, arg);
     }
 
-    pub fn setZOrder(self: *Self, arg: ?ZOrder) void {
+    pub fn zOrder(self: *Self, arg: ?ZOrder) void {
         if (arg) |value| switch (value) {
-            .Top => c.setStrAttribute(self, "ZORDER", "TOP"),
-            .Bottom => c.setStrAttribute(self, "ZORDER", "BOTTOM"),
+            .Top => c.setStrAttribute(self, "ZORDER", void, void, "TOP"),
+            .Bottom => c.setStrAttribute(self, "ZORDER", void, void, "BOTTOM"),
         } else {
-            c.clearAttribute(self, "ZORDER");
+            c.clearAttribute(self, "ZORDER", void, void);
         }
     }
 
     pub fn getX(self: *Self) i32 {
-        return c.getIntAttribute(self, "X");
+        return c.getIntAttribute(self, "X", void, void);
     }
 
     pub fn getY(self: *Self) i32 {
-        return c.getIntAttribute(self, "Y");
+        return c.getIntAttribute(self, "Y", void, void);
     }
 
     pub fn getDragDrop(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGDROP");
+        return c.getBoolAttribute(self, "DRAGDROP", void, void);
     }
 
     pub fn setDragDrop(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGDROP", arg);
+        c.setBoolAttribute(self, "DRAGDROP", void, void, arg);
     }
 
     pub fn getTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "THEME");
+        return c.getStrAttribute(self, "THEME", void, void);
     }
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "THEME", arg);
+        c.setStrAttribute(self, "THEME", void, void, arg);
     }
 
     pub fn getMaskReal(self: *Self) ?MaskReal {
-        var ret = c.getStrAttribute(self, "MASKREAL");
+        var ret = c.getStrAttribute(self, "MASKREAL", void, void);
 
         if (std.ascii.eqlIgnoreCase("SIGNED", ret)) return .Signed;
         if (std.ascii.eqlIgnoreCase("UNSIGNED", ret)) return .Unsigned;
@@ -1869,23 +1869,23 @@ pub const List = opaque {
 
     pub fn setMaskReal(self: *Self, arg: ?MaskReal) void {
         if (arg) |value| switch (value) {
-            .Signed => c.setStrAttribute(self, "MASKREAL", "SIGNED"),
-            .Unsigned => c.setStrAttribute(self, "MASKREAL", "UNSIGNED"),
+            .Signed => c.setStrAttribute(self, "MASKREAL", void, void, "SIGNED"),
+            .Unsigned => c.setStrAttribute(self, "MASKREAL", void, void, "UNSIGNED"),
         } else {
-            c.clearAttribute(self, "MASKREAL");
+            c.clearAttribute(self, "MASKREAL", void, void);
         }
     }
 
     pub fn getDragCursorCopy(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGCURSORCOPY");
+        return c.getStrAttribute(self, "DRAGCURSORCOPY", void, void);
     }
 
     pub fn setDragCursorCopy(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGCURSORCOPY", arg);
+        c.setStrAttribute(self, "DRAGCURSORCOPY", void, void, arg);
     }
 
     pub fn getExpand(self: *Self) ?Expand {
-        var ret = c.getStrAttribute(self, "EXPAND");
+        var ret = c.getStrAttribute(self, "EXPAND", void, void);
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
@@ -1898,14 +1898,14 @@ pub const List = opaque {
 
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "EXPAND", "YES"),
-            .Horizontal => c.setStrAttribute(self, "EXPAND", "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "EXPAND", "VERTICAL"),
-            .HorizontalFree => c.setStrAttribute(self, "EXPAND", "HORIZONTALFREE"),
-            .VerticalFree => c.setStrAttribute(self, "EXPAND", "VERTICALFREE"),
-            .No => c.setStrAttribute(self, "EXPAND", "NO"),
+            .Yes => c.setStrAttribute(self, "EXPAND", void, void, "YES"),
+            .Horizontal => c.setStrAttribute(self, "EXPAND", void, void, "HORIZONTAL"),
+            .Vertical => c.setStrAttribute(self, "EXPAND", void, void, "VERTICAL"),
+            .HorizontalFree => c.setStrAttribute(self, "EXPAND", void, void, "HORIZONTALFREE"),
+            .VerticalFree => c.setStrAttribute(self, "EXPAND", void, void, "VERTICALFREE"),
+            .No => c.setStrAttribute(self, "EXPAND", void, void, "NO"),
         } else {
-            c.clearAttribute(self, "EXPAND");
+            c.clearAttribute(self, "EXPAND", void, void);
         }
     }
 
@@ -1915,7 +1915,7 @@ pub const List = opaque {
     /// Natural Size, this means that will act also as minimum number of visible lines.
     /// (since 3.0)
     pub fn getVisibleLines(self: *Self) i32 {
-        return c.getIntAttribute(self, "VISIBLELINES");
+        return c.getIntAttribute(self, "VISIBLELINES", void, void);
     }
 
 
@@ -1924,7 +1924,7 @@ pub const List = opaque {
     /// Natural Size, this means that will act also as minimum number of visible lines.
     /// (since 3.0)
     pub fn setVisibleLines(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "VISIBLELINES", arg);
+        c.setIntAttribute(self, "VISIBLELINES", void, void, arg);
     }
 
 
@@ -1936,7 +1936,7 @@ pub const List = opaque {
     /// VISIBLELINES attributes are defined.
     /// The text in the edit box is ignored when considering the list contents.
     pub fn getSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "SIZE");
+        var str = c.getStrAttribute(self, "SIZE", void, void);
         return Size.parse(str);
     }
 
@@ -1951,18 +1951,18 @@ pub const List = opaque {
     pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "SIZE", value);
+        c.setStrAttribute(self, "SIZE", void, void, value);
     }
 
     pub fn getPadding(self: *Self) Size {
-        var str = c.getStrAttribute(self, "PADDING");
+        var str = c.getStrAttribute(self, "PADDING", void, void);
         return Size.parse(str);
     }
 
     pub fn setPadding(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "PADDING", value);
+        c.setStrAttribute(self, "PADDING", void, void, value);
     }
 
 
@@ -1973,7 +1973,7 @@ pub const List = opaque {
     /// When set it will search for the first item with the same string.
     /// (since 3.12)
     pub fn getValueString(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "VALUESTRING");
+        return c.getStrAttribute(self, "VALUESTRING", void, void);
     }
 
 
@@ -1984,11 +1984,11 @@ pub const List = opaque {
     /// When set it will search for the first item with the same string.
     /// (since 3.12)
     pub fn setValueString(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "VALUESTRING", arg);
+        c.setStrAttribute(self, "VALUESTRING", void, void, arg);
     }
 
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID");
+        return c.getIntAttribute(self, "WID", void, void);
     }
 
 
@@ -1998,7 +1998,7 @@ pub const List = opaque {
     /// Can be "YES" or "NO".
     /// Default: "YES".
     pub fn getDropExpand(self: *Self) bool {
-        return c.getBoolAttribute(self, "DROPEXPAND");
+        return c.getBoolAttribute(self, "DROPEXPAND", void, void);
     }
 
 
@@ -2008,7 +2008,7 @@ pub const List = opaque {
     /// Can be "YES" or "NO".
     /// Default: "YES".
     pub fn setDropExpand(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DROPEXPAND", arg);
+        c.setBoolAttribute(self, "DROPEXPAND", void, void, arg);
     }
 
 
@@ -2022,7 +2022,7 @@ pub const List = opaque {
     /// Default: NO.
     /// (since 3.10)
     pub fn getDragDropList(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGDROPLIST");
+        return c.getBoolAttribute(self, "DRAGDROPLIST", void, void);
     }
 
 
@@ -2036,7 +2036,7 @@ pub const List = opaque {
     /// Default: NO.
     /// (since 3.10)
     pub fn setDragDropList(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGDROPLIST", arg);
+        c.setBoolAttribute(self, "DRAGDROPLIST", void, void, arg);
     }
 
 
@@ -2046,8 +2046,8 @@ pub const List = opaque {
     /// If value is NULL or "ALL" removes all the items.
     /// Ignored if set before map.
     /// (since 3.0)
-    pub fn setRemoveItem(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "REMOVEITEM", arg);
+    pub fn removeItem(self: *Self, arg: i32) void {
+        c.setIntAttribute(self, "REMOVEITEM", void, void, arg);
     }
 
 
@@ -2056,48 +2056,48 @@ pub const List = opaque {
     /// near to make it visible.
     /// Valid only when DROPDOWN=NO.
     /// (since 3.0)
-    pub fn setTopItem(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TOPITEM", arg);
+    pub fn topItem(self: *Self, arg: i32) void {
+        c.setIntAttribute(self, "TOPITEM", void, void, arg);
     }
 
     pub fn getFontSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "FONTSIZE");
+        return c.getIntAttribute(self, "FONTSIZE", void, void);
     }
 
     pub fn setFontSize(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "FONTSIZE", arg);
+        c.setIntAttribute(self, "FONTSIZE", void, void, arg);
     }
 
     pub fn getNaturalSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "NATURALSIZE");
+        var str = c.getStrAttribute(self, "NATURALSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn getDropTypes(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DROPTYPES");
+        return c.getStrAttribute(self, "DROPTYPES", void, void);
     }
 
     pub fn setDropTypes(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DROPTYPES", arg);
+        c.setStrAttribute(self, "DROPTYPES", void, void, arg);
     }
 
     pub fn getUserSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "USERSIZE");
+        var str = c.getStrAttribute(self, "USERSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "USERSIZE", value);
+        c.setStrAttribute(self, "USERSIZE", void, void, value);
     }
 
     pub fn getTipDelay(self: *Self) i32 {
-        return c.getIntAttribute(self, "TIPDELAY");
+        return c.getIntAttribute(self, "TIPDELAY", void, void);
     }
 
     pub fn setTipDelay(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TIPDELAY", arg);
+        c.setIntAttribute(self, "TIPDELAY", void, void, arg);
     }
 
 
@@ -2106,7 +2106,7 @@ pub const List = opaque {
     /// when DROPDOWN=YES is used for the dropdown list.
     /// Default: 5.
     pub fn getVisibleItems(self: *Self) i32 {
-        return c.getIntAttribute(self, "VISIBLEITEMS");
+        return c.getIntAttribute(self, "VISIBLEITEMS", void, void);
     }
 
 
@@ -2115,7 +2115,7 @@ pub const List = opaque {
     /// when DROPDOWN=YES is used for the dropdown list.
     /// Default: 5.
     pub fn setVisibleItems(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "VISIBLEITEMS", arg);
+        c.setIntAttribute(self, "VISIBLEITEMS", void, void, arg);
     }
 
 
@@ -2135,7 +2135,7 @@ pub const List = opaque {
     /// In Motif, the horizontal scrollbar is never shown.
     /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
     pub fn getScrollBar(self: *Self) bool {
-        return c.getBoolAttribute(self, "SCROLLBAR");
+        return c.getBoolAttribute(self, "SCROLLBAR", void, void);
     }
 
 
@@ -2155,18 +2155,18 @@ pub const List = opaque {
     /// In Motif, the horizontal scrollbar is never shown.
     /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
     pub fn setScrollBar(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SCROLLBAR", arg);
+        c.setBoolAttribute(self, "SCROLLBAR", void, void, arg);
     }
 
     pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "DRAGSTART");
+        var str = c.getStrAttribute(self, "DRAGSTART", void, void);
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setDragStart(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "DRAGSTART", value);
+        c.setStrAttribute(self, "DRAGSTART", void, void, value);
     }
 
 
@@ -2176,7 +2176,7 @@ pub const List = opaque {
     /// Default: NO.
     /// (since 3.23)
     pub fn getPropagateFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "PROPAGATEFOCUS");
+        return c.getBoolAttribute(self, "PROPAGATEFOCUS", void, void);
     }
 
 
@@ -2186,7 +2186,7 @@ pub const List = opaque {
     /// Default: NO.
     /// (since 3.23)
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "PROPAGATEFOCUS", arg);
+        c.setBoolAttribute(self, "PROPAGATEFOCUS", void, void, arg);
     }
 
 
@@ -2197,7 +2197,7 @@ pub const List = opaque {
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BGCOLOR");
+        return c.getRgb(self, "BGCOLOR", void, void);
     }
 
 
@@ -2208,23 +2208,23 @@ pub const List = opaque {
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BGCOLOR", rgb);
+        c.setRgb(self, "BGCOLOR", void, void, rgb);
     }
 
     pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIPBALLOONTITLE");
+        return c.getStrAttribute(self, "TIPBALLOONTITLE", void, void);
     }
 
     pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIPBALLOONTITLE", arg);
+        c.setStrAttribute(self, "TIPBALLOONTITLE", void, void, arg);
     }
 
     pub fn getDropTarget(self: *Self) bool {
-        return c.getBoolAttribute(self, "DROPTARGET");
+        return c.getBoolAttribute(self, "DROPTARGET", void, void);
     }
 
     pub fn setDropTarget(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DROPTARGET", arg);
+        c.setBoolAttribute(self, "DROPTARGET", void, void, arg);
     }
 
 
@@ -2234,20 +2234,20 @@ pub const List = opaque {
     /// If not does nothing.
     /// Works only when EDITBOX=YES.
     /// (since 3.13)
-    pub fn setValueMasked(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "VALUEMASKED", arg);
+    pub fn valueMasked(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "VALUEMASKED", void, void, arg);
     }
 
     pub fn getDragSource(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGSOURCE");
+        return c.getBoolAttribute(self, "DRAGSOURCE", void, void);
     }
 
     pub fn setDragSource(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGSOURCE", arg);
+        c.setBoolAttribute(self, "DRAGSOURCE", void, void, arg);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
-        var ret = c.getStrAttribute(self, "FLOATING");
+        var ret = c.getStrAttribute(self, "FLOATING", void, void);
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
@@ -2257,20 +2257,20 @@ pub const List = opaque {
 
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "FLOATING", "YES"),
-            .Ignore => c.setStrAttribute(self, "FLOATING", "IGNORE"),
-            .No => c.setStrAttribute(self, "FLOATING", "NO"),
+            .Yes => c.setStrAttribute(self, "FLOATING", void, void, "YES"),
+            .Ignore => c.setStrAttribute(self, "FLOATING", void, void, "IGNORE"),
+            .No => c.setStrAttribute(self, "FLOATING", void, void, "NO"),
         } else {
-            c.clearAttribute(self, "FLOATING");
+            c.clearAttribute(self, "FLOATING", void, void);
         }
     }
 
     pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NORMALIZERGROUP");
+        return c.getStrAttribute(self, "NORMALIZERGROUP", void, void);
     }
 
     pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NORMALIZERGROUP", arg);
+        c.setStrAttribute(self, "NORMALIZERGROUP", void, void, arg);
     }
 
 
@@ -2283,7 +2283,7 @@ pub const List = opaque {
     /// Valid only when DROPDOWN=NO.
     /// (since 3.0)
     pub fn getSpacing(self: *Self) i32 {
-        return c.getIntAttribute(self, "SPACING");
+        return c.getIntAttribute(self, "SPACING", void, void);
     }
 
 
@@ -2296,46 +2296,46 @@ pub const List = opaque {
     /// Valid only when DROPDOWN=NO.
     /// (since 3.0)
     pub fn setSpacing(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "SPACING", arg);
+        c.setIntAttribute(self, "SPACING", void, void, arg);
     }
 
-    pub fn setInsertItem(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "INSERTITEM", arg);
+    pub fn insertItem(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "INSERTITEM", index, void, arg);
     }
 
     pub fn getRasterSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "RASTERSIZE");
+        var str = c.getStrAttribute(self, "RASTERSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RASTERSIZE", value);
+        c.setStrAttribute(self, "RASTERSIZE", void, void, value);
     }
 
-    pub fn setScrollTopOs(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "SCROLLTOPOS", arg);
+    pub fn scrollTopOs(self: *Self, arg: i32) void {
+        c.setIntAttribute(self, "SCROLLTOPOS", void, void, arg);
     }
 
-    pub fn setScrollTo(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "SCROLLTO", arg);
+    pub fn scrollTo(self: *Self, arg: i32) void {
+        c.setIntAttribute(self, "SCROLLTO", void, void, arg);
     }
 
     pub fn getTipFgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TIPFGCOLOR");
+        return c.getRgb(self, "TIPFGCOLOR", void, void);
     }
 
     pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TIPFGCOLOR", rgb);
+        c.setRgb(self, "TIPFGCOLOR", void, void, rgb);
     }
 
     pub fn getControlId(self: *Self) i32 {
-        return c.getIntAttribute(self, "CONTROLID");
+        return c.getIntAttribute(self, "CONTROLID", void, void);
     }
 
     pub fn setControlId(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CONTROLID", arg);
+        c.setIntAttribute(self, "CONTROLID", void, void, arg);
     }
 
 
@@ -2345,7 +2345,7 @@ pub const List = opaque {
     /// It will actually set the SPACING attribute.
     /// (since 3.29)
     pub fn getCSpacing(self: *Self) i32 {
-        return c.getIntAttribute(self, "CSPACING");
+        return c.getIntAttribute(self, "CSPACING", void, void);
     }
 
 
@@ -2355,15 +2355,15 @@ pub const List = opaque {
     /// It will actually set the SPACING attribute.
     /// (since 3.29)
     pub fn setCSpacing(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CSPACING", arg);
+        c.setIntAttribute(self, "CSPACING", void, void, arg);
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTFACE");
+        return c.getStrAttribute(self, "FONTFACE", void, void);
     }
 
     pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTFACE", arg);
+        c.setStrAttribute(self, "FONTFACE", void, void, arg);
     }
 
 
@@ -2375,7 +2375,7 @@ pub const List = opaque {
     /// Set this attribute to speed Natural Size computation for very large lists.
     /// (since 3.0)
     pub fn getVisibleColumns(self: *Self) i32 {
-        return c.getIntAttribute(self, "VISIBLECOLUMNS");
+        return c.getIntAttribute(self, "VISIBLECOLUMNS", void, void);
     }
 
 
@@ -2387,18 +2387,18 @@ pub const List = opaque {
     /// Set this attribute to speed Natural Size computation for very large lists.
     /// (since 3.0)
     pub fn setVisibleColumns(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "VISIBLECOLUMNS", arg);
+        c.setIntAttribute(self, "VISIBLECOLUMNS", void, void, arg);
     }
 
     pub fn getMaskInt(self: *Self) iup.Range {
-        var str = c.getStrAttribute(self, "MASKINT");
+        var str = c.getStrAttribute(self, "MASKINT", void, void);
         return iup.Range.parse(str, ',');
     }
 
     pub fn setMaskInt(self: *Self, begin: i32, end: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-        c.setStrAttribute(self, "MASKINT", value);
+        c.setStrAttribute(self, "MASKINT", void, void, value);
     }
 
 
@@ -2406,43 +2406,43 @@ pub const List = opaque {
     /// APPENDITEM (write-only): inserts an item after the last item.
     /// Ignored if set before map.
     /// (since 3.0)
-    pub fn setAppendItem(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "APPENDITEM", arg);
+    pub fn appendItem(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "APPENDITEM", void, void, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME");
+        return c.getStrAttribute(self, "NAME", void, void);
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", arg);
+        c.setStrAttribute(self, "NAME", void, void, arg);
     }
 
     pub fn getMaskCasei(self: *Self) bool {
-        return c.getBoolAttribute(self, "MASKCASEI");
+        return c.getBoolAttribute(self, "MASKCASEI", void, void);
     }
 
     pub fn setMaskCasei(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MASKCASEI", arg);
+        c.setBoolAttribute(self, "MASKCASEI", void, void, arg);
     }
 
     pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPBALLOONTITLEICON");
+        return c.getBoolAttribute(self, "TIPBALLOONTITLEICON", void, void);
     }
 
     pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPBALLOONTITLEICON", arg);
+        c.setBoolAttribute(self, "TIPBALLOONTITLEICON", void, void, arg);
     }
 
     pub fn getSelectionPos(self: *Self) iup.Range {
-        var str = c.getStrAttribute(self, "SELECTIONPOS");
+        var str = c.getStrAttribute(self, "SELECTIONPOS", void, void);
         return iup.Range.parse(str, ',');
     }
 
     pub fn setSelectionPos(self: *Self, begin: i32, end: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-        c.setStrAttribute(self, "SELECTIONPOS", value);
+        c.setStrAttribute(self, "SELECTIONPOS", void, void, value);
     }
 
 
@@ -2471,7 +2471,7 @@ pub const List = opaque {
     /// values, then after adding/removing items set the VALUE attribute to ensure
     /// proper 'x' values.
     pub fn getValue(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "VALUE");
+        return c.getStrAttribute(self, "VALUE", void, void);
     }
 
 
@@ -2500,34 +2500,34 @@ pub const List = opaque {
     /// values, then after adding/removing items set the VALUE attribute to ensure
     /// proper 'x' values.
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "VALUE", arg);
+        c.setStrAttribute(self, "VALUE", void, void, arg);
     }
 
     pub fn getFilter(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FILTER");
+        return c.getStrAttribute(self, "FILTER", void, void);
     }
 
     pub fn setFilter(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FILTER", arg);
+        c.setStrAttribute(self, "FILTER", void, void, arg);
     }
 
     pub fn getSelectedText(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "SELECTEDTEXT");
+        return c.getStrAttribute(self, "SELECTEDTEXT", void, void);
     }
 
     pub fn setSelectedText(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "SELECTEDTEXT", arg);
+        c.setStrAttribute(self, "SELECTEDTEXT", void, void, arg);
     }
 
     pub fn getCPadding(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CPADDING");
+        var str = c.getStrAttribute(self, "CPADDING", void, void);
         return Size.parse(str);
     }
 
     pub fn setCPadding(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "CPADDING", value);
+        c.setStrAttribute(self, "CPADDING", void, void, value);
     }
 
 
@@ -2535,7 +2535,7 @@ pub const List = opaque {
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE");
+        return c.getBoolAttribute(self, "ACTIVE", void, void);
     }
 
 
@@ -2543,23 +2543,23 @@ pub const List = opaque {
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", arg);
+        c.setBoolAttribute(self, "ACTIVE", void, void, arg);
     }
 
     pub fn getTipVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPVISIBLE");
+        return c.getBoolAttribute(self, "TIPVISIBLE", void, void);
     }
 
     pub fn setTipVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPVISIBLE", arg);
+        c.setBoolAttribute(self, "TIPVISIBLE", void, void, arg);
     }
 
     pub fn getCueBanner(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "CUEBANNER");
+        return c.getStrAttribute(self, "CUEBANNER", void, void);
     }
 
     pub fn setCueBanner(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "CUEBANNER", arg);
+        c.setStrAttribute(self, "CUEBANNER", void, void, arg);
     }
 
 
@@ -2568,39 +2568,39 @@ pub const List = opaque {
     /// Can be "YES" or "NO".
     /// Valid only when DROPDOWN=YES.
     /// Ignored if set before map.
-    pub fn setShowDropDown(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWDROPDOWN", arg);
+    pub fn showDropDown(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "SHOWDROPDOWN", void, void, arg);
     }
 
     pub fn getExpandWeight(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "EXPANDWEIGHT");
+        return c.getDoubleAttribute(self, "EXPANDWEIGHT", void, void);
     }
 
     pub fn setExpandWeight(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "EXPANDWEIGHT", arg);
+        c.setDoubleAttribute(self, "EXPANDWEIGHT", void, void, arg);
     }
 
     pub fn getMinSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MINSIZE");
+        var str = c.getStrAttribute(self, "MINSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MINSIZE", value);
+        c.setStrAttribute(self, "MINSIZE", void, void, value);
     }
 
     pub fn getNTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NTHEME");
+        return c.getStrAttribute(self, "NTHEME", void, void);
     }
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NTHEME", arg);
+        c.setStrAttribute(self, "NTHEME", void, void, arg);
     }
 
     pub fn getCharSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CHARSIZE");
+        var str = c.getStrAttribute(self, "CHARSIZE", void, void);
         return Size.parse(str);
     }
 
@@ -2611,7 +2611,7 @@ pub const List = opaque {
     /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
     /// EDITBOX=YES and effective only for the edit box inside the list.
     pub fn getCaretPos(self: *Self) i32 {
-        return c.getIntAttribute(self, "CARETPOS");
+        return c.getIntAttribute(self, "CARETPOS", void, void);
     }
 
 
@@ -2621,23 +2621,23 @@ pub const List = opaque {
     /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
     /// EDITBOX=YES and effective only for the edit box inside the list.
     pub fn setCaretPos(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CARETPOS", arg);
+        c.setIntAttribute(self, "CARETPOS", void, void, arg);
     }
 
     pub fn getMask(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "MASK");
+        return c.getStrAttribute(self, "MASK", void, void);
     }
 
     pub fn setMask(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "MASK", arg);
+        c.setStrAttribute(self, "MASK", void, void, arg);
     }
 
     pub fn getDragTypes(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGTYPES");
+        return c.getStrAttribute(self, "DRAGTYPES", void, void);
     }
 
     pub fn setDragTypes(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGTYPES", arg);
+        c.setStrAttribute(self, "DRAGTYPES", void, void, arg);
     }
 
 
@@ -2651,7 +2651,7 @@ pub const List = opaque {
     /// In Motif, the horizontal scrollbar is never shown.
     /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
     pub fn getAutoHide(self: *Self) bool {
-        return c.getBoolAttribute(self, "AUTOHIDE");
+        return c.getBoolAttribute(self, "AUTOHIDE", void, void);
     }
 
 
@@ -2665,15 +2665,15 @@ pub const List = opaque {
     /// In Motif, the horizontal scrollbar is never shown.
     /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
     pub fn setAutoHide(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "AUTOHIDE", arg);
+        c.setBoolAttribute(self, "AUTOHIDE", void, void, arg);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTSTYLE");
+        return c.getStrAttribute(self, "FONTSTYLE", void, void);
     }
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTSTYLE", arg);
+        c.setStrAttribute(self, "FONTSTYLE", void, void, arg);
     }
 
 
@@ -2683,20 +2683,20 @@ pub const List = opaque {
     /// Set to NO to add many items to the list without updating the display.
     /// Default: "YES".
     /// (since 3.3)
-    pub fn setAutoRedraw(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "AUTOREDRAW", arg);
+    pub fn autoRedraw(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "AUTOREDRAW", void, void, arg);
     }
 
     pub fn getTouch(self: *Self) bool {
-        return c.getBoolAttribute(self, "TOUCH");
+        return c.getBoolAttribute(self, "TOUCH", void, void);
     }
 
     pub fn setTouch(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TOUCH", arg);
+        c.setBoolAttribute(self, "TOUCH", void, void, arg);
     }
 
     pub fn getClipboard(self: *Self) ?Clipboard {
-        var ret = c.getStrAttribute(self, "CLIPBOARD");
+        var ret = c.getStrAttribute(self, "CLIPBOARD", void, void);
 
         if (std.ascii.eqlIgnoreCase("COPY", ret)) return .Copy;
         if (std.ascii.eqlIgnoreCase("CUT", ret)) return .Cut;
@@ -2709,23 +2709,23 @@ pub const List = opaque {
 
     pub fn setClipboard(self: *Self, arg: ?Clipboard) void {
         if (arg) |value| switch (value) {
-            .Copy => c.setStrAttribute(self, "CLIPBOARD", "COPY"),
-            .Cut => c.setStrAttribute(self, "CLIPBOARD", "CUT"),
-            .Paste => c.setStrAttribute(self, "CLIPBOARD", "PASTE"),
-            .Clear => c.setStrAttribute(self, "CLIPBOARD", "CLEAR"),
-            .Undo => c.setStrAttribute(self, "CLIPBOARD", "UNDO"),
-            .Redo => c.setStrAttribute(self, "CLIPBOARD", "REDO"),
+            .Copy => c.setStrAttribute(self, "CLIPBOARD", void, void, "COPY"),
+            .Cut => c.setStrAttribute(self, "CLIPBOARD", void, void, "CUT"),
+            .Paste => c.setStrAttribute(self, "CLIPBOARD", void, void, "PASTE"),
+            .Clear => c.setStrAttribute(self, "CLIPBOARD", void, void, "CLEAR"),
+            .Undo => c.setStrAttribute(self, "CLIPBOARD", void, void, "UNDO"),
+            .Redo => c.setStrAttribute(self, "CLIPBOARD", void, void, "REDO"),
         } else {
-            c.clearAttribute(self, "CLIPBOARD");
+            c.clearAttribute(self, "CLIPBOARD", void, void);
         }
     }
 
     pub fn getReadonly(self: *Self) bool {
-        return c.getBoolAttribute(self, "READONLY");
+        return c.getBoolAttribute(self, "READONLY", void, void);
     }
 
     pub fn setReadonly(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "READONLY", arg);
+        c.setBoolAttribute(self, "READONLY", void, void, arg);
     }
 
 
@@ -2734,24 +2734,24 @@ pub const List = opaque {
     /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
     /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
     /// EDITBOX=YES and effective only for the edit box inside the list.
-    pub fn setAppend(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "APPEND", arg);
+    pub fn append(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "APPEND", void, void, arg);
     }
 
     pub fn getDragCursor(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGCURSOR");
+        return c.getStrAttribute(self, "DRAGCURSOR", void, void);
     }
 
     pub fn setDragCursor(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGCURSOR", arg);
+        c.setStrAttribute(self, "DRAGCURSOR", void, void, arg);
     }
 
     pub fn getMaskNoEmpty(self: *Self) bool {
-        return c.getBoolAttribute(self, "MASKNOEMPTY");
+        return c.getBoolAttribute(self, "MASKNOEMPTY", void, void);
     }
 
     pub fn setMaskNoEmpty(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MASKNOEMPTY", arg);
+        c.setBoolAttribute(self, "MASKNOEMPTY", void, void, arg);
     }
 
 
@@ -2759,7 +2759,7 @@ pub const List = opaque {
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn getFont(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONT");
+        return c.getStrAttribute(self, "FONT", void, void);
     }
 
 
@@ -2767,7 +2767,7 @@ pub const List = opaque {
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONT", arg);
+        c.setStrAttribute(self, "FONT", void, void, arg);
     }
 
     pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {

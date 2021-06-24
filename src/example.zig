@@ -355,7 +355,7 @@ const goto_dialog = struct {
         if (go_to > 0) {
             if (text.convertLinColToPos(go_to, 0)) |pos| {
                 text.setCaretPos(pos);
-                text.setScrollTopOs(pos);
+                text.scrollTopOs(pos);
                 return true;
             }
         }

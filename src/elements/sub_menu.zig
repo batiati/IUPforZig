@@ -136,7 +136,7 @@ pub const SubMenu = opaque {
         /// 
         /// ACTIVE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", arg);
+            c.setBoolAttribute(self.ref, "ACTIVE", void, void, arg);
             return self.*;
         }
 
@@ -147,7 +147,7 @@ pub const SubMenu = opaque {
         /// be used as key.
         /// Use "&&" to show the "&" character instead on defining a mnemonic.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLE", arg);
+            c.setStrAttribute(self.ref, "TITLE", void, void, arg);
             return self.*;
         }
 
@@ -160,17 +160,17 @@ pub const SubMenu = opaque {
         /// In Windows, if larger than the check mark area it will be cropped.
         /// (since 3.0)
         pub fn setImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "IMAGE", arg);
+            c.setStrAttribute(self.ref, "IMAGE", void, void, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "HANDLENAME", arg);
+            c.setStrAttribute(self.ref, "HANDLENAME", void, void, arg);
             return self.*;
         }
 
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BGCOLOR", rgb);
+            c.setRgb(self.ref, "BGCOLOR", void, void, rgb);
             return self.*;
         }
 
@@ -180,12 +180,12 @@ pub const SubMenu = opaque {
         /// It is updated only when TITLE is updated.
         /// Deprecated, use the mnemonic support directly in the TITLE attribute.
         pub fn setKey(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "KEY", arg);
+            c.setIntAttribute(self.ref, "KEY", void, void, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", arg);
+            c.setStrAttribute(self.ref, "NAME", void, void, arg);
             return self.*;
         }
 
@@ -282,35 +282,35 @@ pub const SubMenu = opaque {
     }
 
     pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, arg);
+        c.setStrAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName);
+        return c.getStrAttribute(self, attributeName, void, void);
     }
 
     pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, arg);
+        c.setIntAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName);
+        return c.getIntAttribute(self, attributeName, void, void);
     }
 
     pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, arg);
+        c.setBoolAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName);
+        return c.getBoolAttribute(self, attributeName, void, void);
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attributeName, void, void);
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attributeName, void, void, value);
     }
 
     ///
@@ -363,14 +363,14 @@ pub const SubMenu = opaque {
     /// 
     /// ACTIVE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE");
+        return c.getBoolAttribute(self, "ACTIVE", void, void);
     }
 
 
     /// 
     /// ACTIVE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", arg);
+        c.setBoolAttribute(self, "ACTIVE", void, void, arg);
     }
 
 
@@ -380,7 +380,7 @@ pub const SubMenu = opaque {
     /// be used as key.
     /// Use "&&" to show the "&" character instead on defining a mnemonic.
     pub fn getTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLE");
+        return c.getStrAttribute(self, "TITLE", void, void);
     }
 
 
@@ -390,7 +390,7 @@ pub const SubMenu = opaque {
     /// be used as key.
     /// Use "&&" to show the "&" character instead on defining a mnemonic.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLE", arg);
+        c.setStrAttribute(self, "TITLE", void, void, arg);
     }
 
 
@@ -402,7 +402,7 @@ pub const SubMenu = opaque {
     /// In Windows, if larger than the check mark area it will be cropped.
     /// (since 3.0)
     pub fn getImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "IMAGE");
+        return c.getStrAttribute(self, "IMAGE", void, void);
     }
 
 
@@ -414,23 +414,23 @@ pub const SubMenu = opaque {
     /// In Windows, if larger than the check mark area it will be cropped.
     /// (since 3.0)
     pub fn setImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "IMAGE", arg);
+        c.setStrAttribute(self, "IMAGE", void, void, arg);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME");
+        return c.getStrAttribute(self, "HANDLENAME", void, void);
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "HANDLENAME", arg);
+        c.setStrAttribute(self, "HANDLENAME", void, void, arg);
     }
 
     pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BGCOLOR");
+        return c.getRgb(self, "BGCOLOR", void, void);
     }
 
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BGCOLOR", rgb);
+        c.setRgb(self, "BGCOLOR", void, void, rgb);
     }
 
 
@@ -439,7 +439,7 @@ pub const SubMenu = opaque {
     /// It is updated only when TITLE is updated.
     /// Deprecated, use the mnemonic support directly in the TITLE attribute.
     pub fn getKey(self: *Self) i32 {
-        return c.getIntAttribute(self, "KEY");
+        return c.getIntAttribute(self, "KEY", void, void);
     }
 
 
@@ -448,15 +448,15 @@ pub const SubMenu = opaque {
     /// It is updated only when TITLE is updated.
     /// Deprecated, use the mnemonic support directly in the TITLE attribute.
     pub fn setKey(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "KEY", arg);
+        c.setIntAttribute(self, "KEY", void, void, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME");
+        return c.getStrAttribute(self, "NAME", void, void);
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", arg);
+        c.setStrAttribute(self, "NAME", void, void, arg);
     }
 
 
@@ -464,7 +464,7 @@ pub const SubMenu = opaque {
     /// WID (non inheritable): In Windows, returns the HMENU of the parent menu and
     /// it is actually created only when its child menu is mapped.
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID");
+        return c.getIntAttribute(self, "WID", void, void);
     }
 
     pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {

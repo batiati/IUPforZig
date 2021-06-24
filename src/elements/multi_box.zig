@@ -180,22 +180,22 @@ pub const MultiBox = opaque {
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "USERSIZE", value);
+            c.setStrAttribute(self.ref, "USERSIZE", void, void, value);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTSTYLE", arg);
+            c.setStrAttribute(self.ref, "FONTSTYLE", void, void, arg);
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "FONTSIZE", arg);
+            c.setIntAttribute(self.ref, "FONTSIZE", void, void, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", arg);
+            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", void, void, arg);
             return self.*;
         }
 
@@ -209,24 +209,24 @@ pub const MultiBox = opaque {
         pub fn setMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
-            c.setStrAttribute(self.ref, "MARGIN", value);
+            c.setStrAttribute(self.ref, "MARGIN", void, void, value);
             return self.*;
         }
 
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MAXSIZE", value);
+            c.setStrAttribute(self.ref, "MAXSIZE", void, void, value);
             return self.*;
         }
 
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", arg);
+            c.setBoolAttribute(self.ref, "ACTIVE", void, void, arg);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NTHEME", arg);
+            c.setStrAttribute(self.ref, "NTHEME", void, void, arg);
             return self.*;
         }
 
@@ -240,27 +240,27 @@ pub const MultiBox = opaque {
         pub fn setCMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
-            c.setStrAttribute(self.ref, "CMARGIN", value);
+            c.setStrAttribute(self.ref, "CMARGIN", void, void, value);
             return self.*;
         }
 
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "VISIBLE", arg);
+            c.setBoolAttribute(self.ref, "VISIBLE", void, void, arg);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTFACE", arg);
+            c.setStrAttribute(self.ref, "FONTFACE", void, void, arg);
             return self.*;
         }
 
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", arg);
+            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", void, void, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "HANDLENAME", arg);
+            c.setStrAttribute(self.ref, "HANDLENAME", void, void, arg);
             return self.*;
         }
 
@@ -271,22 +271,22 @@ pub const MultiBox = opaque {
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "SIZE", value);
+            c.setStrAttribute(self.ref, "SIZE", void, void, value);
             return self.*;
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NORMALIZERGROUP", arg);
+            c.setStrAttribute(self.ref, "NORMALIZERGROUP", void, void, arg);
             return self.*;
         }
 
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONT", arg);
+            c.setStrAttribute(self.ref, "FONT", void, void, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", arg);
+            c.setStrAttribute(self.ref, "NAME", void, void, arg);
             return self.*;
         }
 
@@ -296,7 +296,7 @@ pub const MultiBox = opaque {
         pub fn setNMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
-            c.setStrAttribute(self.ref, "NMARGIN", value);
+            c.setStrAttribute(self.ref, "NMARGIN", void, void, value);
             return self.*;
         }
 
@@ -306,7 +306,7 @@ pub const MultiBox = opaque {
         pub fn setNcMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
-            c.setStrAttribute(self.ref, "NCMARGIN", value);
+            c.setStrAttribute(self.ref, "NCMARGIN", void, void, value);
             return self.*;
         }
 
@@ -316,37 +316,37 @@ pub const MultiBox = opaque {
         /// See the documentation of the attribute for EXPAND inheritance.
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "EXPAND", "YES"),
-                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "EXPAND", "VERTICAL"),
-                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", "HORIZONTALFREE"),
-                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", "VERTICALFREE"),
-                .No => c.setStrAttribute(self.ref, "EXPAND", "NO"),
+                .Yes => c.setStrAttribute(self.ref, "EXPAND", void, void, "YES"),
+                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", void, void, "HORIZONTAL"),
+                .Vertical => c.setStrAttribute(self.ref, "EXPAND", void, void, "VERTICAL"),
+                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", void, void, "HORIZONTALFREE"),
+                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", void, void, "VERTICALFREE"),
+                .No => c.setStrAttribute(self.ref, "EXPAND", void, void, "NO"),
             } else {
-                c.clearAttribute(self.ref, "EXPAND");
+                c.clearAttribute(self.ref, "EXPAND", void, void);
             }
             return self.*;
         }
 
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CANFOCUS", arg);
+            c.setBoolAttribute(self.ref, "CANFOCUS", void, void, arg);
             return self.*;
         }
 
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RASTERSIZE", value);
+            c.setStrAttribute(self.ref, "RASTERSIZE", void, void, value);
             return self.*;
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "FLOATING", "YES"),
-                .Ignore => c.setStrAttribute(self.ref, "FLOATING", "IGNORE"),
-                .No => c.setStrAttribute(self.ref, "FLOATING", "NO"),
+                .Yes => c.setStrAttribute(self.ref, "FLOATING", void, void, "YES"),
+                .Ignore => c.setStrAttribute(self.ref, "FLOATING", void, void, "IGNORE"),
+                .No => c.setStrAttribute(self.ref, "FLOATING", void, void, "NO"),
             } else {
-                c.clearAttribute(self.ref, "FLOATING");
+                c.clearAttribute(self.ref, "FLOATING", void, void);
             }
             return self.*;
         }
@@ -359,30 +359,30 @@ pub const MultiBox = opaque {
         /// Default: HORIZONTAL.
         pub fn setOrientation(self: *Initializer, arg: ?Orientation) Initializer {
             if (arg) |value| switch (value) {
-                .Horizontal => c.setStrAttribute(self.ref, "ORIENTATION", "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "ORIENTATION", "VERTICAL"),
+                .Horizontal => c.setStrAttribute(self.ref, "ORIENTATION", void, void, "HORIZONTAL"),
+                .Vertical => c.setStrAttribute(self.ref, "ORIENTATION", void, void, "VERTICAL"),
             } else {
-                c.clearAttribute(self.ref, "ORIENTATION");
+                c.clearAttribute(self.ref, "ORIENTATION", void, void);
             }
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "THEME", arg);
+            c.setStrAttribute(self.ref, "THEME", void, void, arg);
             return self.*;
         }
 
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MINSIZE", value);
+            c.setStrAttribute(self.ref, "MINSIZE", void, void, value);
             return self.*;
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "POSITION", value);
+            c.setStrAttribute(self.ref, "POSITION", void, void, value);
             return self.*;
         }
 
@@ -473,35 +473,35 @@ pub const MultiBox = opaque {
     }
 
     pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, arg);
+        c.setStrAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName);
+        return c.getStrAttribute(self, attributeName, void, void);
     }
 
     pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, arg);
+        c.setIntAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName);
+        return c.getIntAttribute(self, attributeName, void, void);
     }
 
     pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, arg);
+        c.setBoolAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName);
+        return c.getBoolAttribute(self, attributeName, void, void);
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attributeName, void, void);
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attributeName, void, void, value);
     }
 
     ///
@@ -551,38 +551,38 @@ pub const MultiBox = opaque {
     }
 
     pub fn getUserSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "USERSIZE");
+        var str = c.getStrAttribute(self, "USERSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "USERSIZE", value);
+        c.setStrAttribute(self, "USERSIZE", void, void, value);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTSTYLE");
+        return c.getStrAttribute(self, "FONTSTYLE", void, void);
     }
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTSTYLE", arg);
+        c.setStrAttribute(self, "FONTSTYLE", void, void, arg);
     }
 
     pub fn getFontSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "FONTSIZE");
+        return c.getIntAttribute(self, "FONTSIZE", void, void);
     }
 
     pub fn setFontSize(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "FONTSIZE", arg);
+        c.setIntAttribute(self, "FONTSIZE", void, void, arg);
     }
 
     pub fn getExpandWeight(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "EXPANDWEIGHT");
+        return c.getDoubleAttribute(self, "EXPANDWEIGHT", void, void);
     }
 
     pub fn setExpandWeight(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "EXPANDWEIGHT", arg);
+        c.setDoubleAttribute(self, "EXPANDWEIGHT", void, void, arg);
     }
 
 
@@ -593,7 +593,7 @@ pub const MultiBox = opaque {
     /// values corresponding to the horizontal and vertical margins, respectively.
     /// Default: "0x0" (no margin).
     pub fn getMargin(self: *Self) Margin {
-        var str = c.getStrAttribute(self, "MARGIN");
+        var str = c.getStrAttribute(self, "MARGIN", void, void);
         return Margin.parse(str);
     }
 
@@ -607,34 +607,34 @@ pub const MultiBox = opaque {
     pub fn setMargin(self: *Self, horiz: i32, vert: i32) void {
         var buffer: [128]u8 = undefined;
         var value = Margin.intIntToString(&buffer, horiz, vert);
-        c.setStrAttribute(self, "MARGIN", value);
+        c.setStrAttribute(self, "MARGIN", void, void, value);
     }
 
     pub fn getMaxSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MAXSIZE");
+        var str = c.getStrAttribute(self, "MAXSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MAXSIZE", value);
+        c.setStrAttribute(self, "MAXSIZE", void, void, value);
     }
 
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE");
+        return c.getBoolAttribute(self, "ACTIVE", void, void);
     }
 
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", arg);
+        c.setBoolAttribute(self, "ACTIVE", void, void, arg);
     }
 
     pub fn getNTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NTHEME");
+        return c.getStrAttribute(self, "NTHEME", void, void);
     }
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NTHEME", arg);
+        c.setStrAttribute(self, "NTHEME", void, void, arg);
     }
 
 
@@ -642,7 +642,7 @@ pub const MultiBox = opaque {
     /// NUMLIN (read-only): returns the number of lines when ORIENTATION=HORIZONTAL.
     /// Returns 0 otherwise.
     pub fn getNumLin(self: *Self) i32 {
-        return c.getIntAttribute(self, "NUMLIN");
+        return c.getIntAttribute(self, "NUMLIN", void, void);
     }
 
 
@@ -653,7 +653,7 @@ pub const MultiBox = opaque {
     /// values corresponding to the horizontal and vertical margins, respectively.
     /// Default: "0x0" (no margin).
     pub fn getCMargin(self: *Self) Margin {
-        var str = c.getStrAttribute(self, "CMARGIN");
+        var str = c.getStrAttribute(self, "CMARGIN", void, void);
         return Margin.parse(str);
     }
 
@@ -667,33 +667,33 @@ pub const MultiBox = opaque {
     pub fn setCMargin(self: *Self, horiz: i32, vert: i32) void {
         var buffer: [128]u8 = undefined;
         var value = Margin.intIntToString(&buffer, horiz, vert);
-        c.setStrAttribute(self, "CMARGIN", value);
+        c.setStrAttribute(self, "CMARGIN", void, void, value);
     }
 
     pub fn getNaturalSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "NATURALSIZE");
+        var str = c.getStrAttribute(self, "NATURALSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn getVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "VISIBLE");
+        return c.getBoolAttribute(self, "VISIBLE", void, void);
     }
 
     pub fn setVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "VISIBLE", arg);
+        c.setBoolAttribute(self, "VISIBLE", void, void, arg);
     }
 
     pub fn getClientOffset(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CLIENTOFFSET");
+        var str = c.getStrAttribute(self, "CLIENTOFFSET", void, void);
         return Size.parse(str);
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTFACE");
+        return c.getStrAttribute(self, "FONTFACE", void, void);
     }
 
     pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTFACE", arg);
+        c.setStrAttribute(self, "FONTFACE", void, void, arg);
     }
 
 
@@ -701,28 +701,28 @@ pub const MultiBox = opaque {
     /// NUMCOL (read-only): returns the number of columns when ORIENTATION=VERTICAL.
     /// Returns 0 otherwise.
     pub fn getNumCol(self: *Self) i32 {
-        return c.getIntAttribute(self, "NUMCOL");
+        return c.getIntAttribute(self, "NUMCOL", void, void);
     }
 
     pub fn getPropagateFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "PROPAGATEFOCUS");
+        return c.getBoolAttribute(self, "PROPAGATEFOCUS", void, void);
     }
 
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "PROPAGATEFOCUS", arg);
+        c.setBoolAttribute(self, "PROPAGATEFOCUS", void, void, arg);
     }
 
     pub fn getCharSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CHARSIZE");
+        var str = c.getStrAttribute(self, "CHARSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME");
+        return c.getStrAttribute(self, "HANDLENAME", void, void);
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "HANDLENAME", arg);
+        c.setStrAttribute(self, "HANDLENAME", void, void, arg);
     }
 
 
@@ -730,7 +730,7 @@ pub const MultiBox = opaque {
     /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn getSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "SIZE");
+        var str = c.getStrAttribute(self, "SIZE", void, void);
         return Size.parse(str);
     }
 
@@ -741,38 +741,38 @@ pub const MultiBox = opaque {
     pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "SIZE", value);
+        c.setStrAttribute(self, "SIZE", void, void, value);
     }
 
     pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NORMALIZERGROUP");
+        return c.getStrAttribute(self, "NORMALIZERGROUP", void, void);
     }
 
     pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NORMALIZERGROUP", arg);
+        c.setStrAttribute(self, "NORMALIZERGROUP", void, void, arg);
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONT");
+        return c.getStrAttribute(self, "FONT", void, void);
     }
 
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONT", arg);
+        c.setStrAttribute(self, "FONT", void, void, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME");
+        return c.getStrAttribute(self, "NAME", void, void);
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", arg);
+        c.setStrAttribute(self, "NAME", void, void, arg);
     }
 
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     pub fn getNMargin(self: *Self) Margin {
-        var str = c.getStrAttribute(self, "NMARGIN");
+        var str = c.getStrAttribute(self, "NMARGIN", void, void);
         return Margin.parse(str);
     }
 
@@ -782,14 +782,14 @@ pub const MultiBox = opaque {
     pub fn setNMargin(self: *Self, horiz: i32, vert: i32) void {
         var buffer: [128]u8 = undefined;
         var value = Margin.intIntToString(&buffer, horiz, vert);
-        c.setStrAttribute(self, "NMARGIN", value);
+        c.setStrAttribute(self, "NMARGIN", void, void, value);
     }
 
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     pub fn getNcMargin(self: *Self) Margin {
-        var str = c.getStrAttribute(self, "NCMARGIN");
+        var str = c.getStrAttribute(self, "NCMARGIN", void, void);
         return Margin.parse(str);
     }
 
@@ -799,7 +799,7 @@ pub const MultiBox = opaque {
     pub fn setNcMargin(self: *Self, horiz: i32, vert: i32) void {
         var buffer: [128]u8 = undefined;
         var value = Margin.intIntToString(&buffer, horiz, vert);
-        c.setStrAttribute(self, "NCMARGIN", value);
+        c.setStrAttribute(self, "NCMARGIN", void, void, value);
     }
 
 
@@ -807,7 +807,7 @@ pub const MultiBox = opaque {
     /// EXPAND (non inheritable*): The default value is "YES".
     /// See the documentation of the attribute for EXPAND inheritance.
     pub fn getExpand(self: *Self) ?Expand {
-        var ret = c.getStrAttribute(self, "EXPAND");
+        var ret = c.getStrAttribute(self, "EXPAND", void, void);
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
@@ -824,38 +824,38 @@ pub const MultiBox = opaque {
     /// See the documentation of the attribute for EXPAND inheritance.
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "EXPAND", "YES"),
-            .Horizontal => c.setStrAttribute(self, "EXPAND", "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "EXPAND", "VERTICAL"),
-            .HorizontalFree => c.setStrAttribute(self, "EXPAND", "HORIZONTALFREE"),
-            .VerticalFree => c.setStrAttribute(self, "EXPAND", "VERTICALFREE"),
-            .No => c.setStrAttribute(self, "EXPAND", "NO"),
+            .Yes => c.setStrAttribute(self, "EXPAND", void, void, "YES"),
+            .Horizontal => c.setStrAttribute(self, "EXPAND", void, void, "HORIZONTAL"),
+            .Vertical => c.setStrAttribute(self, "EXPAND", void, void, "VERTICAL"),
+            .HorizontalFree => c.setStrAttribute(self, "EXPAND", void, void, "HORIZONTALFREE"),
+            .VerticalFree => c.setStrAttribute(self, "EXPAND", void, void, "VERTICALFREE"),
+            .No => c.setStrAttribute(self, "EXPAND", void, void, "NO"),
         } else {
-            c.clearAttribute(self, "EXPAND");
+            c.clearAttribute(self, "EXPAND", void, void);
         }
     }
 
     pub fn getCanFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "CANFOCUS");
+        return c.getBoolAttribute(self, "CANFOCUS", void, void);
     }
 
     pub fn setCanFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CANFOCUS", arg);
+        c.setBoolAttribute(self, "CANFOCUS", void, void, arg);
     }
 
     pub fn getRasterSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "RASTERSIZE");
+        var str = c.getStrAttribute(self, "RASTERSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RASTERSIZE", value);
+        c.setStrAttribute(self, "RASTERSIZE", void, void, value);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
-        var ret = c.getStrAttribute(self, "FLOATING");
+        var ret = c.getStrAttribute(self, "FLOATING", void, void);
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
@@ -865,11 +865,11 @@ pub const MultiBox = opaque {
 
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "FLOATING", "YES"),
-            .Ignore => c.setStrAttribute(self, "FLOATING", "IGNORE"),
-            .No => c.setStrAttribute(self, "FLOATING", "NO"),
+            .Yes => c.setStrAttribute(self, "FLOATING", void, void, "YES"),
+            .Ignore => c.setStrAttribute(self, "FLOATING", void, void, "IGNORE"),
+            .No => c.setStrAttribute(self, "FLOATING", void, void, "NO"),
         } else {
-            c.clearAttribute(self, "FLOATING");
+            c.clearAttribute(self, "FLOATING", void, void);
         }
     }
 
@@ -880,7 +880,7 @@ pub const MultiBox = opaque {
     /// Can be: HORIZONTAL or VERTICAL.
     /// Default: HORIZONTAL.
     pub fn getOrientation(self: *Self) ?Orientation {
-        var ret = c.getStrAttribute(self, "ORIENTATION");
+        var ret = c.getStrAttribute(self, "ORIENTATION", void, void);
 
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
         if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
@@ -895,52 +895,52 @@ pub const MultiBox = opaque {
     /// Default: HORIZONTAL.
     pub fn setOrientation(self: *Self, arg: ?Orientation) void {
         if (arg) |value| switch (value) {
-            .Horizontal => c.setStrAttribute(self, "ORIENTATION", "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "ORIENTATION", "VERTICAL"),
+            .Horizontal => c.setStrAttribute(self, "ORIENTATION", void, void, "HORIZONTAL"),
+            .Vertical => c.setStrAttribute(self, "ORIENTATION", void, void, "VERTICAL"),
         } else {
-            c.clearAttribute(self, "ORIENTATION");
+            c.clearAttribute(self, "ORIENTATION", void, void);
         }
     }
 
     pub fn getTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "THEME");
+        return c.getStrAttribute(self, "THEME", void, void);
     }
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "THEME", arg);
+        c.setStrAttribute(self, "THEME", void, void, arg);
     }
 
 
     /// 
     /// WID (read-only): returns -1 if mapped.
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID");
+        return c.getIntAttribute(self, "WID", void, void);
     }
 
     pub fn getMinSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MINSIZE");
+        var str = c.getStrAttribute(self, "MINSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MINSIZE", value);
+        c.setStrAttribute(self, "MINSIZE", void, void, value);
     }
 
     pub fn getPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "POSITION");
+        var str = c.getStrAttribute(self, "POSITION", void, void);
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setPosition(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "POSITION", value);
+        c.setStrAttribute(self, "POSITION", void, void, value);
     }
 
     pub fn getClientSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CLIENTSIZE");
+        var str = c.getStrAttribute(self, "CLIENTSIZE", void, void);
         return Size.parse(str);
     }
 

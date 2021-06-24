@@ -200,35 +200,35 @@ pub const Normalizer = opaque {
     }
 
     pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, arg);
+        c.setStrAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName);
+        return c.getStrAttribute(self, attributeName, void, void);
     }
 
     pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, arg);
+        c.setIntAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName);
+        return c.getIntAttribute(self, attributeName, void, void);
     }
 
     pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, arg);
+        c.setBoolAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName);
+        return c.getBoolAttribute(self, attributeName, void, void);
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attributeName, void, void);
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attributeName, void, void, value);
     }
 
     ///

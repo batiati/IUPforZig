@@ -89,7 +89,7 @@ pub const Clipboard = opaque {
         /// pasting in FORMATDATA based on that string.
         /// (since 3.7)
         pub fn setFormat(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FORMAT", arg);
+            c.setStrAttribute(self.ref, "FORMAT", void, void, arg);
             return self.*;
         }
 
@@ -98,7 +98,7 @@ pub const Clipboard = opaque {
         /// TEXT: copy or paste text to or from the clipboard.
         /// If set to NULL clears the clipboard data.
         pub fn setText(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TEXT", arg);
+            c.setStrAttribute(self.ref, "TEXT", void, void, arg);
             return self.*;
         }
 
@@ -107,8 +107,8 @@ pub const Clipboard = opaque {
         /// IMAGE (write-only): name of an image to copy to the clipboard.
         /// If set to NULL clears the clipboard data.
         /// (GTK 2.6)
-        pub fn setImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "IMAGE", arg);
+        pub fn image(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IMAGE", void, void, arg);
             return self.*;
         }
     };
@@ -136,35 +136,35 @@ pub const Clipboard = opaque {
     }
 
     pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, arg);
+        c.setStrAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName);
+        return c.getStrAttribute(self, attributeName, void, void);
     }
 
     pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, arg);
+        c.setIntAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName);
+        return c.getIntAttribute(self, attributeName, void, void);
     }
 
     pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, arg);
+        c.setBoolAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName);
+        return c.getBoolAttribute(self, attributeName, void, void);
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attributeName, void, void);
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attributeName, void, void, value);
     }
 
     ///
@@ -203,7 +203,7 @@ pub const Clipboard = opaque {
     /// pasting in FORMATDATA based on that string.
     /// (since 3.7)
     pub fn getFormat(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FORMAT");
+        return c.getStrAttribute(self, "FORMAT", void, void);
     }
 
 
@@ -215,7 +215,7 @@ pub const Clipboard = opaque {
     /// pasting in FORMATDATA based on that string.
     /// (since 3.7)
     pub fn setFormat(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FORMAT", arg);
+        c.setStrAttribute(self, "FORMAT", void, void, arg);
     }
 
 
@@ -223,7 +223,7 @@ pub const Clipboard = opaque {
     /// TEXT: copy or paste text to or from the clipboard.
     /// If set to NULL clears the clipboard data.
     pub fn getText(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TEXT");
+        return c.getStrAttribute(self, "TEXT", void, void);
     }
 
 
@@ -231,7 +231,7 @@ pub const Clipboard = opaque {
     /// TEXT: copy or paste text to or from the clipboard.
     /// If set to NULL clears the clipboard data.
     pub fn setText(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TEXT", arg);
+        c.setStrAttribute(self, "TEXT", void, void, arg);
     }
 
 
@@ -239,8 +239,8 @@ pub const Clipboard = opaque {
     /// IMAGE (write-only): name of an image to copy to the clipboard.
     /// If set to NULL clears the clipboard data.
     /// (GTK 2.6)
-    pub fn setImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "IMAGE", arg);
+    pub fn image(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IMAGE", void, void, arg);
     }
 };
 

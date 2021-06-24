@@ -75,37 +75,37 @@ pub const ImageRgba = opaque {
             return self.*;
         }
 
-        pub fn setResize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+        pub fn resize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RESIZE", value);
+            c.setStrAttribute(self.ref, "RESIZE", void, void, value);
             return self.*;
         }
 
-        pub fn setReshape(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+        pub fn reshape(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RESHAPE", value);
+            c.setStrAttribute(self.ref, "RESHAPE", void, void, value);
             return self.*;
         }
 
         pub fn setAutoScale(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "AUTOSCALE", arg);
+            c.setBoolAttribute(self.ref, "AUTOSCALE", void, void, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "HANDLENAME", arg);
+            c.setStrAttribute(self.ref, "HANDLENAME", void, void, arg);
             return self.*;
         }
 
         pub fn clearCache(self: *Initializer) Initializer {
-            c.setStrAttribute(self.ref, "CLEARCACHE", null);
+            c.setStrAttribute(self.ref, "CLEARCACHE", void, void, null);
             return self.*;
         }
 
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BGCOLOR", rgb);
+            c.setRgb(self.ref, "BGCOLOR", void, void, rgb);
             return self.*;
         }
     };
@@ -133,35 +133,35 @@ pub const ImageRgba = opaque {
     }
 
     pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, arg);
+        c.setStrAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName);
+        return c.getStrAttribute(self, attributeName, void, void);
     }
 
     pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, arg);
+        c.setIntAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName);
+        return c.getIntAttribute(self, attributeName, void, void);
     }
 
     pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, arg);
+        c.setBoolAttribute(self, attributeName, void, void, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName);
+        return c.getBoolAttribute(self, attributeName, void, void);
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attributeName, void, void);
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attributeName, void, void, value);
     }
 
     ///
@@ -191,77 +191,77 @@ pub const ImageRgba = opaque {
         try Impl(Self).refresh(self);
     }
 
-    pub fn setResize(self: *Self, width: ?i32, height: ?i32) void {
+    pub fn resize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RESIZE", value);
+        c.setStrAttribute(self, "RESIZE", void, void, value);
     }
 
     pub fn getScaled(self: *Self) bool {
-        return c.getBoolAttribute(self, "SCALED");
+        return c.getBoolAttribute(self, "SCALED", void, void);
     }
 
     pub fn getBpp(self: *Self) i32 {
-        return c.getIntAttribute(self, "BPP");
+        return c.getIntAttribute(self, "BPP", void, void);
     }
 
-    pub fn setReshape(self: *Self, width: ?i32, height: ?i32) void {
+    pub fn reshape(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RESHAPE", value);
+        c.setStrAttribute(self, "RESHAPE", void, void, value);
     }
 
     pub fn getChannels(self: *Self) i32 {
-        return c.getIntAttribute(self, "CHANNELS");
+        return c.getIntAttribute(self, "CHANNELS", void, void);
     }
 
     pub fn getAutoScale(self: *Self) bool {
-        return c.getBoolAttribute(self, "AUTOSCALE");
+        return c.getBoolAttribute(self, "AUTOSCALE", void, void);
     }
 
     pub fn setAutoScale(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "AUTOSCALE", arg);
+        c.setBoolAttribute(self, "AUTOSCALE", void, void, arg);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME");
+        return c.getStrAttribute(self, "HANDLENAME", void, void);
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "HANDLENAME", arg);
+        c.setStrAttribute(self, "HANDLENAME", void, void, arg);
     }
 
     pub fn getHeight(self: *Self) i32 {
-        return c.getIntAttribute(self, "HEIGHT");
+        return c.getIntAttribute(self, "HEIGHT", void, void);
     }
 
     pub fn clearCache(self: *Self) void {
-        c.setStrAttribute(self, "CLEARCACHE", null);
+        c.setStrAttribute(self, "CLEARCACHE", void, void, null);
     }
 
     pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BGCOLOR");
+        return c.getRgb(self, "BGCOLOR", void, void);
     }
 
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BGCOLOR", rgb);
+        c.setRgb(self, "BGCOLOR", void, void, rgb);
     }
 
     pub fn getOriginalScale(self: *Self) Size {
-        var str = c.getStrAttribute(self, "ORIGINALSCALE");
+        var str = c.getStrAttribute(self, "ORIGINALSCALE", void, void);
         return Size.parse(str);
     }
 
     pub fn getWidth(self: *Self) i32 {
-        return c.getIntAttribute(self, "WIDTH");
+        return c.getIntAttribute(self, "WIDTH", void, void);
     }
 
     pub fn getRasterSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "RASTERSIZE");
+        var str = c.getStrAttribute(self, "RASTERSIZE", void, void);
         return Size.parse(str);
     }
 
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID");
+        return c.getIntAttribute(self, "WID", void, void);
     }
 };
