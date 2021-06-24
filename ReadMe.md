@@ -57,7 +57,7 @@ Resulting in this:
 
 ## Examples
 
-### Please refer to [examples page](https://github.com/batiati/IUPforZig/blob/master/src/docs/examples.md) for more details (still in progress ... )
+### Please refer to [examples page](docs/examples.md) for more details (still in progress ... )
 
 
 ![Simple Notepad Windows](docs/SimpleNotepadWindows.gif)
