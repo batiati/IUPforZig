@@ -145,12 +145,12 @@ pub const Menu = opaque {
         /// BGCOLOR: the background color of the menu, affects all items in the menu.
         /// (since 3.0)
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", void, void, arg);
+            c.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
 
@@ -161,7 +161,7 @@ pub const Menu = opaque {
         /// The menu acts like a IupRadio for its children.
         /// Submenus and their children are not affected.
         pub fn setRadio(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "RADIO", void, void, arg);
+            c.setBoolAttribute(self.ref, "RADIO", .{}, arg);
             return self.*;
         }
 
@@ -267,36 +267,36 @@ pub const Menu = opaque {
         c.IupDestroy(c.getHandle(self));
     }
 
-    pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, void, void, arg);
+    pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
+        c.setStrAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName, void, void);
+    pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
+        return c.getStrAttribute(self, attribute, .{});
     }
 
-    pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, void, void, arg);
+    pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
+        c.setIntAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName, void, void);
+    pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
+        return c.getIntAttribute(self, attribute, .{});
     }
 
-    pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, void, void, arg);
+    pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
+        c.setBoolAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName, void, void);
+    pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
+        return c.getBoolAttribute(self, attribute, .{});
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attributeName, void, void);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attributeName, void, void, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
@@ -350,7 +350,7 @@ pub const Menu = opaque {
     /// BGCOLOR: the background color of the menu, affects all items in the menu.
     /// (since 3.0)
     pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BGCOLOR", void, void);
+        return c.getRgb(self, "BGCOLOR", .{});
     }
 
 
@@ -358,22 +358,22 @@ pub const Menu = opaque {
     /// BGCOLOR: the background color of the menu, affects all items in the menu.
     /// (since 3.0)
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BGCOLOR", void, void, rgb);
+        c.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME", void, void);
+        return c.getStrAttribute(self, "NAME", .{});
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", void, void, arg);
+        c.setStrAttribute(self, "NAME", .{}, arg);
     }
 
 
     /// 
     /// WID (non inheritable): In Windows, returns the HMENU of the menu.
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID", void, void);
+        return c.getIntAttribute(self, "WID", .{});
     }
 
 
@@ -383,7 +383,7 @@ pub const Menu = opaque {
     /// The menu acts like a IupRadio for its children.
     /// Submenus and their children are not affected.
     pub fn getRadio(self: *Self) bool {
-        return c.getBoolAttribute(self, "RADIO", void, void);
+        return c.getBoolAttribute(self, "RADIO", .{});
     }
 
 
@@ -393,7 +393,7 @@ pub const Menu = opaque {
     /// The menu acts like a IupRadio for its children.
     /// Submenus and their children are not affected.
     pub fn setRadio(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "RADIO", void, void, arg);
+        c.setBoolAttribute(self, "RADIO", .{}, arg);
     }
 
     /// 

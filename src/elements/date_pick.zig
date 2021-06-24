@@ -247,46 +247,46 @@ pub const DatePick = opaque {
         }
 
         pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPBALLOON", void, void, arg);
+            c.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "HANDLENAME", void, void, arg);
+            c.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TIPBGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MAXSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "POSITION", void, void, value);
+            c.setStrAttribute(self.ref, "POSITION", .{}, value);
             return self.*;
         }
 
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIP", void, void, arg);
+            c.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
 
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CANFOCUS", void, void, arg);
+            c.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "VISIBLE", void, void, arg);
+            c.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
 
@@ -296,35 +296,35 @@ pub const DatePick = opaque {
         /// Must be set before ORDER in Windows.
         /// Default: "/".
         pub fn setSeparator(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "SEPARATOR", void, void, arg);
+            c.setStrAttribute(self.ref, "SEPARATOR", .{}, arg);
             return self.*;
         }
 
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
             if (arg) |value| switch (value) {
-                .Top => c.setStrAttribute(self.ref, "ZORDER", void, void, "TOP"),
-                .Bottom => c.setStrAttribute(self.ref, "ZORDER", void, void, "BOTTOM"),
+                .Top => c.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
+                .Bottom => c.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
             } else {
-                c.clearAttribute(self.ref, "ZORDER", void, void);
+                c.clearAttribute(self.ref, "ZORDER", .{});
             }
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "THEME", void, void, arg);
+            c.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
 
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "EXPAND", void, void, "YES"),
-                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", void, void, "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "EXPAND", void, void, "VERTICAL"),
-                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", void, void, "HORIZONTALFREE"),
-                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", void, void, "VERTICALFREE"),
-                .No => c.setStrAttribute(self.ref, "EXPAND", void, void, "NO"),
+                .Yes => c.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
+                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
+                .Vertical => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
+                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
+                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
+                .No => c.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "EXPAND", void, void);
+                c.clearAttribute(self.ref, "EXPAND", .{});
             }
             return self.*;
         }
@@ -332,72 +332,72 @@ pub const DatePick = opaque {
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "SIZE", void, void, value);
+            c.setStrAttribute(self.ref, "SIZE", .{}, value);
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "FONTSIZE", void, void, arg);
+            c.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "USERSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "USERSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TIPDELAY", void, void, arg);
+            c.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
             return self.*;
         }
 
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", void, void, arg);
+            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIPBALLOONTITLE", void, void, arg);
+            c.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "FLOATING", void, void, "YES"),
-                .Ignore => c.setStrAttribute(self.ref, "FLOATING", void, void, "IGNORE"),
-                .No => c.setStrAttribute(self.ref, "FLOATING", void, void, "NO"),
+                .Yes => c.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
+                .Ignore => c.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
+                .No => c.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "FLOATING", void, void);
+                c.clearAttribute(self.ref, "FLOATING", .{});
             }
             return self.*;
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NORMALIZERGROUP", void, void, arg);
+            c.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
 
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RASTERSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TIPFGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CONTROLID", void, void, arg);
+            c.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTFACE", void, void, arg);
+            c.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
@@ -412,17 +412,17 @@ pub const DatePick = opaque {
         /// In Windows, FORMAT can have the following values, but other text in the
         /// format string must be enclosed in single quotes:
         pub fn setFormat(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FORMAT", void, void, arg);
+            c.setStrAttribute(self.ref, "FORMAT", .{}, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", void, void, arg);
+            c.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", void, void, arg);
+            c.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -433,17 +433,17 @@ pub const DatePick = opaque {
         /// Can be set to "TODAY".
         /// Default value is the today date.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "VALUE", void, void, arg);
+            c.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
 
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", void, void, arg);
+            c.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPVISIBLE", void, void, arg);
+            c.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
 
@@ -455,39 +455,39 @@ pub const DatePick = opaque {
         /// In Windows, it works only for NO.
         /// (since 3.28)
         pub fn showDropDown(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWDROPDOWN", void, void, arg);
+            c.setBoolAttribute(self.ref, "SHOWDROPDOWN", .{}, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", void, void, arg);
+            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MINSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "MINSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NTHEME", void, void, arg);
+            c.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTSTYLE", void, void, arg);
+            c.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
 
         pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TOUCH", void, void, arg);
+            c.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
             return self.*;
         }
 
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONT", void, void, arg);
+            c.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
 
@@ -715,36 +715,36 @@ pub const DatePick = opaque {
         c.IupDestroy(c.getHandle(self));
     }
 
-    pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, void, void, arg);
+    pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
+        c.setStrAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName, void, void);
+    pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
+        return c.getStrAttribute(self, attribute, .{});
     }
 
-    pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, void, void, arg);
+    pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
+        c.setIntAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName, void, void);
+    pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
+        return c.getIntAttribute(self, attribute, .{});
     }
 
-    pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, void, void, arg);
+    pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
+        c.setBoolAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName, void, void);
+    pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
+        return c.getBoolAttribute(self, attribute, .{});
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attributeName, void, void);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attributeName, void, void, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
@@ -775,86 +775,86 @@ pub const DatePick = opaque {
     }
 
     pub fn getTipBalloon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPBALLOON", void, void);
+        return c.getBoolAttribute(self, "TIPBALLOON", .{});
     }
 
     pub fn setTipBalloon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPBALLOON", void, void, arg);
+        c.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME", void, void);
+        return c.getStrAttribute(self, "HANDLENAME", .{});
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "HANDLENAME", void, void, arg);
+        c.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TIPBGCOLOR", void, void);
+        return c.getRgb(self, "TIPBGCOLOR", .{});
     }
 
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TIPBGCOLOR", void, void, rgb);
+        c.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
 
     /// 
     /// TODAY (read-only): Returns the date corresponding to today in VALUE format.
     pub fn getToday(self: *Self) ?iup.Date {
-        var str = c.getStrAttribute(self, "TODAY", void, void);
+        var str = c.getStrAttribute(self, "TODAY", .{});
         return iup.Date.parse(str);
     }
 
     pub fn getMaxSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MAXSIZE", void, void);
+        var str = c.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MAXSIZE", void, void, value);
+        c.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
     pub fn getScreenPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "SCREENPOSITION", void, void);
+        var str = c.getStrAttribute(self, "SCREENPOSITION", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn getPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "POSITION", void, void);
+        var str = c.getStrAttribute(self, "POSITION", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setPosition(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "POSITION", void, void, value);
+        c.setStrAttribute(self, "POSITION", .{}, value);
     }
 
     pub fn getTip(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIP", void, void);
+        return c.getStrAttribute(self, "TIP", .{});
     }
 
     pub fn setTip(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIP", void, void, arg);
+        c.setStrAttribute(self, "TIP", .{}, arg);
     }
 
     pub fn getCanFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "CANFOCUS", void, void);
+        return c.getBoolAttribute(self, "CANFOCUS", .{});
     }
 
     pub fn setCanFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CANFOCUS", void, void, arg);
+        c.setBoolAttribute(self, "CANFOCUS", .{}, arg);
     }
 
     pub fn getVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "VISIBLE", void, void);
+        return c.getBoolAttribute(self, "VISIBLE", .{});
     }
 
     pub fn setVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "VISIBLE", void, void, arg);
+        c.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
 
@@ -863,7 +863,7 @@ pub const DatePick = opaque {
     /// Must be set before ORDER in Windows.
     /// Default: "/".
     pub fn getSeparator(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "SEPARATOR", void, void);
+        return c.getStrAttribute(self, "SEPARATOR", .{});
     }
 
 
@@ -872,36 +872,36 @@ pub const DatePick = opaque {
     /// Must be set before ORDER in Windows.
     /// Default: "/".
     pub fn setSeparator(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "SEPARATOR", void, void, arg);
+        c.setStrAttribute(self, "SEPARATOR", .{}, arg);
     }
 
     pub fn zOrder(self: *Self, arg: ?ZOrder) void {
         if (arg) |value| switch (value) {
-            .Top => c.setStrAttribute(self, "ZORDER", void, void, "TOP"),
-            .Bottom => c.setStrAttribute(self, "ZORDER", void, void, "BOTTOM"),
+            .Top => c.setStrAttribute(self, "ZORDER", .{}, "TOP"),
+            .Bottom => c.setStrAttribute(self, "ZORDER", .{}, "BOTTOM"),
         } else {
-            c.clearAttribute(self, "ZORDER", void, void);
+            c.clearAttribute(self, "ZORDER", .{});
         }
     }
 
     pub fn getX(self: *Self) i32 {
-        return c.getIntAttribute(self, "X", void, void);
+        return c.getIntAttribute(self, "X", .{});
     }
 
     pub fn getY(self: *Self) i32 {
-        return c.getIntAttribute(self, "Y", void, void);
+        return c.getIntAttribute(self, "Y", .{});
     }
 
     pub fn getTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "THEME", void, void);
+        return c.getStrAttribute(self, "THEME", .{});
     }
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "THEME", void, void, arg);
+        c.setStrAttribute(self, "THEME", .{}, arg);
     }
 
     pub fn getExpand(self: *Self) ?Expand {
-        var ret = c.getStrAttribute(self, "EXPAND", void, void);
+        var ret = c.getStrAttribute(self, "EXPAND", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
@@ -914,82 +914,82 @@ pub const DatePick = opaque {
 
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "EXPAND", void, void, "YES"),
-            .Horizontal => c.setStrAttribute(self, "EXPAND", void, void, "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "EXPAND", void, void, "VERTICAL"),
-            .HorizontalFree => c.setStrAttribute(self, "EXPAND", void, void, "HORIZONTALFREE"),
-            .VerticalFree => c.setStrAttribute(self, "EXPAND", void, void, "VERTICALFREE"),
-            .No => c.setStrAttribute(self, "EXPAND", void, void, "NO"),
+            .Yes => c.setStrAttribute(self, "EXPAND", .{}, "YES"),
+            .Horizontal => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
+            .Vertical => c.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
+            .HorizontalFree => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
+            .VerticalFree => c.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
+            .No => c.setStrAttribute(self, "EXPAND", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "EXPAND", void, void);
+            c.clearAttribute(self, "EXPAND", .{});
         }
     }
 
     pub fn getSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "SIZE", void, void);
+        var str = c.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "SIZE", void, void, value);
+        c.setStrAttribute(self, "SIZE", .{}, value);
     }
 
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID", void, void);
+        return c.getIntAttribute(self, "WID", .{});
     }
 
     pub fn getFontSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "FONTSIZE", void, void);
+        return c.getIntAttribute(self, "FONTSIZE", .{});
     }
 
     pub fn setFontSize(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "FONTSIZE", void, void, arg);
+        c.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
     pub fn getNaturalSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "NATURALSIZE", void, void);
+        var str = c.getStrAttribute(self, "NATURALSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getUserSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "USERSIZE", void, void);
+        var str = c.getStrAttribute(self, "USERSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "USERSIZE", void, void, value);
+        c.setStrAttribute(self, "USERSIZE", .{}, value);
     }
 
     pub fn getTipDelay(self: *Self) i32 {
-        return c.getIntAttribute(self, "TIPDELAY", void, void);
+        return c.getIntAttribute(self, "TIPDELAY", .{});
     }
 
     pub fn setTipDelay(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TIPDELAY", void, void, arg);
+        c.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
     pub fn getPropagateFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "PROPAGATEFOCUS", void, void);
+        return c.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "PROPAGATEFOCUS", void, void, arg);
+        c.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
     pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIPBALLOONTITLE", void, void);
+        return c.getStrAttribute(self, "TIPBALLOONTITLE", .{});
     }
 
     pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIPBALLOONTITLE", void, void, arg);
+        c.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
-        var ret = c.getStrAttribute(self, "FLOATING", void, void);
+        var ret = c.getStrAttribute(self, "FLOATING", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
@@ -999,55 +999,55 @@ pub const DatePick = opaque {
 
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "FLOATING", void, void, "YES"),
-            .Ignore => c.setStrAttribute(self, "FLOATING", void, void, "IGNORE"),
-            .No => c.setStrAttribute(self, "FLOATING", void, void, "NO"),
+            .Yes => c.setStrAttribute(self, "FLOATING", .{}, "YES"),
+            .Ignore => c.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
+            .No => c.setStrAttribute(self, "FLOATING", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "FLOATING", void, void);
+            c.clearAttribute(self, "FLOATING", .{});
         }
     }
 
     pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NORMALIZERGROUP", void, void);
+        return c.getStrAttribute(self, "NORMALIZERGROUP", .{});
     }
 
     pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NORMALIZERGROUP", void, void, arg);
+        c.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
     pub fn getRasterSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "RASTERSIZE", void, void);
+        var str = c.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RASTERSIZE", void, void, value);
+        c.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
     pub fn getTipFgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TIPFGCOLOR", void, void);
+        return c.getRgb(self, "TIPFGCOLOR", .{});
     }
 
     pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TIPFGCOLOR", void, void, rgb);
+        c.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
     pub fn getControlId(self: *Self) i32 {
-        return c.getIntAttribute(self, "CONTROLID", void, void);
+        return c.getIntAttribute(self, "CONTROLID", .{});
     }
 
     pub fn setControlId(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CONTROLID", void, void, arg);
+        c.setIntAttribute(self, "CONTROLID", .{}, arg);
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTFACE", void, void);
+        return c.getStrAttribute(self, "FONTFACE", .{});
     }
 
     pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTFACE", void, void, arg);
+        c.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
 
@@ -1061,7 +1061,7 @@ pub const DatePick = opaque {
     /// In Windows, FORMAT can have the following values, but other text in the
     /// format string must be enclosed in single quotes:
     pub fn getFormat(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FORMAT", void, void);
+        return c.getStrAttribute(self, "FORMAT", .{});
     }
 
 
@@ -1075,23 +1075,23 @@ pub const DatePick = opaque {
     /// In Windows, FORMAT can have the following values, but other text in the
     /// format string must be enclosed in single quotes:
     pub fn setFormat(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FORMAT", void, void, arg);
+        c.setStrAttribute(self, "FORMAT", .{}, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME", void, void);
+        return c.getStrAttribute(self, "NAME", .{});
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", void, void, arg);
+        c.setStrAttribute(self, "NAME", .{}, arg);
     }
 
     pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPBALLOONTITLEICON", void, void);
+        return c.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
     }
 
     pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPBALLOONTITLEICON", void, void, arg);
+        c.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
 
@@ -1101,7 +1101,7 @@ pub const DatePick = opaque {
     /// Can be set to "TODAY".
     /// Default value is the today date.
     pub fn getValue(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "VALUE", void, void);
+        return c.getStrAttribute(self, "VALUE", .{});
     }
 
 
@@ -1111,23 +1111,23 @@ pub const DatePick = opaque {
     /// Can be set to "TODAY".
     /// Default value is the today date.
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "VALUE", void, void, arg);
+        c.setStrAttribute(self, "VALUE", .{}, arg);
     }
 
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE", void, void);
+        return c.getBoolAttribute(self, "ACTIVE", .{});
     }
 
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", void, void, arg);
+        c.setBoolAttribute(self, "ACTIVE", .{}, arg);
     }
 
     pub fn getTipVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPVISIBLE", void, void);
+        return c.getBoolAttribute(self, "TIPVISIBLE", .{});
     }
 
     pub fn setTipVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPVISIBLE", void, void, arg);
+        c.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
 
@@ -1138,63 +1138,63 @@ pub const DatePick = opaque {
     /// In Windows, it works only for NO.
     /// (since 3.28)
     pub fn showDropDown(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWDROPDOWN", void, void, arg);
+        c.setBoolAttribute(self, "SHOWDROPDOWN", .{}, arg);
     }
 
     pub fn getExpandWeight(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "EXPANDWEIGHT", void, void);
+        return c.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
     pub fn setExpandWeight(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "EXPANDWEIGHT", void, void, arg);
+        c.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
     pub fn getMinSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MINSIZE", void, void);
+        var str = c.getStrAttribute(self, "MINSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MINSIZE", void, void, value);
+        c.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
     pub fn getNTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NTHEME", void, void);
+        return c.getStrAttribute(self, "NTHEME", .{});
     }
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NTHEME", void, void, arg);
+        c.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
     pub fn getCharSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CHARSIZE", void, void);
+        var str = c.getStrAttribute(self, "CHARSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTSTYLE", void, void);
+        return c.getStrAttribute(self, "FONTSTYLE", .{});
     }
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTSTYLE", void, void, arg);
+        c.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
     pub fn getTouch(self: *Self) bool {
-        return c.getBoolAttribute(self, "TOUCH", void, void);
+        return c.getBoolAttribute(self, "TOUCH", .{});
     }
 
     pub fn setTouch(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TOUCH", void, void, arg);
+        c.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONT", void, void);
+        return c.getStrAttribute(self, "FONT", .{});
     }
 
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONT", void, void, arg);
+        c.setStrAttribute(self, "FONT", .{}, arg);
     }
 
     pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {

@@ -161,7 +161,7 @@ pub const Item = opaque {
         /// 
         /// ACTIVE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", void, void, arg);
+            c.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
@@ -174,7 +174,7 @@ pub const Item = opaque {
         /// When in a menu bar an item that has a mnemonic can be activated from any
         /// control in the dialog using the "Alt+key" combination.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLE", void, void, arg);
+            c.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
 
@@ -183,7 +183,7 @@ pub const Item = opaque {
         /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
         /// mark image when VALUE=ON.
         pub fn setImPress(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "IMPRESS", void, void, arg);
+            c.setStrAttribute(self.ref, "IMPRESS", .{}, arg);
             return self.*;
         }
 
@@ -196,17 +196,17 @@ pub const Item = opaque {
         /// A recommended size would be 16x16 to fit the image in the menu item.
         /// In Windows, if larger than the check mark area it will be cropped.
         pub fn setImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "IMAGE", void, void, arg);
+            c.setStrAttribute(self.ref, "IMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "HANDLENAME", void, void, arg);
+            c.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
 
@@ -220,7 +220,7 @@ pub const Item = opaque {
         /// In GTK, it will appear on the check mark area.
         /// (since 3.0)
         pub fn setTitleImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLEIMAGE", void, void, arg);
+            c.setStrAttribute(self.ref, "TITLEIMAGE", .{}, arg);
             return self.*;
         }
 
@@ -230,12 +230,12 @@ pub const Item = opaque {
         /// It is updated only when TITLE is updated.
         /// Deprecated (since 3.0), use the mnemonic support directly in the TITLE attribute.
         pub fn setKey(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "KEY", void, void, arg);
+            c.setIntAttribute(self.ref, "KEY", .{}, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", void, void, arg);
+            c.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
 
@@ -251,10 +251,10 @@ pub const Item = opaque {
         /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
         pub fn setValue(self: *Initializer, arg: ?Value) Initializer {
             if (arg) |value| switch (value) {
-                .On => c.setStrAttribute(self.ref, "VALUE", void, void, "ON"),
-                .Off => c.setStrAttribute(self.ref, "VALUE", void, void, "OFF"),
+                .On => c.setStrAttribute(self.ref, "VALUE", .{}, "ON"),
+                .Off => c.setStrAttribute(self.ref, "VALUE", .{}, "OFF"),
             } else {
-                c.clearAttribute(self.ref, "VALUE", void, void);
+                c.clearAttribute(self.ref, "VALUE", .{});
             }
             return self.*;
         }
@@ -266,7 +266,7 @@ pub const Item = opaque {
         /// Default: NO.
         /// (since 3.0)
         pub fn setAutoToggle(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "AUTOTOGGLE", void, void, arg);
+            c.setBoolAttribute(self.ref, "AUTOTOGGLE", .{}, arg);
             return self.*;
         }
 
@@ -390,36 +390,36 @@ pub const Item = opaque {
         c.IupDestroy(c.getHandle(self));
     }
 
-    pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, void, void, arg);
+    pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
+        c.setStrAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName, void, void);
+    pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
+        return c.getStrAttribute(self, attribute, .{});
     }
 
-    pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, void, void, arg);
+    pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
+        c.setIntAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName, void, void);
+    pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
+        return c.getIntAttribute(self, attribute, .{});
     }
 
-    pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, void, void, arg);
+    pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
+        c.setBoolAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName, void, void);
+    pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
+        return c.getBoolAttribute(self, attribute, .{});
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attributeName, void, void);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attributeName, void, void, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
@@ -453,14 +453,14 @@ pub const Item = opaque {
     /// 
     /// ACTIVE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE", void, void);
+        return c.getBoolAttribute(self, "ACTIVE", .{});
     }
 
 
     /// 
     /// ACTIVE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", void, void, arg);
+        c.setBoolAttribute(self, "ACTIVE", .{}, arg);
     }
 
 
@@ -472,7 +472,7 @@ pub const Item = opaque {
     /// When in a menu bar an item that has a mnemonic can be activated from any
     /// control in the dialog using the "Alt+key" combination.
     pub fn getTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLE", void, void);
+        return c.getStrAttribute(self, "TITLE", .{});
     }
 
 
@@ -484,7 +484,7 @@ pub const Item = opaque {
     /// When in a menu bar an item that has a mnemonic can be activated from any
     /// control in the dialog using the "Alt+key" combination.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLE", void, void, arg);
+        c.setStrAttribute(self, "TITLE", .{}, arg);
     }
 
 
@@ -492,7 +492,7 @@ pub const Item = opaque {
     /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=ON.
     pub fn getImPress(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "IMPRESS", void, void);
+        return c.getStrAttribute(self, "IMPRESS", .{});
     }
 
 
@@ -500,7 +500,7 @@ pub const Item = opaque {
     /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=ON.
     pub fn setImPress(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "IMPRESS", void, void, arg);
+        c.setStrAttribute(self, "IMPRESS", .{}, arg);
     }
 
 
@@ -512,7 +512,7 @@ pub const Item = opaque {
     /// A recommended size would be 16x16 to fit the image in the menu item.
     /// In Windows, if larger than the check mark area it will be cropped.
     pub fn getImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "IMAGE", void, void);
+        return c.getStrAttribute(self, "IMAGE", .{});
     }
 
 
@@ -524,23 +524,23 @@ pub const Item = opaque {
     /// A recommended size would be 16x16 to fit the image in the menu item.
     /// In Windows, if larger than the check mark area it will be cropped.
     pub fn setImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "IMAGE", void, void, arg);
+        c.setStrAttribute(self, "IMAGE", .{}, arg);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME", void, void);
+        return c.getStrAttribute(self, "HANDLENAME", .{});
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "HANDLENAME", void, void, arg);
+        c.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
     pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BGCOLOR", void, void);
+        return c.getRgb(self, "BGCOLOR", .{});
     }
 
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BGCOLOR", void, void, rgb);
+        c.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
 
@@ -553,7 +553,7 @@ pub const Item = opaque {
     /// In GTK, it will appear on the check mark area.
     /// (since 3.0)
     pub fn getTitleImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLEIMAGE", void, void);
+        return c.getStrAttribute(self, "TITLEIMAGE", .{});
     }
 
 
@@ -566,7 +566,7 @@ pub const Item = opaque {
     /// In GTK, it will appear on the check mark area.
     /// (since 3.0)
     pub fn setTitleImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLEIMAGE", void, void, arg);
+        c.setStrAttribute(self, "TITLEIMAGE", .{}, arg);
     }
 
 
@@ -575,7 +575,7 @@ pub const Item = opaque {
     /// It is updated only when TITLE is updated.
     /// Deprecated (since 3.0), use the mnemonic support directly in the TITLE attribute.
     pub fn getKey(self: *Self) i32 {
-        return c.getIntAttribute(self, "KEY", void, void);
+        return c.getIntAttribute(self, "KEY", .{});
     }
 
 
@@ -584,15 +584,15 @@ pub const Item = opaque {
     /// It is updated only when TITLE is updated.
     /// Deprecated (since 3.0), use the mnemonic support directly in the TITLE attribute.
     pub fn setKey(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "KEY", void, void, arg);
+        c.setIntAttribute(self, "KEY", .{}, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME", void, void);
+        return c.getStrAttribute(self, "NAME", .{});
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", void, void, arg);
+        c.setStrAttribute(self, "NAME", .{}, arg);
     }
 
 
@@ -606,7 +606,7 @@ pub const Item = opaque {
     /// Since GTK 2.14 to have a menu item that can be marked you must set the
     /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
     pub fn getValue(self: *Self) ?Value {
-        var ret = c.getStrAttribute(self, "VALUE", void, void);
+        var ret = c.getStrAttribute(self, "VALUE", .{});
 
         if (std.ascii.eqlIgnoreCase("ON", ret)) return .On;
         if (std.ascii.eqlIgnoreCase("OFF", ret)) return .Off;
@@ -625,10 +625,10 @@ pub const Item = opaque {
     /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
     pub fn setValue(self: *Self, arg: ?Value) void {
         if (arg) |value| switch (value) {
-            .On => c.setStrAttribute(self, "VALUE", void, void, "ON"),
-            .Off => c.setStrAttribute(self, "VALUE", void, void, "OFF"),
+            .On => c.setStrAttribute(self, "VALUE", .{}, "ON"),
+            .Off => c.setStrAttribute(self, "VALUE", .{}, "OFF"),
         } else {
-            c.clearAttribute(self, "VALUE", void, void);
+            c.clearAttribute(self, "VALUE", .{});
         }
     }
 
@@ -636,7 +636,7 @@ pub const Item = opaque {
     /// 
     /// WID (non inheritable): In Windows, returns the HMENU of the parent menu.
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID", void, void);
+        return c.getIntAttribute(self, "WID", .{});
     }
 
 
@@ -646,7 +646,7 @@ pub const Item = opaque {
     /// Default: NO.
     /// (since 3.0)
     pub fn getAutoToggle(self: *Self) bool {
-        return c.getBoolAttribute(self, "AUTOTOGGLE", void, void);
+        return c.getBoolAttribute(self, "AUTOTOGGLE", .{});
     }
 
 
@@ -656,7 +656,7 @@ pub const Item = opaque {
     /// Default: NO.
     /// (since 3.0)
     pub fn setAutoToggle(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "AUTOTOGGLE", void, void, arg);
+        c.setBoolAttribute(self, "AUTOTOGGLE", .{}, arg);
     }
 
     pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {

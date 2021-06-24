@@ -414,17 +414,17 @@ pub const Dialog = opaque {
         }
 
         pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPBALLOON", void, void, arg);
+            c.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "HANDLENAME", void, void, arg);
+            c.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TIPBGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
 
@@ -438,7 +438,7 @@ pub const Dialog = opaque {
         /// The MDI frame must have one and only one MDI client.
         /// Default: NO.
         pub fn setMdiClient(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MDICLIENT", void, void, arg);
+            c.setBoolAttribute(self.ref, "MDICLIENT", .{}, arg);
             return self.*;
         }
 
@@ -446,7 +446,7 @@ pub const Dialog = opaque {
         /// 
         /// CONTROL [Windows Only] (creation only): Embeds the dialog inside another window.
         pub fn setControl(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CONTROL", void, void, arg);
+            c.setBoolAttribute(self.ref, "CONTROL", .{}, arg);
             return self.*;
         }
 
@@ -458,12 +458,12 @@ pub const Dialog = opaque {
         /// Use IupSetHandle or IupSetAttributeHandle to associate a menu to a name.
         /// See also IupMenu.
         pub fn setMenu(self: *Initializer, arg: *iup.Menu) Initializer {
-            c.setHandleAttribute(self.ref, "MENU", void, void, arg);
+            c.setHandleAttribute(self.ref, "MENU", .{}, arg);
             return self.*;
         }
 
         pub fn setNoFlush(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "NOFLUSH", void, void, arg);
+            c.setBoolAttribute(self.ref, "NOFLUSH", .{}, arg);
             return self.*;
         }
 
@@ -476,7 +476,7 @@ pub const Dialog = opaque {
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MAXSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
             return self.*;
         }
 
@@ -487,7 +487,7 @@ pub const Dialog = opaque {
         /// Must be set before setting the TRAYTIP attribute.
         /// (since 3.6)
         pub fn setTrayTipBalloonTitleIcon(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TRAYTIPBALLOONTITLEICON", void, void, arg);
+            c.setIntAttribute(self.ref, "TRAYTIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -502,7 +502,7 @@ pub const Dialog = opaque {
         /// Works also for GTK but as the SHAPEIMAGE attribute.
         /// (since 3.16)
         pub fn setOpacityImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "OPACITYIMAGE", void, void, arg);
+            c.setStrAttribute(self.ref, "OPACITYIMAGE", .{}, arg);
             return self.*;
         }
 
@@ -517,7 +517,7 @@ pub const Dialog = opaque {
         /// Possible values: YES, NO.
         /// Default: NO.
         pub fn setHelpButton(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "HELPBUTTON", void, void, arg);
+            c.setBoolAttribute(self.ref, "HELPBUTTON", .{}, arg);
             return self.*;
         }
 
@@ -526,7 +526,7 @@ pub const Dialog = opaque {
         /// SHOWNOFOCUS: do not set focus after show.
         /// (since 3.30)
         pub fn setShowNoFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWNOFOCUS", void, void, arg);
+            c.setBoolAttribute(self.ref, "SHOWNOFOCUS", .{}, arg);
             return self.*;
         }
 
@@ -536,7 +536,7 @@ pub const Dialog = opaque {
         /// dialog in the same monitor that the parent dialog is.
         /// (since 3.28)
         pub fn setMaximizeAtParent(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MAXIMIZEATPARENT", void, void, arg);
+            c.setBoolAttribute(self.ref, "MAXIMIZEATPARENT", .{}, arg);
             return self.*;
         }
 
@@ -548,14 +548,14 @@ pub const Dialog = opaque {
         /// initialized when mapped (since 3.16).
         /// (GTK 2.12)
         pub fn setOpacity(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "OPACITY", void, void, arg);
+            c.setIntAttribute(self.ref, "OPACITY", .{}, arg);
             return self.*;
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "POSITION", void, void, value);
+            c.setStrAttribute(self.ref, "POSITION", .{}, value);
             return self.*;
         }
 
@@ -569,7 +569,7 @@ pub const Dialog = opaque {
         /// IupFlat*, IupGL*, IupPlot and IupMatrix, because IupCanvas uses CS_OWNDC in
         /// the window class.
         pub fn setComposited(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "COMPOSITED", void, void, arg);
+            c.setBoolAttribute(self.ref, "COMPOSITED", .{}, arg);
             return self.*;
         }
 
@@ -580,22 +580,22 @@ pub const Dialog = opaque {
         /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
         /// it will be automatically enabled.
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DROPFILESTARGET", void, void, arg);
+            c.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIP", void, void, arg);
+            c.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
 
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CANFOCUS", void, void, arg);
+            c.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
             return self.*;
         }
 
@@ -605,7 +605,7 @@ pub const Dialog = opaque {
         /// The Windows SDK recommends that cursors and icons should be implemented as
         /// resources rather than created at run time.
         pub fn setIcon(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "ICON", void, void, arg);
+            c.setStrAttribute(self.ref, "ICON", .{}, arg);
             return self.*;
         }
 
@@ -613,7 +613,7 @@ pub const Dialog = opaque {
         /// 
         /// VISIBLE: Simply call IupShow or IupHide for the dialog.
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "VISIBLE", void, void, arg);
+            c.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
 
@@ -631,7 +631,7 @@ pub const Dialog = opaque {
         /// One drawback is that menu bars will not work.
         /// (since 3.18) (renamed in 3.22)
         pub fn setCustomFrameDraw(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CUSTOMFRAMEDRAW", void, void, arg);
+            c.setBoolAttribute(self.ref, "CUSTOMFRAMEDRAW", .{}, arg);
             return self.*;
         }
 
@@ -639,7 +639,7 @@ pub const Dialog = opaque {
         /// 
         /// CURSOR (non inheritable): Defines a cursor for the dialog.
         pub fn setCursor(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "CURSOR", void, void, arg);
+            c.setStrAttribute(self.ref, "CURSOR", .{}, arg);
             return self.*;
         }
 
@@ -652,16 +652,16 @@ pub const Dialog = opaque {
         /// be possible to be changed from IUP.
         /// In Windows if hidden will hide also MAXBOX and MINBOX.
         pub fn setMenuBox(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MENUBOX", void, void, arg);
+            c.setBoolAttribute(self.ref, "MENUBOX", .{}, arg);
             return self.*;
         }
 
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
             if (arg) |value| switch (value) {
-                .Top => c.setStrAttribute(self.ref, "ZORDER", void, void, "TOP"),
-                .Bottom => c.setStrAttribute(self.ref, "ZORDER", void, void, "BOTTOM"),
+                .Top => c.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
+                .Bottom => c.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
             } else {
-                c.clearAttribute(self.ref, "ZORDER", void, void);
+                c.clearAttribute(self.ref, "ZORDER", .{});
             }
             return self.*;
         }
@@ -676,12 +676,12 @@ pub const Dialog = opaque {
         /// In Windows MAXBOX is hidden only if MINBOX is hidden as well, or else it
         /// will be just disabled.
         pub fn setMaxBox(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MAXBOX", void, void, arg);
+            c.setBoolAttribute(self.ref, "MAXBOX", .{}, arg);
             return self.*;
         }
 
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGDROP", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
             return self.*;
         }
 
@@ -690,12 +690,12 @@ pub const Dialog = opaque {
         /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
         /// to a dialog hint.
         pub fn setDialogHint(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DIALOGHINT", void, void, arg);
+            c.setBoolAttribute(self.ref, "DIALOGHINT", .{}, arg);
             return self.*;
         }
 
         pub fn setShowMinimizeNext(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWMINIMIZENEXT", void, void, arg);
+            c.setBoolAttribute(self.ref, "SHOWMINIMIZENEXT", .{}, arg);
             return self.*;
         }
 
@@ -706,7 +706,7 @@ pub const Dialog = opaque {
         /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
         /// removed, but the Close button remains.
         pub fn setDialogFrame(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DIALOGFRAME", void, void, arg);
+            c.setBoolAttribute(self.ref, "DIALOGFRAME", .{}, arg);
             return self.*;
         }
 
@@ -716,7 +716,7 @@ pub const Dialog = opaque {
         /// inside the dialog.
         /// (since 3.13)
         pub fn setNActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "NACTIVE", void, void, arg);
+            c.setBoolAttribute(self.ref, "NACTIVE", .{}, arg);
             return self.*;
         }
 
@@ -727,12 +727,12 @@ pub const Dialog = opaque {
         /// Must be set before setting the TRAYTIP attribute.
         /// (since 3.6)
         pub fn setTrayTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TRAYTIPBALLOONTITLE", void, void, arg);
+            c.setStrAttribute(self.ref, "TRAYTIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "THEME", void, void, arg);
+            c.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
 
@@ -747,7 +747,7 @@ pub const Dialog = opaque {
         /// To save memory disable it for your main dialog.
         /// Not available in GTK.
         pub fn setSaveUnder(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SAVEUNDER", void, void, arg);
+            c.setBoolAttribute(self.ref, "SAVEUNDER", .{}, arg);
             return self.*;
         }
 
@@ -757,12 +757,12 @@ pub const Dialog = opaque {
         /// system tray.
         /// (GTK 2.10 and GTK < 3.14)
         pub fn setTray(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TRAY", void, void, arg);
+            c.setBoolAttribute(self.ref, "TRAY", .{}, arg);
             return self.*;
         }
 
         pub fn setDragCursorCopy(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGCURSORCOPY", void, void, arg);
+            c.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
 
@@ -773,7 +773,7 @@ pub const Dialog = opaque {
         /// (Available only for Visual C++ 10 and above).
         /// Default: NO (since 3.10).
         pub fn setTaskbarProgress(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TASKBARPROGRESS", void, void, arg);
+            c.setIntAttribute(self.ref, "TASKBARPROGRESS", .{}, arg);
             return self.*;
         }
 
@@ -790,7 +790,7 @@ pub const Dialog = opaque {
         pub fn setChildOffset(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "CHILDOFFSET", void, void, value);
+            c.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
             return self.*;
         }
 
@@ -799,14 +799,14 @@ pub const Dialog = opaque {
         /// EXPAND (non inheritable): The default value is "YES".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "EXPAND", void, void, "YES"),
-                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", void, void, "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "EXPAND", void, void, "VERTICAL"),
-                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", void, void, "HORIZONTALFREE"),
-                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", void, void, "VERTICALFREE"),
-                .No => c.setStrAttribute(self.ref, "EXPAND", void, void, "NO"),
+                .Yes => c.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
+                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
+                .Vertical => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
+                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
+                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
+                .No => c.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "EXPAND", void, void);
+                c.clearAttribute(self.ref, "EXPAND", .{});
             }
             return self.*;
         }
@@ -861,7 +861,7 @@ pub const Dialog = opaque {
         pub fn setSize(self: *Initializer, width: ?iup.ScreenSize, height: ?iup.ScreenSize) Initializer {
             var buffer: [128]u8 = undefined;
             var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "SIZE", void, void, str);
+            c.setStrAttribute(self.ref, "SIZE", .{}, str);
             return self.*;
         }
 
@@ -871,7 +871,7 @@ pub const Dialog = opaque {
         /// Window list of a MDI frame.
         /// The system will automatically add the list of MDI child windows there.
         pub fn setMdiMenu(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "MDIMENU", void, void, arg);
+            c.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
             return self.*;
         }
 
@@ -884,34 +884,34 @@ pub const Dialog = opaque {
         /// Updated after SHOW_CB is called and only if the focus was not changed
         /// during the callback.
         pub fn setStartFocus(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "STARTFOCUS", void, void, arg);
+            c.setStrAttribute(self.ref, "STARTFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "FONTSIZE", void, void, arg);
+            c.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
 
         pub fn setTrayTipDelay(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TRAYTIPDELAY", void, void, arg);
+            c.setIntAttribute(self.ref, "TRAYTIPDELAY", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DROPTYPES", void, void, arg);
+            c.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "USERSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "USERSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TIPDELAY", void, void, arg);
+            c.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
             return self.*;
         }
 
@@ -930,14 +930,14 @@ pub const Dialog = opaque {
         pub fn setCustomFrameCaptionLimits(self: *Initializer, begin: i32, end: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-            c.setStrAttribute(self.ref, "CUSTOMFRAMECAPTIONLIMITS", void, void, value);
+            c.setStrAttribute(self.ref, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
             return self.*;
         }
 
         pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "DRAGSTART", void, void, value);
+            c.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
             return self.*;
         }
 
@@ -958,7 +958,7 @@ pub const Dialog = opaque {
         /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
         /// Frame notes bellow.
         pub fn setCustomFrame(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CUSTOMFRAME", void, void, arg);
+            c.setBoolAttribute(self.ref, "CUSTOMFRAME", .{}, arg);
             return self.*;
         }
 
@@ -970,7 +970,7 @@ pub const Dialog = opaque {
         /// and MINBOX=NO, before map.
         /// But in Motif and GTK it will hide it only if RESIZE=NO also.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLE", void, void, arg);
+            c.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
 
@@ -980,7 +980,7 @@ pub const Dialog = opaque {
         /// is in another control of the dialog.
         /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
         pub fn setDefaultEsc(self: *Initializer, arg: *iup.Button) Initializer {
-            c.setHandleAttribute(self.ref, "DEFAULTESC", void, void, arg);
+            c.setHandleAttribute(self.ref, "DEFAULTESC", .{}, arg);
             return self.*;
         }
 
@@ -1000,37 +1000,37 @@ pub const Dialog = opaque {
         /// the next top-level window in the Z order when minimizing (since 3.15).
         pub fn setPlacement(self: *Initializer, arg: ?Placement) Initializer {
             if (arg) |value| switch (value) {
-                .Maximized => c.setStrAttribute(self.ref, "PLACEMENT", void, void, "MAXIMIZED"),
-                .Minimized => c.setStrAttribute(self.ref, "PLACEMENT", void, void, "MINIMIZED"),
-                .Full => c.setStrAttribute(self.ref, "PLACEMENT", void, void, "FULL"),
+                .Maximized => c.setStrAttribute(self.ref, "PLACEMENT", .{}, "MAXIMIZED"),
+                .Minimized => c.setStrAttribute(self.ref, "PLACEMENT", .{}, "MINIMIZED"),
+                .Full => c.setStrAttribute(self.ref, "PLACEMENT", .{}, "FULL"),
             } else {
-                c.clearAttribute(self.ref, "PLACEMENT", void, void);
+                c.clearAttribute(self.ref, "PLACEMENT", .{});
             }
             return self.*;
         }
 
         pub fn setLayerAlpha(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "LAYERALPHA", void, void, arg);
+            c.setIntAttribute(self.ref, "LAYERALPHA", .{}, arg);
             return self.*;
         }
 
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", void, void, arg);
+            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIPBALLOONTITLE", void, void, arg);
+            c.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DROPTARGET", void, void, arg);
+            c.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
             return self.*;
         }
 
@@ -1042,12 +1042,12 @@ pub const Dialog = opaque {
         /// Must be set before setting the TRAYTIP attribute.
         /// (since 3.6)
         pub fn setTrayTipBalloon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TRAYTIPBALLOON", void, void, arg);
+            c.setBoolAttribute(self.ref, "TRAYTIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGSOURCE", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
             return self.*;
         }
 
@@ -1059,7 +1059,7 @@ pub const Dialog = opaque {
         /// In Motif the decorations are controlled by the Window Manager and may not
         /// be possible to be changed from IUP.
         pub fn setResize(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "RESIZE", void, void, arg);
+            c.setBoolAttribute(self.ref, "RESIZE", .{}, arg);
             return self.*;
         }
 
@@ -1070,29 +1070,29 @@ pub const Dialog = opaque {
         /// the minimized icons).
         pub fn mdiArrange(self: *Initializer, arg: ?MdiArrange) Initializer {
             if (arg) |value| switch (value) {
-                .TileHorizontal => c.setStrAttribute(self.ref, "MDIARRANGE", void, void, "TILEHORIZONTAL"),
-                .TileVertical => c.setStrAttribute(self.ref, "MDIARRANGE", void, void, "TILEVERTICAL"),
-                .Cascade => c.setStrAttribute(self.ref, "MDIARRANGE", void, void, "CASCADE"),
-                .Icon => c.setStrAttribute(self.ref, "MDIARRANGE", void, void, "ICON"),
+                .TileHorizontal => c.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
+                .TileVertical => c.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEVERTICAL"),
+                .Cascade => c.setStrAttribute(self.ref, "MDIARRANGE", .{}, "CASCADE"),
+                .Icon => c.setStrAttribute(self.ref, "MDIARRANGE", .{}, "ICON"),
             } else {
-                c.clearAttribute(self.ref, "MDIARRANGE", void, void);
+                c.clearAttribute(self.ref, "MDIARRANGE", .{});
             }
             return self.*;
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "FLOATING", void, void, "YES"),
-                .Ignore => c.setStrAttribute(self.ref, "FLOATING", void, void, "IGNORE"),
-                .No => c.setStrAttribute(self.ref, "FLOATING", void, void, "NO"),
+                .Yes => c.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
+                .Ignore => c.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
+                .No => c.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "FLOATING", void, void);
+                c.clearAttribute(self.ref, "FLOATING", .{});
             }
             return self.*;
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NORMALIZERGROUP", void, void, arg);
+            c.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
 
@@ -1137,7 +1137,7 @@ pub const Dialog = opaque {
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RASTERSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
             return self.*;
         }
 
@@ -1149,32 +1149,32 @@ pub const Dialog = opaque {
         /// The pixels colors will be ignored, only the alpha channel is used.
         /// (since 3.26)
         pub fn setShapeImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "SHAPEIMAGE", void, void, arg);
+            c.setStrAttribute(self.ref, "SHAPEIMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TIPFGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CONTROLID", void, void, arg);
+            c.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
             return self.*;
         }
 
         pub fn setShowNoActivate(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWNOACTIVATE", void, void, arg);
+            c.setBoolAttribute(self.ref, "SHOWNOACTIVATE", .{}, arg);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTFACE", void, void, arg);
+            c.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
         pub fn setMaximizeAtDialog(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MAXIMIZEATDIALOG", void, void, arg);
+            c.setBoolAttribute(self.ref, "MAXIMIZEATDIALOG", .{}, arg);
             return self.*;
         }
 
@@ -1184,7 +1184,7 @@ pub const Dialog = opaque {
         /// other dialogs in all applications.
         /// Default: NO.
         pub fn topMost(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TOPMOST", void, void, arg);
+            c.setBoolAttribute(self.ref, "TOPMOST", .{}, arg);
             return self.*;
         }
 
@@ -1198,16 +1198,16 @@ pub const Dialog = opaque {
         /// (since 3.28)
         pub fn setTaskbarButton(self: *Initializer, arg: ?TaskbarButton) Initializer {
             if (arg) |value| switch (value) {
-                .Show => c.setStrAttribute(self.ref, "TASKBARBUTTON", void, void, "SHOW"),
-                .Hide => c.setStrAttribute(self.ref, "TASKBARBUTTON", void, void, "HIDE"),
+                .Show => c.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "SHOW"),
+                .Hide => c.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "HIDE"),
             } else {
-                c.clearAttribute(self.ref, "TASKBARBUTTON", void, void);
+                c.clearAttribute(self.ref, "TASKBARBUTTON", .{});
             }
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", void, void, arg);
+            c.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
 
@@ -1220,7 +1220,7 @@ pub const Dialog = opaque {
         /// In Windows MINBOX is hidden only if MAXBOX is hidden as well, or else it
         /// will be just disabled.
         pub fn setMinBox(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MINBOX", void, void, arg);
+            c.setBoolAttribute(self.ref, "MINBOX", .{}, arg);
             return self.*;
         }
 
@@ -1230,12 +1230,12 @@ pub const Dialog = opaque {
         /// focus is in another control of the dialog.
         /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
         pub fn setDefaultEnter(self: *Initializer, arg: *iup.Button) Initializer {
-            c.setHandleAttribute(self.ref, "DEFAULTENTER", void, void, arg);
+            c.setHandleAttribute(self.ref, "DEFAULTENTER", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", void, void, arg);
+            c.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -1243,7 +1243,7 @@ pub const Dialog = opaque {
         /// 
         /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
         pub fn setParentDialog(self: *Initializer, arg: *iup.Dialog) Initializer {
-            c.setHandleAttribute(self.ref, "PARENTDIALOG", void, void, arg);
+            c.setHandleAttribute(self.ref, "PARENTDIALOG", .{}, arg);
             return self.*;
         }
 
@@ -1257,7 +1257,7 @@ pub const Dialog = opaque {
         /// Not working in GTK 3.
         /// (since 3.0)
         pub fn setBackground(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BACKGROUND", void, void, rgb);
+            c.setRgb(self.ref, "BACKGROUND", .{}, rgb);
             return self.*;
         }
 
@@ -1272,7 +1272,7 @@ pub const Dialog = opaque {
         /// IMPORTANT: when you hide using HIDETASKBAR, you must show using HIDETASKBAR also.
         /// Possible values: YES, NO.
         pub fn setHideTaskbar(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "HIDETASKBAR", void, void, arg);
+            c.setBoolAttribute(self.ref, "HIDETASKBAR", .{}, arg);
             return self.*;
         }
 
@@ -1282,7 +1282,7 @@ pub const Dialog = opaque {
         /// Use "YES" to activate it.
         /// Useful for multithreaded applications.
         pub fn setBringFront(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "BRINGFRONT", void, void, arg);
+            c.setBoolAttribute(self.ref, "BRINGFRONT", .{}, arg);
             return self.*;
         }
 
@@ -1294,7 +1294,7 @@ pub const Dialog = opaque {
         /// resources rather than created at run time.
         /// (GTK 2.10 and GTK < 3.14)
         pub fn setTrayImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TRAYIMAGE", void, void, arg);
+            c.setStrAttribute(self.ref, "TRAYIMAGE", .{}, arg);
             return self.*;
         }
 
@@ -1305,17 +1305,17 @@ pub const Dialog = opaque {
         /// Note that ACTIVE, BGCOLOR and FONT will also affect all the controls inside
         /// the dialog.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", void, void, arg);
+            c.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPVISIBLE", void, void, arg);
+            c.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", void, void, arg);
+            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
@@ -1330,7 +1330,7 @@ pub const Dialog = opaque {
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MINSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "MINSIZE", .{}, value);
             return self.*;
         }
 
@@ -1341,12 +1341,12 @@ pub const Dialog = opaque {
         /// If not defined it will use the system size.
         /// (since 3.18) (renamed in 3.22)
         pub fn setCustomFrameCaptionHeight(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CUSTOMFRAMECAPTIONHEIGHT", void, void, arg);
+            c.setIntAttribute(self.ref, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NTHEME", void, void, arg);
+            c.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
 
@@ -1357,7 +1357,7 @@ pub const Dialog = opaque {
         /// BORDER=NO is useful only when RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
         /// and TITLE=NULL, if any of these are defined there will be always some border.
         pub fn setBorder(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "BORDER", void, void, arg);
+            c.setBoolAttribute(self.ref, "BORDER", .{}, arg);
             return self.*;
         }
 
@@ -1377,7 +1377,7 @@ pub const Dialog = opaque {
         /// See the Custom Frame notes bellow.
         /// (since 3.28)
         pub fn setCustomFramesImulate(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CUSTOMFRAMESIMULATE", void, void, arg);
+            c.setBoolAttribute(self.ref, "CUSTOMFRAMESIMULATE", .{}, arg);
             return self.*;
         }
 
@@ -1387,7 +1387,7 @@ pub const Dialog = opaque {
         /// MDI child windows.
         /// The CLOSE_CB callback will be called for each child.
         pub fn mdiCloseAll(self: *Initializer) Initializer {
-            c.setStrAttribute(self.ref, "MDICLOSEALL", void, void, null);
+            c.setStrAttribute(self.ref, "MDICLOSEALL", .{}, null);
             return self.*;
         }
 
@@ -1397,14 +1397,14 @@ pub const Dialog = opaque {
         /// smaller than the minimum size.
         /// Default: NO.
         pub fn setShrink(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHRINK", void, void, arg);
+            c.setBoolAttribute(self.ref, "SHRINK", .{}, arg);
             return self.*;
         }
 
         pub fn setClientSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "CLIENTSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "CLIENTSIZE", .{}, value);
             return self.*;
         }
 
@@ -1413,12 +1413,12 @@ pub const Dialog = opaque {
         /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
         /// (GTK 2.10 and GTK < 3.14)
         pub fn setTrayTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TRAYTIP", void, void, arg);
+            c.setStrAttribute(self.ref, "TRAYTIP", .{}, arg);
             return self.*;
         }
 
         pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGTYPES", void, void, arg);
+            c.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
             return self.*;
         }
 
@@ -1429,7 +1429,7 @@ pub const Dialog = opaque {
         /// It is only valid if the PARENTDIALOG or NATIVEPARENT attribute is also defined.
         /// Default: NO.
         pub fn setToolBox(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TOOLBOX", void, void, arg);
+            c.setBoolAttribute(self.ref, "TOOLBOX", .{}, arg);
             return self.*;
         }
 
@@ -1440,17 +1440,17 @@ pub const Dialog = opaque {
         /// Can be YES or NO.
         /// Default: NO.
         pub fn setMdiFrame(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MDIFRAME", void, void, arg);
+            c.setBoolAttribute(self.ref, "MDIFRAME", .{}, arg);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTSTYLE", void, void, arg);
+            c.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
 
         pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TOUCH", void, void, arg);
+            c.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
             return self.*;
         }
 
@@ -1462,7 +1462,7 @@ pub const Dialog = opaque {
         /// Each MDI child is automatically named if it does not have one.
         /// Default: NO.
         pub fn setMdiChild(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MDICHILD", void, void, arg);
+            c.setBoolAttribute(self.ref, "MDICHILD", .{}, arg);
             return self.*;
         }
 
@@ -1475,13 +1475,13 @@ pub const Dialog = opaque {
         /// Default: NORMAL (since 3.10).
         pub fn taskbarProgressState(self: *Initializer, arg: ?TaskbarProgressState) Initializer {
             if (arg) |value| switch (value) {
-                .NoProgress => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", void, void, "NOPROGRESS"),
-                .Indeterminate => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", void, void, "INDETERMINATE"),
-                .Error => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", void, void, "ERROR"),
-                .Paused => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", void, void, "PAUSED"),
-                .Normal => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", void, void, "NORMAL"),
+                .NoProgress => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
+                .Indeterminate => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
+                .Error => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "ERROR"),
+                .Paused => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "PAUSED"),
+                .Normal => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NORMAL"),
             } else {
-                c.clearAttribute(self.ref, "TASKBARPROGRESSSTATE", void, void);
+                c.clearAttribute(self.ref, "TASKBARPROGRESSSTATE", .{});
             }
             return self.*;
         }
@@ -1493,7 +1493,7 @@ pub const Dialog = opaque {
         /// full operation.
         /// The value must be between 0 and 100 (since 3.10).
         pub fn taskbarProgressValue(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TASKBARPROGRESSVALUE", void, void, arg);
+            c.setIntAttribute(self.ref, "TASKBARPROGRESSVALUE", .{}, arg);
             return self.*;
         }
 
@@ -1507,22 +1507,22 @@ pub const Dialog = opaque {
         /// In Motif if set to YES when the dialog is hidden, then it can not be
         /// changed after it is visible.
         pub fn fullScreen(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "FULLSCREEN", void, void, arg);
+            c.setBoolAttribute(self.ref, "FULLSCREEN", .{}, arg);
             return self.*;
         }
 
         pub fn setMaximizedIalog(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "MAXIMIZEDIALOG", void, void, arg);
+            c.setStrAttribute(self.ref, "MAXIMIZEDIALOG", .{}, arg);
             return self.*;
         }
 
         pub fn setDragCursor(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGCURSOR", void, void, arg);
+            c.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONT", void, void, arg);
+            c.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
 
@@ -1532,7 +1532,7 @@ pub const Dialog = opaque {
         /// when the dialog is made modal.
         /// (since 3.21)
         pub fn simulateModal(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SIMULATEMODAL", void, void, arg);
+            c.setBoolAttribute(self.ref, "SIMULATEMODAL", .{}, arg);
             return self.*;
         }
 
@@ -1922,36 +1922,36 @@ pub const Dialog = opaque {
         c.IupDestroy(c.getHandle(self));
     }
 
-    pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, void, void, arg);
+    pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
+        c.setStrAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName, void, void);
+    pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
+        return c.getStrAttribute(self, attribute, .{});
     }
 
-    pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, void, void, arg);
+    pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
+        c.setIntAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName, void, void);
+    pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
+        return c.getIntAttribute(self, attribute, .{});
     }
 
-    pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, void, void, arg);
+    pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
+        c.setBoolAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName, void, void);
+    pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
+        return c.getBoolAttribute(self, attribute, .{});
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attributeName, void, void);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attributeName, void, void, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
@@ -2007,27 +2007,27 @@ pub const Dialog = opaque {
     }
 
     pub fn getTipBalloon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPBALLOON", void, void);
+        return c.getBoolAttribute(self, "TIPBALLOON", .{});
     }
 
     pub fn setTipBalloon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPBALLOON", void, void, arg);
+        c.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME", void, void);
+        return c.getStrAttribute(self, "HANDLENAME", .{});
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "HANDLENAME", void, void, arg);
+        c.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TIPBGCOLOR", void, void);
+        return c.getRgb(self, "TIPBGCOLOR", .{});
     }
 
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TIPBGCOLOR", void, void, rgb);
+        c.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
 
@@ -2038,7 +2038,7 @@ pub const Dialog = opaque {
     /// Use IupSetHandle or IupSetAttributeHandle to associate a menu to a name.
     /// See also IupMenu.
     pub fn getMenu(self: *Self) ?*iup.Menu {
-        if (c.getHandleAttribute(self, "MENU", void, void)) |handle| {
+        if (c.getHandleAttribute(self, "MENU", .{})) |handle| {
             return @ptrCast(*iup.Menu, handle);
         } else {
             return null;
@@ -2053,15 +2053,15 @@ pub const Dialog = opaque {
     /// Use IupSetHandle or IupSetAttributeHandle to associate a menu to a name.
     /// See also IupMenu.
     pub fn setMenu(self: *Self, arg: *iup.Menu) void {
-        c.setHandleAttribute(self, "MENU", void, void, arg);
+        c.setHandleAttribute(self, "MENU", .{}, arg);
     }
 
     pub fn getNoFlush(self: *Self) bool {
-        return c.getBoolAttribute(self, "NOFLUSH", void, void);
+        return c.getBoolAttribute(self, "NOFLUSH", .{});
     }
 
     pub fn setNoFlush(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "NOFLUSH", void, void, arg);
+        c.setBoolAttribute(self, "NOFLUSH", .{}, arg);
     }
 
 
@@ -2071,7 +2071,7 @@ pub const Dialog = opaque {
     /// Default: 65535x65535.
     /// (since 3.0)
     pub fn getMaxSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MAXSIZE", void, void);
+        var str = c.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
     }
 
@@ -2084,7 +2084,7 @@ pub const Dialog = opaque {
     pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MAXSIZE", void, void, value);
+        c.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
 
@@ -2094,7 +2094,7 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn getTrayTipBalloonTitleIcon(self: *Self) i32 {
-        return c.getIntAttribute(self, "TRAYTIPBALLOONTITLEICON", void, void);
+        return c.getIntAttribute(self, "TRAYTIPBALLOONTITLEICON", .{});
     }
 
 
@@ -2104,7 +2104,7 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn setTrayTipBalloonTitleIcon(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TRAYTIPBALLOONTITLEICON", void, void, arg);
+        c.setIntAttribute(self, "TRAYTIPBALLOONTITLEICON", .{}, arg);
     }
 
 
@@ -2118,7 +2118,7 @@ pub const Dialog = opaque {
     /// Works also for GTK but as the SHAPEIMAGE attribute.
     /// (since 3.16)
     pub fn getOpacityImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "OPACITYIMAGE", void, void);
+        return c.getStrAttribute(self, "OPACITYIMAGE", .{});
     }
 
 
@@ -2132,7 +2132,7 @@ pub const Dialog = opaque {
     /// Works also for GTK but as the SHAPEIMAGE attribute.
     /// (since 3.16)
     pub fn setOpacityImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "OPACITYIMAGE", void, void, arg);
+        c.setStrAttribute(self, "OPACITYIMAGE", .{}, arg);
     }
 
 
@@ -2140,7 +2140,7 @@ pub const Dialog = opaque {
     /// SHOWNOFOCUS: do not set focus after show.
     /// (since 3.30)
     pub fn getShowNoFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHOWNOFOCUS", void, void);
+        return c.getBoolAttribute(self, "SHOWNOFOCUS", .{});
     }
 
 
@@ -2148,11 +2148,11 @@ pub const Dialog = opaque {
     /// SHOWNOFOCUS: do not set focus after show.
     /// (since 3.30)
     pub fn setShowNoFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWNOFOCUS", void, void, arg);
+        c.setBoolAttribute(self, "SHOWNOFOCUS", .{}, arg);
     }
 
     pub fn getScreenPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "SCREENPOSITION", void, void);
+        var str = c.getStrAttribute(self, "SCREENPOSITION", .{});
         return iup.XYPos.parse(str, ',');
     }
 
@@ -2162,7 +2162,7 @@ pub const Dialog = opaque {
     /// dialog in the same monitor that the parent dialog is.
     /// (since 3.28)
     pub fn getMaximizeAtParent(self: *Self) bool {
-        return c.getBoolAttribute(self, "MAXIMIZEATPARENT", void, void);
+        return c.getBoolAttribute(self, "MAXIMIZEATPARENT", .{});
     }
 
 
@@ -2171,7 +2171,7 @@ pub const Dialog = opaque {
     /// dialog in the same monitor that the parent dialog is.
     /// (since 3.28)
     pub fn setMaximizeAtParent(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MAXIMIZEATPARENT", void, void, arg);
+        c.setBoolAttribute(self, "MAXIMIZEATPARENT", .{}, arg);
     }
 
 
@@ -2182,7 +2182,7 @@ pub const Dialog = opaque {
     /// initialized when mapped (since 3.16).
     /// (GTK 2.12)
     pub fn getOpacity(self: *Self) i32 {
-        return c.getIntAttribute(self, "OPACITY", void, void);
+        return c.getIntAttribute(self, "OPACITY", .{});
     }
 
 
@@ -2193,18 +2193,18 @@ pub const Dialog = opaque {
     /// initialized when mapped (since 3.16).
     /// (GTK 2.12)
     pub fn setOpacity(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "OPACITY", void, void, arg);
+        c.setIntAttribute(self, "OPACITY", .{}, arg);
     }
 
     pub fn getPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "POSITION", void, void);
+        var str = c.getStrAttribute(self, "POSITION", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setPosition(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "POSITION", void, void, value);
+        c.setStrAttribute(self, "POSITION", .{}, value);
     }
 
 
@@ -2214,7 +2214,7 @@ pub const Dialog = opaque {
     /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
     /// it will be automatically enabled.
     pub fn getDropFilesTarget(self: *Self) bool {
-        return c.getBoolAttribute(self, "DROPFILESTARGET", void, void);
+        return c.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
 
 
@@ -2224,7 +2224,7 @@ pub const Dialog = opaque {
     /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
     /// it will be automatically enabled.
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DROPFILESTARGET", void, void, arg);
+        c.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
     }
 
 
@@ -2232,31 +2232,31 @@ pub const Dialog = opaque {
     /// BORDERSIZE (non inheritable) (read only): returns the border size.
     /// (since 3.18)
     pub fn getBorderSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "BORDERSIZE", void, void);
+        return c.getIntAttribute(self, "BORDERSIZE", .{});
     }
 
     pub fn getTip(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIP", void, void);
+        return c.getStrAttribute(self, "TIP", .{});
     }
 
     pub fn setTip(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIP", void, void, arg);
+        c.setStrAttribute(self, "TIP", .{}, arg);
     }
 
     pub fn getCanFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "CANFOCUS", void, void);
+        return c.getBoolAttribute(self, "CANFOCUS", .{});
     }
 
     pub fn setCanFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CANFOCUS", void, void, arg);
+        c.setBoolAttribute(self, "CANFOCUS", .{}, arg);
     }
 
     pub fn getDragSourceMove(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGSOURCEMOVE", void, void);
+        return c.getBoolAttribute(self, "DRAGSOURCEMOVE", .{});
     }
 
     pub fn setDragSourceMove(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGSOURCEMOVE", void, void, arg);
+        c.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
     }
 
 
@@ -2265,7 +2265,7 @@ pub const Dialog = opaque {
     /// The Windows SDK recommends that cursors and icons should be implemented as
     /// resources rather than created at run time.
     pub fn getIcon(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "ICON", void, void);
+        return c.getStrAttribute(self, "ICON", .{});
     }
 
 
@@ -2274,21 +2274,21 @@ pub const Dialog = opaque {
     /// The Windows SDK recommends that cursors and icons should be implemented as
     /// resources rather than created at run time.
     pub fn setIcon(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "ICON", void, void, arg);
+        c.setStrAttribute(self, "ICON", .{}, arg);
     }
 
 
     /// 
     /// VISIBLE: Simply call IupShow or IupHide for the dialog.
     pub fn getVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "VISIBLE", void, void);
+        return c.getBoolAttribute(self, "VISIBLE", .{});
     }
 
 
     /// 
     /// VISIBLE: Simply call IupShow or IupHide for the dialog.
     pub fn setVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "VISIBLE", void, void, arg);
+        c.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
 
@@ -2305,7 +2305,7 @@ pub const Dialog = opaque {
     /// One drawback is that menu bars will not work.
     /// (since 3.18) (renamed in 3.22)
     pub fn getCustomFrameDraw(self: *Self) bool {
-        return c.getBoolAttribute(self, "CUSTOMFRAMEDRAW", void, void);
+        return c.getBoolAttribute(self, "CUSTOMFRAMEDRAW", .{});
     }
 
 
@@ -2322,38 +2322,38 @@ pub const Dialog = opaque {
     /// One drawback is that menu bars will not work.
     /// (since 3.18) (renamed in 3.22)
     pub fn setCustomFrameDraw(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CUSTOMFRAMEDRAW", void, void, arg);
+        c.setBoolAttribute(self, "CUSTOMFRAMEDRAW", .{}, arg);
     }
 
 
     /// 
     /// CURSOR (non inheritable): Defines a cursor for the dialog.
     pub fn getCursor(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "CURSOR", void, void);
+        return c.getStrAttribute(self, "CURSOR", .{});
     }
 
 
     /// 
     /// CURSOR (non inheritable): Defines a cursor for the dialog.
     pub fn setCursor(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "CURSOR", void, void, arg);
+        c.setStrAttribute(self, "CURSOR", .{}, arg);
     }
 
     pub fn zOrder(self: *Self, arg: ?ZOrder) void {
         if (arg) |value| switch (value) {
-            .Top => c.setStrAttribute(self, "ZORDER", void, void, "TOP"),
-            .Bottom => c.setStrAttribute(self, "ZORDER", void, void, "BOTTOM"),
+            .Top => c.setStrAttribute(self, "ZORDER", .{}, "TOP"),
+            .Bottom => c.setStrAttribute(self, "ZORDER", .{}, "BOTTOM"),
         } else {
-            c.clearAttribute(self, "ZORDER", void, void);
+            c.clearAttribute(self, "ZORDER", .{});
         }
     }
 
     pub fn getX(self: *Self) i32 {
-        return c.getIntAttribute(self, "X", void, void);
+        return c.getIntAttribute(self, "X", .{});
     }
 
     pub fn getY(self: *Self) i32 {
-        return c.getIntAttribute(self, "Y", void, void);
+        return c.getIntAttribute(self, "Y", .{});
     }
 
 
@@ -2362,15 +2362,15 @@ pub const Dialog = opaque {
     /// active MDI child.
     /// Use IupGetAttributeHandle to directly retrieve the child handle.
     pub fn getMdiActive(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "MDIACTIVE", void, void);
+        return c.getStrAttribute(self, "MDIACTIVE", .{});
     }
 
     pub fn getDragDrop(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGDROP", void, void);
+        return c.getBoolAttribute(self, "DRAGDROP", .{});
     }
 
     pub fn setDragDrop(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGDROP", void, void, arg);
+        c.setBoolAttribute(self, "DRAGDROP", .{}, arg);
     }
 
 
@@ -2378,7 +2378,7 @@ pub const Dialog = opaque {
     /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
     /// to a dialog hint.
     pub fn getDialogHint(self: *Self) bool {
-        return c.getBoolAttribute(self, "DIALOGHINT", void, void);
+        return c.getBoolAttribute(self, "DIALOGHINT", .{});
     }
 
 
@@ -2386,15 +2386,15 @@ pub const Dialog = opaque {
     /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
     /// to a dialog hint.
     pub fn setDialogHint(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DIALOGHINT", void, void, arg);
+        c.setBoolAttribute(self, "DIALOGHINT", .{}, arg);
     }
 
     pub fn getShowMinimizeNext(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHOWMINIMIZENEXT", void, void);
+        return c.getBoolAttribute(self, "SHOWMINIMIZENEXT", .{});
     }
 
     pub fn setShowMinimizeNext(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWMINIMIZENEXT", void, void, arg);
+        c.setBoolAttribute(self, "SHOWMINIMIZENEXT", .{}, arg);
     }
 
 
@@ -2404,7 +2404,7 @@ pub const Dialog = opaque {
     /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
     /// removed, but the Close button remains.
     pub fn getDialogFrame(self: *Self) bool {
-        return c.getBoolAttribute(self, "DIALOGFRAME", void, void);
+        return c.getBoolAttribute(self, "DIALOGFRAME", .{});
     }
 
 
@@ -2414,7 +2414,7 @@ pub const Dialog = opaque {
     /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
     /// removed, but the Close button remains.
     pub fn setDialogFrame(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DIALOGFRAME", void, void, arg);
+        c.setBoolAttribute(self, "DIALOGFRAME", .{}, arg);
     }
 
 
@@ -2423,7 +2423,7 @@ pub const Dialog = opaque {
     /// inside the dialog.
     /// (since 3.13)
     pub fn getNActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "NACTIVE", void, void);
+        return c.getBoolAttribute(self, "NACTIVE", .{});
     }
 
 
@@ -2432,7 +2432,7 @@ pub const Dialog = opaque {
     /// inside the dialog.
     /// (since 3.13)
     pub fn setNActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "NACTIVE", void, void, arg);
+        c.setBoolAttribute(self, "NACTIVE", .{}, arg);
     }
 
 
@@ -2442,7 +2442,7 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn getTrayTipBalloonTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TRAYTIPBALLOONTITLE", void, void);
+        return c.getStrAttribute(self, "TRAYTIPBALLOONTITLE", .{});
     }
 
 
@@ -2452,15 +2452,15 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn setTrayTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TRAYTIPBALLOONTITLE", void, void, arg);
+        c.setStrAttribute(self, "TRAYTIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "THEME", void, void);
+        return c.getStrAttribute(self, "THEME", .{});
     }
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "THEME", void, void, arg);
+        c.setStrAttribute(self, "THEME", .{}, arg);
     }
 
 
@@ -2469,7 +2469,7 @@ pub const Dialog = opaque {
     /// system tray.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn getTray(self: *Self) bool {
-        return c.getBoolAttribute(self, "TRAY", void, void);
+        return c.getBoolAttribute(self, "TRAY", .{});
     }
 
 
@@ -2478,15 +2478,15 @@ pub const Dialog = opaque {
     /// system tray.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn setTray(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TRAY", void, void, arg);
+        c.setBoolAttribute(self, "TRAY", .{}, arg);
     }
 
     pub fn getDragCursorCopy(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGCURSORCOPY", void, void);
+        return c.getStrAttribute(self, "DRAGCURSORCOPY", .{});
     }
 
     pub fn setDragCursorCopy(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGCURSORCOPY", void, void, arg);
+        c.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
 
 
@@ -2496,7 +2496,7 @@ pub const Dialog = opaque {
     /// (Available only for Visual C++ 10 and above).
     /// Default: NO (since 3.10).
     pub fn getTaskbarProgress(self: *Self) i32 {
-        return c.getIntAttribute(self, "TASKBARPROGRESS", void, void);
+        return c.getIntAttribute(self, "TASKBARPROGRESS", .{});
     }
 
 
@@ -2506,7 +2506,7 @@ pub const Dialog = opaque {
     /// (Available only for Visual C++ 10 and above).
     /// Default: NO (since 3.10).
     pub fn setTaskbarProgress(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TASKBARPROGRESS", void, void, arg);
+        c.setIntAttribute(self, "TASKBARPROGRESS", .{}, arg);
     }
 
 
@@ -2520,7 +2520,7 @@ pub const Dialog = opaque {
     /// Default: 0x0.
     /// (since 3.14)
     pub fn getChildOffset(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CHILDOFFSET", void, void);
+        var str = c.getStrAttribute(self, "CHILDOFFSET", .{});
         return Size.parse(str);
     }
 
@@ -2537,14 +2537,14 @@ pub const Dialog = opaque {
     pub fn setChildOffset(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "CHILDOFFSET", void, void, value);
+        c.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
 
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
-        var ret = c.getStrAttribute(self, "EXPAND", void, void);
+        var ret = c.getStrAttribute(self, "EXPAND", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
@@ -2560,14 +2560,14 @@ pub const Dialog = opaque {
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "EXPAND", void, void, "YES"),
-            .Horizontal => c.setStrAttribute(self, "EXPAND", void, void, "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "EXPAND", void, void, "VERTICAL"),
-            .HorizontalFree => c.setStrAttribute(self, "EXPAND", void, void, "HORIZONTALFREE"),
-            .VerticalFree => c.setStrAttribute(self, "EXPAND", void, void, "VERTICALFREE"),
-            .No => c.setStrAttribute(self, "EXPAND", void, void, "NO"),
+            .Yes => c.setStrAttribute(self, "EXPAND", .{}, "YES"),
+            .Horizontal => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
+            .Vertical => c.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
+            .HorizontalFree => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
+            .VerticalFree => c.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
+            .No => c.setStrAttribute(self, "EXPAND", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "EXPAND", void, void);
+            c.clearAttribute(self, "EXPAND", .{});
         }
     }
 
@@ -2619,7 +2619,7 @@ pub const Dialog = opaque {
     /// To only change the User size in pixels, without resetting the Current size,
     /// set the USERSIZE attribute (since 3.12).
     pub fn getSize(self: *Self) iup.DialogSize {
-        var str = c.getStrAttribute(self, "SIZE", void, void);
+        var str = c.getStrAttribute(self, "SIZE", .{});
         return iup.DialogSize.parse(str);
     }
 
@@ -2673,11 +2673,11 @@ pub const Dialog = opaque {
     pub fn setSize(self: *Self, width: ?iup.ScreenSize, height: ?iup.ScreenSize) void {
         var buffer: [128]u8 = undefined;
         var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
-        c.setStrAttribute(self, "SIZE", void, void, str);
+        c.setStrAttribute(self, "SIZE", .{}, str);
     }
 
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID", void, void);
+        return c.getIntAttribute(self, "WID", .{});
     }
 
 
@@ -2689,7 +2689,7 @@ pub const Dialog = opaque {
     /// Updated after SHOW_CB is called and only if the focus was not changed
     /// during the callback.
     pub fn getStartFocus(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "STARTFOCUS", void, void);
+        return c.getStrAttribute(self, "STARTFOCUS", .{});
     }
 
 
@@ -2701,55 +2701,55 @@ pub const Dialog = opaque {
     /// Updated after SHOW_CB is called and only if the focus was not changed
     /// during the callback.
     pub fn setStartFocus(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "STARTFOCUS", void, void, arg);
+        c.setStrAttribute(self, "STARTFOCUS", .{}, arg);
     }
 
     pub fn getFontSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "FONTSIZE", void, void);
+        return c.getIntAttribute(self, "FONTSIZE", .{});
     }
 
     pub fn setFontSize(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "FONTSIZE", void, void, arg);
+        c.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
     pub fn getNaturalSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "NATURALSIZE", void, void);
+        var str = c.getStrAttribute(self, "NATURALSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getTrayTipDelay(self: *Self) i32 {
-        return c.getIntAttribute(self, "TRAYTIPDELAY", void, void);
+        return c.getIntAttribute(self, "TRAYTIPDELAY", .{});
     }
 
     pub fn setTrayTipDelay(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TRAYTIPDELAY", void, void, arg);
+        c.setIntAttribute(self, "TRAYTIPDELAY", .{}, arg);
     }
 
     pub fn getDropTypes(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DROPTYPES", void, void);
+        return c.getStrAttribute(self, "DROPTYPES", .{});
     }
 
     pub fn setDropTypes(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DROPTYPES", void, void, arg);
+        c.setStrAttribute(self, "DROPTYPES", .{}, arg);
     }
 
     pub fn getUserSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "USERSIZE", void, void);
+        var str = c.getStrAttribute(self, "USERSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "USERSIZE", void, void, value);
+        c.setStrAttribute(self, "USERSIZE", .{}, value);
     }
 
     pub fn getTipDelay(self: *Self) i32 {
-        return c.getIntAttribute(self, "TIPDELAY", void, void);
+        return c.getIntAttribute(self, "TIPDELAY", .{});
     }
 
     pub fn setTipDelay(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TIPDELAY", void, void, arg);
+        c.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
 
@@ -2765,7 +2765,7 @@ pub const Dialog = opaque {
     /// caption element horizontal position and size for the limits (since 3.22).
     /// (since 3.18)
     pub fn getCustomFrameCaptionLimits(self: *Self) iup.Range {
-        var str = c.getStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", void, void);
+        var str = c.getStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", .{});
         return iup.Range.parse(str, ',');
     }
 
@@ -2784,18 +2784,18 @@ pub const Dialog = opaque {
     pub fn setCustomFrameCaptionLimits(self: *Self, begin: i32, end: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-        c.setStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", void, void, value);
+        c.setStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
     }
 
     pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "DRAGSTART", void, void);
+        var str = c.getStrAttribute(self, "DRAGSTART", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setDragStart(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "DRAGSTART", void, void, value);
+        c.setStrAttribute(self, "DRAGSTART", .{}, value);
     }
 
 
@@ -2815,7 +2815,7 @@ pub const Dialog = opaque {
     /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
     /// Frame notes bellow.
     pub fn getCustomFrame(self: *Self) bool {
-        return c.getBoolAttribute(self, "CUSTOMFRAME", void, void);
+        return c.getBoolAttribute(self, "CUSTOMFRAME", .{});
     }
 
 
@@ -2835,7 +2835,7 @@ pub const Dialog = opaque {
     /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
     /// Frame notes bellow.
     pub fn setCustomFrame(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CUSTOMFRAME", void, void, arg);
+        c.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
     }
 
 
@@ -2847,7 +2847,7 @@ pub const Dialog = opaque {
     /// If the application is going to destroy the child retrieve the next child
     /// before destroying the current.
     pub fn getMdiNext(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "MDINEXT", void, void);
+        return c.getStrAttribute(self, "MDINEXT", .{});
     }
 
 
@@ -2858,7 +2858,7 @@ pub const Dialog = opaque {
     /// and MINBOX=NO, before map.
     /// But in Motif and GTK it will hide it only if RESIZE=NO also.
     pub fn getTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLE", void, void);
+        return c.getStrAttribute(self, "TITLE", .{});
     }
 
 
@@ -2869,7 +2869,7 @@ pub const Dialog = opaque {
     /// and MINBOX=NO, before map.
     /// But in Motif and GTK it will hide it only if RESIZE=NO also.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLE", void, void, arg);
+        c.setStrAttribute(self, "TITLE", .{}, arg);
     }
 
 
@@ -2878,7 +2878,7 @@ pub const Dialog = opaque {
     /// is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn getDefaultEsc(self: *Self) ?*iup.Button {
-        if (c.getHandleAttribute(self, "DEFAULTESC", void, void)) |handle| {
+        if (c.getHandleAttribute(self, "DEFAULTESC", .{})) |handle| {
             return @ptrCast(*iup.Button, handle);
         } else {
             return null;
@@ -2891,7 +2891,7 @@ pub const Dialog = opaque {
     /// is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn setDefaultEsc(self: *Self, arg: *iup.Button) void {
-        c.setHandleAttribute(self, "DEFAULTESC", void, void, arg);
+        c.setHandleAttribute(self, "DEFAULTESC", .{}, arg);
     }
 
 
@@ -2909,7 +2909,7 @@ pub const Dialog = opaque {
     /// In Windows, the SHOWMINIMIZENEXT attribute can be set to Yes to activate
     /// the next top-level window in the Z order when minimizing (since 3.15).
     pub fn getPlacement(self: *Self) ?Placement {
-        var ret = c.getStrAttribute(self, "PLACEMENT", void, void);
+        var ret = c.getStrAttribute(self, "PLACEMENT", .{});
 
         if (std.ascii.eqlIgnoreCase("MAXIMIZED", ret)) return .Maximized;
         if (std.ascii.eqlIgnoreCase("MINIMIZED", ret)) return .Minimized;
@@ -2933,52 +2933,52 @@ pub const Dialog = opaque {
     /// the next top-level window in the Z order when minimizing (since 3.15).
     pub fn setPlacement(self: *Self, arg: ?Placement) void {
         if (arg) |value| switch (value) {
-            .Maximized => c.setStrAttribute(self, "PLACEMENT", void, void, "MAXIMIZED"),
-            .Minimized => c.setStrAttribute(self, "PLACEMENT", void, void, "MINIMIZED"),
-            .Full => c.setStrAttribute(self, "PLACEMENT", void, void, "FULL"),
+            .Maximized => c.setStrAttribute(self, "PLACEMENT", .{}, "MAXIMIZED"),
+            .Minimized => c.setStrAttribute(self, "PLACEMENT", .{}, "MINIMIZED"),
+            .Full => c.setStrAttribute(self, "PLACEMENT", .{}, "FULL"),
         } else {
-            c.clearAttribute(self, "PLACEMENT", void, void);
+            c.clearAttribute(self, "PLACEMENT", .{});
         }
     }
 
     pub fn getLayerAlpha(self: *Self) i32 {
-        return c.getIntAttribute(self, "LAYERALPHA", void, void);
+        return c.getIntAttribute(self, "LAYERALPHA", .{});
     }
 
     pub fn setLayerAlpha(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "LAYERALPHA", void, void, arg);
+        c.setIntAttribute(self, "LAYERALPHA", .{}, arg);
     }
 
     pub fn getPropagateFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "PROPAGATEFOCUS", void, void);
+        return c.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "PROPAGATEFOCUS", void, void, arg);
+        c.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
     pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BGCOLOR", void, void);
+        return c.getRgb(self, "BGCOLOR", .{});
     }
 
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BGCOLOR", void, void, rgb);
+        c.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
     pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIPBALLOONTITLE", void, void);
+        return c.getStrAttribute(self, "TIPBALLOONTITLE", .{});
     }
 
     pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIPBALLOONTITLE", void, void, arg);
+        c.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getDropTarget(self: *Self) bool {
-        return c.getBoolAttribute(self, "DROPTARGET", void, void);
+        return c.getBoolAttribute(self, "DROPTARGET", .{});
     }
 
     pub fn setDropTarget(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DROPTARGET", void, void, arg);
+        c.setBoolAttribute(self, "DROPTARGET", .{}, arg);
     }
 
 
@@ -2989,7 +2989,7 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn getTrayTipBalloon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TRAYTIPBALLOON", void, void);
+        return c.getBoolAttribute(self, "TRAYTIPBALLOON", .{});
     }
 
 
@@ -3000,15 +3000,15 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn setTrayTipBalloon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TRAYTIPBALLOON", void, void, arg);
+        c.setBoolAttribute(self, "TRAYTIPBALLOON", .{}, arg);
     }
 
     pub fn getDragSource(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGSOURCE", void, void);
+        return c.getBoolAttribute(self, "DRAGSOURCE", .{});
     }
 
     pub fn setDragSource(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGSOURCE", void, void, arg);
+        c.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
     }
 
 
@@ -3018,12 +3018,12 @@ pub const Dialog = opaque {
     /// the minimized icons).
     pub fn mdiArrange(self: *Self, arg: ?MdiArrange) void {
         if (arg) |value| switch (value) {
-            .TileHorizontal => c.setStrAttribute(self, "MDIARRANGE", void, void, "TILEHORIZONTAL"),
-            .TileVertical => c.setStrAttribute(self, "MDIARRANGE", void, void, "TILEVERTICAL"),
-            .Cascade => c.setStrAttribute(self, "MDIARRANGE", void, void, "CASCADE"),
-            .Icon => c.setStrAttribute(self, "MDIARRANGE", void, void, "ICON"),
+            .TileHorizontal => c.setStrAttribute(self, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
+            .TileVertical => c.setStrAttribute(self, "MDIARRANGE", .{}, "TILEVERTICAL"),
+            .Cascade => c.setStrAttribute(self, "MDIARRANGE", .{}, "CASCADE"),
+            .Icon => c.setStrAttribute(self, "MDIARRANGE", .{}, "ICON"),
         } else {
-            c.clearAttribute(self, "MDIARRANGE", void, void);
+            c.clearAttribute(self, "MDIARRANGE", .{});
         }
     }
 
@@ -3033,11 +3033,11 @@ pub const Dialog = opaque {
     /// Can be YES or NO.
     /// (since 3.12)
     pub fn getMaximized(self: *Self) bool {
-        return c.getBoolAttribute(self, "MAXIMIZED", void, void);
+        return c.getBoolAttribute(self, "MAXIMIZED", .{});
     }
 
     pub fn getFloating(self: *Self) ?Floating {
-        var ret = c.getStrAttribute(self, "FLOATING", void, void);
+        var ret = c.getStrAttribute(self, "FLOATING", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
@@ -3047,20 +3047,20 @@ pub const Dialog = opaque {
 
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "FLOATING", void, void, "YES"),
-            .Ignore => c.setStrAttribute(self, "FLOATING", void, void, "IGNORE"),
-            .No => c.setStrAttribute(self, "FLOATING", void, void, "NO"),
+            .Yes => c.setStrAttribute(self, "FLOATING", .{}, "YES"),
+            .Ignore => c.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
+            .No => c.setStrAttribute(self, "FLOATING", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "FLOATING", void, void);
+            c.clearAttribute(self, "FLOATING", .{});
         }
     }
 
     pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NORMALIZERGROUP", void, void);
+        return c.getStrAttribute(self, "NORMALIZERGROUP", .{});
     }
 
     pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NORMALIZERGROUP", void, void, arg);
+        c.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
 
@@ -3102,7 +3102,7 @@ pub const Dialog = opaque {
     /// To only change the User size in pixels, without resetting the Current size,
     /// set the USERSIZE attribute (since 3.12).
     pub fn getRasterSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "RASTERSIZE", void, void);
+        var str = c.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
 
@@ -3147,7 +3147,7 @@ pub const Dialog = opaque {
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RASTERSIZE", void, void, value);
+        c.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
 
@@ -3158,7 +3158,7 @@ pub const Dialog = opaque {
     /// The pixels colors will be ignored, only the alpha channel is used.
     /// (since 3.26)
     pub fn getShapeImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "SHAPEIMAGE", void, void);
+        return c.getStrAttribute(self, "SHAPEIMAGE", .{});
     }
 
 
@@ -3169,47 +3169,47 @@ pub const Dialog = opaque {
     /// The pixels colors will be ignored, only the alpha channel is used.
     /// (since 3.26)
     pub fn setShapeImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "SHAPEIMAGE", void, void, arg);
+        c.setStrAttribute(self, "SHAPEIMAGE", .{}, arg);
     }
 
     pub fn getTipFgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TIPFGCOLOR", void, void);
+        return c.getRgb(self, "TIPFGCOLOR", .{});
     }
 
     pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TIPFGCOLOR", void, void, rgb);
+        c.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
     pub fn getControlId(self: *Self) i32 {
-        return c.getIntAttribute(self, "CONTROLID", void, void);
+        return c.getIntAttribute(self, "CONTROLID", .{});
     }
 
     pub fn setControlId(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CONTROLID", void, void, arg);
+        c.setIntAttribute(self, "CONTROLID", .{}, arg);
     }
 
     pub fn getShowNoActivate(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHOWNOACTIVATE", void, void);
+        return c.getBoolAttribute(self, "SHOWNOACTIVATE", .{});
     }
 
     pub fn setShowNoActivate(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWNOACTIVATE", void, void, arg);
+        c.setBoolAttribute(self, "SHOWNOACTIVATE", .{}, arg);
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTFACE", void, void);
+        return c.getStrAttribute(self, "FONTFACE", .{});
     }
 
     pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTFACE", void, void, arg);
+        c.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
     pub fn getMaximizeAtDialog(self: *Self) bool {
-        return c.getBoolAttribute(self, "MAXIMIZEATDIALOG", void, void);
+        return c.getBoolAttribute(self, "MAXIMIZEATDIALOG", .{});
     }
 
     pub fn setMaximizeAtDialog(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MAXIMIZEATDIALOG", void, void, arg);
+        c.setBoolAttribute(self, "MAXIMIZEATDIALOG", .{}, arg);
     }
 
 
@@ -3218,7 +3218,7 @@ pub const Dialog = opaque {
     /// other dialogs in all applications.
     /// Default: NO.
     pub fn topMost(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TOPMOST", void, void, arg);
+        c.setBoolAttribute(self, "TOPMOST", .{}, arg);
     }
 
 
@@ -3230,7 +3230,7 @@ pub const Dialog = opaque {
     /// will be hidden.
     /// (since 3.28)
     pub fn getTaskbarButton(self: *Self) ?TaskbarButton {
-        var ret = c.getStrAttribute(self, "TASKBARBUTTON", void, void);
+        var ret = c.getStrAttribute(self, "TASKBARBUTTON", .{});
 
         if (std.ascii.eqlIgnoreCase("SHOW", ret)) return .Show;
         if (std.ascii.eqlIgnoreCase("HIDE", ret)) return .Hide;
@@ -3247,19 +3247,19 @@ pub const Dialog = opaque {
     /// (since 3.28)
     pub fn setTaskbarButton(self: *Self, arg: ?TaskbarButton) void {
         if (arg) |value| switch (value) {
-            .Show => c.setStrAttribute(self, "TASKBARBUTTON", void, void, "SHOW"),
-            .Hide => c.setStrAttribute(self, "TASKBARBUTTON", void, void, "HIDE"),
+            .Show => c.setStrAttribute(self, "TASKBARBUTTON", .{}, "SHOW"),
+            .Hide => c.setStrAttribute(self, "TASKBARBUTTON", .{}, "HIDE"),
         } else {
-            c.clearAttribute(self, "TASKBARBUTTON", void, void);
+            c.clearAttribute(self, "TASKBARBUTTON", .{});
         }
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME", void, void);
+        return c.getStrAttribute(self, "NAME", .{});
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", void, void, arg);
+        c.setStrAttribute(self, "NAME", .{}, arg);
     }
 
 
@@ -3268,7 +3268,7 @@ pub const Dialog = opaque {
     /// focus is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn getDefaultEnter(self: *Self) ?*iup.Button {
-        if (c.getHandleAttribute(self, "DEFAULTENTER", void, void)) |handle| {
+        if (c.getHandleAttribute(self, "DEFAULTENTER", .{})) |handle| {
             return @ptrCast(*iup.Button, handle);
         } else {
             return null;
@@ -3281,7 +3281,7 @@ pub const Dialog = opaque {
     /// focus is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn setDefaultEnter(self: *Self, arg: *iup.Button) void {
-        c.setHandleAttribute(self, "DEFAULTENTER", void, void, arg);
+        c.setHandleAttribute(self, "DEFAULTENTER", .{}, arg);
     }
 
 
@@ -3292,15 +3292,15 @@ pub const Dialog = opaque {
     /// At the first time the dialog is shown, MODAL is not set yet when SHOW_CB is called.
     /// (since 3.0)
     pub fn getModal(self: *Self) bool {
-        return c.getBoolAttribute(self, "MODAL", void, void);
+        return c.getBoolAttribute(self, "MODAL", .{});
     }
 
     pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPBALLOONTITLEICON", void, void);
+        return c.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
     }
 
     pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPBALLOONTITLEICON", void, void, arg);
+        c.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
 
@@ -3313,7 +3313,7 @@ pub const Dialog = opaque {
     /// Not working in GTK 3.
     /// (since 3.0)
     pub fn getBackground(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BACKGROUND", void, void);
+        return c.getRgb(self, "BACKGROUND", .{});
     }
 
 
@@ -3326,7 +3326,7 @@ pub const Dialog = opaque {
     /// Not working in GTK 3.
     /// (since 3.0)
     pub fn setBackground(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BACKGROUND", void, void, rgb);
+        c.setRgb(self, "BACKGROUND", .{}, rgb);
     }
 
 
@@ -3340,7 +3340,7 @@ pub const Dialog = opaque {
     /// IMPORTANT: when you hide using HIDETASKBAR, you must show using HIDETASKBAR also.
     /// Possible values: YES, NO.
     pub fn getHideTaskbar(self: *Self) bool {
-        return c.getBoolAttribute(self, "HIDETASKBAR", void, void);
+        return c.getBoolAttribute(self, "HIDETASKBAR", .{});
     }
 
 
@@ -3354,7 +3354,7 @@ pub const Dialog = opaque {
     /// IMPORTANT: when you hide using HIDETASKBAR, you must show using HIDETASKBAR also.
     /// Possible values: YES, NO.
     pub fn setHideTaskbar(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "HIDETASKBAR", void, void, arg);
+        c.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
     }
 
 
@@ -3363,7 +3363,7 @@ pub const Dialog = opaque {
     /// Use "YES" to activate it.
     /// Useful for multithreaded applications.
     pub fn getBringFront(self: *Self) bool {
-        return c.getBoolAttribute(self, "BRINGFRONT", void, void);
+        return c.getBoolAttribute(self, "BRINGFRONT", .{});
     }
 
 
@@ -3372,7 +3372,7 @@ pub const Dialog = opaque {
     /// Use "YES" to activate it.
     /// Useful for multithreaded applications.
     pub fn setBringFront(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "BRINGFRONT", void, void, arg);
+        c.setBoolAttribute(self, "BRINGFRONT", .{}, arg);
     }
 
 
@@ -3383,7 +3383,7 @@ pub const Dialog = opaque {
     /// resources rather than created at run time.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn getTrayImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TRAYIMAGE", void, void);
+        return c.getStrAttribute(self, "TRAYIMAGE", .{});
     }
 
 
@@ -3394,7 +3394,7 @@ pub const Dialog = opaque {
     /// resources rather than created at run time.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn setTrayImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TRAYIMAGE", void, void, arg);
+        c.setStrAttribute(self, "TRAYIMAGE", .{}, arg);
     }
 
 
@@ -3404,7 +3404,7 @@ pub const Dialog = opaque {
     /// Note that ACTIVE, BGCOLOR and FONT will also affect all the controls inside
     /// the dialog.
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE", void, void);
+        return c.getBoolAttribute(self, "ACTIVE", .{});
     }
 
 
@@ -3414,23 +3414,23 @@ pub const Dialog = opaque {
     /// Note that ACTIVE, BGCOLOR and FONT will also affect all the controls inside
     /// the dialog.
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", void, void, arg);
+        c.setBoolAttribute(self, "ACTIVE", .{}, arg);
     }
 
     pub fn getTipVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPVISIBLE", void, void);
+        return c.getBoolAttribute(self, "TIPVISIBLE", .{});
     }
 
     pub fn setTipVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPVISIBLE", void, void, arg);
+        c.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
     pub fn getExpandWeight(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "EXPANDWEIGHT", void, void);
+        return c.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
     pub fn setExpandWeight(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "EXPANDWEIGHT", void, void, arg);
+        c.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
 
@@ -3442,7 +3442,7 @@ pub const Dialog = opaque {
     /// Windows the horizontal minimum size includes the window decoration buttons.
     /// (since 3.0)
     pub fn getMinSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MINSIZE", void, void);
+        var str = c.getStrAttribute(self, "MINSIZE", .{});
         return Size.parse(str);
     }
 
@@ -3457,7 +3457,7 @@ pub const Dialog = opaque {
     pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MINSIZE", void, void, value);
+        c.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
 
@@ -3467,7 +3467,7 @@ pub const Dialog = opaque {
     /// Can be Yes or No.
     /// (since 3.4)
     pub fn getActiveWindow(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVEWINDOW", void, void);
+        return c.getBoolAttribute(self, "ACTIVEWINDOW", .{});
     }
 
 
@@ -3477,7 +3477,7 @@ pub const Dialog = opaque {
     /// If not defined it will use the system size.
     /// (since 3.18) (renamed in 3.22)
     pub fn getCustomFrameCaptionHeight(self: *Self) i32 {
-        return c.getIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", void, void);
+        return c.getIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", .{});
     }
 
 
@@ -3487,15 +3487,15 @@ pub const Dialog = opaque {
     /// If not defined it will use the system size.
     /// (since 3.18) (renamed in 3.22)
     pub fn setCustomFrameCaptionHeight(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", void, void, arg);
+        c.setIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
     }
 
     pub fn getNTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NTHEME", void, void);
+        return c.getStrAttribute(self, "NTHEME", .{});
     }
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NTHEME", void, void, arg);
+        c.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
 
@@ -3514,7 +3514,7 @@ pub const Dialog = opaque {
     /// See the Custom Frame notes bellow.
     /// (since 3.28)
     pub fn getCustomFramesImulate(self: *Self) bool {
-        return c.getBoolAttribute(self, "CUSTOMFRAMESIMULATE", void, void);
+        return c.getBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{});
     }
 
 
@@ -3533,7 +3533,7 @@ pub const Dialog = opaque {
     /// See the Custom Frame notes bellow.
     /// (since 3.28)
     pub fn setCustomFramesImulate(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CUSTOMFRAMESIMULATE", void, void, arg);
+        c.setBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{}, arg);
     }
 
 
@@ -3542,7 +3542,7 @@ pub const Dialog = opaque {
     /// MDI child windows.
     /// The CLOSE_CB callback will be called for each child.
     pub fn mdiCloseAll(self: *Self) void {
-        c.setStrAttribute(self, "MDICLOSEALL", void, void, null);
+        c.setStrAttribute(self, "MDICLOSEALL", .{}, null);
     }
 
 
@@ -3551,7 +3551,7 @@ pub const Dialog = opaque {
     /// smaller than the minimum size.
     /// Default: NO.
     pub fn getShrink(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHRINK", void, void);
+        return c.getBoolAttribute(self, "SHRINK", .{});
     }
 
 
@@ -3560,27 +3560,27 @@ pub const Dialog = opaque {
     /// smaller than the minimum size.
     /// Default: NO.
     pub fn setShrink(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHRINK", void, void, arg);
+        c.setBoolAttribute(self, "SHRINK", .{}, arg);
     }
 
     pub fn getCharSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CHARSIZE", void, void);
+        var str = c.getStrAttribute(self, "CHARSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getClientSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CLIENTSIZE", void, void);
+        var str = c.getStrAttribute(self, "CLIENTSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setClientSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "CLIENTSIZE", void, void, value);
+        c.setStrAttribute(self, "CLIENTSIZE", .{}, value);
     }
 
     pub fn getClientOffset(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CLIENTOFFSET", void, void);
+        var str = c.getStrAttribute(self, "CLIENTOFFSET", .{});
         return Size.parse(str);
     }
 
@@ -3589,7 +3589,7 @@ pub const Dialog = opaque {
     /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn getTrayTip(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TRAYTIP", void, void);
+        return c.getStrAttribute(self, "TRAYTIP", .{});
     }
 
 
@@ -3597,31 +3597,31 @@ pub const Dialog = opaque {
     /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn setTrayTip(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TRAYTIP", void, void, arg);
+        c.setStrAttribute(self, "TRAYTIP", .{}, arg);
     }
 
     pub fn getDragTypes(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGTYPES", void, void);
+        return c.getStrAttribute(self, "DRAGTYPES", .{});
     }
 
     pub fn setDragTypes(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGTYPES", void, void, arg);
+        c.setStrAttribute(self, "DRAGTYPES", .{}, arg);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTSTYLE", void, void);
+        return c.getStrAttribute(self, "FONTSTYLE", .{});
     }
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTSTYLE", void, void, arg);
+        c.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
     pub fn getTouch(self: *Self) bool {
-        return c.getBoolAttribute(self, "TOUCH", void, void);
+        return c.getBoolAttribute(self, "TOUCH", .{});
     }
 
     pub fn setTouch(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TOUCH", void, void, arg);
+        c.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
 
@@ -3633,13 +3633,13 @@ pub const Dialog = opaque {
     /// Default: NORMAL (since 3.10).
     pub fn taskbarProgressState(self: *Self, arg: ?TaskbarProgressState) void {
         if (arg) |value| switch (value) {
-            .NoProgress => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", void, void, "NOPROGRESS"),
-            .Indeterminate => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", void, void, "INDETERMINATE"),
-            .Error => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", void, void, "ERROR"),
-            .Paused => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", void, void, "PAUSED"),
-            .Normal => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", void, void, "NORMAL"),
+            .NoProgress => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
+            .Indeterminate => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
+            .Error => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "ERROR"),
+            .Paused => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "PAUSED"),
+            .Normal => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "NORMAL"),
         } else {
-            c.clearAttribute(self, "TASKBARPROGRESSSTATE", void, void);
+            c.clearAttribute(self, "TASKBARPROGRESSSTATE", .{});
         }
     }
 
@@ -3650,7 +3650,7 @@ pub const Dialog = opaque {
     /// full operation.
     /// The value must be between 0 and 100 (since 3.10).
     pub fn taskbarProgressValue(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TASKBARPROGRESSVALUE", void, void, arg);
+        c.setIntAttribute(self, "TASKBARPROGRESSVALUE", .{}, arg);
     }
 
 
@@ -3663,23 +3663,23 @@ pub const Dialog = opaque {
     /// In Motif if set to YES when the dialog is hidden, then it can not be
     /// changed after it is visible.
     pub fn fullScreen(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "FULLSCREEN", void, void, arg);
+        c.setBoolAttribute(self, "FULLSCREEN", .{}, arg);
     }
 
     pub fn getMaximizedIalog(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "MAXIMIZEDIALOG", void, void);
+        return c.getStrAttribute(self, "MAXIMIZEDIALOG", .{});
     }
 
     pub fn setMaximizedIalog(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "MAXIMIZEDIALOG", void, void, arg);
+        c.setStrAttribute(self, "MAXIMIZEDIALOG", .{}, arg);
     }
 
     pub fn getDragCursor(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGCURSOR", void, void);
+        return c.getStrAttribute(self, "DRAGCURSOR", .{});
     }
 
     pub fn setDragCursor(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGCURSOR", void, void, arg);
+        c.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
 
 
@@ -3688,15 +3688,15 @@ pub const Dialog = opaque {
     /// Can be YES or NO.
     /// (since 3.15)
     pub fn getMinimized(self: *Self) bool {
-        return c.getBoolAttribute(self, "MINIMIZED", void, void);
+        return c.getBoolAttribute(self, "MINIMIZED", .{});
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONT", void, void);
+        return c.getStrAttribute(self, "FONT", .{});
     }
 
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONT", void, void, arg);
+        c.setStrAttribute(self, "FONT", .{}, arg);
     }
 
 
@@ -3705,7 +3705,7 @@ pub const Dialog = opaque {
     /// when the dialog is made modal.
     /// (since 3.21)
     pub fn simulateModal(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SIMULATEMODAL", void, void, arg);
+        c.setBoolAttribute(self, "SIMULATEMODAL", .{}, arg);
     }
 
     pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {

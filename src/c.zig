@@ -1,6 +1,8 @@
 const std = @import("std");
 const iup = @import("iup.zig");
 
+const trait = std.meta.trait;
+
 usingnamespace @cImport({
     @cInclude("iup.h");
     @cInclude("iup_str.h");
@@ -36,14 +38,16 @@ pub inline fn fromCStr(value: [*c]const u8) [:0]const u8 {
     return std.mem.sliceTo(value, 0);
 }
 
-pub inline fn getStrAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype) [:0]const u8 {
+pub inline fn getStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) [:0]const u8 {
+    validateIds(ids_tuple);
+
     var ret = blk: {
-        if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+        if (ids_tuple.len == 0) {
             break :blk IupGetAttribute(getHandle(handle), toCStr(attribute));
-        } else if (@TypeOf(id2) != i32) {
-            break :blk IupGetAttributeId(getHandle(handle), toCStr(attribute), id1);
+        } else if (ids_tuple.len == 1) {
+            break :blk IupGetAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
         } else {
-            break :blk IupGetAttributeId2(getHandle(handle), toCStr(attribute), id1, id2);
+            break :blk IupGetAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
         }
     };
 
@@ -51,140 +55,164 @@ pub inline fn getStrAttribute(handle: anytype, attribute: [:0]const u8, id1: any
     return fromCStr(ret);
 }
 
-pub inline fn setStrAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype, value: [:0]const u8) void {
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn setStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: [:0]const u8) void {
+    validateIds(ids_tuple);
+
+    if (ids_tuple.len == 0) {
         IupSetStrAttribute(getHandle(handle), toCStr(attribute), toCStr(value));
-    } else if (@TypeOf(id2) != i32) {
-        IupSetStrAttributeId(getHandle(handle), toCStr(attribute), id1, toCStr(value));
+    } else if (ids_tuple.len == 1) {
+        IupSetStrAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", toCStr(value));
     } else {
-        IupSetStrAttributeId2(getHandle(handle), toCStr(attribute), id1, id2, toCStr(value));
+        IupSetStrAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", toCStr(value));
     }
 }
 
-pub inline fn clearAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype) void {
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn clearAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) void {
+    validateIds(ids_tuple);
+
+    if (ids_tuple.len == 0) {
         IupSetAttribute(getHandle(handle), toCStr(attribute), null);
-    } else if (@TypeOf(id2) != i32) {
-        IupSetAttributeId(getHandle(handle), toCStr(attribute), id1, null);
+    } else if (ids_tuple.len == 1) {
+        IupSetAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", null);
     } else {
-        IupSetAttributeId2(getHandle(handle), toCStr(attribute), id1, id2, null);
+        IupSetAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", null);
     }
 }
 
-pub inline fn getBoolAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype) bool {
+pub inline fn getBoolAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) bool {
+    validateIds(ids_tuple);
+
     var ret = blk: {
-        if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+        if (ids_tuple.len == 0) {
             break :blk IupGetInt(getHandle(handle), toCStr(attribute));
-        } else if (@TypeOf(id2) != i32) {
-            break :blk IupGetIntId(getHandle(handle), toCStr(attribute), id1);
+        } else if (ids_tuple.len == 1) {
+            break :blk IupGetIntId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
         } else {
-            break :blk IupGetIntId2(getHandle(handle), toCStr(attribute), id1, id2);
+            break :blk IupGetIntId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
         }
     };
 
     return ret == 1;
 }
 
-pub inline fn setBoolAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype, value: bool) void {
+pub inline fn setBoolAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: bool) void {
+    validateIds(ids_tuple);
+
     const str = if (value) "YES" else "NO";
 
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+    if (ids_tuple.len == 0) {
         IupSetStrAttribute(getHandle(handle), toCStr(attribute), str);
-    } else if (@TypeOf(id2) != i32) {
-        IupSetStrAttributeId(getHandle(handle), toCStr(attribute), id1, str);
+    } else if (ids_tuple.len == 1) {
+        IupSetStrAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", str);
     } else {
-        IupSetStrAttributeId2(getHandle(handle), toCStr(attribute), id2, str);
+        IupSetStrAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", str);
     }
 }
 
-pub inline fn getIntAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype) i32 {
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn getIntAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) i32 {
+    validateIds(ids_tuple);
+
+    if (ids_tuple.len == 0) {
         return IupGetInt(getHandle(handle), toCStr(attribute));
-    } else if (@TypeOf(id2) != i32) {
-        return IupGetIntId(getHandle(handle), toCStr(attribute), id1);
+    } else if (ids_tuple.len == 1) {
+        return IupGetIntId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
     } else {
-        return IupGetIntId2(getHandle(handle), toCStr(attribute), id1, id2);
+        return IupGetIntId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
     }
 }
 
-pub inline fn setIntAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype, value: i32) void {
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn setIntAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: i32) void {
+    validateIds(ids_tuple);
+
+    if (ids_tuple.len == 0) {
         IupSetInt(getHandle(handle), toCStr(attribute), value);
-    } else if (@TypeOf(id2) != i32) {
-        IupSetIntId(getHandle(handle), toCStr(attribute), id1, value);
+    } else if (ids_tuple.len == 1) {
+        IupSetIntId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", value);
     } else {
-        IupSetIntId2(getHandle(handle), toCStr(attribute), id1, id2, value);
+        IupSetIntId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", value);
     }
 }
 
-pub inline fn getFloatAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype) f32 {
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn getFloatAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) f32 {
+    validateIds(ids_tuple);
+
+    if (ids_tuple.len == 0) {
         return IupGetFloat(getHandle(handle), toCStr(attribute));
-    } else if (@TypeOf(id2) != i32) {
-        return IupGetFloatId(getHandle(handle), toCStr(attribute), Id1);
+    } else if (ids_tuple.len == 1) {
+        return IupGetFloatId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
     } else {
-        return IupGetFloatId2(getHandle(handle), toCStr(attribute), id1, id2);
+        return IupGetFloatId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
     }
 }
 
-pub inline fn setFloatAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype, value: f32) void {
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn setFloatAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: f32) void {
+    validateIds(ids_tuple);
+
+    if (ids_tuple.len == 0) {
         IupSetFloat(getHandle(handle), toCStr(attribute), value);
-    } else if (@TypeOf(id2) != i32) {
-        IupSetFloatId(getHandle(handle), toCStr(attribute), id1, value);
+    } else if (ids_tuple.len == 1) {
+        IupSetFloatId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", value);
     } else {
-        IupSetFloatId2(getHandle(handle), toCStr(attribute), id1, id2, value);
+        IupSetFloatId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", value);
     }
 }
 
-pub inline fn getDoubleAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype) f64 {
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn getDoubleAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) f64 {
+    validateIds(ids_tuple);
+
+    if (ids_tuple.len == 0) {
         return IupGetDouble(getHandle(handle), toCStr(attribute));
-    } else if (@TypeOf(id2) != i32) {
-        return IupGetDouble(getHandle(handle), toCStr(attribute), id1);
+    } else if (ids_tuple.len == 1) {
+        return IupGetDouble(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
     } else {
-        return IupGetDoubleId2(getHandle(handle), toCStr(attribute), id1, id2);
+        return IupGetDoubleId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
     }
 }
 
-pub inline fn setDoubleAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype, value: f64) void {
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn setDoubleAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: f64) void {
+    validateIds(ids_tuple);
+
+    if (ids_tuple.len == 0) {
         IupSetDouble(getHandle(handle), toCStr(attribute), value);
-    } else if (@TypeOf(id2) != i32) {
-        IupSetDoubleId(getHandle(handle), toCStr(attribute), id1, value);
+    } else if (ids_tuple.len == 1) {
+        IupSetDoubleId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", value);
     } else {
-        IupSetDoubleId2(getHandle(handle), toCStr(attribute), id1, id2, value);
+        IupSetDoubleId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", value);
     }
 }
 
-pub inline fn getHandleAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype) ?*Ihandle {
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn getHandleAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) ?*Ihandle {
+    validateIds(ids_tuple);
+
+    if (ids_tuple.len == 0) {
         return IupGetAttributeHandle(getHandle(handle), toCStr(attribute));
-    } else if (@TypeOf(id2) != i32) {
-        return IupGetAttributeHandleId(getHandle(handle), toCStr(attribute), id1);
+    } else if (ids_tuple.len == 1) {
+        return IupGetAttributeHandleId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
     } else {
-        return IupGetAttributeHandleId2(getHandle(handle), toCStr(attribute), id1, id2);
+        return IupGetAttributeHandleId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
     }
 }
 
-pub inline fn setHandleAttribute(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype, value: anytype) void {
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn setHandleAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: anytype) void {
+    if (ids_tuple.len == 0) {
         IupSetAttributeHandle(getHandle(handle), toCStr(attribute), getHandle(value));
-    } else if (@TypeOf(id2) != i32) {
-        IupSetAttributeHandleId(getHandle(handle), toCStr(attribute), id1, getHandle(value));
+    } else if (ids_tuple.len == 1) {
+        IupSetAttributeHandleId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", getHandle(value));
     } else {
-        IupSetAttributeHandleId2(getHandle(handle), toCStr(attribute), id1, id2, getHandle(value));
+        IupSetAttributeHandleId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", getHandle(value));
     }
 }
 
-pub inline fn getPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype) ?*T {
+pub inline fn getPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) ?*T {
+    validateIds(ids_tuple);
+
     var ret = blk: {
-        if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+        if (ids_tuple.len == 0) {
             break :blk IupGetAttribute(getHandle(handle), toCStr(attribute));
-        } else if (@TypeOf(id2) != i32) {
-            break :blk IupGetAttributeId(getHandle(handle), toCStr(attribute), id1);
+        } else if (ids_tuple.len == 1) {
+            break :blk IupGetAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
         } else {
-            break :blk IupGetAttributeId2(getHandle(handle), toCStr(attribute), id1, id2);
+            break :blk IupGetAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
         }
     };
     if (ret == null) return null;
@@ -192,39 +220,37 @@ pub inline fn getPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]
     return @ptrCast(*T, ret);
 }
 
-pub inline fn setPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype, value: ?*T) void {
+pub inline fn setPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: ?*T) void {
+    validateIds(ids_tuple);
+
     if (value) |ptr| {
-        if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+        if (ids_tuple.len == 0) {
             IupSetAttribute(getHandle(handle), toCStr(attribute), @ptrCast([*c]const u8, ptr));
-        } else if (@TypeOf(id2) != i32) {
-            IupSetAttributeId(getHandle(handle), toCStr(attribute), id1, @ptrCast([*c]const u8, ptr));
+        } else if (ids_tuple.len == 1) {
+            IupSetAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", @ptrCast([*c]const u8, ptr));
         } else {
-            IupSetAttributeId2(getHandle(handle), toCStr(attribute), id1, id2, @ptrCast([*c]const u8, ptr));
+            IupSetAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", @ptrCast([*c]const u8, ptr));
         }
     } else {
-        clearAttribute(handle, attribute, id1, id2);
+        clearAttribute(handle, attribute, ids_tuple);
     }
 }
 
-pub inline fn intIntToString(buffer: []u8, x: i32, y: i32, comptime separator: u8) [:0]const u8 {
-    var fbs = std.io.fixedBufferStream(buffer);
-    std.fmt.format(fbs.writer(), "{}{c}{}\x00", .{ x, separator, y }) catch unreachable;
-    return buffer[0 .. fbs.pos - 1 :0];
-}
+pub fn getRgb(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) iup.Rgb {
+    validateIds(ids_tuple);
 
-pub fn getRgb(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype) iup.Rgb {
     var r: u8 = 0;
     var g: u8 = 0;
     var b: u8 = 0;
     var a: u8 = 0;
 
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+    if (ids_tuple.len == 0) {
         IupGetRGBA(getHandle(handle), toCStr(attribute), &r, &g, &b, &a);
-    } else if (@TypeOf(id2) != i32) {
-        IupGetRGBId(getHandle(handle), toCStr(attribute), id1, &r, &g, &b);
+    } else if (ids_tuple.len == 1) {
+        IupGetRGBId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", &r, &g, &b);
         a = 255;
     } else {
-        IupGetRGBId2(getHandle(handle), toCStr(attribute), id1, id2, &r, &g, &b);
+        IupGetRGBId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", &r, &g, &b);
         a = 255;
     }
 
@@ -236,17 +262,29 @@ pub fn getRgb(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anyty
     };
 }
 
-pub inline fn setRgb(handle: anytype, attribute: [:0]const u8, id1: anytype, id2: anytype, arg: iup.Rgb) void {
-    
-    if (@TypeOf(id1) != i32 and @TypeOf(id2) != i32) {
+pub inline fn setRgb(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, arg: iup.Rgb) void {
+    validateIds(ids_tuple);
+
+    if (ids_tuple.len == 0) {
         if (arg.a == null) {
             IupSetRGB(getHandle(handle), toCStr(attribute), arg.r, arg.g, arg.b);
         } else {
             IupSetRGBA(getHandle(handle), toCStr(attribute), arg.r, arg.g, arg.b, arg.a.?);
         }
-    } else if (@TypeOf(id2) != i32) {
-        IupSetRGBId(getHandle(handle), toCStr(attribute), id1, arg.r, arg.g, arg.b);
+    } else if (ids_tuple.len == 1) {
+        IupSetRGBId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", arg.r, arg.g, arg.b);
     } else {
-        IupSetRGBId2(getHandle(handle), toCStr(attribute), id1, id2, arg.r, arg.g, arg.b);
+        IupSetRGBId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", arg.r, arg.g, arg.b);
     }
+}
+
+pub inline fn intIntToString(buffer: []u8, x: i32, y: i32, comptime separator: u8) [:0]const u8 {
+    var fbs = std.io.fixedBufferStream(buffer);
+    std.fmt.format(fbs.writer(), "{}{c}{}\x00", .{ x, separator, y }) catch unreachable;
+    return buffer[0 .. fbs.pos - 1 :0];
+}
+
+fn validateIds(ids_tuple: anytype) void {
+    if (comptime !trait.isTuple(@TypeOf(ids_tuple)) or ids_tuple.len > 2)
+        @compileError("Expected a tuple with 0, 1 or 2 values");
 }

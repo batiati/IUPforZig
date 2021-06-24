@@ -531,156 +531,156 @@ pub const FlatTree = opaque {
         }
 
         pub fn setDrawTextLayoutCenter(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAWTEXTLAYOUTCENTER", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAWTEXTLAYOUTCENTER", .{}, arg);
             return self.*;
         }
 
         pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGTYPES", void, void, arg);
+            c.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setXMax(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "XMAX", void, void, arg);
+            c.setIntAttribute(self.ref, "XMAX", .{}, arg);
             return self.*;
         }
 
         pub fn setIconSpacing(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "ICONSPACING", void, void, arg);
+            c.setIntAttribute(self.ref, "ICONSPACING", .{}, arg);
             return self.*;
         }
 
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "SIZE", void, void, value);
+            c.setStrAttribute(self.ref, "SIZE", .{}, value);
             return self.*;
         }
 
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "VALUE", void, void, arg);
+            c.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TIPFGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "EXPAND", void, void, "YES"),
-                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", void, void, "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "EXPAND", void, void, "VERTICAL"),
-                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", void, void, "HORIZONTALFREE"),
-                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", void, void, "VERTICALFREE"),
-                .No => c.setStrAttribute(self.ref, "EXPAND", void, void, "NO"),
+                .Yes => c.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
+                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
+                .Vertical => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
+                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
+                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
+                .No => c.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "EXPAND", void, void);
+                c.clearAttribute(self.ref, "EXPAND", .{});
             }
             return self.*;
         }
 
         pub fn setDrawTextOrientation(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "DRAWTEXTORIENTATION", void, void, arg);
+            c.setDoubleAttribute(self.ref, "DRAWTEXTORIENTATION", .{}, arg);
             return self.*;
         }
 
         pub fn setTitleFontStyle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLEFONTSTYLE", index, void, arg);
+            c.setStrAttribute(self.ref, "TITLEFONTSTYLE", .{index}, arg);
             return self.*;
         }
 
         pub fn setUserData(self: *Initializer, comptime T: type, index: i32, arg: ?*T) Initializer {
-            c.setPtrAttribute(T, self.ref, "USERDATA", index, void, arg);
+            c.setPtrAttribute(T, self.ref, "USERDATA", .{index}, arg);
             return self.*;
         }
 
         pub fn setDrawTextAlignment(self: *Initializer, arg: ?DrawTextAlignment) Initializer {
             if (arg) |value| switch (value) {
-                .ACenter => c.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", void, void, "ACENTER"),
-                .ARight => c.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", void, void, "ARIGHT"),
-                .ALeft => c.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", void, void, "ALEFT"),
+                .ACenter => c.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ACENTER"),
+                .ARight => c.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ARIGHT"),
+                .ALeft => c.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ALEFT"),
             } else {
-                c.clearAttribute(self.ref, "DRAWTEXTALIGNMENT", void, void);
+                c.clearAttribute(self.ref, "DRAWTEXTALIGNMENT", .{});
             }
             return self.*;
         }
 
         pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGSOURCE", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "DRAWCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "DRAWCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setArrowImages(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "ARROWIMAGES", void, void, arg);
+            c.setIntAttribute(self.ref, "ARROWIMAGES", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawLineWidth(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "DRAWLINEWIDTH", void, void, arg);
+            c.setIntAttribute(self.ref, "DRAWLINEWIDTH", .{}, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "USERSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "USERSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setXMin(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "XMIN", void, void, arg);
+            c.setIntAttribute(self.ref, "XMIN", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawTextEllipsis(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAWTEXTELLIPSIS", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAWTEXTELLIPSIS", .{}, arg);
             return self.*;
         }
 
         pub fn setToggleVisible(self: *Initializer, index: i32, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TOGGLEVISIBLE", index, void, arg);
+            c.setBoolAttribute(self.ref, "TOGGLEVISIBLE", .{index}, arg);
             return self.*;
         }
 
         pub fn setTextPsColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TEXTPSCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "TEXTPSCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CONTROLID", void, void, arg);
+            c.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
             return self.*;
         }
 
         pub fn setFocusFeedback(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "FOCUSFEEDBACK", void, void, arg);
+            c.setBoolAttribute(self.ref, "FOCUSFEEDBACK", .{}, arg);
             return self.*;
         }
 
         pub fn setBorderColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BORDERCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "BORDERCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setBorder(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "BORDER", void, void, arg);
+            c.setBoolAttribute(self.ref, "BORDER", .{}, arg);
             return self.*;
         }
 
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CANFOCUS", void, void, arg);
+            c.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setBackImageZoom(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "BACKIMAGEZOOM", void, void, arg);
+            c.setBoolAttribute(self.ref, "BACKIMAGEZOOM", .{}, arg);
             return self.*;
         }
 
@@ -691,32 +691,32 @@ pub const FlatTree = opaque {
         /// HLCOLORALPHA(*)PSCOLOR(*)TEXTPSCOLOR(*)ICONSPACING(*) INDENTATION
         /// RASTERSIZE SPACING TOPITEM
         pub fn autoRedraw(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "AUTOREDRAW", void, void, arg);
+            c.setBoolAttribute(self.ref, "AUTOREDRAW", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawTextClip(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAWTEXTCLIP", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAWTEXTCLIP", .{}, arg);
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "THEME", void, void, arg);
+            c.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
 
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
             if (arg) |value| switch (value) {
-                .Top => c.setStrAttribute(self.ref, "ZORDER", void, void, "TOP"),
-                .Bottom => c.setStrAttribute(self.ref, "ZORDER", void, void, "BOTTOM"),
+                .Top => c.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
+                .Bottom => c.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
             } else {
-                c.clearAttribute(self.ref, "ZORDER", void, void);
+                c.clearAttribute(self.ref, "ZORDER", .{});
             }
             return self.*;
         }
 
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "VISIBLE", void, void, arg);
+            c.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
 
@@ -727,99 +727,99 @@ pub const FlatTree = opaque {
         /// HLCOLORALPHA(*)PSCOLOR(*)TEXTPSCOLOR(*)ICONSPACING(*) INDENTATION
         /// RASTERSIZE SPACING TOPITEM
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RASTERSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setDrawStyle(self: *Initializer, arg: ?DrawStyle) Initializer {
             if (arg) |value| switch (value) {
-                .Fill => c.setStrAttribute(self.ref, "DRAWSTYLE", void, void, "FILL"),
-                .StrokeDash => c.setStrAttribute(self.ref, "DRAWSTYLE", void, void, "STROKE_DASH"),
-                .StrokeDot => c.setStrAttribute(self.ref, "DRAWSTYLE", void, void, "STROKE_DOT"),
-                .StrokeDashDot => c.setStrAttribute(self.ref, "DRAWSTYLE", void, void, "STROKE_DASH_DOT"),
-                .StrokeDashDotdot => c.setStrAttribute(self.ref, "DRAWSTYLE", void, void, "STROKE_DASH_DOT_DOT"),
-                .DrawStroke => c.setStrAttribute(self.ref, "DRAWSTYLE", void, void, "DRAW_STROKE"),
+                .Fill => c.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "FILL"),
+                .StrokeDash => c.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH"),
+                .StrokeDot => c.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DOT"),
+                .StrokeDashDot => c.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH_DOT"),
+                .StrokeDashDotdot => c.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH_DOT_DOT"),
+                .DrawStroke => c.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "DRAW_STROKE"),
             } else {
-                c.clearAttribute(self.ref, "DRAWSTYLE", void, void);
+                c.clearAttribute(self.ref, "DRAWSTYLE", .{});
             }
             return self.*;
         }
 
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DROPTARGET", void, void, arg);
+            c.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setTitleFont(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLEFONT", index, void, arg);
+            c.setStrAttribute(self.ref, "TITLEFONT", .{index}, arg);
             return self.*;
         }
 
         pub fn setDrawMakeInactive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAWMAKEINACTIVE", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAWMAKEINACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "DRAGSTART", void, void, value);
+            c.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
             return self.*;
         }
 
         pub fn setDX(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "DX", void, void, arg);
+            c.setDoubleAttribute(self.ref, "DX", .{}, arg);
             return self.*;
         }
 
         pub fn setDY(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "DY", void, void, arg);
+            c.setDoubleAttribute(self.ref, "DY", .{}, arg);
             return self.*;
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "POSITION", void, void, value);
+            c.setStrAttribute(self.ref, "POSITION", .{}, value);
             return self.*;
         }
 
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MINSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "MINSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setLineX(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "LINEX", void, void, arg);
+            c.setDoubleAttribute(self.ref, "LINEX", .{}, arg);
             return self.*;
         }
 
         pub fn setLineY(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "LINEY", void, void, arg);
+            c.setDoubleAttribute(self.ref, "LINEY", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DROPTYPES", void, void, arg);
+            c.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "HANDLENAME", void, void, arg);
+            c.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTFACE", void, void, arg);
+            c.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
@@ -827,7 +827,7 @@ pub const FlatTree = opaque {
         /// 
         /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
         pub fn rename(self: *Initializer) Initializer {
-            c.setStrAttribute(self.ref, "RENAME", void, void, null);
+            c.setStrAttribute(self.ref, "RENAME", .{}, null);
             return self.*;
         }
 
@@ -837,10 +837,10 @@ pub const FlatTree = opaque {
         /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
         pub fn setState(self: *Initializer, index: i32, arg: ?State) Initializer {
             if (arg) |value| switch (value) {
-                .Expanded => c.setStrAttribute(self.ref, "STATE", index, void, "EXPANDED"),
-                .Collapsed => c.setStrAttribute(self.ref, "STATE", index, void, "COLLAPSED"),
+                .Expanded => c.setStrAttribute(self.ref, "STATE", .{index}, "EXPANDED"),
+                .Collapsed => c.setStrAttribute(self.ref, "STATE", .{index}, "COLLAPSED"),
             } else {
-                c.clearAttribute(self.ref, "STATE", index, void);
+                c.clearAttribute(self.ref, "STATE", .{index});
             }
             return self.*;
         }
@@ -848,182 +848,182 @@ pub const FlatTree = opaque {
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MAXSIZE", void, void, value);
+            c.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setDragCursor(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGCURSOR", void, void, arg);
+            c.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setColor(self: *Initializer, index: i32, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "COLOR", index, void, rgb);
+            c.setRgb(self.ref, "COLOR", .{index}, rgb);
             return self.*;
         }
 
         pub fn setItemTip(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "ITEMTIP", index, void, arg);
+            c.setStrAttribute(self.ref, "ITEMTIP", .{index}, arg);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTSTYLE", void, void, arg);
+            c.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
 
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONT", void, void, arg);
+            c.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
 
         pub fn setShowToggle(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWTOGGLE", void, void, arg);
+            c.setBoolAttribute(self.ref, "SHOWTOGGLE", .{}, arg);
             return self.*;
         }
 
         pub fn setCursor(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "CURSOR", void, void, arg);
+            c.setStrAttribute(self.ref, "CURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setDragCursorCopy(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGCURSORCOPY", void, void, arg);
+            c.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
 
         pub fn setImage(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "IMAGE", index, void, arg);
+            c.setStrAttribute(self.ref, "IMAGE", .{index}, arg);
             return self.*;
         }
 
         pub fn setWheelDropFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "WHEELDROPFOCUS", void, void, arg);
+            c.setBoolAttribute(self.ref, "WHEELDROPFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setHtTransparent(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "HTTRANSPARENT", void, void, arg);
+            c.setBoolAttribute(self.ref, "HTTRANSPARENT", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", void, void, arg);
+            c.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawUsedIRect2d(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAWUSEDIRECT2D", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAWUSEDIRECT2D", .{}, arg);
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "FONTSIZE", void, void, arg);
+            c.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawAntialias(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "DRAWANTIALIAS", void, void, arg);
+            c.setIntAttribute(self.ref, "DRAWANTIALIAS", .{}, arg);
             return self.*;
         }
 
         pub fn setYMax(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "YMAX", void, void, arg);
+            c.setIntAttribute(self.ref, "YMAX", .{}, arg);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NTHEME", void, void, arg);
+            c.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
             return self.*;
         }
 
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", void, void, arg);
+            c.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setBorderWidth(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "BORDERWIDTH", void, void, arg);
+            c.setIntAttribute(self.ref, "BORDERWIDTH", .{}, arg);
             return self.*;
         }
 
         pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "FGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "FGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "HLCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "HLCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setCSpacing(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CSPACING", void, void, arg);
+            c.setIntAttribute(self.ref, "CSPACING", .{}, arg);
             return self.*;
         }
 
         pub fn setPosX(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "POSX", void, void, arg);
+            c.setDoubleAttribute(self.ref, "POSX", .{}, arg);
             return self.*;
         }
 
         pub fn setPosY(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "POSY", void, void, arg);
+            c.setDoubleAttribute(self.ref, "POSY", .{}, arg);
             return self.*;
         }
 
         pub fn setShowRename(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWRENAME", void, void, arg);
+            c.setBoolAttribute(self.ref, "SHOWRENAME", .{}, arg);
             return self.*;
         }
 
         pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPVISIBLE", void, void, arg);
+            c.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAWFONT", void, void, arg);
+            c.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", void, void, arg);
+            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TIPBGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setDrawBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "DRAWBGCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "DRAWBGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setYMin(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "YMIN", void, void, arg);
+            c.setIntAttribute(self.ref, "YMIN", .{}, arg);
             return self.*;
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NORMALIZERGROUP", void, void, arg);
+            c.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
 
         pub fn setScrollBar(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SCROLLBAR", void, void, arg);
+            c.setBoolAttribute(self.ref, "SCROLLBAR", .{}, arg);
             return self.*;
         }
 
         pub fn setBackColor(self: *Initializer, index: i32, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BACKCOLOR", index, void, rgb);
+            c.setRgb(self.ref, "BACKCOLOR", .{index}, rgb);
             return self.*;
         }
 
@@ -1031,32 +1031,32 @@ pub const FlatTree = opaque {
         /// 
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DROPFILESTARGET", void, void, arg);
+            c.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn expandAll(self: *Initializer) Initializer {
-            c.setStrAttribute(self.ref, "EXPANDALL", void, void, null);
+            c.setStrAttribute(self.ref, "EXPANDALL", .{}, null);
             return self.*;
         }
 
         pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIPBALLOONTITLE", void, void, arg);
+            c.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setBackImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "BACKIMAGE", void, void, arg);
+            c.setStrAttribute(self.ref, "BACKIMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setHlColorAlpha(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "HLCOLORALPHA", void, void, arg);
+            c.setIntAttribute(self.ref, "HLCOLORALPHA", .{}, arg);
             return self.*;
         }
 
         pub fn setRenameCaret(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "RENAMECARET", void, void, arg);
+            c.setStrAttribute(self.ref, "RENAMECARET", .{}, arg);
             return self.*;
         }
 
@@ -1065,84 +1065,84 @@ pub const FlatTree = opaque {
         /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
         /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
         pub fn setTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLE", index, void, arg);
+            c.setStrAttribute(self.ref, "TITLE", .{index}, arg);
             return self.*;
         }
 
         pub fn setDrawTextWrap(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAWTEXTWRAP", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
             return self.*;
         }
 
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIP", void, void, arg);
+            c.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
 
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGDROP", void, void, arg);
+            c.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
             return self.*;
         }
 
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TIPDELAY", void, void, arg);
+            c.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
             return self.*;
         }
 
         pub fn setToggleValue(self: *Initializer, index: i32, arg: ?ToggleValue) Initializer {
             if (arg) |value| switch (value) {
-                .On => c.setStrAttribute(self.ref, "TOGGLEVALUE", index, void, "ON"),
-                .Off => c.setStrAttribute(self.ref, "TOGGLEVALUE", index, void, "OFF"),
-                .NotDef => c.setStrAttribute(self.ref, "TOGGLEVALUE", index, void, "NOTDEF"),
+                .On => c.setStrAttribute(self.ref, "TOGGLEVALUE", .{index}, "ON"),
+                .Off => c.setStrAttribute(self.ref, "TOGGLEVALUE", .{index}, "OFF"),
+                .NotDef => c.setStrAttribute(self.ref, "TOGGLEVALUE", .{index}, "NOTDEF"),
             } else {
-                c.clearAttribute(self.ref, "TOGGLEVALUE", index, void);
+                c.clearAttribute(self.ref, "TOGGLEVALUE", .{index});
             }
             return self.*;
         }
 
         pub fn setPsColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "PSCOLOR", void, void, rgb);
+            c.setRgb(self.ref, "PSCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPBALLOON", void, void, arg);
+            c.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "FLOATING", void, void, "YES"),
-                .Ignore => c.setStrAttribute(self.ref, "FLOATING", void, void, "IGNORE"),
-                .No => c.setStrAttribute(self.ref, "FLOATING", void, void, "NO"),
+                .Yes => c.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
+                .Ignore => c.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
+                .No => c.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "FLOATING", void, void);
+                c.clearAttribute(self.ref, "FLOATING", .{});
             }
             return self.*;
         }
 
         pub fn topItem(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TOPITEM", void, void, arg);
+            c.setIntAttribute(self.ref, "TOPITEM", .{}, arg);
             return self.*;
         }
 
         pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TOUCH", void, void, arg);
+            c.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", void, void, arg);
+            c.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
 
         pub fn setTitleFontSize(self: *Initializer, index: i32, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TITLEFONTSIZE", index, void, arg);
+            c.setIntAttribute(self.ref, "TITLEFONTSIZE", .{index}, arg);
             return self.*;
         }
 
         pub fn setRenameSelection(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "RENAMESELECTION", void, void, arg);
+            c.setStrAttribute(self.ref, "RENAMESELECTION", .{}, arg);
             return self.*;
         }
 
@@ -1150,7 +1150,7 @@ pub const FlatTree = opaque {
         /// 
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setShowDragDrop(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWDRAGDROP", void, void, arg);
+            c.setBoolAttribute(self.ref, "SHOWDRAGDROP", .{}, arg);
             return self.*;
         }
 
@@ -1159,17 +1159,17 @@ pub const FlatTree = opaque {
         /// The SPACING attribute is simply the vertical space between each node,
         /// different from the IupTree.
         pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "SPACING", void, void, arg);
+            c.setIntAttribute(self.ref, "SPACING", .{}, arg);
             return self.*;
         }
 
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", void, void, arg);
+            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setBackingStore(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "BACKINGSTORE", void, void, arg);
+            c.setBoolAttribute(self.ref, "BACKINGSTORE", .{}, arg);
             return self.*;
         }
 
@@ -1775,36 +1775,36 @@ pub const FlatTree = opaque {
         c.IupDestroy(c.getHandle(self));
     }
 
-    pub fn setStrAttribute(self: *Self, attributeName: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attributeName, void, void, arg);
+    pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
+        c.setStrAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getStrAttribute(self: *Self, attributeName: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attributeName, void, void);
+    pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
+        return c.getStrAttribute(self, attribute, .{});
     }
 
-    pub fn setIntAttribute(self: *Self, attributeName: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attributeName, void, void, arg);
+    pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
+        c.setIntAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getIntAttribute(self: *Self, attributeName: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attributeName, void, void);
+    pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
+        return c.getIntAttribute(self, attribute, .{});
     }
 
-    pub fn setBoolAttribute(self: *Self, attributeName: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attributeName, void, void, arg);
+    pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
+        c.setBoolAttribute(self, attribute, .{}, arg);
     }
 
-    pub fn getBoolAttribute(self: *Self, attributeName: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attributeName, void, void);
+    pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
+        return c.getBoolAttribute(self, attribute, .{});
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attributeName, void, void);
+    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return c.getPtrAttribute(T, handle, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attributeName: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attributeName, void, void, value);
+    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        c.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
@@ -1835,79 +1835,79 @@ pub const FlatTree = opaque {
     }
 
     pub fn getDrawTextLayoutCenter(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", void, void);
+        return c.getBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", .{});
     }
 
     pub fn setDrawTextLayoutCenter(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", void, void, arg);
+        c.setBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", .{}, arg);
     }
 
     pub fn getDragTypes(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGTYPES", void, void);
+        return c.getStrAttribute(self, "DRAGTYPES", .{});
     }
 
     pub fn setDragTypes(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGTYPES", void, void, arg);
+        c.setStrAttribute(self, "DRAGTYPES", .{}, arg);
     }
 
     pub fn getXMax(self: *Self) i32 {
-        return c.getIntAttribute(self, "XMAX", void, void);
+        return c.getIntAttribute(self, "XMAX", .{});
     }
 
     pub fn setXMax(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "XMAX", void, void, arg);
+        c.setIntAttribute(self, "XMAX", .{}, arg);
     }
 
     pub fn getIconSpacing(self: *Self) i32 {
-        return c.getIntAttribute(self, "ICONSPACING", void, void);
+        return c.getIntAttribute(self, "ICONSPACING", .{});
     }
 
     pub fn setIconSpacing(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "ICONSPACING", void, void, arg);
+        c.setIntAttribute(self, "ICONSPACING", .{}, arg);
     }
 
     pub fn getSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "SIZE", void, void);
+        var str = c.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "SIZE", void, void, value);
+        c.setStrAttribute(self, "SIZE", .{}, value);
     }
 
     pub fn getScreenPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "SCREENPOSITION", void, void);
+        var str = c.getStrAttribute(self, "SCREENPOSITION", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn getX(self: *Self) i32 {
-        return c.getIntAttribute(self, "X", void, void);
+        return c.getIntAttribute(self, "X", .{});
     }
 
     pub fn getY(self: *Self) i32 {
-        return c.getIntAttribute(self, "Y", void, void);
+        return c.getIntAttribute(self, "Y", .{});
     }
 
     pub fn getValue(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "VALUE", void, void);
+        return c.getStrAttribute(self, "VALUE", .{});
     }
 
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "VALUE", void, void, arg);
+        c.setStrAttribute(self, "VALUE", .{}, arg);
     }
 
     pub fn getTipFgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TIPFGCOLOR", void, void);
+        return c.getRgb(self, "TIPFGCOLOR", .{});
     }
 
     pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TIPFGCOLOR", void, void, rgb);
+        c.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
     pub fn getExpand(self: *Self) ?Expand {
-        var ret = c.getStrAttribute(self, "EXPAND", void, void);
+        var ret = c.getStrAttribute(self, "EXPAND", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
@@ -1920,43 +1920,43 @@ pub const FlatTree = opaque {
 
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "EXPAND", void, void, "YES"),
-            .Horizontal => c.setStrAttribute(self, "EXPAND", void, void, "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "EXPAND", void, void, "VERTICAL"),
-            .HorizontalFree => c.setStrAttribute(self, "EXPAND", void, void, "HORIZONTALFREE"),
-            .VerticalFree => c.setStrAttribute(self, "EXPAND", void, void, "VERTICALFREE"),
-            .No => c.setStrAttribute(self, "EXPAND", void, void, "NO"),
+            .Yes => c.setStrAttribute(self, "EXPAND", .{}, "YES"),
+            .Horizontal => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
+            .Vertical => c.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
+            .HorizontalFree => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
+            .VerticalFree => c.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
+            .No => c.setStrAttribute(self, "EXPAND", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "EXPAND", void, void);
+            c.clearAttribute(self, "EXPAND", .{});
         }
     }
 
     pub fn getDrawTextOrientation(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "DRAWTEXTORIENTATION", void, void);
+        return c.getDoubleAttribute(self, "DRAWTEXTORIENTATION", .{});
     }
 
     pub fn setDrawTextOrientation(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "DRAWTEXTORIENTATION", void, void, arg);
+        c.setDoubleAttribute(self, "DRAWTEXTORIENTATION", .{}, arg);
     }
 
     pub fn getTitleFontStyle(self: *Self, index: i32) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLEFONTSTYLE", index, void);
+        return c.getStrAttribute(self, "TITLEFONTSTYLE", .{index});
     }
 
     pub fn setTitleFontStyle(self: *Self, index: i32, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLEFONTSTYLE", index, void, arg);
+        c.setStrAttribute(self, "TITLEFONTSTYLE", .{index}, arg);
     }
 
     pub fn getUserData(self: *Self, comptime T: type, index: i32) ?*T {
-        return c.getPtrAttribute(T, self, "USERDATA", index, void);
+        return c.getPtrAttribute(T, self, "USERDATA", .{index});
     }
 
     pub fn setUserData(self: *Self, comptime T: type, index: i32, arg: ?*T) void {
-        c.setPtrAttribute(T, self, "USERDATA", index, void, arg);
+        c.setPtrAttribute(T, self, "USERDATA", .{index}, arg);
     }
 
     pub fn getDrawTextAlignment(self: *Self) ?DrawTextAlignment {
-        var ret = c.getStrAttribute(self, "DRAWTEXTALIGNMENT", void, void);
+        var ret = c.getStrAttribute(self, "DRAWTEXTALIGNMENT", .{});
 
         if (std.ascii.eqlIgnoreCase("ACENTER", ret)) return .ACenter;
         if (std.ascii.eqlIgnoreCase("ARIGHT", ret)) return .ARight;
@@ -1966,148 +1966,148 @@ pub const FlatTree = opaque {
 
     pub fn setDrawTextAlignment(self: *Self, arg: ?DrawTextAlignment) void {
         if (arg) |value| switch (value) {
-            .ACenter => c.setStrAttribute(self, "DRAWTEXTALIGNMENT", void, void, "ACENTER"),
-            .ARight => c.setStrAttribute(self, "DRAWTEXTALIGNMENT", void, void, "ARIGHT"),
-            .ALeft => c.setStrAttribute(self, "DRAWTEXTALIGNMENT", void, void, "ALEFT"),
+            .ACenter => c.setStrAttribute(self, "DRAWTEXTALIGNMENT", .{}, "ACENTER"),
+            .ARight => c.setStrAttribute(self, "DRAWTEXTALIGNMENT", .{}, "ARIGHT"),
+            .ALeft => c.setStrAttribute(self, "DRAWTEXTALIGNMENT", .{}, "ALEFT"),
         } else {
-            c.clearAttribute(self, "DRAWTEXTALIGNMENT", void, void);
+            c.clearAttribute(self, "DRAWTEXTALIGNMENT", .{});
         }
     }
 
     pub fn getDragSource(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGSOURCE", void, void);
+        return c.getBoolAttribute(self, "DRAGSOURCE", .{});
     }
 
     pub fn setDragSource(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGSOURCE", void, void, arg);
+        c.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
     }
 
     pub fn getRootCount(self: *Self) i32 {
-        return c.getIntAttribute(self, "ROOTCOUNT", void, void);
+        return c.getIntAttribute(self, "ROOTCOUNT", .{});
     }
 
     pub fn getDrawColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "DRAWCOLOR", void, void);
+        return c.getRgb(self, "DRAWCOLOR", .{});
     }
 
     pub fn setDrawColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "DRAWCOLOR", void, void, rgb);
+        c.setRgb(self, "DRAWCOLOR", .{}, rgb);
     }
 
     pub fn getArrowImages(self: *Self) i32 {
-        return c.getIntAttribute(self, "ARROWIMAGES", void, void);
+        return c.getIntAttribute(self, "ARROWIMAGES", .{});
     }
 
     pub fn setArrowImages(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "ARROWIMAGES", void, void, arg);
+        c.setIntAttribute(self, "ARROWIMAGES", .{}, arg);
     }
 
     pub fn getDrawLineWidth(self: *Self) i32 {
-        return c.getIntAttribute(self, "DRAWLINEWIDTH", void, void);
+        return c.getIntAttribute(self, "DRAWLINEWIDTH", .{});
     }
 
     pub fn setDrawLineWidth(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "DRAWLINEWIDTH", void, void, arg);
+        c.setIntAttribute(self, "DRAWLINEWIDTH", .{}, arg);
     }
 
     pub fn getUserSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "USERSIZE", void, void);
+        var str = c.getStrAttribute(self, "USERSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "USERSIZE", void, void, value);
+        c.setStrAttribute(self, "USERSIZE", .{}, value);
     }
 
     pub fn getXMin(self: *Self) i32 {
-        return c.getIntAttribute(self, "XMIN", void, void);
+        return c.getIntAttribute(self, "XMIN", .{});
     }
 
     pub fn setXMin(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "XMIN", void, void, arg);
+        c.setIntAttribute(self, "XMIN", .{}, arg);
     }
 
     pub fn getDrawTextEllipsis(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAWTEXTELLIPSIS", void, void);
+        return c.getBoolAttribute(self, "DRAWTEXTELLIPSIS", .{});
     }
 
     pub fn setDrawTextEllipsis(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAWTEXTELLIPSIS", void, void, arg);
+        c.setBoolAttribute(self, "DRAWTEXTELLIPSIS", .{}, arg);
     }
 
     pub fn getToggleVisible(self: *Self, index: i32) bool {
-        return c.getBoolAttribute(self, "TOGGLEVISIBLE", index, void);
+        return c.getBoolAttribute(self, "TOGGLEVISIBLE", .{index});
     }
 
     pub fn setToggleVisible(self: *Self, index: i32, arg: bool) void {
-        c.setBoolAttribute(self, "TOGGLEVISIBLE", index, void, arg);
+        c.setBoolAttribute(self, "TOGGLEVISIBLE", .{index}, arg);
     }
 
     pub fn getTextPsColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TEXTPSCOLOR", void, void);
+        return c.getRgb(self, "TEXTPSCOLOR", .{});
     }
 
     pub fn setTextPsColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TEXTPSCOLOR", void, void, rgb);
+        c.setRgb(self, "TEXTPSCOLOR", .{}, rgb);
     }
 
     pub fn getHasFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "HASFOCUS", void, void);
+        return c.getBoolAttribute(self, "HASFOCUS", .{});
     }
 
     pub fn getControlId(self: *Self) i32 {
-        return c.getIntAttribute(self, "CONTROLID", void, void);
+        return c.getIntAttribute(self, "CONTROLID", .{});
     }
 
     pub fn setControlId(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CONTROLID", void, void, arg);
+        c.setIntAttribute(self, "CONTROLID", .{}, arg);
     }
 
     pub fn getFocusFeedback(self: *Self) bool {
-        return c.getBoolAttribute(self, "FOCUSFEEDBACK", void, void);
+        return c.getBoolAttribute(self, "FOCUSFEEDBACK", .{});
     }
 
     pub fn setFocusFeedback(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "FOCUSFEEDBACK", void, void, arg);
+        c.setBoolAttribute(self, "FOCUSFEEDBACK", .{}, arg);
     }
 
     pub fn getBorderColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BORDERCOLOR", void, void);
+        return c.getRgb(self, "BORDERCOLOR", .{});
     }
 
     pub fn setBorderColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BORDERCOLOR", void, void, rgb);
+        c.setRgb(self, "BORDERCOLOR", .{}, rgb);
     }
 
     pub fn getDrawSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "DRAWSIZE", void, void);
+        var str = c.getStrAttribute(self, "DRAWSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getBorder(self: *Self) bool {
-        return c.getBoolAttribute(self, "BORDER", void, void);
+        return c.getBoolAttribute(self, "BORDER", .{});
     }
 
     pub fn setBorder(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "BORDER", void, void, arg);
+        c.setBoolAttribute(self, "BORDER", .{}, arg);
     }
 
     pub fn getCanFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "CANFOCUS", void, void);
+        return c.getBoolAttribute(self, "CANFOCUS", .{});
     }
 
     pub fn setCanFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CANFOCUS", void, void, arg);
+        c.setBoolAttribute(self, "CANFOCUS", .{}, arg);
     }
 
     pub fn getBackImageZoom(self: *Self) bool {
-        return c.getBoolAttribute(self, "BACKIMAGEZOOM", void, void);
+        return c.getBoolAttribute(self, "BACKIMAGEZOOM", .{});
     }
 
     pub fn setBackImageZoom(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "BACKIMAGEZOOM", void, void, arg);
+        c.setBoolAttribute(self, "BACKIMAGEZOOM", .{}, arg);
     }
 
 
@@ -2117,44 +2117,44 @@ pub const FlatTree = opaque {
     /// HLCOLORALPHA(*)PSCOLOR(*)TEXTPSCOLOR(*)ICONSPACING(*) INDENTATION
     /// RASTERSIZE SPACING TOPITEM
     pub fn autoRedraw(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "AUTOREDRAW", void, void, arg);
+        c.setBoolAttribute(self, "AUTOREDRAW", .{}, arg);
     }
 
     pub fn getYAutoHide(self: *Self) bool {
-        return c.getBoolAttribute(self, "YAUTOHIDE", void, void);
+        return c.getBoolAttribute(self, "YAUTOHIDE", .{});
     }
 
     pub fn getDrawTextClip(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAWTEXTCLIP", void, void);
+        return c.getBoolAttribute(self, "DRAWTEXTCLIP", .{});
     }
 
     pub fn setDrawTextClip(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAWTEXTCLIP", void, void, arg);
+        c.setBoolAttribute(self, "DRAWTEXTCLIP", .{}, arg);
     }
 
     pub fn getTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "THEME", void, void);
+        return c.getStrAttribute(self, "THEME", .{});
     }
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "THEME", void, void, arg);
+        c.setStrAttribute(self, "THEME", .{}, arg);
     }
 
     pub fn zOrder(self: *Self, arg: ?ZOrder) void {
         if (arg) |value| switch (value) {
-            .Top => c.setStrAttribute(self, "ZORDER", void, void, "TOP"),
-            .Bottom => c.setStrAttribute(self, "ZORDER", void, void, "BOTTOM"),
+            .Top => c.setStrAttribute(self, "ZORDER", .{}, "TOP"),
+            .Bottom => c.setStrAttribute(self, "ZORDER", .{}, "BOTTOM"),
         } else {
-            c.clearAttribute(self, "ZORDER", void, void);
+            c.clearAttribute(self, "ZORDER", .{});
         }
     }
 
     pub fn getVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "VISIBLE", void, void);
+        return c.getBoolAttribute(self, "VISIBLE", .{});
     }
 
     pub fn setVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "VISIBLE", void, void, arg);
+        c.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
 
@@ -2164,7 +2164,7 @@ pub const FlatTree = opaque {
     /// HLCOLORALPHA(*)PSCOLOR(*)TEXTPSCOLOR(*)ICONSPACING(*) INDENTATION
     /// RASTERSIZE SPACING TOPITEM
     pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BGCOLOR", void, void);
+        return c.getRgb(self, "BGCOLOR", .{});
     }
 
 
@@ -2174,22 +2174,22 @@ pub const FlatTree = opaque {
     /// HLCOLORALPHA(*)PSCOLOR(*)TEXTPSCOLOR(*)ICONSPACING(*) INDENTATION
     /// RASTERSIZE SPACING TOPITEM
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BGCOLOR", void, void, rgb);
+        c.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
     pub fn getRasterSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "RASTERSIZE", void, void);
+        var str = c.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RASTERSIZE", void, void, value);
+        c.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
     pub fn getDrawStyle(self: *Self) ?DrawStyle {
-        var ret = c.getStrAttribute(self, "DRAWSTYLE", void, void);
+        var ret = c.getStrAttribute(self, "DRAWSTYLE", .{});
 
         if (std.ascii.eqlIgnoreCase("FILL", ret)) return .Fill;
         if (std.ascii.eqlIgnoreCase("STROKE_DASH", ret)) return .StrokeDash;
@@ -2202,145 +2202,145 @@ pub const FlatTree = opaque {
 
     pub fn setDrawStyle(self: *Self, arg: ?DrawStyle) void {
         if (arg) |value| switch (value) {
-            .Fill => c.setStrAttribute(self, "DRAWSTYLE", void, void, "FILL"),
-            .StrokeDash => c.setStrAttribute(self, "DRAWSTYLE", void, void, "STROKE_DASH"),
-            .StrokeDot => c.setStrAttribute(self, "DRAWSTYLE", void, void, "STROKE_DOT"),
-            .StrokeDashDot => c.setStrAttribute(self, "DRAWSTYLE", void, void, "STROKE_DASH_DOT"),
-            .StrokeDashDotdot => c.setStrAttribute(self, "DRAWSTYLE", void, void, "STROKE_DASH_DOT_DOT"),
-            .DrawStroke => c.setStrAttribute(self, "DRAWSTYLE", void, void, "DRAW_STROKE"),
+            .Fill => c.setStrAttribute(self, "DRAWSTYLE", .{}, "FILL"),
+            .StrokeDash => c.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DASH"),
+            .StrokeDot => c.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DOT"),
+            .StrokeDashDot => c.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DASH_DOT"),
+            .StrokeDashDotdot => c.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DASH_DOT_DOT"),
+            .DrawStroke => c.setStrAttribute(self, "DRAWSTYLE", .{}, "DRAW_STROKE"),
         } else {
-            c.clearAttribute(self, "DRAWSTYLE", void, void);
+            c.clearAttribute(self, "DRAWSTYLE", .{});
         }
     }
 
     pub fn getDropTarget(self: *Self) bool {
-        return c.getBoolAttribute(self, "DROPTARGET", void, void);
+        return c.getBoolAttribute(self, "DROPTARGET", .{});
     }
 
     pub fn setDropTarget(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DROPTARGET", void, void, arg);
+        c.setBoolAttribute(self, "DROPTARGET", .{}, arg);
     }
 
     pub fn getTitleFont(self: *Self, index: i32) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLEFONT", index, void);
+        return c.getStrAttribute(self, "TITLEFONT", .{index});
     }
 
     pub fn setTitleFont(self: *Self, index: i32, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLEFONT", index, void, arg);
+        c.setStrAttribute(self, "TITLEFONT", .{index}, arg);
     }
 
     pub fn getCharSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CHARSIZE", void, void);
+        var str = c.getStrAttribute(self, "CHARSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getDrawMakeInactive(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAWMAKEINACTIVE", void, void);
+        return c.getBoolAttribute(self, "DRAWMAKEINACTIVE", .{});
     }
 
     pub fn setDrawMakeInactive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAWMAKEINACTIVE", void, void, arg);
+        c.setBoolAttribute(self, "DRAWMAKEINACTIVE", .{}, arg);
     }
 
     pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "DRAGSTART", void, void);
+        var str = c.getStrAttribute(self, "DRAGSTART", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setDragStart(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "DRAGSTART", void, void, value);
+        c.setStrAttribute(self, "DRAGSTART", .{}, value);
     }
 
     pub fn getDX(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "DX", void, void);
+        return c.getDoubleAttribute(self, "DX", .{});
     }
 
     pub fn setDX(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "DX", void, void, arg);
+        c.setDoubleAttribute(self, "DX", .{}, arg);
     }
 
     pub fn getDY(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "DY", void, void);
+        return c.getDoubleAttribute(self, "DY", .{});
     }
 
     pub fn setDY(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "DY", void, void, arg);
+        c.setDoubleAttribute(self, "DY", .{}, arg);
     }
 
     pub fn getPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "POSITION", void, void);
+        var str = c.getStrAttribute(self, "POSITION", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setPosition(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "POSITION", void, void, value);
+        c.setStrAttribute(self, "POSITION", .{}, value);
     }
 
     pub fn getMinSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MINSIZE", void, void);
+        var str = c.getStrAttribute(self, "MINSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MINSIZE", void, void, value);
+        c.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
     pub fn getLineX(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "LINEX", void, void);
+        return c.getDoubleAttribute(self, "LINEX", .{});
     }
 
     pub fn setLineX(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "LINEX", void, void, arg);
+        c.setDoubleAttribute(self, "LINEX", .{}, arg);
     }
 
     pub fn getNaturalSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "NATURALSIZE", void, void);
+        var str = c.getStrAttribute(self, "NATURALSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getLineY(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "LINEY", void, void);
+        return c.getDoubleAttribute(self, "LINEY", .{});
     }
 
     pub fn setLineY(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "LINEY", void, void, arg);
+        c.setDoubleAttribute(self, "LINEY", .{}, arg);
     }
 
     pub fn getDropTypes(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DROPTYPES", void, void);
+        return c.getStrAttribute(self, "DROPTYPES", .{});
     }
 
     pub fn setDropTypes(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DROPTYPES", void, void, arg);
+        c.setStrAttribute(self, "DROPTYPES", .{}, arg);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME", void, void);
+        return c.getStrAttribute(self, "HANDLENAME", .{});
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "HANDLENAME", void, void, arg);
+        c.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTFACE", void, void);
+        return c.getStrAttribute(self, "FONTFACE", .{});
     }
 
     pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTFACE", void, void, arg);
+        c.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
 
     /// 
     /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
     pub fn rename(self: *Self) void {
-        c.setStrAttribute(self, "RENAME", void, void, null);
+        c.setStrAttribute(self, "RENAME", .{}, null);
     }
 
 
@@ -2348,7 +2348,7 @@ pub const FlatTree = opaque {
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn getTotalChildCount(self: *Self, index: i32) i32 {
-        return c.getIntAttribute(self, "TOTALCHILDCOUNT", index, void);
+        return c.getIntAttribute(self, "TOTALCHILDCOUNT", .{index});
     }
 
 
@@ -2356,7 +2356,7 @@ pub const FlatTree = opaque {
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn getState(self: *Self, index: i32) ?State {
-        var ret = c.getStrAttribute(self, "STATE", index, void);
+        var ret = c.getStrAttribute(self, "STATE", .{index});
 
         if (std.ascii.eqlIgnoreCase("EXPANDED", ret)) return .Expanded;
         if (std.ascii.eqlIgnoreCase("COLLAPSED", ret)) return .Collapsed;
@@ -2369,364 +2369,364 @@ pub const FlatTree = opaque {
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn setState(self: *Self, index: i32, arg: ?State) void {
         if (arg) |value| switch (value) {
-            .Expanded => c.setStrAttribute(self, "STATE", index, void, "EXPANDED"),
-            .Collapsed => c.setStrAttribute(self, "STATE", index, void, "COLLAPSED"),
+            .Expanded => c.setStrAttribute(self, "STATE", .{index}, "EXPANDED"),
+            .Collapsed => c.setStrAttribute(self, "STATE", .{index}, "COLLAPSED"),
         } else {
-            c.clearAttribute(self, "STATE", index, void);
+            c.clearAttribute(self, "STATE", .{index});
         }
     }
 
     pub fn getMaxSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MAXSIZE", void, void);
+        var str = c.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MAXSIZE", void, void, value);
+        c.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
     pub fn getDragCursor(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGCURSOR", void, void);
+        return c.getStrAttribute(self, "DRAGCURSOR", .{});
     }
 
     pub fn setDragCursor(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGCURSOR", void, void, arg);
+        c.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
 
     pub fn getColor(self: *Self, index: i32) ?iup.Rgb {
-        return c.getRgb(self, "COLOR", index, void);
+        return c.getRgb(self, "COLOR", .{index});
     }
 
     pub fn setColor(self: *Self, index: i32, rgb: iup.Rgb) void {
-        c.setRgb(self, "COLOR", index, void, rgb);
+        c.setRgb(self, "COLOR", .{index}, rgb);
     }
 
     pub fn getItemTip(self: *Self, index: i32) [:0]const u8 {
-        return c.getStrAttribute(self, "ITEMTIP", index, void);
+        return c.getStrAttribute(self, "ITEMTIP", .{index});
     }
 
     pub fn setItemTip(self: *Self, index: i32, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "ITEMTIP", index, void, arg);
+        c.setStrAttribute(self, "ITEMTIP", .{index}, arg);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTSTYLE", void, void);
+        return c.getStrAttribute(self, "FONTSTYLE", .{});
     }
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTSTYLE", void, void, arg);
+        c.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONT", void, void);
+        return c.getStrAttribute(self, "FONT", .{});
     }
 
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONT", void, void, arg);
+        c.setStrAttribute(self, "FONT", .{}, arg);
     }
 
     pub fn getShowToggle(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHOWTOGGLE", void, void);
+        return c.getBoolAttribute(self, "SHOWTOGGLE", .{});
     }
 
     pub fn setShowToggle(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWTOGGLE", void, void, arg);
+        c.setBoolAttribute(self, "SHOWTOGGLE", .{}, arg);
     }
 
     pub fn getCursor(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "CURSOR", void, void);
+        return c.getStrAttribute(self, "CURSOR", .{});
     }
 
     pub fn setCursor(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "CURSOR", void, void, arg);
+        c.setStrAttribute(self, "CURSOR", .{}, arg);
     }
 
     pub fn getDragCursorCopy(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGCURSORCOPY", void, void);
+        return c.getStrAttribute(self, "DRAGCURSORCOPY", .{});
     }
 
     pub fn setDragCursorCopy(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGCURSORCOPY", void, void, arg);
+        c.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
 
     pub fn getImage(self: *Self, index: i32) [:0]const u8 {
-        return c.getStrAttribute(self, "IMAGE", index, void);
+        return c.getStrAttribute(self, "IMAGE", .{index});
     }
 
     pub fn setImage(self: *Self, index: i32, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "IMAGE", index, void, arg);
+        c.setStrAttribute(self, "IMAGE", .{index}, arg);
     }
 
     pub fn getWheelDropFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "WHEELDROPFOCUS", void, void);
+        return c.getBoolAttribute(self, "WHEELDROPFOCUS", .{});
     }
 
     pub fn setWheelDropFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "WHEELDROPFOCUS", void, void, arg);
+        c.setBoolAttribute(self, "WHEELDROPFOCUS", .{}, arg);
     }
 
     pub fn getHtTransparent(self: *Self) bool {
-        return c.getBoolAttribute(self, "HTTRANSPARENT", void, void);
+        return c.getBoolAttribute(self, "HTTRANSPARENT", .{});
     }
 
     pub fn setHtTransparent(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "HTTRANSPARENT", void, void, arg);
+        c.setBoolAttribute(self, "HTTRANSPARENT", .{}, arg);
     }
 
     pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPBALLOONTITLEICON", void, void);
+        return c.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
     }
 
     pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPBALLOONTITLEICON", void, void, arg);
+        c.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
     pub fn getDrawUsedIRect2d(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAWUSEDIRECT2D", void, void);
+        return c.getBoolAttribute(self, "DRAWUSEDIRECT2D", .{});
     }
 
     pub fn setDrawUsedIRect2d(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAWUSEDIRECT2D", void, void, arg);
+        c.setBoolAttribute(self, "DRAWUSEDIRECT2D", .{}, arg);
     }
 
     pub fn getXHidden(self: *Self) bool {
-        return c.getBoolAttribute(self, "XHIDDEN", void, void);
+        return c.getBoolAttribute(self, "XHIDDEN", .{});
     }
 
     pub fn getFontSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "FONTSIZE", void, void);
+        return c.getIntAttribute(self, "FONTSIZE", .{});
     }
 
     pub fn setFontSize(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "FONTSIZE", void, void, arg);
+        c.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
     pub fn getDrawAntialias(self: *Self) i32 {
-        return c.getIntAttribute(self, "DRAWANTIALIAS", void, void);
+        return c.getIntAttribute(self, "DRAWANTIALIAS", .{});
     }
 
     pub fn setDrawAntialias(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "DRAWANTIALIAS", void, void, arg);
+        c.setIntAttribute(self, "DRAWANTIALIAS", .{}, arg);
     }
 
     pub fn getYMax(self: *Self) i32 {
-        return c.getIntAttribute(self, "YMAX", void, void);
+        return c.getIntAttribute(self, "YMAX", .{});
     }
 
     pub fn setYMax(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "YMAX", void, void, arg);
+        c.setIntAttribute(self, "YMAX", .{}, arg);
     }
 
     pub fn getNTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NTHEME", void, void);
+        return c.getStrAttribute(self, "NTHEME", .{});
     }
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NTHEME", void, void, arg);
+        c.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
     pub fn getDragSourceMove(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGSOURCEMOVE", void, void);
+        return c.getBoolAttribute(self, "DRAGSOURCEMOVE", .{});
     }
 
     pub fn setDragSourceMove(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGSOURCEMOVE", void, void, arg);
+        c.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
     }
 
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE", void, void);
+        return c.getBoolAttribute(self, "ACTIVE", .{});
     }
 
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", void, void, arg);
+        c.setBoolAttribute(self, "ACTIVE", .{}, arg);
     }
 
     pub fn getBorderWidth(self: *Self) i32 {
-        return c.getIntAttribute(self, "BORDERWIDTH", void, void);
+        return c.getIntAttribute(self, "BORDERWIDTH", .{});
     }
 
     pub fn setBorderWidth(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "BORDERWIDTH", void, void, arg);
+        c.setIntAttribute(self, "BORDERWIDTH", .{}, arg);
     }
 
     pub fn getFgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "FGCOLOR", void, void);
+        return c.getRgb(self, "FGCOLOR", .{});
     }
 
     pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "FGCOLOR", void, void, rgb);
+        c.setRgb(self, "FGCOLOR", .{}, rgb);
     }
 
     pub fn getHlColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "HLCOLOR", void, void);
+        return c.getRgb(self, "HLCOLOR", .{});
     }
 
     pub fn setHlColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "HLCOLOR", void, void, rgb);
+        c.setRgb(self, "HLCOLOR", .{}, rgb);
     }
 
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID", void, void);
+        return c.getIntAttribute(self, "WID", .{});
     }
 
     pub fn getCSpacing(self: *Self) i32 {
-        return c.getIntAttribute(self, "CSPACING", void, void);
+        return c.getIntAttribute(self, "CSPACING", .{});
     }
 
     pub fn setCSpacing(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CSPACING", void, void, arg);
+        c.setIntAttribute(self, "CSPACING", .{}, arg);
     }
 
     pub fn getPosX(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "POSX", void, void);
+        return c.getDoubleAttribute(self, "POSX", .{});
     }
 
     pub fn setPosX(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "POSX", void, void, arg);
+        c.setDoubleAttribute(self, "POSX", .{}, arg);
     }
 
     pub fn getPosY(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "POSY", void, void);
+        return c.getDoubleAttribute(self, "POSY", .{});
     }
 
     pub fn setPosY(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "POSY", void, void, arg);
+        c.setDoubleAttribute(self, "POSY", .{}, arg);
     }
 
     pub fn getShowRename(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHOWRENAME", void, void);
+        return c.getBoolAttribute(self, "SHOWRENAME", .{});
     }
 
     pub fn setShowRename(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWRENAME", void, void, arg);
+        c.setBoolAttribute(self, "SHOWRENAME", .{}, arg);
     }
 
     pub fn getXAutoHide(self: *Self) bool {
-        return c.getBoolAttribute(self, "XAUTOHIDE", void, void);
+        return c.getBoolAttribute(self, "XAUTOHIDE", .{});
     }
 
     pub fn getTipVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPVISIBLE", void, void);
+        return c.getBoolAttribute(self, "TIPVISIBLE", .{});
     }
 
     pub fn setTipVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPVISIBLE", void, void, arg);
+        c.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
     pub fn getDrawFont(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAWFONT", void, void);
+        return c.getStrAttribute(self, "DRAWFONT", .{});
     }
 
     pub fn setDrawFont(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAWFONT", void, void, arg);
+        c.setStrAttribute(self, "DRAWFONT", .{}, arg);
     }
 
     pub fn getExpandWeight(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "EXPANDWEIGHT", void, void);
+        return c.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
     pub fn setExpandWeight(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "EXPANDWEIGHT", void, void, arg);
+        c.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TIPBGCOLOR", void, void);
+        return c.getRgb(self, "TIPBGCOLOR", .{});
     }
 
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TIPBGCOLOR", void, void, rgb);
+        c.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
     pub fn getDrawBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "DRAWBGCOLOR", void, void);
+        return c.getRgb(self, "DRAWBGCOLOR", .{});
     }
 
     pub fn setDrawBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "DRAWBGCOLOR", void, void, rgb);
+        c.setRgb(self, "DRAWBGCOLOR", .{}, rgb);
     }
 
     pub fn getYMin(self: *Self) i32 {
-        return c.getIntAttribute(self, "YMIN", void, void);
+        return c.getIntAttribute(self, "YMIN", .{});
     }
 
     pub fn setYMin(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "YMIN", void, void, arg);
+        c.setIntAttribute(self, "YMIN", .{}, arg);
     }
 
     pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NORMALIZERGROUP", void, void);
+        return c.getStrAttribute(self, "NORMALIZERGROUP", .{});
     }
 
     pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NORMALIZERGROUP", void, void, arg);
+        c.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
     pub fn getScrollBar(self: *Self) bool {
-        return c.getBoolAttribute(self, "SCROLLBAR", void, void);
+        return c.getBoolAttribute(self, "SCROLLBAR", .{});
     }
 
     pub fn setScrollBar(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SCROLLBAR", void, void, arg);
+        c.setBoolAttribute(self, "SCROLLBAR", .{}, arg);
     }
 
     pub fn getBackColor(self: *Self, index: i32) ?iup.Rgb {
-        return c.getRgb(self, "BACKCOLOR", index, void);
+        return c.getRgb(self, "BACKCOLOR", .{index});
     }
 
     pub fn setBackColor(self: *Self, index: i32, rgb: iup.Rgb) void {
-        c.setRgb(self, "BACKCOLOR", index, void, rgb);
+        c.setRgb(self, "BACKCOLOR", .{index}, rgb);
     }
 
 
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDropFilesTarget(self: *Self) bool {
-        return c.getBoolAttribute(self, "DROPFILESTARGET", void, void);
+        return c.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
 
 
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DROPFILESTARGET", void, void, arg);
+        c.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
     }
 
     pub fn expandAll(self: *Self) void {
-        c.setStrAttribute(self, "EXPANDALL", void, void, null);
+        c.setStrAttribute(self, "EXPANDALL", .{}, null);
     }
 
     pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIPBALLOONTITLE", void, void);
+        return c.getStrAttribute(self, "TIPBALLOONTITLE", .{});
     }
 
     pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIPBALLOONTITLE", void, void, arg);
+        c.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getBackImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "BACKIMAGE", void, void);
+        return c.getStrAttribute(self, "BACKIMAGE", .{});
     }
 
     pub fn setBackImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "BACKIMAGE", void, void, arg);
+        c.setStrAttribute(self, "BACKIMAGE", .{}, arg);
     }
 
     pub fn getHlColorAlpha(self: *Self) i32 {
-        return c.getIntAttribute(self, "HLCOLORALPHA", void, void);
+        return c.getIntAttribute(self, "HLCOLORALPHA", .{});
     }
 
     pub fn setHlColorAlpha(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "HLCOLORALPHA", void, void, arg);
+        c.setIntAttribute(self, "HLCOLORALPHA", .{}, arg);
     }
 
     pub fn getRenameCaret(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "RENAMECARET", void, void);
+        return c.getStrAttribute(self, "RENAMECARET", .{});
     }
 
     pub fn setRenameCaret(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "RENAMECARET", void, void, arg);
+        c.setStrAttribute(self, "RENAMECARET", .{}, arg);
     }
 
 
@@ -2734,7 +2734,7 @@ pub const FlatTree = opaque {
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn getTitle(self: *Self, index: i32) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLE", index, void);
+        return c.getStrAttribute(self, "TITLE", .{index});
     }
 
 
@@ -2742,47 +2742,47 @@ pub const FlatTree = opaque {
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn setTitle(self: *Self, index: i32, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLE", index, void, arg);
+        c.setStrAttribute(self, "TITLE", .{index}, arg);
     }
 
     pub fn getDrawTextWrap(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAWTEXTWRAP", void, void);
+        return c.getBoolAttribute(self, "DRAWTEXTWRAP", .{});
     }
 
     pub fn setDrawTextWrap(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAWTEXTWRAP", void, void, arg);
+        c.setBoolAttribute(self, "DRAWTEXTWRAP", .{}, arg);
     }
 
     pub fn getCount(self: *Self) i32 {
-        return c.getIntAttribute(self, "COUNT", void, void);
+        return c.getIntAttribute(self, "COUNT", .{});
     }
 
     pub fn getTip(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIP", void, void);
+        return c.getStrAttribute(self, "TIP", .{});
     }
 
     pub fn setTip(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIP", void, void, arg);
+        c.setStrAttribute(self, "TIP", .{}, arg);
     }
 
     pub fn getDragDrop(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGDROP", void, void);
+        return c.getBoolAttribute(self, "DRAGDROP", .{});
     }
 
     pub fn setDragDrop(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGDROP", void, void, arg);
+        c.setBoolAttribute(self, "DRAGDROP", .{}, arg);
     }
 
     pub fn getTipDelay(self: *Self) i32 {
-        return c.getIntAttribute(self, "TIPDELAY", void, void);
+        return c.getIntAttribute(self, "TIPDELAY", .{});
     }
 
     pub fn setTipDelay(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TIPDELAY", void, void, arg);
+        c.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
     pub fn getToggleValue(self: *Self, index: i32) ?ToggleValue {
-        var ret = c.getStrAttribute(self, "TOGGLEVALUE", index, void);
+        var ret = c.getStrAttribute(self, "TOGGLEVALUE", .{index});
 
         if (std.ascii.eqlIgnoreCase("ON", ret)) return .On;
         if (std.ascii.eqlIgnoreCase("OFF", ret)) return .Off;
@@ -2792,36 +2792,36 @@ pub const FlatTree = opaque {
 
     pub fn setToggleValue(self: *Self, index: i32, arg: ?ToggleValue) void {
         if (arg) |value| switch (value) {
-            .On => c.setStrAttribute(self, "TOGGLEVALUE", index, void, "ON"),
-            .Off => c.setStrAttribute(self, "TOGGLEVALUE", index, void, "OFF"),
-            .NotDef => c.setStrAttribute(self, "TOGGLEVALUE", index, void, "NOTDEF"),
+            .On => c.setStrAttribute(self, "TOGGLEVALUE", .{index}, "ON"),
+            .Off => c.setStrAttribute(self, "TOGGLEVALUE", .{index}, "OFF"),
+            .NotDef => c.setStrAttribute(self, "TOGGLEVALUE", .{index}, "NOTDEF"),
         } else {
-            c.clearAttribute(self, "TOGGLEVALUE", index, void);
+            c.clearAttribute(self, "TOGGLEVALUE", .{index});
         }
     }
 
     pub fn getPsColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "PSCOLOR", void, void);
+        return c.getRgb(self, "PSCOLOR", .{});
     }
 
     pub fn setPsColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "PSCOLOR", void, void, rgb);
+        c.setRgb(self, "PSCOLOR", .{}, rgb);
     }
 
     pub fn getTipBalloon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPBALLOON", void, void);
+        return c.getBoolAttribute(self, "TIPBALLOON", .{});
     }
 
     pub fn setTipBalloon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPBALLOON", void, void, arg);
+        c.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
     }
 
     pub fn getYHidden(self: *Self) bool {
-        return c.getBoolAttribute(self, "YHIDDEN", void, void);
+        return c.getBoolAttribute(self, "YHIDDEN", .{});
     }
 
     pub fn getFloating(self: *Self) ?Floating {
-        var ret = c.getStrAttribute(self, "FLOATING", void, void);
+        var ret = c.getStrAttribute(self, "FLOATING", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
@@ -2831,62 +2831,62 @@ pub const FlatTree = opaque {
 
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "FLOATING", void, void, "YES"),
-            .Ignore => c.setStrAttribute(self, "FLOATING", void, void, "IGNORE"),
-            .No => c.setStrAttribute(self, "FLOATING", void, void, "NO"),
+            .Yes => c.setStrAttribute(self, "FLOATING", .{}, "YES"),
+            .Ignore => c.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
+            .No => c.setStrAttribute(self, "FLOATING", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "FLOATING", void, void);
+            c.clearAttribute(self, "FLOATING", .{});
         }
     }
 
     pub fn topItem(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TOPITEM", void, void, arg);
+        c.setIntAttribute(self, "TOPITEM", .{}, arg);
     }
 
     pub fn getTouch(self: *Self) bool {
-        return c.getBoolAttribute(self, "TOUCH", void, void);
+        return c.getBoolAttribute(self, "TOUCH", .{});
     }
 
     pub fn setTouch(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TOUCH", void, void, arg);
+        c.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME", void, void);
+        return c.getStrAttribute(self, "NAME", .{});
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", void, void, arg);
+        c.setStrAttribute(self, "NAME", .{}, arg);
     }
 
     pub fn getTitleFontSize(self: *Self, index: i32) i32 {
-        return c.getIntAttribute(self, "TITLEFONTSIZE", index, void);
+        return c.getIntAttribute(self, "TITLEFONTSIZE", .{index});
     }
 
     pub fn setTitleFontSize(self: *Self, index: i32, arg: i32) void {
-        c.setIntAttribute(self, "TITLEFONTSIZE", index, void, arg);
+        c.setIntAttribute(self, "TITLEFONTSIZE", .{index}, arg);
     }
 
     pub fn getRenameSelection(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "RENAMESELECTION", void, void);
+        return c.getStrAttribute(self, "RENAMESELECTION", .{});
     }
 
     pub fn setRenameSelection(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "RENAMESELECTION", void, void, arg);
+        c.setStrAttribute(self, "RENAMESELECTION", .{}, arg);
     }
 
 
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getShowDragDrop(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHOWDRAGDROP", void, void);
+        return c.getBoolAttribute(self, "SHOWDRAGDROP", .{});
     }
 
 
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setShowDragDrop(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWDRAGDROP", void, void, arg);
+        c.setBoolAttribute(self, "SHOWDRAGDROP", .{}, arg);
     }
 
 
@@ -2894,7 +2894,7 @@ pub const FlatTree = opaque {
     /// The SPACING attribute is simply the vertical space between each node,
     /// different from the IupTree.
     pub fn getSpacing(self: *Self) i32 {
-        return c.getIntAttribute(self, "SPACING", void, void);
+        return c.getIntAttribute(self, "SPACING", .{});
     }
 
 
@@ -2902,27 +2902,27 @@ pub const FlatTree = opaque {
     /// The SPACING attribute is simply the vertical space between each node,
     /// different from the IupTree.
     pub fn setSpacing(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "SPACING", void, void, arg);
+        c.setIntAttribute(self, "SPACING", .{}, arg);
     }
 
     pub fn getPropagateFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "PROPAGATEFOCUS", void, void);
+        return c.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "PROPAGATEFOCUS", void, void, arg);
+        c.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
     pub fn getBackingStore(self: *Self) bool {
-        return c.getBoolAttribute(self, "BACKINGSTORE", void, void);
+        return c.getBoolAttribute(self, "BACKINGSTORE", .{});
     }
 
     pub fn setBackingStore(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "BACKINGSTORE", void, void, arg);
+        c.setBoolAttribute(self, "BACKINGSTORE", .{}, arg);
     }
 
     pub fn getDrawDriver(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAWDRIVER", void, void);
+        return c.getStrAttribute(self, "DRAWDRIVER", .{});
     }
 
     /// 
