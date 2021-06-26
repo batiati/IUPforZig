@@ -29,3 +29,4 @@ Windows Classic
 Ubuntu
 
 ![Image Ubuntu](ImageUbuntu.gif)
+* Cursor image not working
