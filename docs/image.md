@@ -18,7 +18,7 @@ Source code: [image_example.zig](../src/image_example.zig).
 > Type `zig build image` to run this example.
 
 Converted from original example in C
-https://webserver2.tecgraf.puc-rio.br/iup/examples/C/button.c
+https://webserver2.tecgraf.puc-rio.br/iup/examples/C/image.c
 
 ## Screenshots
 
