@@ -111,6 +111,21 @@ pub const Image = opaque {
 
 
         /// 
+        /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
+        /// mouse-click spot.
+        /// Its value is given by the x and y coordinates inside a cursor image.
+        /// Its value has the format "x:y", where x and y are integers defining the
+        /// coordinates in pixels.
+        /// Default: "0:0".
+        pub fn setHotspot(self: *Initializer, x: i32, y: i32) Initializer {
+            var buffer: [128]u8 = undefined;
+            var value = iup.XYPos.intIntToString(&buffer, x, y, ':');
+            c.setStrAttribute(self.ref, "HOTSPOT", .{}, value);
+            return self.*;
+        }
+
+
+        /// 
         /// AUTOSCALE: automatically scale the image by a given real factor.
         /// Can be "DPI" or a scale factor.
         /// If not defined the global attribute IMAGEAUTOSCALE will be used.
@@ -301,6 +316,33 @@ pub const Image = opaque {
     /// (since 3.0)
     pub fn getChannels(self: *Self) i32 {
         return c.getIntAttribute(self, "CHANNELS", .{});
+    }
+
+
+    /// 
+    /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
+    /// mouse-click spot.
+    /// Its value is given by the x and y coordinates inside a cursor image.
+    /// Its value has the format "x:y", where x and y are integers defining the
+    /// coordinates in pixels.
+    /// Default: "0:0".
+    pub fn getHotspot(self: *Self) iup.XYPos {
+        var str = c.getStrAttribute(self, "HOTSPOT", .{});
+        return iup.XYPos.parse(str, ':');
+    }
+
+
+    /// 
+    /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
+    /// mouse-click spot.
+    /// Its value is given by the x and y coordinates inside a cursor image.
+    /// Its value has the format "x:y", where x and y are integers defining the
+    /// coordinates in pixels.
+    /// Default: "0:0".
+    pub fn setHotspot(self: *Self, x: i32, y: i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = iup.XYPos.intIntToString(&buffer, x, y, ':');
+        c.setStrAttribute(self, "HOTSPOT", .{}, value);
     }
 
 

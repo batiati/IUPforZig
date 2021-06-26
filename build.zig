@@ -119,5 +119,20 @@ pub fn build(b: *Builder) !void {
     const button_example_step = b.step("button", "Button example app");
     button_example_step.dependOn(&button_example_cmd.step);
 
+    //Image example
+    const image_example = b.addExecutable("image", "src/image_example.zig");
+    image_example.setBuildMode(mode);
+    image_example.linkLibC();
+    try addIupReference(image_example);
+    image_example.install();
+
+    const image_example_cmd = image_example.run();
+    image_example_cmd.step.dependOn(b.getInstallStep());
+
+    const image_example_step = b.step("image", "Image example app");
+    image_example_step.dependOn(&image_example_cmd.step);    
+
+
+
 
 }

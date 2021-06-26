@@ -81,11 +81,11 @@ pub inline fn setStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tupl
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {
-        IupSetAttribute(getHandle(handle), getAttribute(attribute), toCStr(value));
+        IupSetStrAttribute(getHandle(handle), getAttribute(attribute), toCStr(value));
     } else if (ids_tuple.len == 1) {
-        IupSetAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", toCStr(value));
+        IupSetStrAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", toCStr(value));
     } else {
-        IupSetAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", toCStr(value));
+        IupSetStrAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", toCStr(value));
     }
 }
 

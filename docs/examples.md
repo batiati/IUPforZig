@@ -13,3 +13,4 @@ A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [
 - [Simple notepad](simple_notepad.md)
 - [Tabs](tabs.md)
 - [Button](button.md)
+- [Image](image.md)

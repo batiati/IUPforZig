@@ -8,25 +8,24 @@
 
 A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
 
-## Simple Notepad (in progress)
+## Image example
 
-A simple, but fully featured Notepad application using lots of IUP resources.
+Creates a button, a label, a toggle and a radio using an image.
+Uses an image for the cursor as well.
 
-Source code: [notepad_example.zig](../src/notepad_example.zig).
+Source code: [image_example.zig](../src/image_example.zig).
 
-> Type `zig build run` to run this example.
+> Type `zig build image` to run this example.
 
-Converted from original tutorial in C
-https://webserver2.tecgraf.puc-rio.br/iup/examples/tutorial/simple_notepad.c
-
-See the excellent [IUP tutorial](https://webserver2.tecgraf.puc-rio.br/iup/en/tutorial/tutorial3.html) for a guided step-by-step explanation.
+Converted from original example in C
+https://webserver2.tecgraf.puc-rio.br/iup/examples/C/button.c
 
 ## Screenshots
 
 Windows Classic
 
-![Simple Notepad Windows](SimpleNotepadWindows.gif)
+![Image Windows](ImageWindows.gif)
 
 Ubuntu
 
-![Simple Notepad Ubuntu](SimpleNotepadUbuntu.gif)
+![Image Ubuntu](ImageUbuntu.gif)

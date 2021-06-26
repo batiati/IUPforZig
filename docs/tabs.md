@@ -10,16 +10,18 @@ A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [
 
 ## Tabs example
 
+Creates a `Tabs` control
+
 Source code: [tabs_example.zig](../src/tabs_example.zig).
 
-Type `zig build tabs` to run this example.
+> Type `zig build tabs` to run this example.
 
 Converted from original example in C
 https://webserver2.tecgraf.puc-rio.br/iup/examples/C/tabs.c
 
 ## Screenshots
 
-Windows
+Windows Classic
 
 ![Tabs Windows](TabsWindows.jpg)
 

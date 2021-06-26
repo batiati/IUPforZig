@@ -89,6 +89,13 @@ pub const ImageRgba = opaque {
             return self.*;
         }
 
+        pub fn setHotspot(self: *Initializer, x: i32, y: i32) Initializer {
+            var buffer: [128]u8 = undefined;
+            var value = iup.XYPos.intIntToString(&buffer, x, y, ':');
+            c.setStrAttribute(self.ref, "HOTSPOT", .{}, value);
+            return self.*;
+        }
+
         pub fn setAutoScale(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "AUTOSCALE", .{}, arg);
             return self.*;
@@ -219,6 +226,17 @@ pub const ImageRgba = opaque {
 
     pub fn getChannels(self: *Self) i32 {
         return c.getIntAttribute(self, "CHANNELS", .{});
+    }
+
+    pub fn getHotspot(self: *Self) iup.XYPos {
+        var str = c.getStrAttribute(self, "HOTSPOT", .{});
+        return iup.XYPos.parse(str, ':');
+    }
+
+    pub fn setHotspot(self: *Self, x: i32, y: i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = iup.XYPos.intIntToString(&buffer, x, y, ':');
+        c.setStrAttribute(self, "HOTSPOT", .{}, value);
     }
 
     pub fn getAutoScale(self: *Self) bool {
