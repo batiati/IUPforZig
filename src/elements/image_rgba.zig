@@ -95,7 +95,7 @@ pub const ImageRgba = opaque {
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
+            c.setHandle(self.ref, arg);
             return self.*;
         }
 
@@ -109,28 +109,6 @@ pub const ImageRgba = opaque {
             return self.*;
         }
     };
-
-    ///
-    /// Creates an interface element given its class name and parameters.
-    /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
-    pub fn init() Initializer {
-        var handle = c.IupCreate(Self.CLASS_NAME);
-
-        if (handle) |valid| {
-            return .{
-                .ref = @ptrCast(*Self, valid),
-            };
-        } else {
-            return .{ .ref = undefined, .last_error = Error.NotInitialized };
-        }
-    }
-
-    /// 
-    /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
-    pub fn deinit(self: *Self) void {
-        c.IupDestroy(c.getHandle(self));
-    }
 
     pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
         c.setStrAttribute(self, attribute, .{}, arg);
@@ -162,6 +140,34 @@ pub const ImageRgba = opaque {
 
     pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
         c.setPtrAttribute(T, handle, attribute, .{}, value);
+    }
+
+    ///
+    /// Creates an image to be shown on a label, button, toggle, or as a cursor.
+    /// width: Image width in pixels.
+    /// height: Image height in pixels.
+    /// pixels: Vector containing the value of each pixel. 
+    /// IupImage uses 1 value per pixel, IupImageRGB uses 3 values and  IupImageRGBA uses 4 values per pixel.
+    /// Each value is always 8 bit.
+    /// Origin is at the top-left corner and data is oriented top to bottom, and left to right.
+    /// The pixels array is duplicated internally so you can discard it after the call.
+    pub fn init(width: i32, height: i32, imgdata: ?[]const u8) Initializer {
+        var handle = c.create_image(Self, width, height, imgdata);
+
+        if (handle) |valid| {
+            return .{
+                .ref = @ptrCast(*Self, valid),
+            };
+        } else {
+            return .{ .ref = undefined, .last_error = Error.NotInitialized };
+        }
+    }
+
+    /// 
+    /// Destroys an interface element and all its children.
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    pub fn deinit(self: *Self) void {
+        c.destroy(self);
     }
 
     ///
@@ -228,7 +234,7 @@ pub const ImageRgba = opaque {
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "HANDLENAME", .{}, arg);
+        c.setHandle(self, arg);
     }
 
     pub fn getHeight(self: *Self) i32 {

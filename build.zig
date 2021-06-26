@@ -80,6 +80,7 @@ pub fn build(b: *Builder) !void {
     const test_step = b.step("test", "Run library tests");
     test_step.dependOn(&main_tests.step);
 
+    //Notepad example
     const exe = b.addExecutable("example", "src/notepad_example.zig");
     exe.setBuildMode(mode);
     exe.linkLibC();
@@ -92,6 +93,7 @@ pub fn build(b: *Builder) !void {
     const run_step = b.step("run", "Notepad example app");
     run_step.dependOn(&run_cmd.step);
 
+    //Tabs example
     const tabs_example = b.addExecutable("tabs", "src/tabs_example.zig");
     tabs_example.setBuildMode(mode);
     tabs_example.linkLibC();
@@ -103,6 +105,19 @@ pub fn build(b: *Builder) !void {
 
     const tabs_example_step = b.step("tabs", "Tabs example app");
     tabs_example_step.dependOn(&tabs_example_cmd.step);
+
+    //Button example
+    const button_example = b.addExecutable("button", "src/button_example.zig");
+    button_example.setBuildMode(mode);
+    button_example.linkLibC();
+    try addIupReference(button_example);
+    button_example.install();
+
+    const button_example_cmd = button_example.run();
+    button_example_cmd.step.dependOn(b.getInstallStep());
+
+    const button_example_step = b.step("button", "Button example app");
+    button_example_step.dependOn(&button_example_cmd.step);
 
 
 }

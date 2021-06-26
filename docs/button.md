@@ -8,8 +8,21 @@
 
 A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
 
-## Examples
+## Button example
 
-- [Simple notepad](simple_notepad.md)
-- [Tabs](tabs.md)
-- [Button](button.md)
+Source code: [button_example.zig](../src/button_example.zig).
+
+Type `zig build button` to run this example.
+
+Converted from original example in C
+https://webserver2.tecgraf.puc-rio.br/iup/examples/C/button.c
+
+## Screenshots
+
+Windows
+
+![Button Windows](ButtonWindows.gif)
+
+Ubuntu
+
+![Button Ubuntu](ButtonUbuntu.gif)

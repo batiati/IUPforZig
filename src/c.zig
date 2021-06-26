@@ -38,16 +38,38 @@ pub inline fn fromCStr(value: [*c]const u8) [:0]const u8 {
     return std.mem.sliceTo(value, 0);
 }
 
+pub inline fn create(comptime T: type) ?*T {
+    return @ptrCast(*T, IupCreate(T.CLASS_NAME));
+}
+
+pub inline fn create_image(comptime T: type, width: i32, height: i32, imgdata: ?[]const u8) ?*T {
+
+    // From original C code: (*void)-1
+    const SENTINEL = std.math.maxInt(usize);
+
+    var params = [_]usize{ @intCast(usize, width), @intCast(usize, height), if (imgdata) |valid| @ptrToInt(valid.ptr) else SENTINEL, SENTINEL };
+
+    return @ptrCast(*T, IupCreatev(T.CLASS_NAME, @ptrCast([*c]?*c_void, &params)));
+}
+
+pub inline fn destroy(element: anytype) void {
+    IupDestroy(getHandle(element));
+}
+
+pub inline fn setHandle(handle: anytype, name: [:0]const u8) void {
+    _ = IupSetHandle(toCStr(name), getHandle(handle));
+}
+
 pub inline fn getStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) [:0]const u8 {
     validateIds(ids_tuple);
 
     var ret = blk: {
         if (ids_tuple.len == 0) {
-            break :blk IupGetAttribute(getHandle(handle), toCStr(attribute));
+            break :blk IupGetAttribute(getHandle(handle), getAttribute(attribute));
         } else if (ids_tuple.len == 1) {
-            break :blk IupGetAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
+            break :blk IupGetAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0");
         } else {
-            break :blk IupGetAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
+            break :blk IupGetAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1");
         }
     };
 
@@ -59,11 +81,11 @@ pub inline fn setStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tupl
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {
-        IupSetStrAttribute(getHandle(handle), toCStr(attribute), toCStr(value));
+        IupSetAttribute(getHandle(handle), getAttribute(attribute), toCStr(value));
     } else if (ids_tuple.len == 1) {
-        IupSetStrAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", toCStr(value));
+        IupSetAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", toCStr(value));
     } else {
-        IupSetStrAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", toCStr(value));
+        IupSetAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", toCStr(value));
     }
 }
 
@@ -71,11 +93,11 @@ pub inline fn clearAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {
-        IupSetAttribute(getHandle(handle), toCStr(attribute), null);
+        IupSetAttribute(getHandle(handle), getAttribute(attribute), null);
     } else if (ids_tuple.len == 1) {
-        IupSetAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", null);
+        IupSetAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", null);
     } else {
-        IupSetAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", null);
+        IupSetAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", null);
     }
 }
 
@@ -84,11 +106,11 @@ pub inline fn getBoolAttribute(handle: anytype, attribute: [:0]const u8, ids_tup
 
     var ret = blk: {
         if (ids_tuple.len == 0) {
-            break :blk IupGetInt(getHandle(handle), toCStr(attribute));
+            break :blk IupGetInt(getHandle(handle), getAttribute(attribute));
         } else if (ids_tuple.len == 1) {
-            break :blk IupGetIntId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
+            break :blk IupGetIntId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0");
         } else {
-            break :blk IupGetIntId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
+            break :blk IupGetIntId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1");
         }
     };
 
@@ -101,11 +123,11 @@ pub inline fn setBoolAttribute(handle: anytype, attribute: [:0]const u8, ids_tup
     const str = if (value) "YES" else "NO";
 
     if (ids_tuple.len == 0) {
-        IupSetStrAttribute(getHandle(handle), toCStr(attribute), str);
+        IupSetStrAttribute(getHandle(handle), getAttribute(attribute), str);
     } else if (ids_tuple.len == 1) {
-        IupSetStrAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", str);
+        IupSetStrAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", str);
     } else {
-        IupSetStrAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", str);
+        IupSetStrAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", str);
     }
 }
 
@@ -113,11 +135,11 @@ pub inline fn getIntAttribute(handle: anytype, attribute: [:0]const u8, ids_tupl
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {
-        return IupGetInt(getHandle(handle), toCStr(attribute));
+        return IupGetInt(getHandle(handle), getAttribute(attribute));
     } else if (ids_tuple.len == 1) {
-        return IupGetIntId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
+        return IupGetIntId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0");
     } else {
-        return IupGetIntId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
+        return IupGetIntId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1");
     }
 }
 
@@ -125,11 +147,11 @@ pub inline fn setIntAttribute(handle: anytype, attribute: [:0]const u8, ids_tupl
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {
-        IupSetInt(getHandle(handle), toCStr(attribute), value);
+        IupSetInt(getHandle(handle), getAttribute(attribute), value);
     } else if (ids_tuple.len == 1) {
-        IupSetIntId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", value);
+        IupSetIntId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", value);
     } else {
-        IupSetIntId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", value);
+        IupSetIntId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", value);
     }
 }
 
@@ -137,11 +159,11 @@ pub inline fn getFloatAttribute(handle: anytype, attribute: [:0]const u8, ids_tu
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {
-        return IupGetFloat(getHandle(handle), toCStr(attribute));
+        return IupGetFloat(getHandle(handle), getAttribute(attribute));
     } else if (ids_tuple.len == 1) {
-        return IupGetFloatId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
+        return IupGetFloatId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0");
     } else {
-        return IupGetFloatId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
+        return IupGetFloatId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1");
     }
 }
 
@@ -149,11 +171,11 @@ pub inline fn setFloatAttribute(handle: anytype, attribute: [:0]const u8, ids_tu
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {
-        IupSetFloat(getHandle(handle), toCStr(attribute), value);
+        IupSetFloat(getHandle(handle), getAttribute(attribute), value);
     } else if (ids_tuple.len == 1) {
-        IupSetFloatId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", value);
+        IupSetFloatId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", value);
     } else {
-        IupSetFloatId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", value);
+        IupSetFloatId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", value);
     }
 }
 
@@ -161,11 +183,11 @@ pub inline fn getDoubleAttribute(handle: anytype, attribute: [:0]const u8, ids_t
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {
-        return IupGetDouble(getHandle(handle), toCStr(attribute));
+        return IupGetDouble(getHandle(handle), getAttribute(attribute));
     } else if (ids_tuple.len == 1) {
-        return IupGetDouble(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
+        return IupGetDouble(getHandle(handle), getAttribute(attribute), ids_tuple.@"0");
     } else {
-        return IupGetDoubleId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
+        return IupGetDoubleId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1");
     }
 }
 
@@ -173,11 +195,11 @@ pub inline fn setDoubleAttribute(handle: anytype, attribute: [:0]const u8, ids_t
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {
-        IupSetDouble(getHandle(handle), toCStr(attribute), value);
+        IupSetDouble(getHandle(handle), getAttribute(attribute), value);
     } else if (ids_tuple.len == 1) {
-        IupSetDoubleId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", value);
+        IupSetDoubleId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", value);
     } else {
-        IupSetDoubleId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", value);
+        IupSetDoubleId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", value);
     }
 }
 
@@ -185,21 +207,21 @@ pub inline fn getHandleAttribute(handle: anytype, attribute: [:0]const u8, ids_t
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {
-        return IupGetAttributeHandle(getHandle(handle), toCStr(attribute));
+        return IupGetAttributeHandle(getHandle(handle), getAttribute(attribute));
     } else if (ids_tuple.len == 1) {
-        return IupGetAttributeHandleId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
+        return IupGetAttributeHandleId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0");
     } else {
-        return IupGetAttributeHandleId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
+        return IupGetAttributeHandleId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1");
     }
 }
 
 pub inline fn setHandleAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: anytype) void {
     if (ids_tuple.len == 0) {
-        IupSetAttributeHandle(getHandle(handle), toCStr(attribute), getHandle(value));
+        IupSetAttributeHandle(getHandle(handle), getAttribute(attribute), getHandle(value));
     } else if (ids_tuple.len == 1) {
-        IupSetAttributeHandleId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", getHandle(value));
+        IupSetAttributeHandleId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", getHandle(value));
     } else {
-        IupSetAttributeHandleId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", getHandle(value));
+        IupSetAttributeHandleId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", getHandle(value));
     }
 }
 
@@ -208,11 +230,11 @@ pub inline fn getPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]
 
     var ret = blk: {
         if (ids_tuple.len == 0) {
-            break :blk IupGetAttribute(getHandle(handle), toCStr(attribute));
+            break :blk IupGetAttribute(getHandle(handle), getAttribute(attribute));
         } else if (ids_tuple.len == 1) {
-            break :blk IupGetAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0");
+            break :blk IupGetAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0");
         } else {
-            break :blk IupGetAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1");
+            break :blk IupGetAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1");
         }
     };
     if (ret == null) return null;
@@ -225,11 +247,11 @@ pub inline fn setPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]
 
     if (value) |ptr| {
         if (ids_tuple.len == 0) {
-            IupSetAttribute(getHandle(handle), toCStr(attribute), @ptrCast([*c]const u8, ptr));
+            IupSetAttribute(getHandle(handle), getAttribute(attribute), @ptrCast([*c]const u8, ptr));
         } else if (ids_tuple.len == 1) {
-            IupSetAttributeId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", @ptrCast([*c]const u8, ptr));
+            IupSetAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", @ptrCast([*c]const u8, ptr));
         } else {
-            IupSetAttributeId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", @ptrCast([*c]const u8, ptr));
+            IupSetAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", @ptrCast([*c]const u8, ptr));
         }
     } else {
         clearAttribute(handle, attribute, ids_tuple);
@@ -245,12 +267,12 @@ pub fn getRgb(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) iup.
     var a: u8 = 0;
 
     if (ids_tuple.len == 0) {
-        IupGetRGBA(getHandle(handle), toCStr(attribute), &r, &g, &b, &a);
+        IupGetRGBA(getHandle(handle), getAttribute(attribute), &r, &g, &b, &a);
     } else if (ids_tuple.len == 1) {
-        IupGetRGBId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", &r, &g, &b);
+        IupGetRGBId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", &r, &g, &b);
         a = 255;
     } else {
-        IupGetRGBId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", &r, &g, &b);
+        IupGetRGBId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", &r, &g, &b);
         a = 255;
     }
 
@@ -267,14 +289,14 @@ pub inline fn setRgb(handle: anytype, attribute: [:0]const u8, ids_tuple: anytyp
 
     if (ids_tuple.len == 0) {
         if (arg.a == null) {
-            IupSetRGB(getHandle(handle), toCStr(attribute), arg.r, arg.g, arg.b);
+            IupSetRGB(getHandle(handle), getAttribute(attribute), arg.r, arg.g, arg.b);
         } else {
-            IupSetRGBA(getHandle(handle), toCStr(attribute), arg.r, arg.g, arg.b, arg.a.?);
+            IupSetRGBA(getHandle(handle), getAttribute(attribute), arg.r, arg.g, arg.b, arg.a.?);
         }
     } else if (ids_tuple.len == 1) {
-        IupSetRGBId(getHandle(handle), toCStr(attribute), ids_tuple.@"0", arg.r, arg.g, arg.b);
+        IupSetRGBId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", arg.r, arg.g, arg.b);
     } else {
-        IupSetRGBId2(getHandle(handle), toCStr(attribute), ids_tuple.@"0", ids_tuple.@"1", arg.r, arg.g, arg.b);
+        IupSetRGBId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", arg.r, arg.g, arg.b);
     }
 }
 
@@ -287,4 +309,18 @@ pub inline fn intIntToString(buffer: []u8, x: i32, y: i32, comptime separator: u
 fn validateIds(ids_tuple: anytype) void {
     if (comptime !trait.isTuple(@TypeOf(ids_tuple)) or ids_tuple.len > 2)
         @compileError("Expected a tuple with 0, 1 or 2 values");
+}
+
+inline fn getAttribute(value: [:0]const u8) [*c]const u8 {
+
+    //pure numbers are used as attributes in IupList and IupMatrix
+    //translate them into IDVALUE.
+    const IDVALUE = "IDVALUE";
+    const EMPTY = "";
+
+    if (std.mem.eql(u8, value, IDVALUE)) {
+        return @ptrCast([*c]const u8, EMPTY);
+    } else {
+        return toCStr(value);
+    }
 }

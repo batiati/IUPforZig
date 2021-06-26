@@ -252,7 +252,7 @@ pub const DatePick = opaque {
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
+            c.setHandle(self.ref, arg);
             return self.*;
         }
 
@@ -693,28 +693,6 @@ pub const DatePick = opaque {
         }
     };
 
-    ///
-    /// Creates an interface element given its class name and parameters.
-    /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
-    pub fn init() Initializer {
-        var handle = c.IupCreate(Self.CLASS_NAME);
-
-        if (handle) |valid| {
-            return .{
-                .ref = @ptrCast(*Self, valid),
-            };
-        } else {
-            return .{ .ref = undefined, .last_error = Error.NotInitialized };
-        }
-    }
-
-    /// 
-    /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
-    pub fn deinit(self: *Self) void {
-        c.IupDestroy(c.getHandle(self));
-    }
-
     pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
         c.setStrAttribute(self, attribute, .{}, arg);
     }
@@ -745,6 +723,28 @@ pub const DatePick = opaque {
 
     pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
         c.setPtrAttribute(T, handle, attribute, .{}, value);
+    }
+
+    ///
+    /// Creates an interface element given its class name and parameters.
+    /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
+    pub fn init() Initializer {
+        var handle = c.create(Self);
+
+        if (handle) |valid| {
+            return .{
+                .ref = @ptrCast(*Self, valid),
+            };
+        } else {
+            return .{ .ref = undefined, .last_error = Error.NotInitialized };
+        }
+    }
+
+    /// 
+    /// Destroys an interface element and all its children.
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    pub fn deinit(self: *Self) void {
+        c.destroy(self);
     }
 
     ///
@@ -787,7 +787,7 @@ pub const DatePick = opaque {
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "HANDLENAME", .{}, arg);
+        c.setHandle(self, arg);
     }
 
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
