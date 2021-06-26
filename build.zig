@@ -3,7 +3,6 @@ const Builder = std.build.Builder;
 const Pkg = std.build.Pkg;
 
 fn addIupReference(step: *std.build.LibExeObjStep) !void {
-    const b = step.builder;
 
     if (step.target.isWindows()) {
 
@@ -26,7 +25,7 @@ fn addIupReference(step: *std.build.LibExeObjStep) !void {
         step.addLibPath("lib/um");
         step.addLibPath("lib/ucrt");
 
-        step.addLibPath("C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30037\\lib\\x64");
+        step.addLibPath("C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.16.27023\\lib\\x64");
 
 
         // Link againts .lib files

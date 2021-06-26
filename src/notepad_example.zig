@@ -66,6 +66,8 @@ pub const Notepad = struct {
     }
 
     fn createMenu(self: *Self) Menu.Initializer {
+        _ = self;
+
         return Menu.init()
             .setChildren(
             .{
@@ -125,7 +127,7 @@ pub const Notepad = struct {
         );
     }
 
-    fn createToolbar(self: *Self) HBox.Initializer {
+    fn createToolbar(_: *Self) HBox.Initializer {
         return HBox.init()
             .setName(toolbar_name)
             .setMargin(5, 5)
@@ -170,7 +172,7 @@ pub const Notepad = struct {
         if (fileDlg.getStatus() != .Cancelled) {
             var fileName = fileDlg.getValue();
 
-            var file = std.fs.openFileAbsolute(fileName, .{}) catch |err| {
+            var file = std.fs.openFileAbsolute(fileName, .{}) catch {
                 return;
             };
             defer file.close();
@@ -209,7 +211,7 @@ pub const Notepad = struct {
         try open(item);
     }
 
-    fn onButtonSave(button: *Button) !void {
+    fn onButtonSave(_: *Button) !void {
         //TODO
     }
 
@@ -218,7 +220,7 @@ pub const Notepad = struct {
         try find(text);
     }
 
-    fn onItemClose(item: *Item) !void {
+    fn onItemClose(_: *Item) !void {
         MainLoop.close();
     }
 
@@ -245,6 +247,9 @@ pub const Notepad = struct {
     }
 
     fn onCarret(text: *Multiline, lin: i32, col: i32, _: i32) !void {
+        _ = lin;
+        _ = col;
+
         try refreshStatusBar(text);
     }
 };
@@ -416,7 +421,7 @@ const goto_dialog = struct {
         var dlg = button.getDialog() orelse unreachable;
         var txt = dlg.getDialogChild(line_textbox).?.Text;
 
-        var go_to = std.fmt.parseInt(i32, txt.getValue(), 10) catch |_| {
+        var go_to = std.fmt.parseInt(i32, txt.getValue(), 10) catch {
             try MessageDlg.alert(dlg, null, "Invalid line number!");
             return;
         };

@@ -46,7 +46,7 @@ pub const ScreenSize = union(enum) {
 
         if (std.fmt.parseInt(u32, value, 10)) |size| {
             return ScreenSize{ .Size = size };
-        } else |err| {
+        } else |_| {
             return null;
         }
     }

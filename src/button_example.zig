@@ -71,6 +71,10 @@ fn create_dialog() !*Dialog {
 }
 
 fn btn_image_button(self: *Button, button: i32, pressed: i32, x: i32, y: i32, status: [:0]const u8) anyerror!void {
+    _ = y;
+    _ = x;
+    _ = status;
+
     std.debug.print("BUTTON_CB(button={}, press={})\n", .{ button, pressed });
     var text: *Text = self.getDialogChild("text").?.Text;
     if (button == '1') {
@@ -89,11 +93,15 @@ fn btn_on_off_cb(button: *Button) anyerror!void {
     btn_image.setActive(!active);
 }
 
-fn btn_exit_cb(button: *Button) anyerror!void {
+fn btn_exit_cb(_: *Button) anyerror!void {
     MainLoop.exitLoop();
 }
 
 fn btn_big_button_cb(self: *Button, button: i32, pressed: i32, x: i32, y: i32, status: [:0]const u8) anyerror!void {
+    _ = self;
+    _ = x;
+    _ = y;
+    _ = status;
     std.debug.print("BUTTON_CB(button={}, press={})\n", .{ button, pressed });
 }
 

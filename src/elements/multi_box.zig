@@ -157,7 +157,7 @@ pub const MultiBox = opaque {
 
         pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
-            Self.setBoolAttribute(self.ref, attributeName, bool);
+            Self.setBoolAttribute(self.ref, attributeName, arg);
             return self.*;
         }
 

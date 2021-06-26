@@ -10,8 +10,8 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
     return struct {
 
         /// Attribute key to store a reference to the zig callback on IUP's side
-        const STORE = comptime c.toCStr("__" ++ action);
-        const ACTION = comptime c.toCStr(action);
+        const STORE = c.toCStr("__" ++ action);
+        const ACTION = c.toCStr(action);
 
         const Self = @This();
 

@@ -28,17 +28,16 @@ pub fn Impl(comptime T: type) type {
         }
 
         pub fn appendChildren(self: *T, tuple: anytype) !void {
-            comptime const typeOf = @TypeOf(tuple);
+            const typeOf = @TypeOf(tuple);
 
             if (comptime trait.isTuple(typeOf)) {
-                comptime const typeInfo = @typeInfo(typeOf).Struct;
+                const typeInfo = @typeInfo(typeOf).Struct;
 
                 if (T == Dialog) {
 
                     // Dialogs can have just one child, and one Menu
                     // This sintax-sugar adds the top-level Menu along the children list
 
-                    const args_len = getArgsLen(typeOf);
                     var children_qty: usize = 0;
 
                     inline for (typeInfo.fields) |field| {
@@ -174,31 +173,42 @@ pub fn Impl(comptime T: type) type {
             }
         }
 
-        pub fn messageDialogAlert(parent: *Dialog, title: ?[:0]const u8, message: [:0]const u8) !void {
+        pub fn messageDialogAlert(parent: ?*Dialog, title: ?[:0]const u8, message: [:0]const u8) !void {
+            
             var dialog = try (iup.MessageDlg.init()
-                .setParentDialog(parent)
-                .setTitle(title orelse parent.getTitle())
                 .setValue(message)
                 .setDialogType(.Warning)
                 .unwrap());
             defer dialog.deinit();
 
-            _ = dialog.popup(.Center, .Center);
+            if (title) |valid| dialog.setTitle(valid);
+            
+            if (parent) |valid| {
+                if (title == null) dialog.setTitle(valid.getTitle());
+                dialog.setParentDialog(valid);
+            }
+            _ = dialog.popup(.CenterParent, .CenterParent);
         }
 
-        pub fn messageDialogAlertConfirm(parent: *Dialog, title: ?[:0]const u8, message: [:0]const u8) !bool {
+        pub fn messageDialogConfirm(parent: ?*Dialog, title: ?[:0]const u8, message: [:0]const u8) !bool {
             var dialog = try (iup.MessageDialog.init()
-                .setParentDialog(parent)
-                .setTitle(title orelse parent.getTitle())
                 .setValue(message)
                 .setDialogType(.Question)
                 .setButtons(.YesNo)
                 .unwrap());
             defer dialog.deinit();
 
-            var ret = dialog.popup(.Center, .Center);
+            if (title) |valid| dialog.setTitle(valid);
+            
+            if (parent) |valid| {
+                if (title == null) dialog.setTitle(valid.getTitle());
+                dialog.setParentDialog(valid);
+            }
+            _ = dialog.popup(.Center, .Center);            
+
+            var ret = dialog.popup(.CenterParent, .CenterParent);
             return ret == .Button1;
-        }
+        }       
     };
 }
 
