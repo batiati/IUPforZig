@@ -287,16 +287,20 @@ pub fn getRgb(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) iup.
 pub inline fn setRgb(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, arg: iup.Rgb) void {
     validateIds(ids_tuple);
 
-    if (ids_tuple.len == 0) {
-        if (arg.a == null) {
-            IupSetRGB(getHandle(handle), getAttribute(attribute), arg.r, arg.g, arg.b);
-        } else {
-            IupSetRGBA(getHandle(handle), getAttribute(attribute), arg.r, arg.g, arg.b, arg.a.?);
-        }
-    } else if (ids_tuple.len == 1) {
-        IupSetRGBId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", arg.r, arg.g, arg.b);
+    if (arg.alias) |alias| {
+        setStrAttribute(handle, attribute, ids_tuple, alias);
     } else {
-        IupSetRGBId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", arg.r, arg.g, arg.b);
+        if (ids_tuple.len == 0) {
+            if (arg.a == null) {
+                IupSetRGB(getHandle(handle), getAttribute(attribute), arg.r, arg.g, arg.b);
+            } else {
+                IupSetRGBA(getHandle(handle), getAttribute(attribute), arg.r, arg.g, arg.b, arg.a.?);
+            }
+        } else if (ids_tuple.len == 1) {
+            IupSetRGBId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", arg.r, arg.g, arg.b);
+        } else {
+            IupSetRGBId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", arg.r, arg.g, arg.b);
+        }
     }
 }
 

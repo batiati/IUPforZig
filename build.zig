@@ -79,59 +79,26 @@ pub fn build(b: *Builder) !void {
     const test_step = b.step("test", "Run library tests");
     test_step.dependOn(&main_tests.step);
 
-    //Notepad example
-    const exe = b.addExecutable("example", "src/notepad_example.zig");
-    exe.setBuildMode(mode);
-    exe.linkLibC();
-    try addIupReference(exe);
-    exe.install();
+    addExample(b, "run", "src/notepad_example.zig");
+    addExample(b, "tabs", "src/tabs_example.zig");
+    addExample(b, "button", "src/button_example.zig");
+    addExample(b, "image", "src/image_example.zig");
+    addExample(b, "list", "src/list_example.zig");
+}
 
-    const run_cmd = exe.run();
-    run_cmd.step.dependOn(b.getInstallStep());
+fn addExample(b: *Builder, comptime name: []const u8, comptime file: []const u8) void {
 
-    const run_step = b.step("run", "Notepad example app");
-    run_step.dependOn(&run_cmd.step);
+    const mode = b.standardReleaseOptions();
 
-    //Tabs example
-    const tabs_example = b.addExecutable("tabs", "src/tabs_example.zig");
-    tabs_example.setBuildMode(mode);
-    tabs_example.linkLibC();
-    try addIupReference(tabs_example);
-    tabs_example.install();
+    const example = b.addExecutable(name, file);
+    example.setBuildMode(mode);
+    example.linkLibC();
+    try addIupReference(example);
+    example.install();
 
-    const tabs_example_cmd = tabs_example.run();
-    tabs_example_cmd.step.dependOn(b.getInstallStep());
+    const example_cmd = example.run();
+    example_cmd.step.dependOn(b.getInstallStep());
 
-    const tabs_example_step = b.step("tabs", "Tabs example app");
-    tabs_example_step.dependOn(&tabs_example_cmd.step);
-
-    //Button example
-    const button_example = b.addExecutable("button", "src/button_example.zig");
-    button_example.setBuildMode(mode);
-    button_example.linkLibC();
-    try addIupReference(button_example);
-    button_example.install();
-
-    const button_example_cmd = button_example.run();
-    button_example_cmd.step.dependOn(b.getInstallStep());
-
-    const button_example_step = b.step("button", "Button example app");
-    button_example_step.dependOn(&button_example_cmd.step);
-
-    //Image example
-    const image_example = b.addExecutable("image", "src/image_example.zig");
-    image_example.setBuildMode(mode);
-    image_example.linkLibC();
-    try addIupReference(image_example);
-    image_example.install();
-
-    const image_example_cmd = image_example.run();
-    image_example_cmd.step.dependOn(b.getInstallStep());
-
-    const image_example_step = b.step("image", "Image example app");
-    image_example_step.dependOn(&image_example_cmd.step);    
-
-
-
-
+    const example_step = b.step(name, "Example: " ++ name);
+    example_step.dependOn(&example_cmd.step);    
 }

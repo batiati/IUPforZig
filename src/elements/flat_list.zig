@@ -1255,6 +1255,11 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+        pub fn setItems(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IDVALUE", .{index}, arg);
+            return self.*;
+        }
+
 
         /// 
         /// BORDER (creation only): the default value is "NO".
@@ -3215,6 +3220,14 @@ pub const FlatList = opaque {
         c.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
+    pub fn getItems(self: *Self, index: i32) [:0]const u8 {
+        return c.getStrAttribute(self, "IDVALUE", .{index});
+    }
+
+    pub fn setItems(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IDVALUE", .{index}, arg);
+    }
+
     pub fn getCharSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "CHARSIZE", .{});
         return Size.parse(str);
@@ -4963,6 +4976,18 @@ test "FlatList NTheme" {
     defer item.deinit();
 
     var ret = item.getNTheme();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatList Items" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatList.init().setItems(0, "Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getItems(0);
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }

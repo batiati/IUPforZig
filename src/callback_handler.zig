@@ -80,6 +80,8 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
                     break :blk Self.nativeCallbackIFniii;
                 } else if (args.len == 4 and args[1] == [:0]const u8 and args[2] == i32 and args[3] == i32) {
                     break :blk Self.nativeCallbackIFnsii;
+                } else if (args.len == 5 and args[1] == i32 and args[2] == i32 and args[3] == i32 and args[4] == i32) {
+                    break :blk Self.nativeCallbackIFniiii;                    
                 } else if (args.len == 5 and args[1] == i32 and args[2] == i32 and args[3] == i32 and args[4] == [:0]const u8) {
                     break :blk Self.nativeCallbackIFniiis;
                 } else if (args.len == 6 and args[1] == i32 and args[2] == i32 and args[3] == i32 and args[4] == i32 and args[5] == [:0]const u8) {
@@ -115,6 +117,10 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
         fn nativeCallbackIFniii(handle: ?*c.Ihandle, arg0: i32, arg1: i32, arg2: i32) callconv(.C) c_int {
             return invoke(handle, .{ arg0, arg1, arg2 });
         }
+
+        fn nativeCallbackIFniiii(handle: ?*c.Ihandle, arg0: i32, arg1: i32, arg2: i32, arg3: i32) callconv(.C) c_int {
+            return invoke(handle, .{ arg0, arg1, arg2, arg3 });
+        }        
 
         fn nativeCallbackIFnsii(handle: ?*c.Ihandle, arg0: [*]const u8, arg1: i32, arg2: i32) callconv(.C) c_int {
             return invoke(handle, .{ c.fromCStr(arg0), arg1, arg2});

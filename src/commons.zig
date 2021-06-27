@@ -503,5 +503,9 @@ pub const Rgb = struct {
     r: u8,
     g: u8,
     b: u8,
-    a: ?u8 = null,      
+    a: ?u8 = null,
+    alias: ?[:0]const u8 = null,
+
+    pub const BG_COLOR = Rgb{ .alias = "BGCOLOR", .r=0, .g=0, .b=0 };
+    pub const FG_COLOR = Rgb{ .alias = "FGCOLOR", .r=0, .g=0, .b=0 };
 };

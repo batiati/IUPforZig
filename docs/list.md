@@ -8,14 +8,25 @@
 
 A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
 
-## Examples
+## List example
 
-Those examples were directly ported from original C examples, with no feature changes.
+Creates a dialog with three frames, each one containing a list.
+The first is a simple list, the second one is a multiple list and the last one is a drop-down list.
+The second list has a callback associated.
 
-https://webserver2.tecgraf.puc-rio.br/iup/examples
+Source code: [list_example.zig](../src/list_example.zig).
 
-- [Simple notepad (in progress)](simple_notepad.md)
-- [Tabs](tabs.md)
-- [Button](button.md)
-- [Image](image.md)
-- [List](list.md)
+> Type `zig build list` to run this example.
+
+Converted from original example in C
+https://webserver2.tecgraf.puc-rio.br/iup/examples/C/list1.c
+
+## Screenshots
+
+Windows Classic
+
+![List Windows](ListWindows.jpg)
+
+Ubuntu
+
+![List Ubuntu](ListUbuntu.jpg)
