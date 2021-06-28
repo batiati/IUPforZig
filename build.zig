@@ -92,7 +92,6 @@ fn addExample(b: *Builder, comptime name: []const u8, comptime file: []const u8)
     const mode = b.standardReleaseOptions();
 
     const example = b.addExecutable(name, file);
-    example.subsystem = .Windows;
     example.setBuildMode(mode);
     example.linkLibC();
     try addIupReference(example);

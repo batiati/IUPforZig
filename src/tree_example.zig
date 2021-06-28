@@ -73,6 +73,25 @@ fn initTree(dialog: *Dialog) void {
     tree.addLeaf(2, "equilateral");
 
     tree.addLeaf(0, "Test");
+
+
+    std.debug.print("STARTING\n", .{} );
+
+    tree.setStrAttribute("VALUE","ROOT");
+    while(true) {
+
+        var x = tree.getValue();
+
+        var title = tree.getTitle(x);
+        var depth = tree.getDepth(x);
+        std.debug.print("id={} +{}:{s}\n", .{ x, depth, title} );
+
+        tree.setStrAttribute("VALUE", "NEXT");
+        var next = tree.getValue();
+        if (x == next) break;
+
+    }
+
 }
 
 fn rightclick_cb(tree: *Tree, id: i32) !void {
