@@ -1381,20 +1381,20 @@ pub const FontDlg = opaque {
         c.destroy(self);
     }
 
-    pub fn showXY(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) !void {
-        const ret = c.IupShowXY(@ptrCast(*Handle, self), @enumToInt(x), @enumToInt(y));
-        if (ret == c.IUP_ERROR) {
-            debug.print("{} ret={}\n", .{ Error.OpenFailed, ret });
-            return Error.OpenFailed;
-        }
-    }
-
     pub fn popup(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) void {
         _ = c.IupPopup(c.getHandle(self), @enumToInt(x), @enumToInt(y));
     }
 
     pub fn hide(self: *Self) !void {
         _ = c.IupHide(c.getHandle(self));
+    }
+
+    pub fn showXY(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) !void {
+        const ret = c.IupShowXY(@ptrCast(*Handle, self), @enumToInt(x), @enumToInt(y));
+        if (ret == c.IUP_ERROR) {
+            debug.print("{} ret={}\n", .{ Error.OpenFailed, ret });
+            return Error.OpenFailed;
+        }
     }
 
     ///

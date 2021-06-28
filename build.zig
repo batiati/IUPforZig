@@ -84,6 +84,7 @@ pub fn build(b: *Builder) !void {
     addExample(b, "button", "src/button_example.zig");
     addExample(b, "image", "src/image_example.zig");
     addExample(b, "list", "src/list_example.zig");
+    addExample(b, "tree", "src/tree_example.zig");
 }
 
 fn addExample(b: *Builder, comptime name: []const u8, comptime file: []const u8) void {
@@ -91,6 +92,7 @@ fn addExample(b: *Builder, comptime name: []const u8, comptime file: []const u8)
     const mode = b.standardReleaseOptions();
 
     const example = b.addExecutable(name, file);
+    example.subsystem = .Windows;
     example.setBuildMode(mode);
     example.linkLibC();
     try addIupReference(example);

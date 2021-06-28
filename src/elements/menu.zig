@@ -318,6 +318,14 @@ pub const Menu = opaque {
         return ChildrenIterator.init(self);
     }
 
+    pub fn popup(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) void {
+        _ = c.IupPopup(c.getHandle(self), @enumToInt(x), @enumToInt(y));
+    }
+
+    pub fn hide(self: *Self) !void {
+        _ = c.IupHide(c.getHandle(self));
+    }
+
     ///
     ///
     pub fn getDialog(self: *Self) ?*iup.Dialog {

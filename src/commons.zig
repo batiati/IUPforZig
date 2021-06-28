@@ -143,9 +143,29 @@ fn expectDialogSize(str: []const u8, width: ?ScreenSize, height: ?ScreenSize) bo
     return std.meta.eql(dialog_size.width, width) and std.meta.eql(dialog_size.height, height);
 }
 
-pub const DialogPosX = union(enum(c_int)) { Left = c.IUP_LEFT, Center = c.IUP_CENTER, Right = c.IUP_RIGHT, MousePos = c.IUP_MOUSEPOS, Current = c.IUP_CURRENT, CenterParent = c.IUP_CENTERPARENT, LeftParent = c.IUP_LEFTPARENT, RightParent = c.IUP_RIGHTPARENT, Absolute: c_int };
+pub const DialogPosX = union(enum(c_int)) {
+    Left = c.IUP_LEFT,
+    Center = c.IUP_CENTER,
+    Right = c.IUP_RIGHT,
+    MousePos = c.IUP_MOUSEPOS,
+    Current = c.IUP_CURRENT,
+    CenterParent = c.IUP_CENTERPARENT,
+    LeftParent = c.IUP_LEFTPARENT,
+    RightParent = c.IUP_RIGHTPARENT,
+    X: c_int,
+};
 
-pub const DialogPosY = union(enum(c_int)) { Top = c.IUP_TOP, Center = c.IUP_CENTER, Bottom = c.IUP_BOTTOM, MousePos = c.IUP_MOUSEPOS, CenterParent = c.IUP_CENTERPARENT, Current = c.IUP_CURRENT, TopParent = c.IUP_TOPPARENT, BottomParent = c.IUP_BOTTOMPARENT, Absolute: c_int };
+pub const DialogPosY = union(enum(c_int)) {
+    Top = c.IUP_TOP,
+    Center = c.IUP_CENTER,
+    Bottom = c.IUP_BOTTOM,
+    MousePos = c.IUP_MOUSEPOS,
+    CenterParent = c.IUP_CENTERPARENT,
+    Current = c.IUP_CURRENT,
+    TopParent = c.IUP_TOPPARENT,
+    BottomParent = c.IUP_BOTTOMPARENT,
+    Y: c_int,
+};
 
 pub const Margin = struct {
     horiz: i32,
@@ -466,7 +486,6 @@ pub const Date = struct {
                 .month = @intCast(u8, month.?),
                 .day = @intCast(u8, day.?),
             };
-
         } else {
             return null;
         }
@@ -476,11 +495,10 @@ pub const Date = struct {
         var fbs = std.io.fixedBufferStream(buffer);
         std.fmt.format(fbs.writer(), "{}/{}/{}\x00", .{ self.year, self.month, self.day }) catch unreachable;
         return buffer[0 .. fbs.pos - 1 :0];
-    }    
+    }
 };
 
 test "Date Parse" {
-
     var date = Date.parse("2015/04/03") orelse unreachable;
     try testing.expect(date.year == 2015);
     try testing.expect(date.month == 4);
@@ -506,6 +524,55 @@ pub const Rgb = struct {
     a: ?u8 = null,
     alias: ?[:0]const u8 = null,
 
-    pub const BG_COLOR = Rgb{ .alias = "BGCOLOR", .r=0, .g=0, .b=0 };
-    pub const FG_COLOR = Rgb{ .alias = "FGCOLOR", .r=0, .g=0, .b=0 };
+    pub const BG_COLOR = Rgb{ .alias = "BGCOLOR", .r = 0, .g = 0, .b = 0 };
+    pub const FG_COLOR = Rgb{ .alias = "FGCOLOR", .r = 0, .g = 0, .b = 0 };
+};
+
+pub const keys = struct {
+    pub const PAUSE = 0xFF13;
+    pub const ESC = 0xFF1B;
+    pub const HOME = 0xFF50;
+    pub const LEFT = 0xFF51;
+    pub const UP = 0xFF52;
+    pub const RIGHT = 0xFF53;
+    pub const DOWN = 0xFF54;
+    pub const PGUP = 0xFF55;
+    pub const PGDN = 0xFF56;
+    pub const END = 0xFF57;
+    pub const MIDDLE = 0xFF0B;
+    pub const Print = 0xFF61;
+    pub const INS = 0xFF63;
+    pub const Menu = 0xFF67;
+    pub const DEL = 0xFFFF;
+    pub const F1 = 0xFFBE;
+    pub const F2 = 0xFFBF;
+    pub const F3 = 0xFFC0;
+    pub const F4 = 0xFFC1;
+    pub const F5 = 0xFFC2;
+    pub const F6 = 0xFFC3;
+    pub const F7 = 0xFFC4;
+    pub const F8 = 0xFFC5;
+    pub const F9 = 0xFFC6;
+    pub const F10 = 0xFFC7;
+    pub const F11 = 0xFFC8;
+    pub const F12 = 0xFFC9;
+    pub const F13 = 0xFFCA;
+    pub const F14 = 0xFFCB;
+    pub const F15 = 0xFFCC;
+    pub const F16 = 0xFFCD;
+    pub const F17 = 0xFFCE;
+    pub const F18 = 0xFFCF;
+    pub const F19 = 0xFFD0;
+    pub const F20 = 0xFFD1;
+    pub const LSHIFT = 0xFFE1;
+    pub const RSHIFT = 0xFFE2;
+    pub const LCTRL = 0xFFE3;
+    pub const RCTRL = 0xFFE4;
+    pub const LALT = 0xFFE9;
+    pub const RALT = 0xFFEA;
+    pub const NUM = 0xFF7F;
+    pub const SCROLL = 0xFF14;
+    pub const CAPS = 0xFFE5;
+    pub const CLEAR = 0xFFD2;
+    pub const HELP = 0xFFD3;
 };

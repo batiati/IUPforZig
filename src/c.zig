@@ -77,7 +77,7 @@ pub inline fn getStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tupl
     return fromCStr(ret);
 }
 
-pub inline fn setStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: [:0]const u8) void {
+pub inline fn setStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: ?[:0]const u8) void {
     validateIds(ids_tuple);
 
     if (ids_tuple.len == 0) {

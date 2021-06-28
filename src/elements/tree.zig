@@ -317,6 +317,14 @@ pub const Tree = opaque {
 
     pub const OnMultiSelectionFn = fn (self: *Self, arg0: *i32, arg1: i32) anyerror!void;
 
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
+    pub const Kind = enum {
+        Branch,
+        Leaf,
+    };
+
     pub const ZOrder = enum {
         Top,
         Bottom,
@@ -332,11 +340,25 @@ pub const Tree = opaque {
         VerticalFree,
         No,
     };
+    /// 
+    /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub const DelNode = enum {
+        All,
+        Selected,
+        Children,
+        Marked,
+    };
 
     pub const Floating = enum {
         Yes,
         Ignore,
         No,
+    };
+
+    pub const MarkMode = enum {
+        SInGle,
+        Multiple,
     };
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
@@ -344,6 +366,15 @@ pub const Tree = opaque {
     pub const State = enum {
         Expanded,
         Collapsed,
+    };
+    /// 
+    /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+    pub const Mark = enum {
+        BLock,
+        ClearAll,
+        MarkAll,
+        InVertAll,
+        InVert,
     };
 
     pub const ToggleValue = enum {
@@ -418,8 +449,34 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+        /// INSERTBRANCH MOVENODE
+        pub fn setAddExpanded(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "ADDEXPANDED", .{}, arg);
+            return self.*;
+        }
+
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+
+        /// 
+        /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+        pub fn setDropEqualDrag(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "DROPEQUALDRAG", .{}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+        /// INSERTBRANCH MOVENODE
+        pub fn addLeaf(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "ADDLEAF", .{index}, arg);
             return self.*;
         }
 
@@ -435,10 +492,20 @@ pub const Tree = opaque {
             return self.*;
         }
 
+        pub fn imageExpanded(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IMAGEEXPANDED", .{index}, arg);
+            return self.*;
+        }
+
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             c.setStrAttribute(self.ref, "POSITION", .{}, value);
+            return self.*;
+        }
+
+        pub fn insertLeaf(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "INSERTLEAF", .{index}, arg);
             return self.*;
         }
 
@@ -447,6 +514,14 @@ pub const Tree = opaque {
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+        pub fn setDragDropTree(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "DRAGDROPTREE", .{}, arg);
             return self.*;
         }
 
@@ -475,6 +550,11 @@ pub const Tree = opaque {
             return self.*;
         }
 
+        pub fn moveNode(self: *Initializer, index: i32, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "MOVENODE", .{index}, arg);
+            return self.*;
+        }
+
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
             if (arg) |value| switch (value) {
                 .Top => c.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
@@ -482,6 +562,14 @@ pub const Tree = opaque {
             } else {
                 c.clearAttribute(self.ref, "ZORDER", .{});
             }
+            return self.*;
+        }
+
+
+        /// 
+        /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+        pub fn setMarked(self: *Initializer, index: i32, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "MARKED", .{index}, arg);
             return self.*;
         }
 
@@ -542,6 +630,39 @@ pub const Tree = opaque {
 
         pub fn setShowToggle(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SHOWTOGGLE", .{}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+        /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+        pub fn setImageLeaf(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IMAGELEAF", .{}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+        /// INSERTBRANCH MOVENODE
+        pub fn delNode(self: *Initializer, index: i32, arg: ?DelNode) Initializer {
+            if (arg) |value| switch (value) {
+                .All => c.setStrAttribute(self.ref, "DELNODE", .{index}, "ALL"),
+                .Selected => c.setStrAttribute(self.ref, "DELNODE", .{index}, "SELECTED"),
+                .Children => c.setStrAttribute(self.ref, "DELNODE", .{index}, "CHILDREN"),
+                .Marked => c.setStrAttribute(self.ref, "DELNODE", .{index}, "MARKED"),
+            } else {
+                c.clearAttribute(self.ref, "DELNODE", .{index});
+            }
             return self.*;
         }
 
@@ -712,8 +833,28 @@ pub const Tree = opaque {
             return self.*;
         }
 
+        pub fn setMarkMode(self: *Initializer, arg: ?MarkMode) Initializer {
+            if (arg) |value| switch (value) {
+                .SInGle => c.setStrAttribute(self.ref, "MARKMODE", .{}, "SINGLE"),
+                .Multiple => c.setStrAttribute(self.ref, "MARKMODE", .{}, "MULTIPLE"),
+            } else {
+                c.clearAttribute(self.ref, "MARKMODE", .{});
+            }
+            return self.*;
+        }
+
+        pub fn insertBranch(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "INSERTBRANCH", .{index}, arg);
+            return self.*;
+        }
+
         pub fn setHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "HLCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setMarkWhenToggle(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "MARKWHENTOGGLE", .{}, arg);
             return self.*;
         }
 
@@ -746,8 +887,22 @@ pub const Tree = opaque {
             return self.*;
         }
 
-        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "VALUE", .{}, arg);
+        pub fn setMarkStart(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "MARKSTART", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setValue(self: *Initializer, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "VALUE", .{}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+        /// TOPITEM
+        pub fn setIndentation(self: *Initializer, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "INDENTATION", .{}, arg);
             return self.*;
         }
 
@@ -768,6 +923,24 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
+        /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+        /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+        pub fn setImageBranchExpanded(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IMAGEBRANCHEXPANDED", .{}, arg);
+            return self.*;
+        }
+
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
             c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
@@ -777,6 +950,22 @@ pub const Tree = opaque {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             c.setStrAttribute(self.ref, "MINSIZE", .{}, value);
+            return self.*;
+        }
+
+
+        /// 
+        /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+        pub fn mark(self: *Initializer, arg: ?Mark) Initializer {
+            if (arg) |value| switch (value) {
+                .BLock => c.setStrAttribute(self.ref, "MARK", .{}, "BLOCK"),
+                .ClearAll => c.setStrAttribute(self.ref, "MARK", .{}, "CLEARALL"),
+                .MarkAll => c.setStrAttribute(self.ref, "MARK", .{}, "MARKALL"),
+                .InVertAll => c.setStrAttribute(self.ref, "MARK", .{}, "INVERTALL"),
+                .InVert => c.setStrAttribute(self.ref, "MARK", .{}, "INVERT"),
+            } else {
+                c.clearAttribute(self.ref, "MARK", .{});
+            }
             return self.*;
         }
 
@@ -796,8 +985,34 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// HIDELINES HIDEBUTTONS
+        pub fn setHideButtons(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "HIDEBUTTONS", .{}, arg);
+            return self.*;
+        }
+
         pub fn setShowRename(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "SHOWRENAME", .{}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
+        /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+        /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+        /// have the same size.
+        /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+        pub fn setImageBranchCollapsed(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IMAGEBRANCHCOLLAPSED", .{}, arg);
             return self.*;
         }
 
@@ -811,6 +1026,11 @@ pub const Tree = opaque {
         /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
         pub fn rename(self: *Initializer) Initializer {
             c.setStrAttribute(self.ref, "RENAME", .{}, null);
+            return self.*;
+        }
+
+        pub fn setMarkedNodes(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "MARKEDNODES", .{}, arg);
             return self.*;
         }
 
@@ -830,6 +1050,32 @@ pub const Tree = opaque {
 
         pub fn setTouch(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+        /// INSERTBRANCH MOVENODE
+        pub fn addBranch(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "ADDBRANCH", .{index}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+        /// INSERTBRANCH MOVENODE
+        pub fn copyNode(self: *Initializer, index: i32, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "COPYNODE", .{index}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// HIDELINES HIDEBUTTONS
+        pub fn setHideLines(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "HIDELINES", .{}, arg);
             return self.*;
         }
 
@@ -1384,12 +1630,62 @@ pub const Tree = opaque {
         c.setHandle(self, arg);
     }
 
+
+    /// 
+    /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub fn getAddExpanded(self: *Self) bool {
+        return c.getBoolAttribute(self, "ADDEXPANDED", .{});
+    }
+
+
+    /// 
+    /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub fn setAddExpanded(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "ADDEXPANDED", .{}, arg);
+    }
+
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "TIPBGCOLOR", .{});
     }
 
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "TIPBGCOLOR", .{}, rgb);
+    }
+
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+    pub fn getDropEqualDrag(self: *Self) bool {
+        return c.getBoolAttribute(self, "DROPEQUALDRAG", .{});
+    }
+
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+    pub fn setDropEqualDrag(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "DROPEQUALDRAG", .{}, arg);
+    }
+
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
+    pub fn getKind(self: *Self, index: i32) ?Kind {
+        var ret = c.getStrAttribute(self, "KIND", .{index});
+
+        if (std.ascii.eqlIgnoreCase("BRANCH", ret)) return .Branch;
+        if (std.ascii.eqlIgnoreCase("LEAF", ret)) return .Leaf;
+        return null;
+    }
+
+
+    /// 
+    /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub fn addLeaf(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "ADDLEAF", .{index}, arg);
     }
 
     pub fn getRenameCaret(self: *Self) [:0]const u8 {
@@ -1416,6 +1712,10 @@ pub const Tree = opaque {
         return iup.XYPos.parse(str, ',');
     }
 
+    pub fn imageExpanded(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IMAGEEXPANDED", .{index}, arg);
+    }
+
     pub fn getPosition(self: *Self) iup.XYPos {
         var str = c.getStrAttribute(self, "POSITION", .{});
         return iup.XYPos.parse(str, ',');
@@ -1425,6 +1725,14 @@ pub const Tree = opaque {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
         c.setStrAttribute(self, "POSITION", .{}, value);
+    }
+
+    pub fn insertLeaf(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "INSERTLEAF", .{index}, arg);
+    }
+
+    pub fn getNext(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "NEXT", .{index});
     }
 
 
@@ -1439,6 +1747,20 @@ pub const Tree = opaque {
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
+    }
+
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+    pub fn getDragDropTree(self: *Self) bool {
+        return c.getBoolAttribute(self, "DRAGDROPTREE", .{});
+    }
+
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+    pub fn setDragDropTree(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "DRAGDROPTREE", .{}, arg);
     }
 
     pub fn getTip(self: *Self) [:0]const u8 {
@@ -1477,6 +1799,10 @@ pub const Tree = opaque {
         c.setStrAttribute(self, "IMAGE", .{index}, arg);
     }
 
+    pub fn moveNode(self: *Self, index: i32, arg: i32) void {
+        c.setIntAttribute(self, "MOVENODE", .{index}, arg);
+    }
+
     pub fn zOrder(self: *Self, arg: ?ZOrder) void {
         if (arg) |value| switch (value) {
             .Top => c.setStrAttribute(self, "ZORDER", .{}, "TOP"),
@@ -1492,6 +1818,20 @@ pub const Tree = opaque {
 
     pub fn getY(self: *Self) i32 {
         return c.getIntAttribute(self, "Y", .{});
+    }
+
+
+    /// 
+    /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+    pub fn getMarked(self: *Self, index: i32) bool {
+        return c.getBoolAttribute(self, "MARKED", .{index});
+    }
+
+
+    /// 
+    /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+    pub fn setMarked(self: *Self, index: i32, arg: bool) void {
+        c.setBoolAttribute(self, "MARKED", .{index}, arg);
     }
 
     pub fn getDragDrop(self: *Self) bool {
@@ -1532,6 +1872,10 @@ pub const Tree = opaque {
 
     pub fn setToggleVisible(self: *Self, index: i32, arg: bool) void {
         c.setBoolAttribute(self, "TOGGLEVISIBLE", .{index}, arg);
+    }
+
+    pub fn getPrevious(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "PREVIOUS", .{index});
     }
 
 
@@ -1596,6 +1940,53 @@ pub const Tree = opaque {
 
     pub fn setShowToggle(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "SHOWTOGGLE", .{}, arg);
+    }
+
+
+    /// 
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    pub fn getImageLeaf(self: *Self) [:0]const u8 {
+        return c.getStrAttribute(self, "IMAGELEAF", .{});
+    }
+
+
+    /// 
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    pub fn setImageLeaf(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IMAGELEAF", .{}, arg);
+    }
+
+
+    /// 
+    /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub fn delNode(self: *Self, index: i32, arg: ?DelNode) void {
+        if (arg) |value| switch (value) {
+            .All => c.setStrAttribute(self, "DELNODE", .{index}, "ALL"),
+            .Selected => c.setStrAttribute(self, "DELNODE", .{index}, "SELECTED"),
+            .Children => c.setStrAttribute(self, "DELNODE", .{index}, "CHILDREN"),
+            .Marked => c.setStrAttribute(self, "DELNODE", .{index}, "MARKED"),
+        } else {
+            c.clearAttribute(self, "DELNODE", .{index});
+        }
     }
 
 
@@ -1855,6 +2246,26 @@ pub const Tree = opaque {
         c.setIntAttribute(self, "CONTROLID", .{}, arg);
     }
 
+    pub fn getLastAddNode(self: *Self) i32 {
+        return c.getIntAttribute(self, "LASTADDNODE", .{});
+    }
+
+    pub fn getLast(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "LAST", .{index});
+    }
+
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
+    pub fn getDepth(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "DEPTH", .{index});
+    }
+
+    pub fn getFirst(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "FIRST", .{index});
+    }
+
     pub fn getCSpacing(self: *Self) i32 {
         return c.getIntAttribute(self, "CSPACING", .{});
     }
@@ -1871,12 +2282,41 @@ pub const Tree = opaque {
         c.setStrAttribute(self, "TITLEFONT", .{index}, arg);
     }
 
+    pub fn getMarkMode(self: *Self) ?MarkMode {
+        var ret = c.getStrAttribute(self, "MARKMODE", .{});
+
+        if (std.ascii.eqlIgnoreCase("SINGLE", ret)) return .SInGle;
+        if (std.ascii.eqlIgnoreCase("MULTIPLE", ret)) return .Multiple;
+        return null;
+    }
+
+    pub fn setMarkMode(self: *Self, arg: ?MarkMode) void {
+        if (arg) |value| switch (value) {
+            .SInGle => c.setStrAttribute(self, "MARKMODE", .{}, "SINGLE"),
+            .Multiple => c.setStrAttribute(self, "MARKMODE", .{}, "MULTIPLE"),
+        } else {
+            c.clearAttribute(self, "MARKMODE", .{});
+        }
+    }
+
+    pub fn insertBranch(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "INSERTBRANCH", .{index}, arg);
+    }
+
     pub fn getHlColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "HLCOLOR", .{});
     }
 
     pub fn setHlColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "HLCOLOR", .{}, rgb);
+    }
+
+    pub fn getMarkWhenToggle(self: *Self) bool {
+        return c.getBoolAttribute(self, "MARKWHENTOGGLE", .{});
+    }
+
+    pub fn setMarkWhenToggle(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "MARKWHENTOGGLE", .{}, arg);
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
@@ -1928,12 +2368,36 @@ pub const Tree = opaque {
         c.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
-    pub fn getValue(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "VALUE", .{});
+    pub fn getMarkStart(self: *Self) bool {
+        return c.getBoolAttribute(self, "MARKSTART", .{});
     }
 
-    pub fn setValue(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "VALUE", .{}, arg);
+    pub fn setMarkStart(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "MARKSTART", .{}, arg);
+    }
+
+    pub fn getValue(self: *Self) i32 {
+        return c.getIntAttribute(self, "VALUE", .{});
+    }
+
+    pub fn setValue(self: *Self, arg: i32) void {
+        c.setIntAttribute(self, "VALUE", .{}, arg);
+    }
+
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
+    pub fn getIndentation(self: *Self) i32 {
+        return c.getIntAttribute(self, "INDENTATION", .{});
+    }
+
+
+    /// 
+    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
+    /// TOPITEM
+    pub fn setIndentation(self: *Self, arg: i32) void {
+        c.setIntAttribute(self, "INDENTATION", .{}, arg);
     }
 
     pub fn getCPadding(self: *Self) Size {
@@ -1963,6 +2427,40 @@ pub const Tree = opaque {
         c.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
+
+    /// 
+    /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    pub fn getImageBranchExpanded(self: *Self) [:0]const u8 {
+        return c.getStrAttribute(self, "IMAGEBRANCHEXPANDED", .{});
+    }
+
+
+    /// 
+    /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    pub fn setImageBranchExpanded(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IMAGEBRANCHEXPANDED", .{}, arg);
+    }
+
     pub fn getExpandWeight(self: *Self) f64 {
         return c.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
@@ -1980,6 +2478,29 @@ pub const Tree = opaque {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
         c.setStrAttribute(self, "MINSIZE", .{}, value);
+    }
+
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
+    pub fn getParent(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "PARENT", .{index});
+    }
+
+
+    /// 
+    /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+    pub fn mark(self: *Self, arg: ?Mark) void {
+        if (arg) |value| switch (value) {
+            .BLock => c.setStrAttribute(self, "MARK", .{}, "BLOCK"),
+            .ClearAll => c.setStrAttribute(self, "MARK", .{}, "CLEARALL"),
+            .MarkAll => c.setStrAttribute(self, "MARK", .{}, "MARKALL"),
+            .InVertAll => c.setStrAttribute(self, "MARK", .{}, "INVERTALL"),
+            .InVert => c.setStrAttribute(self, "MARK", .{}, "INVERT"),
+        } else {
+            c.clearAttribute(self, "MARK", .{});
+        }
     }
 
     pub fn getRootCount(self: *Self) i32 {
@@ -2015,6 +2536,20 @@ pub const Tree = opaque {
 
 
     /// 
+    /// HIDELINES HIDEBUTTONS
+    pub fn getHideButtons(self: *Self) bool {
+        return c.getBoolAttribute(self, "HIDEBUTTONS", .{});
+    }
+
+
+    /// 
+    /// HIDELINES HIDEBUTTONS
+    pub fn setHideButtons(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "HIDEBUTTONS", .{}, arg);
+    }
+
+
+    /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getTotalChildCount(self: *Self, index: i32) i32 {
@@ -2034,6 +2569,40 @@ pub const Tree = opaque {
         return Size.parse(str);
     }
 
+
+    /// 
+    /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    pub fn getImageBranchCollapsed(self: *Self) [:0]const u8 {
+        return c.getStrAttribute(self, "IMAGEBRANCHCOLLAPSED", .{});
+    }
+
+
+    /// 
+    /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
+    /// have the same size.
+    /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
+    pub fn setImageBranchCollapsed(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IMAGEBRANCHCOLLAPSED", .{}, arg);
+    }
+
     pub fn getDragTypes(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "DRAGTYPES", .{});
     }
@@ -2044,9 +2613,25 @@ pub const Tree = opaque {
 
 
     /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
+    /// TITLEFONTUSERDATA
+    pub fn getChildCount(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "CHILDCOUNT", .{index});
+    }
+
+
+    /// 
     /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
     pub fn rename(self: *Self) void {
         c.setStrAttribute(self, "RENAME", .{}, null);
+    }
+
+    pub fn getMarkedNodes(self: *Self) [:0]const u8 {
+        return c.getStrAttribute(self, "MARKEDNODES", .{});
+    }
+
+    pub fn setMarkedNodes(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "MARKEDNODES", .{}, arg);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
@@ -2071,6 +2656,36 @@ pub const Tree = opaque {
 
     pub fn setTouch(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "TOUCH", .{}, arg);
+    }
+
+
+    /// 
+    /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub fn addBranch(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "ADDBRANCH", .{index}, arg);
+    }
+
+
+    /// 
+    /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub fn copyNode(self: *Self, index: i32, arg: i32) void {
+        c.setIntAttribute(self, "COPYNODE", .{index}, arg);
+    }
+
+
+    /// 
+    /// HIDELINES HIDEBUTTONS
+    pub fn getHideLines(self: *Self) bool {
+        return c.getBoolAttribute(self, "HIDELINES", .{});
+    }
+
+
+    /// 
+    /// HIDELINES HIDEBUTTONS
+    pub fn setHideLines(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "HIDELINES", .{}, arg);
     }
 
     pub fn getDragCursor(self: *Self) [:0]const u8 {
@@ -2510,6 +3125,18 @@ test "Tree HandleName" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "Tree AddExpanded" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setAddExpanded(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getAddExpanded();
+
+    try std.testing.expect(ret == true);
+}
+
 test "Tree TipBgColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2520,6 +3147,18 @@ test "Tree TipBgColor" {
     var ret = item.getTipBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "Tree DropEqualDrag" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setDropEqualDrag(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDropEqualDrag();
+
+    try std.testing.expect(ret == true);
 }
 
 test "Tree RenameCaret" {
@@ -2570,6 +3209,18 @@ test "Tree DropFilesTarget" {
     try std.testing.expect(ret == true);
 }
 
+test "Tree DragDropTree" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setDragDropTree(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDragDropTree();
+
+    try std.testing.expect(ret == true);
+}
+
 test "Tree Tip" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2614,6 +3265,18 @@ test "Tree Visible" {
     defer item.deinit();
 
     var ret = item.getVisible();
+
+    try std.testing.expect(ret == true);
+}
+
+test "Tree Marked" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setMarked(0, true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMarked(0);
 
     try std.testing.expect(ret == true);
 }
@@ -2724,6 +3387,18 @@ test "Tree ShowToggle" {
     var ret = item.getShowToggle();
 
     try std.testing.expect(ret == true);
+}
+
+test "Tree ImageLeaf" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setImageLeaf("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getImageLeaf();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Tree FontSize" {
@@ -2990,6 +3665,18 @@ test "Tree TitleFont" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "Tree MarkMode" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setMarkMode(.SInGle).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMarkMode();
+
+    try std.testing.expect(ret != null and ret.? == .SInGle);
+}
+
 test "Tree HlColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3000,6 +3687,18 @@ test "Tree HlColor" {
     var ret = item.getHlColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "Tree MarkWhenToggle" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setMarkWhenToggle(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMarkWhenToggle();
+
+    try std.testing.expect(ret == true);
 }
 
 test "Tree FontFace" {
@@ -3050,16 +3749,40 @@ test "Tree TipBalloonTitleIcon" {
     try std.testing.expect(ret == true);
 }
 
+test "Tree MarkStart" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setMarkStart(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMarkStart();
+
+    try std.testing.expect(ret == true);
+}
+
 test "Tree Value" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Tree.init().setValue("Hello").unwrap());
+    var item = try (iup.Tree.init().setValue(42).unwrap());
     defer item.deinit();
 
     var ret = item.getValue();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == 42);
+}
+
+test "Tree Indentation" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setIndentation(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getIndentation();
+
+    try std.testing.expect(ret == 42);
 }
 
 test "Tree CPadding" {
@@ -3096,6 +3819,18 @@ test "Tree TipVisible" {
     var ret = item.getTipVisible();
 
     try std.testing.expect(ret == true);
+}
+
+test "Tree ImageBranchExpanded" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setImageBranchExpanded("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getImageBranchExpanded();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Tree ExpandWeight" {
@@ -3146,6 +3881,18 @@ test "Tree NTheme" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "Tree HideButtons" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setHideButtons(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getHideButtons();
+
+    try std.testing.expect(ret == true);
+}
+
 test "Tree ShowRename" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3158,6 +3905,18 @@ test "Tree ShowRename" {
     try std.testing.expect(ret == true);
 }
 
+test "Tree ImageBranchCollapsed" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setImageBranchCollapsed("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getImageBranchCollapsed();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "Tree DragTypes" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3166,6 +3925,18 @@ test "Tree DragTypes" {
     defer item.deinit();
 
     var ret = item.getDragTypes();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "Tree MarkedNodes" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setMarkedNodes("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getMarkedNodes();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -3190,6 +3961,18 @@ test "Tree Touch" {
     defer item.deinit();
 
     var ret = item.getTouch();
+
+    try std.testing.expect(ret == true);
+}
+
+test "Tree HideLines" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setHideLines(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getHideLines();
 
     try std.testing.expect(ret == true);
 }

@@ -464,11 +464,34 @@ pub const FlatTree = opaque {
         DrawStroke,
     };
     /// 
+    /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+    pub const Mark = enum {
+        BLock,
+        ClearAll,
+        MarkAll,
+        InVertAll,
+        InVert,
+    };
+    /// 
+    /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub const DelNode = enum {
+        All,
+        Selected,
+        Children,
+        Marked,
+    };
+    /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub const State = enum {
         Expanded,
         Collapsed,
+    };
+
+    pub const MarkMode = enum {
+        SInGle,
+        Multiple,
     };
 
     pub const ToggleValue = enum {
@@ -481,6 +504,13 @@ pub const FlatTree = opaque {
         Yes,
         Ignore,
         No,
+    };
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+    /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
+    pub const Kind = enum {
+        Branch,
+        Leaf,
     };
 
     pub const Initializer = struct {
@@ -550,6 +580,15 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
+        /// BUTTONBRDCOLOR(*)BUTTONSIZE(*) BUTTONPLUSIMAGE(*)BUTTONMINUSIMAGE(*)
+        pub fn setHideLines(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "HIDELINES", .{}, arg);
+            return self.*;
+        }
+
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
@@ -557,8 +596,8 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
-        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "VALUE", .{}, arg);
+        pub fn setValue(self: *Initializer, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
 
@@ -634,6 +673,14 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+        pub fn setMarked(self: *Initializer, index: i32, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "MARKED", .{index}, arg);
+            return self.*;
+        }
+
         pub fn setXMin(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "XMIN", .{}, arg);
             return self.*;
@@ -641,6 +688,11 @@ pub const FlatTree = opaque {
 
         pub fn setDrawTextEllipsis(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DRAWTEXTELLIPSIS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setImageBranchExpanded(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IMAGEBRANCHEXPANDED", .{}, arg);
             return self.*;
         }
 
@@ -695,6 +747,11 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+        pub fn setIndentation(self: *Initializer, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "INDENTATION", .{}, arg);
+            return self.*;
+        }
+
         pub fn setDrawTextClip(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DRAWTEXTCLIP", .{}, arg);
             return self.*;
@@ -715,6 +772,16 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+        pub fn addLeaf(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "ADDLEAF", .{index}, arg);
+            return self.*;
+        }
+
+        pub fn setMarkWhenToggle(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "MARKWHENTOGGLE", .{}, arg);
+            return self.*;
+        }
+
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
@@ -728,6 +795,14 @@ pub const FlatTree = opaque {
         /// RASTERSIZE SPACING TOPITEM
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "BGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+
+        /// 
+        /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+        pub fn setDropEqualDrag(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "DROPEQUALDRAG", .{}, arg);
             return self.*;
         }
 
@@ -762,6 +837,11 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+        pub fn insertBranch(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "INSERTBRANCH", .{index}, arg);
+            return self.*;
+        }
+
         pub fn setDrawMakeInactive(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DRAWMAKEINACTIVE", .{}, arg);
             return self.*;
@@ -776,6 +856,11 @@ pub const FlatTree = opaque {
 
         pub fn setDX(self: *Initializer, arg: f64) Initializer {
             c.setDoubleAttribute(self.ref, "DX", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setAddExpanded(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "ADDEXPANDED", .{}, arg);
             return self.*;
         }
 
@@ -825,9 +910,46 @@ pub const FlatTree = opaque {
 
 
         /// 
+        /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+        pub fn mark(self: *Initializer, arg: ?Mark) Initializer {
+            if (arg) |value| switch (value) {
+                .BLock => c.setStrAttribute(self.ref, "MARK", .{}, "BLOCK"),
+                .ClearAll => c.setStrAttribute(self.ref, "MARK", .{}, "CLEARALL"),
+                .MarkAll => c.setStrAttribute(self.ref, "MARK", .{}, "MARKALL"),
+                .InVertAll => c.setStrAttribute(self.ref, "MARK", .{}, "INVERTALL"),
+                .InVert => c.setStrAttribute(self.ref, "MARK", .{}, "INVERT"),
+            } else {
+                c.clearAttribute(self.ref, "MARK", .{});
+            }
+            return self.*;
+        }
+
+
+        /// 
+        /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+        /// INSERTBRANCH MOVENODE
+        pub fn delNode(self: *Initializer, index: i32, arg: ?DelNode) Initializer {
+            if (arg) |value| switch (value) {
+                .All => c.setStrAttribute(self.ref, "DELNODE", .{index}, "ALL"),
+                .Selected => c.setStrAttribute(self.ref, "DELNODE", .{index}, "SELECTED"),
+                .Children => c.setStrAttribute(self.ref, "DELNODE", .{index}, "CHILDREN"),
+                .Marked => c.setStrAttribute(self.ref, "DELNODE", .{index}, "MARKED"),
+            } else {
+                c.clearAttribute(self.ref, "DELNODE", .{index});
+            }
+            return self.*;
+        }
+
+
+        /// 
         /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
         pub fn rename(self: *Initializer) Initializer {
             c.setStrAttribute(self.ref, "RENAME", .{}, null);
+            return self.*;
+        }
+
+        pub fn setMarkedNodes(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "MARKEDNODES", .{}, arg);
             return self.*;
         }
 
@@ -852,6 +974,14 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+        pub fn setDragDropTree(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "DRAGDROPTREE", .{}, arg);
+            return self.*;
+        }
+
         pub fn setDragCursor(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
@@ -864,6 +994,11 @@ pub const FlatTree = opaque {
 
         pub fn setItemTip(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "ITEMTIP", .{index}, arg);
+            return self.*;
+        }
+
+        pub fn moveNode(self: *Initializer, index: i32, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "MOVENODE", .{index}, arg);
             return self.*;
         }
 
@@ -927,6 +1062,15 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+        /// INSERTBRANCH MOVENODE
+        pub fn copyNode(self: *Initializer, index: i32, arg: i32) Initializer {
+            c.setIntAttribute(self.ref, "COPYNODE", .{index}, arg);
+            return self.*;
+        }
+
         pub fn setYMax(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "YMAX", .{}, arg);
             return self.*;
@@ -934,6 +1078,11 @@ pub const FlatTree = opaque {
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "NTHEME", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setImageLeaf(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IMAGELEAF", .{}, arg);
             return self.*;
         }
 
@@ -987,6 +1136,16 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+        pub fn setMarkMode(self: *Initializer, arg: ?MarkMode) Initializer {
+            if (arg) |value| switch (value) {
+                .SInGle => c.setStrAttribute(self.ref, "MARKMODE", .{}, "SINGLE"),
+                .Multiple => c.setStrAttribute(self.ref, "MARKMODE", .{}, "MULTIPLE"),
+            } else {
+                c.clearAttribute(self.ref, "MARKMODE", .{});
+            }
+            return self.*;
+        }
+
         pub fn setDrawFont(self: *Initializer, arg: [:0]const u8) Initializer {
             c.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
             return self.*;
@@ -1002,13 +1161,37 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+        pub fn insertLeaf(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "INSERTLEAF", .{index}, arg);
+            return self.*;
+        }
+
         pub fn setDrawBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             c.setRgb(self.ref, "DRAWBGCOLOR", .{}, rgb);
             return self.*;
         }
 
+
+        /// 
+        /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+        /// INSERTBRANCH MOVENODE
+        pub fn addBranch(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "ADDBRANCH", .{index}, arg);
+            return self.*;
+        }
+
         pub fn setYMin(self: *Initializer, arg: i32) Initializer {
             c.setIntAttribute(self.ref, "YMIN", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setImageExpanded(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IMAGEEXPANDED", .{index}, arg);
+            return self.*;
+        }
+
+        pub fn setMarkStart(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "MARKSTART", .{}, arg);
             return self.*;
         }
 
@@ -1032,6 +1215,15 @@ pub const FlatTree = opaque {
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
             c.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED
+        /// IMAGEBRANCHEXPANDEDBACKIMAGE(*)BACKIMAGEZOOM(*)
+        pub fn setImageBranchCollapsed(self: *Initializer, arg: [:0]const u8) Initializer {
+            c.setStrAttribute(self.ref, "IMAGEBRANCHCOLLAPSED", .{}, arg);
             return self.*;
         }
 
@@ -1118,6 +1310,15 @@ pub const FlatTree = opaque {
             } else {
                 c.clearAttribute(self.ref, "FLOATING", .{});
             }
+            return self.*;
+        }
+
+
+        /// 
+        /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
+        /// BUTTONBRDCOLOR(*)BUTTONSIZE(*) BUTTONPLUSIMAGE(*)BUTTONMINUSIMAGE(*)
+        pub fn setHideButtons(self: *Initializer, arg: bool) Initializer {
+            c.setBoolAttribute(self.ref, "HIDEBUTTONS", .{}, arg);
             return self.*;
         }
 
@@ -1866,6 +2067,22 @@ pub const FlatTree = opaque {
         c.setIntAttribute(self, "ICONSPACING", .{}, arg);
     }
 
+
+    /// 
+    /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
+    /// BUTTONBRDCOLOR(*)BUTTONSIZE(*) BUTTONPLUSIMAGE(*)BUTTONMINUSIMAGE(*)
+    pub fn getHideLines(self: *Self) bool {
+        return c.getBoolAttribute(self, "HIDELINES", .{});
+    }
+
+
+    /// 
+    /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
+    /// BUTTONBRDCOLOR(*)BUTTONSIZE(*) BUTTONPLUSIMAGE(*)BUTTONMINUSIMAGE(*)
+    pub fn setHideLines(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "HIDELINES", .{}, arg);
+    }
+
     pub fn getSize(self: *Self) Size {
         var str = c.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
@@ -1882,6 +2099,10 @@ pub const FlatTree = opaque {
         return iup.XYPos.parse(str, ',');
     }
 
+    pub fn getFirst(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "FIRST", .{index});
+    }
+
     pub fn getX(self: *Self) i32 {
         return c.getIntAttribute(self, "X", .{});
     }
@@ -1890,12 +2111,12 @@ pub const FlatTree = opaque {
         return c.getIntAttribute(self, "Y", .{});
     }
 
-    pub fn getValue(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "VALUE", .{});
+    pub fn getValue(self: *Self) i32 {
+        return c.getIntAttribute(self, "VALUE", .{});
     }
 
-    pub fn setValue(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "VALUE", .{}, arg);
+    pub fn setValue(self: *Self, arg: i32) void {
+        c.setIntAttribute(self, "VALUE", .{}, arg);
     }
 
     pub fn getTipFgColor(self: *Self) ?iup.Rgb {
@@ -2021,6 +2242,20 @@ pub const FlatTree = opaque {
         c.setStrAttribute(self, "USERSIZE", .{}, value);
     }
 
+
+    /// 
+    /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+    pub fn getMarked(self: *Self, index: i32) bool {
+        return c.getBoolAttribute(self, "MARKED", .{index});
+    }
+
+
+    /// 
+    /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+    pub fn setMarked(self: *Self, index: i32, arg: bool) void {
+        c.setBoolAttribute(self, "MARKED", .{index}, arg);
+    }
+
     pub fn getXMin(self: *Self) i32 {
         return c.getIntAttribute(self, "XMIN", .{});
     }
@@ -2035,6 +2270,14 @@ pub const FlatTree = opaque {
 
     pub fn setDrawTextEllipsis(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "DRAWTEXTELLIPSIS", .{}, arg);
+    }
+
+    pub fn getImageBranchExpanded(self: *Self) [:0]const u8 {
+        return c.getStrAttribute(self, "IMAGEBRANCHEXPANDED", .{});
+    }
+
+    pub fn setImageBranchExpanded(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IMAGEBRANCHEXPANDED", .{}, arg);
     }
 
     pub fn getToggleVisible(self: *Self, index: i32) bool {
@@ -2120,6 +2363,14 @@ pub const FlatTree = opaque {
         c.setBoolAttribute(self, "AUTOREDRAW", .{}, arg);
     }
 
+    pub fn getIndentation(self: *Self) i32 {
+        return c.getIntAttribute(self, "INDENTATION", .{});
+    }
+
+    pub fn setIndentation(self: *Self, arg: i32) void {
+        c.setIntAttribute(self, "INDENTATION", .{}, arg);
+    }
+
     pub fn getYAutoHide(self: *Self) bool {
         return c.getBoolAttribute(self, "YAUTOHIDE", .{});
     }
@@ -2149,6 +2400,18 @@ pub const FlatTree = opaque {
         }
     }
 
+    pub fn addLeaf(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "ADDLEAF", .{index}, arg);
+    }
+
+    pub fn getMarkWhenToggle(self: *Self) bool {
+        return c.getBoolAttribute(self, "MARKWHENTOGGLE", .{});
+    }
+
+    pub fn setMarkWhenToggle(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "MARKWHENTOGGLE", .{}, arg);
+    }
+
     pub fn getVisible(self: *Self) bool {
         return c.getBoolAttribute(self, "VISIBLE", .{});
     }
@@ -2175,6 +2438,20 @@ pub const FlatTree = opaque {
     /// RASTERSIZE SPACING TOPITEM
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         c.setRgb(self, "BGCOLOR", .{}, rgb);
+    }
+
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+    pub fn getDropEqualDrag(self: *Self) bool {
+        return c.getBoolAttribute(self, "DROPEQUALDRAG", .{});
+    }
+
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+    pub fn setDropEqualDrag(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "DROPEQUALDRAG", .{}, arg);
     }
 
     pub fn getRasterSize(self: *Self) Size {
@@ -2234,6 +2511,10 @@ pub const FlatTree = opaque {
         return Size.parse(str);
     }
 
+    pub fn insertBranch(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "INSERTBRANCH", .{index}, arg);
+    }
+
     pub fn getDrawMakeInactive(self: *Self) bool {
         return c.getBoolAttribute(self, "DRAWMAKEINACTIVE", .{});
     }
@@ -2259,6 +2540,14 @@ pub const FlatTree = opaque {
 
     pub fn setDX(self: *Self, arg: f64) void {
         c.setDoubleAttribute(self, "DX", .{}, arg);
+    }
+
+    pub fn getAddExpanded(self: *Self) bool {
+        return c.getBoolAttribute(self, "ADDEXPANDED", .{});
+    }
+
+    pub fn setAddExpanded(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "ADDEXPANDED", .{}, arg);
     }
 
     pub fn getDY(self: *Self) f64 {
@@ -2338,6 +2627,36 @@ pub const FlatTree = opaque {
 
 
     /// 
+    /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
+    pub fn mark(self: *Self, arg: ?Mark) void {
+        if (arg) |value| switch (value) {
+            .BLock => c.setStrAttribute(self, "MARK", .{}, "BLOCK"),
+            .ClearAll => c.setStrAttribute(self, "MARK", .{}, "CLEARALL"),
+            .MarkAll => c.setStrAttribute(self, "MARK", .{}, "MARKALL"),
+            .InVertAll => c.setStrAttribute(self, "MARK", .{}, "INVERTALL"),
+            .InVert => c.setStrAttribute(self, "MARK", .{}, "INVERT"),
+        } else {
+            c.clearAttribute(self, "MARK", .{});
+        }
+    }
+
+
+    /// 
+    /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub fn delNode(self: *Self, index: i32, arg: ?DelNode) void {
+        if (arg) |value| switch (value) {
+            .All => c.setStrAttribute(self, "DELNODE", .{index}, "ALL"),
+            .Selected => c.setStrAttribute(self, "DELNODE", .{index}, "SELECTED"),
+            .Children => c.setStrAttribute(self, "DELNODE", .{index}, "CHILDREN"),
+            .Marked => c.setStrAttribute(self, "DELNODE", .{index}, "MARKED"),
+        } else {
+            c.clearAttribute(self, "DELNODE", .{index});
+        }
+    }
+
+
+    /// 
     /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
     pub fn rename(self: *Self) void {
         c.setStrAttribute(self, "RENAME", .{}, null);
@@ -2349,6 +2668,14 @@ pub const FlatTree = opaque {
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn getTotalChildCount(self: *Self, index: i32) i32 {
         return c.getIntAttribute(self, "TOTALCHILDCOUNT", .{index});
+    }
+
+    pub fn getMarkedNodes(self: *Self) [:0]const u8 {
+        return c.getStrAttribute(self, "MARKEDNODES", .{});
+    }
+
+    pub fn setMarkedNodes(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "MARKEDNODES", .{}, arg);
     }
 
 
@@ -2387,6 +2714,20 @@ pub const FlatTree = opaque {
         c.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+    pub fn getDragDropTree(self: *Self) bool {
+        return c.getBoolAttribute(self, "DRAGDROPTREE", .{});
+    }
+
+
+    /// 
+    /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
+    pub fn setDragDropTree(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "DRAGDROPTREE", .{}, arg);
+    }
+
     pub fn getDragCursor(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "DRAGCURSOR", .{});
     }
@@ -2409,6 +2750,10 @@ pub const FlatTree = opaque {
 
     pub fn setItemTip(self: *Self, index: i32, arg: [:0]const u8) void {
         c.setStrAttribute(self, "ITEMTIP", .{index}, arg);
+    }
+
+    pub fn moveNode(self: *Self, index: i32, arg: i32) void {
+        c.setIntAttribute(self, "MOVENODE", .{index}, arg);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
@@ -2495,6 +2840,14 @@ pub const FlatTree = opaque {
         return c.getBoolAttribute(self, "XHIDDEN", .{});
     }
 
+    pub fn getNext(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "NEXT", .{index});
+    }
+
+    pub fn getLastAddNode(self: *Self) i32 {
+        return c.getIntAttribute(self, "LASTADDNODE", .{});
+    }
+
     pub fn getFontSize(self: *Self) i32 {
         return c.getIntAttribute(self, "FONTSIZE", .{});
     }
@@ -2511,6 +2864,14 @@ pub const FlatTree = opaque {
         c.setIntAttribute(self, "DRAWANTIALIAS", .{}, arg);
     }
 
+
+    /// 
+    /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub fn copyNode(self: *Self, index: i32, arg: i32) void {
+        c.setIntAttribute(self, "COPYNODE", .{index}, arg);
+    }
+
     pub fn getYMax(self: *Self) i32 {
         return c.getIntAttribute(self, "YMAX", .{});
     }
@@ -2525,6 +2886,14 @@ pub const FlatTree = opaque {
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "NTHEME", .{}, arg);
+    }
+
+    pub fn getImageLeaf(self: *Self) [:0]const u8 {
+        return c.getStrAttribute(self, "IMAGELEAF", .{});
+    }
+
+    pub fn setImageLeaf(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IMAGELEAF", .{}, arg);
     }
 
     pub fn getDragSourceMove(self: *Self) bool {
@@ -2615,6 +2984,23 @@ pub const FlatTree = opaque {
         c.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
+    pub fn getMarkMode(self: *Self) ?MarkMode {
+        var ret = c.getStrAttribute(self, "MARKMODE", .{});
+
+        if (std.ascii.eqlIgnoreCase("SINGLE", ret)) return .SInGle;
+        if (std.ascii.eqlIgnoreCase("MULTIPLE", ret)) return .Multiple;
+        return null;
+    }
+
+    pub fn setMarkMode(self: *Self, arg: ?MarkMode) void {
+        if (arg) |value| switch (value) {
+            .SInGle => c.setStrAttribute(self, "MARKMODE", .{}, "SINGLE"),
+            .Multiple => c.setStrAttribute(self, "MARKMODE", .{}, "MULTIPLE"),
+        } else {
+            c.clearAttribute(self, "MARKMODE", .{});
+        }
+    }
+
     pub fn getDrawFont(self: *Self) [:0]const u8 {
         return c.getStrAttribute(self, "DRAWFONT", .{});
     }
@@ -2639,6 +3025,14 @@ pub const FlatTree = opaque {
         c.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
+    pub fn getDepth(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "DEPTH", .{index});
+    }
+
+    pub fn insertLeaf(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "INSERTLEAF", .{index}, arg);
+    }
+
     pub fn getDrawBgColor(self: *Self) ?iup.Rgb {
         return c.getRgb(self, "DRAWBGCOLOR", .{});
     }
@@ -2647,12 +3041,40 @@ pub const FlatTree = opaque {
         c.setRgb(self, "DRAWBGCOLOR", .{}, rgb);
     }
 
+
+    /// 
+    /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
+    /// INSERTBRANCH MOVENODE
+    pub fn addBranch(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "ADDBRANCH", .{index}, arg);
+    }
+
     pub fn getYMin(self: *Self) i32 {
         return c.getIntAttribute(self, "YMIN", .{});
     }
 
     pub fn setYMin(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "YMIN", .{}, arg);
+    }
+
+    pub fn getImageExpanded(self: *Self, index: i32) [:0]const u8 {
+        return c.getStrAttribute(self, "IMAGEEXPANDED", .{index});
+    }
+
+    pub fn setImageExpanded(self: *Self, index: i32, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IMAGEEXPANDED", .{index}, arg);
+    }
+
+    pub fn getPrevious(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "PREVIOUS", .{index});
+    }
+
+    pub fn getMarkStart(self: *Self) bool {
+        return c.getBoolAttribute(self, "MARKSTART", .{});
+    }
+
+    pub fn setMarkStart(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "MARKSTART", .{}, arg);
     }
 
     pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
@@ -2693,6 +3115,22 @@ pub const FlatTree = opaque {
         c.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
     }
 
+
+    /// 
+    /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED
+    /// IMAGEBRANCHEXPANDEDBACKIMAGE(*)BACKIMAGEZOOM(*)
+    pub fn getImageBranchCollapsed(self: *Self) [:0]const u8 {
+        return c.getStrAttribute(self, "IMAGEBRANCHCOLLAPSED", .{});
+    }
+
+
+    /// 
+    /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED
+    /// IMAGEBRANCHEXPANDEDBACKIMAGE(*)BACKIMAGEZOOM(*)
+    pub fn setImageBranchCollapsed(self: *Self, arg: [:0]const u8) void {
+        c.setStrAttribute(self, "IMAGEBRANCHCOLLAPSED", .{}, arg);
+    }
+
     pub fn expandAll(self: *Self) void {
         c.setStrAttribute(self, "EXPANDALL", .{}, null);
     }
@@ -2711,6 +3149,10 @@ pub const FlatTree = opaque {
 
     pub fn setBackImage(self: *Self, arg: [:0]const u8) void {
         c.setStrAttribute(self, "BACKIMAGE", .{}, arg);
+    }
+
+    pub fn getLast(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "LAST", .{index});
     }
 
     pub fn getHlColorAlpha(self: *Self) i32 {
@@ -2743,6 +3185,14 @@ pub const FlatTree = opaque {
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn setTitle(self: *Self, index: i32, arg: [:0]const u8) void {
         c.setStrAttribute(self, "TITLE", .{index}, arg);
+    }
+
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+    /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
+    pub fn getParent(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "PARENT", .{index});
     }
 
     pub fn getDrawTextWrap(self: *Self) bool {
@@ -2839,6 +3289,30 @@ pub const FlatTree = opaque {
         }
     }
 
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+    /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
+    pub fn getChildCount(self: *Self, index: i32) i32 {
+        return c.getIntAttribute(self, "CHILDCOUNT", .{index});
+    }
+
+
+    /// 
+    /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
+    /// BUTTONBRDCOLOR(*)BUTTONSIZE(*) BUTTONPLUSIMAGE(*)BUTTONMINUSIMAGE(*)
+    pub fn getHideButtons(self: *Self) bool {
+        return c.getBoolAttribute(self, "HIDEBUTTONS", .{});
+    }
+
+
+    /// 
+    /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
+    /// BUTTONBRDCOLOR(*)BUTTONSIZE(*) BUTTONPLUSIMAGE(*)BUTTONMINUSIMAGE(*)
+    pub fn setHideButtons(self: *Self, arg: bool) void {
+        c.setBoolAttribute(self, "HIDEBUTTONS", .{}, arg);
+    }
+
     pub fn topItem(self: *Self, arg: i32) void {
         c.setIntAttribute(self, "TOPITEM", .{}, arg);
     }
@@ -2849,6 +3323,18 @@ pub const FlatTree = opaque {
 
     pub fn setTouch(self: *Self, arg: bool) void {
         c.setBoolAttribute(self, "TOUCH", .{}, arg);
+    }
+
+
+    /// 
+    /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
+    /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
+    pub fn getKind(self: *Self, index: i32) ?Kind {
+        var ret = c.getStrAttribute(self, "KIND", .{index});
+
+        if (std.ascii.eqlIgnoreCase("BRANCH", ret)) return .Branch;
+        if (std.ascii.eqlIgnoreCase("LEAF", ret)) return .Leaf;
+        return null;
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
@@ -3507,6 +3993,18 @@ test "FlatTree IconSpacing" {
     try std.testing.expect(ret == 42);
 }
 
+test "FlatTree HideLines" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setHideLines(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getHideLines();
+
+    try std.testing.expect(ret == true);
+}
+
 test "FlatTree Size" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3523,12 +4021,12 @@ test "FlatTree Value" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTree.init().setValue("Hello").unwrap());
+    var item = try (iup.FlatTree.init().setValue(42).unwrap());
     defer item.deinit();
 
     var ret = item.getValue();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == 42);
 }
 
 test "FlatTree TipFgColor" {
@@ -3651,6 +4149,18 @@ test "FlatTree UserSize" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
+test "FlatTree Marked" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setMarked(0, true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMarked(0);
+
+    try std.testing.expect(ret == true);
+}
+
 test "FlatTree XMin" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3673,6 +4183,18 @@ test "FlatTree DrawTextEllipsis" {
     var ret = item.getDrawTextEllipsis();
 
     try std.testing.expect(ret == true);
+}
+
+test "FlatTree ImageBranchExpanded" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setImageBranchExpanded("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getImageBranchExpanded();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "FlatTree ToggleVisible" {
@@ -3771,6 +4293,18 @@ test "FlatTree BackImageZoom" {
     try std.testing.expect(ret == true);
 }
 
+test "FlatTree Indentation" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setIndentation(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getIndentation();
+
+    try std.testing.expect(ret == 42);
+}
+
 test "FlatTree DrawTextClip" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3795,6 +4329,18 @@ test "FlatTree Theme" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "FlatTree MarkWhenToggle" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setMarkWhenToggle(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMarkWhenToggle();
+
+    try std.testing.expect(ret == true);
+}
+
 test "FlatTree Visible" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3817,6 +4363,18 @@ test "FlatTree BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "FlatTree DropEqualDrag" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setDropEqualDrag(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDropEqualDrag();
+
+    try std.testing.expect(ret == true);
 }
 
 test "FlatTree RasterSize" {
@@ -3901,6 +4459,18 @@ test "FlatTree DX" {
     var ret = item.getDX();
 
     try std.testing.expect(ret == @as(f64, 3.14));
+}
+
+test "FlatTree AddExpanded" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setAddExpanded(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getAddExpanded();
+
+    try std.testing.expect(ret == true);
 }
 
 test "FlatTree DY" {
@@ -3999,6 +4569,18 @@ test "FlatTree FontFace" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "FlatTree MarkedNodes" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setMarkedNodes("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getMarkedNodes();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "FlatTree State" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4021,6 +4603,18 @@ test "FlatTree MaxSize" {
     var ret = item.getMaxSize();
 
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "FlatTree DragDropTree" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setDragDropTree(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDragDropTree();
+
+    try std.testing.expect(ret == true);
 }
 
 test "FlatTree DragCursor" {
@@ -4227,6 +4821,18 @@ test "FlatTree NTheme" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "FlatTree ImageLeaf" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setImageLeaf("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getImageLeaf();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "FlatTree DragSourceMove" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4347,6 +4953,18 @@ test "FlatTree TipVisible" {
     try std.testing.expect(ret == true);
 }
 
+test "FlatTree MarkMode" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setMarkMode(.SInGle).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMarkMode();
+
+    try std.testing.expect(ret != null and ret.? == .SInGle);
+}
+
 test "FlatTree DrawFont" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4407,6 +5025,30 @@ test "FlatTree YMin" {
     try std.testing.expect(ret == 42);
 }
 
+test "FlatTree ImageExpanded" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setImageExpanded(0, "Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getImageExpanded(0);
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatTree MarkStart" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setMarkStart(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMarkStart();
+
+    try std.testing.expect(ret == true);
+}
+
 test "FlatTree NormalizerGroup" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4453,6 +5095,18 @@ test "FlatTree DropFilesTarget" {
     var ret = item.getDropFilesTarget();
 
     try std.testing.expect(ret == true);
+}
+
+test "FlatTree ImageBranchCollapsed" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setImageBranchCollapsed("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getImageBranchCollapsed();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "FlatTree TipBalloonTitle" {
@@ -4609,6 +5263,18 @@ test "FlatTree Floating" {
     var ret = item.getFloating();
 
     try std.testing.expect(ret != null and ret.? == .Yes);
+}
+
+test "FlatTree HideButtons" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setHideButtons(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getHideButtons();
+
+    try std.testing.expect(ret == true);
 }
 
 test "FlatTree Touch" {
