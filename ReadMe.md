@@ -8,6 +8,18 @@
 
 A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
 
+## Examples
+
+- [Simple notepad (in progress)](simple_notepad.md)
+- [Tabs](tabs.md)
+- [Button](button.md)
+- [Image](image.md)
+- [List](list.md)
+- [Tree](tree.md)
+
+![Simple Notepad Windows](docs/SimpleNotepadWindows.gif)
+
+![Simple Notepad Ubuntu](docs/SimpleNotepadUbuntu.gif)
 
 ## First look
 
@@ -55,15 +67,6 @@ Resulting in this:
 ![Hello World Windows](docs/HelloWorldWindows.jpg)
 
 ![Hello World Ubuntu](docs/HelloWorldUbuntu.jpg)
-
-## Examples
-
-### Please refer to [examples page](docs/examples.md) for more details (still in progress ... )
-
-
-![Simple Notepad Windows](docs/SimpleNotepadWindows.gif)
-
-![Simple Notepad Ubuntu](docs/SimpleNotepadUbuntu.gif)
 
 ## IUP Metadata
 
