@@ -8,6 +8,7 @@
 
 A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
 
+
 ## First look
 
 A simple hello world example looks like this:
@@ -157,7 +158,7 @@ https://sourceforge.net/projects/canvasdraw/files/5.14/
 
 ## Pending work
 
-- [ ] Support for collections and indexed attributes (list items for example)
+- [X] Support for collections and indexed attributes (list items for example)
 
 - [ ] Complete the [Simple Notepad](https://github.com/batiati/IUPforZig/blob/master/src/example.zig) example.
 
@@ -170,6 +171,16 @@ https://sourceforge.net/projects/canvasdraw/files/5.14/
 - [ ] Additional controls (image library, matrix, GLCanvas, scintilla, plot, etc)
 
 Feel free to place any comments/issues/PRs, it will be very nice to receive any feedback 🚀.
+
+## Prior Art
+
+Some great projects that served as inspiration.
+
+- [Common Lisp CFFI bindings](https://github.com/lispnik/iup)
+
+- [Iup4D is a D binding library](https://github.com/Heromyth/Iup4D)
+
+- [IUP Rust](https://github.com/dcampbell24/iup-rust)
 
 ## License
 
