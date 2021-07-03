@@ -1,5 +1,5 @@
 const std = @import("std");
-const c = @import("c.zig");
+const interop = @import("interop.zig");
 
 const ascii = std.ascii;
 const testing = std.testing;
@@ -14,8 +14,28 @@ pub const Error = error{
     OpenFailed,
 
     ///
+    /// Action cannot be executed (IUP_ERROR).
+    InvalidAction,
+
+    ///
     /// Wrong child usage
     InvalidChild,
+};
+
+pub const CallbackResult = error{
+    /// 
+    /// Returning this error inside a callback function means that this event must be ignored and not processed by the control and not propagated
+    /// Used in keyboard event handlers for example
+    Ignore,
+
+    ///
+    /// Returning this error inside a callback function means that this event will be propagated to the parent of the element receiving it.
+    /// Used in keyboard event handlers for example
+    Continue,
+
+    ///
+    /// Returning this error inside a callback function means that this event will end the application loop
+    Close,
 };
 
 pub const masks = struct {
@@ -143,28 +163,28 @@ fn expectDialogSize(str: []const u8, width: ?ScreenSize, height: ?ScreenSize) bo
     return std.meta.eql(dialog_size.width, width) and std.meta.eql(dialog_size.height, height);
 }
 
-pub const DialogPosX = union(enum(c_int)) {
-    Left = c.IUP_LEFT,
-    Center = c.IUP_CENTER,
-    Right = c.IUP_RIGHT,
-    MousePos = c.IUP_MOUSEPOS,
-    Current = c.IUP_CURRENT,
-    CenterParent = c.IUP_CENTERPARENT,
-    LeftParent = c.IUP_LEFTPARENT,
-    RightParent = c.IUP_RIGHTPARENT,
-    X: c_int,
+pub const DialogPosX = union(enum(i32)) {
+    Left = interop.consts.IUP_LEFT,
+    Center = interop.consts.IUP_CENTER,
+    Right = interop.consts.IUP_RIGHT,
+    MousePos = interop.consts.IUP_MOUSEPOS,
+    Current = interop.consts.IUP_CURRENT,
+    CenterParent = interop.consts.IUP_CENTERPARENT,
+    LeftParent = interop.consts.IUP_LEFTPARENT,
+    RightParent = interop.consts.IUP_RIGHTPARENT,
+    X: i32,
 };
 
-pub const DialogPosY = union(enum(c_int)) {
-    Top = c.IUP_TOP,
-    Center = c.IUP_CENTER,
-    Bottom = c.IUP_BOTTOM,
-    MousePos = c.IUP_MOUSEPOS,
-    CenterParent = c.IUP_CENTERPARENT,
-    Current = c.IUP_CURRENT,
-    TopParent = c.IUP_TOPPARENT,
-    BottomParent = c.IUP_BOTTOMPARENT,
-    Y: c_int,
+pub const DialogPosY = union(enum(i32)) {
+    Top = interop.consts.IUP_TOP,
+    Center = interop.consts.IUP_CENTER,
+    Bottom = interop.consts.IUP_BOTTOM,
+    MousePos = interop.consts.IUP_MOUSEPOS,
+    CenterParent = interop.consts.IUP_CENTERPARENT,
+    Current = interop.consts.IUP_CURRENT,
+    TopParent = interop.consts.IUP_TOPPARENT,
+    BottomParent = interop.consts.IUP_BOTTOMPARENT,
+    Y: i32,
 };
 
 pub const Margin = struct {
@@ -173,19 +193,19 @@ pub const Margin = struct {
 
     pub fn parse(value: [:0]const u8) Margin {
         const separator = 'x';
-        var horiz: i32 = undefined;
-        var vert: i32 = undefined;
-        _ = c.iupStrToIntInt(c.toCStr(value), &horiz, &vert, separator);
+        var horiz: ?i32 = null;
+        var vert: ?i32 = null;
+        interop.strToIntInt(value, separator, &horiz, &vert);
 
-        return .{ .horiz = horiz, .vert = vert };
+        return .{ .horiz = horiz orelse 0, .vert = vert orelse 0 };
     }
 
     pub fn toString(self: Margin, buffer: []u8) [:0]const u8 {
-        return c.intIntToString(buffer, self.horiz, self.vert, 'x');
+        return interop.intIntToString(buffer, self.horiz, self.vert, 'x');
     }
 
     pub fn intIntToString(buffer: []u8, horiz: i32, vert: i32) [:0]const u8 {
-        return c.intIntToString(buffer, horiz, vert, 'x');
+        return interop.intIntToString(buffer, horiz, vert, 'x');
     }
 };
 
@@ -211,23 +231,11 @@ pub const Size = struct {
 
     pub fn parse(value: [:0]const u8) Size {
         const separator = 'x';
-        var width: i32 = undefined;
-        var height: i32 = undefined;
-        var ret = c.iupStrToIntInt(c.toCStr(value), &width, &height, separator);
+        var width: ?i32 = null;
+        var height: ?i32 = null;
+        interop.strToIntInt(value, separator, &width, &height);
 
-        if (ret == 0) {
-            // No value
-            return .{ .width = null, .height = null };
-        } else if (ret == 2) {
-            // Both values
-            return .{ .width = width, .height = height };
-        } else if (value[0] == separator) {
-            // Just one value, starts with separator, means second value only
-            return .{ .width = null, .height = height };
-        } else {
-            // Just one value, means first value only
-            return .{ .width = width, .height = null };
-        }
+        return .{ .width = width, .height = height };
     }
 
     pub fn toString(self: Size, buffer: []u8) [:0]const u8 {
@@ -298,19 +306,19 @@ pub const XYPos = struct {
     const Self = @This();
 
     pub fn parse(value: [:0]const u8, comptime separator: u8) Self {
-        var x: i32 = undefined;
-        var y: i32 = undefined;
-        _ = c.iupStrToIntInt(c.toCStr(value), &x, &y, separator);
+        var x: ?i32 = null;
+        var y: ?i32 = null;
+        interop.strToIntInt(value, separator, &x, &y);
 
-        return .{ .x = x, .y = y };
+        return .{ .x = x orelse 0, .y = y orelse 0 };
     }
 
     pub fn toString(self: Self, buffer: []u8, comptime separator: u8) [:0]const u8 {
-        return c.intIntToString(buffer, self.x, self.y, separator);
+        return interop.intIntToString(buffer, self.x, self.y, separator);
     }
 
     pub fn intIntToString(buffer: []u8, x: i32, y: i32, comptime separator: u8) [:0]const u8 {
-        return c.intIntToString(buffer, x, y, separator);
+        return interop.intIntToString(buffer, x, y, separator);
     }
 };
 
@@ -352,19 +360,19 @@ pub const LinColPos = struct {
     const Self = @This();
 
     pub fn parse(value: [:0]const u8, comptime separator: u8) Self {
-        var lin: i32 = undefined;
-        var col: i32 = undefined;
-        _ = c.iupStrToIntInt(c.toCStr(value), &lin, &col, separator);
+        var lin: ?i32 = null;
+        var col: ?i32 = null;
+        interop.strToIntInt(value, separator, &lin, &col);
 
-        return .{ .col = col, .lin = lin };
+        return .{ .col = col orelse 0, .lin = lin orelse 0 };
     }
 
     pub fn toString(self: Self, buffer: []u8, comptime separator: u8) [:0]const u8 {
-        return c.intIntToString(buffer, self.lin, self.col, separator);
+        return interop.intIntToString(buffer, self.lin, self.col, separator);
     }
 
     pub fn intIntToString(buffer: []u8, x: i32, y: i32, comptime separator: u8) [:0]const u8 {
-        return c.intIntToString(buffer, x, y, separator);
+        return interop.intIntToString(buffer, x, y, separator);
     }
 };
 
@@ -406,19 +414,19 @@ pub const Range = struct {
     const Self = @This();
 
     pub fn parse(value: [:0]const u8, comptime separator: u8) Self {
-        var begin: i32 = undefined;
-        var end: i32 = undefined;
-        _ = c.iupStrToIntInt(c.toCStr(value), &begin, &end, separator);
+        var begin: ?i32 = null;
+        var end: ?i32 = null;
+        interop.strToIntInt(value, separator, &begin, &end);
 
-        return .{ .begin = begin, .end = end };
+        return .{ .begin = begin orelse 0, .end = end orelse 0 };
     }
 
     pub fn toString(self: Self, buffer: []u8, comptime separator: u8) [:0]const u8 {
-        return c.intIntToString(buffer, self.begin, self.end, separator);
+        return interop.intIntToString(buffer, self.begin, self.end, separator);
     }
 
     pub fn intIntToString(buffer: []u8, begin: i32, end: i32, comptime separator: u8) [:0]const u8 {
-        return c.intIntToString(buffer, begin, end, separator);
+        return interop.intIntToString(buffer, begin, end, separator);
     }
 };
 

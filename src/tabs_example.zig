@@ -1,13 +1,11 @@
 /// From original example in C
 /// https://webserver2.tecgraf.puc-rio.br/iup/examples/C/tabs.c
-
 const std = @import("std");
 const iup = @import("iup.zig");
 
 usingnamespace iup;
 
 pub fn main() !void {
-
     try MainLoop.open();
     defer MainLoop.close();
 
@@ -67,7 +65,7 @@ fn create_dialog() !*Dialog {
 
     return try (Dialog.init()
         .setTitle("IUP for Zig - Tabs")
-        .setSize( ScreenSize{ .Size = 200 }, ScreenSize{ .Size = 90 })
+        .setSize(ScreenSize{ .Size = 200 }, ScreenSize{ .Size = 90 })
         .setChildren(
         .{
             HBox.init()

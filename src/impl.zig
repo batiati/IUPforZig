@@ -1,5 +1,5 @@
 const std = @import("std");
-const c = @import("c.zig");
+const interop = @import("interop.zig");
 const iup = @import("iup.zig");
 
 const debug = std.debug;
@@ -16,6 +16,8 @@ const ChildrenIterator = iup.ChildrenIterator;
 
 // TODO: Improves the organization in separated files
 // Needs some use cases from other elements to define the better way to organize
+//
+// May we use "pub usingnamespace Impl(Self);" to import all methods on every element?
 
 pub fn Impl(comptime T: type) type {
     return struct {
@@ -23,8 +25,8 @@ pub fn Impl(comptime T: type) type {
         ///
         /// Updates the size and layout of all controls in the same dialog. 
         /// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
-        pub fn refresh(self: *T) !void {
-            _ = c.IupRefresh(c.getHandle(self));
+        pub fn refresh(self: *T) void {
+            interop.refresh(self);
         }
 
         pub fn appendChildren(self: *T, tuple: anytype) !void {
@@ -83,11 +85,8 @@ pub fn Impl(comptime T: type) type {
                 } else if (element == .SubMenu) {
                     try appendDialogSubMenu(self, element.SubMenu);
                 } else {
-                    var parent_handle = if (self.children().next()) |container| container.getHandle() else c.getHandle(self);
-                    var ret = c.IupAppend(parent_handle, element.getHandle());
-                    if (ret == null) {
-                        return Error.InvalidChild;
-                    }
+                    var parent_handle = if (self.children().next()) |container| container.getHandle() else interop.getHandle(self);
+                    try interop.append(parent_handle, element);
                 }
             } else if (T == SubMenu and
                 (element == .SubMenu or
@@ -100,26 +99,14 @@ pub fn Impl(comptime T: type) type {
                 if (self.children().next()) |valid| {
                     innerMenu = valid.getHandle();
                 } else {
-                    if (c.IupMenu(null)) |valid| {
-                        if (c.IupAppend(c.getHandle(self), valid) == null) {
-                            return Error.InvalidChild;
-                        }
-
-                        innerMenu = valid;
-                    } else {
-                        return Error.NotInitialized;
-                    }
+                    var valid = interop.getHandle(try iup.Menu.init().unwrap());
+                    try interop.append(self, valid);
+                    innerMenu = valid;
                 }
 
-                var ret = c.IupAppend(innerMenu, element.getHandle());
-                if (ret == null) {
-                    return Error.InvalidChild;
-                }
+                try interop.append(innerMenu, element);
             } else {
-                var ret = c.IupAppend(c.getHandle(self), element.getHandle());
-                if (ret == null) {
-                    return Error.InvalidChild;
-                }
+                try interop.append(self, element);
             }
         }
 
@@ -145,36 +132,16 @@ pub fn Impl(comptime T: type) type {
         ///
         /// Converts a (lin, col) character positioning into an absolute position. lin and col starts at 1, pos starts at 0. For single line controls pos is always ""col - 1"". (since 3.0)
         pub fn convertLinColToPos(self: *T, lin: i32, col: i32) ?i32 {
-            const UNINITALIZED = std.math.minInt(i32);
-            var pos: i32 = UNINITALIZED;
-
-            c.IupTextConvertLinColToPos(c.getHandle(self), lin, col, &pos);
-
-            if (pos == UNINITALIZED) {
-                return null;
-            } else {
-                return pos;
-            }
+            return interop.convertLinColToPos(self, lin, col);
         }
 
         ///
         /// Converts a (lin, col) character positioning into an absolute position. lin and col starts at 1, pos starts at 0. For single line controls pos is always ""col - 1"". (since 3.0)
         pub fn convertPosToLinCol(self: *T, pos: i32) ?iup.LinColPos {
-            const UNDEFINED = std.math.minInt(i32);
-            var lin: i32 = UNDEFINED;
-            var col: i32 = UNDEFINED;
-
-            c.IupTextConvertPosToLinCol(c.getHandle(self), pos, &lin, &col);
-
-            if (lin == UNDEFINED or col == UNDEFINED) {
-                return null;
-            } else {
-                return iup.LinColPos{ .lin = lin, .col = col };
-            }
+            return interop.convertPosToLinCol(self, pos);
         }
 
         pub fn messageDialogAlert(parent: ?*Dialog, title: ?[:0]const u8, message: [:0]const u8) !void {
-            
             var dialog = try (iup.MessageDlg.init()
                 .setValue(message)
                 .setDialogType(.Warning)
@@ -182,12 +149,12 @@ pub fn Impl(comptime T: type) type {
             defer dialog.deinit();
 
             if (title) |valid| dialog.setTitle(valid);
-            
+
             if (parent) |valid| {
                 if (title == null) dialog.setTitle(valid.getTitle());
                 dialog.setParentDialog(valid);
             }
-            _ = dialog.popup(.CenterParent, .CenterParent);
+            _ = try dialog.popup(.CenterParent, .CenterParent);
         }
 
         pub fn messageDialogConfirm(parent: ?*Dialog, title: ?[:0]const u8, message: [:0]const u8) !bool {
@@ -199,16 +166,15 @@ pub fn Impl(comptime T: type) type {
             defer dialog.deinit();
 
             if (title) |valid| dialog.setTitle(valid);
-            
+
             if (parent) |valid| {
                 if (title == null) dialog.setTitle(valid.getTitle());
                 dialog.setParentDialog(valid);
             }
-            _ = dialog.popup(.Center, .Center);            
 
-            var ret = dialog.popup(.CenterParent, .CenterParent);
+            var ret = try dialog.popup(.CenterParent, .CenterParent);
             return ret == .Button1;
-        }       
+        }
     };
 }
 

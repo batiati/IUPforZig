@@ -1,10 +1,16 @@
 const std = @import("std");
 const iup = @import("iup.zig");
 
-const allocator = std.heap.c_allocator;
 usingnamespace iup;
 
+var allocator: *std.mem.Allocator = undefined;
+
 pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+
+    allocator = &gpa.allocator;
+
     try MainLoop.open();
     defer MainLoop.close();
 
@@ -167,7 +173,7 @@ pub const Notepad = struct {
             .unwrap());
         defer fileDlg.deinit();
 
-        fileDlg.popup(.CenterParent, .CenterParent);
+        try fileDlg.popup(.CenterParent, .CenterParent);
 
         if (fileDlg.getStatus() != .Cancelled) {
             var fileName = fileDlg.getValue();
@@ -200,7 +206,7 @@ pub const Notepad = struct {
     }
 
     fn find(text: *Multiline) !void {
-        _ = find_dialog.popup(text);
+        _ = try find_dialog.popup(text);
     }
 
     fn onButtonOpen(button: *Button) !void {
@@ -226,7 +232,7 @@ pub const Notepad = struct {
 
     fn onGoTo(item: *Item) !void {
         var text = item.getDialogChild(multiline_name).?.Multiline;
-        var success = goto_dialog.popup(text);
+        var success = try goto_dialog.popup(text);
         if (success) try refreshStatusBar(item);
     }
 
@@ -261,13 +267,13 @@ const find_dialog = struct {
 
     ///
     /// Shows "Find" dialog
-    pub fn popup(text: *Multiline) bool {
+    pub fn popup(text: *Multiline) !bool {
         var parent = text.getDialog() orelse unreachable;
 
         var dlg = createDialog(parent) catch unreachable;
         defer dlg.deinit();
 
-        dlg.popup(.CenterParent, .CenterParent);
+        try dlg.popup(.CenterParent, .CenterParent);
         return true;
     }
 
@@ -347,14 +353,14 @@ const goto_dialog = struct {
 
     ///
     /// Shows "Go To line" dialog
-    pub fn popup(text: *Multiline) bool {
+    pub fn popup(text: *Multiline) !bool {
         var parent = text.getDialog() orelse unreachable;
         var line_count = text.getLineCount();
 
         var dlg = createDialog(parent, line_count) catch unreachable;
         defer dlg.deinit();
 
-        dlg.popup(.CenterParent, .CenterParent);
+        try dlg.popup(.CenterParent, .CenterParent);
 
         var go_to = dlg.getIntAttribute(go_to_attr);
         if (go_to > 0) {

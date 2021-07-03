@@ -8,7 +8,7 @@
 
 const std = @import("std");
 
-const c = @import("../c.zig");
+const interop = @import("../interop.zig");
 const iup = @import("../iup.zig");
 
 const Impl = @import("../impl.zig").Impl;
@@ -78,7 +78,6 @@ pub const Image = opaque {
             return self.*;
         }
 
-
         /// 
         /// RESIZE (write-only): given a new size if format "widthxheight", changes
         /// WIDTH and HEIGHT attributes, and resizes the image contents using bilinear
@@ -87,15 +86,14 @@ pub const Image = opaque {
         pub fn resize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RESIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "RESIZE", .{}, value);
             return self.*;
         }
 
         pub fn setColors(self: *Initializer, index: i32, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "IDVALUE", .{index}, rgb);
+            interop.setRgb(self.ref, "IDVALUE", .{index}, rgb);
             return self.*;
         }
-
 
         /// 
         /// RESHAPE (write-only): given a new size if format "widthxheight", allocates
@@ -105,10 +103,9 @@ pub const Image = opaque {
         pub fn reshape(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RESHAPE", .{}, value);
+            interop.setStrAttribute(self.ref, "RESHAPE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
@@ -120,10 +117,9 @@ pub const Image = opaque {
         pub fn setHotspot(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ':');
-            c.setStrAttribute(self.ref, "HOTSPOT", .{}, value);
+            interop.setStrAttribute(self.ref, "HOTSPOT", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// AUTOSCALE: automatically scale the image by a given real factor.
@@ -134,25 +130,23 @@ pub const Image = opaque {
         /// (since 3.29).
         /// (since 3.16)
         pub fn setAutoScale(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "AUTOSCALE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "AUTOSCALE", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setHandle(self.ref, arg);
+            interop.setHandle(self.ref, arg);
             return self.*;
         }
-
 
         /// 
         /// CLEARCACHE (write-only): clears the internal native image cache, so WID can
         /// be dynamically changed.
         /// (since 3.24)
         pub fn clearCache(self: *Initializer) Initializer {
-            c.setStrAttribute(self.ref, "CLEARCACHE", .{}, null);
+            interop.setStrAttribute(self.ref, "CLEARCACHE", .{}, null);
             return self.*;
         }
-
 
         /// 
         /// BGCOLOR: The color used for transparency.
@@ -166,41 +160,41 @@ pub const Image = opaque {
         /// This implies that if the control background is not uniform then probably
         /// there will be a visible difference where it should be transparent.
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BGCOLOR", .{}, rgb);
+            interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
     };
 
     pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attribute, .{}, arg);
+        interop.setStrAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attribute, .{});
+        return interop.getStrAttribute(self, attribute, .{});
     }
 
     pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attribute, .{}, arg);
+        interop.setIntAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attribute, .{});
+        return interop.getIntAttribute(self, attribute, .{});
     }
 
     pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attribute, .{}, arg);
+        interop.setBoolAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attribute, .{});
+        return interop.getBoolAttribute(self, attribute, .{});
     }
 
     pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute, .{});
+        return interop.getPtrAttribute(T, handle, attribute, .{});
     }
 
     pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, .{}, value);
+        interop.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
@@ -213,7 +207,7 @@ pub const Image = opaque {
     /// Origin is at the top-left corner and data is oriented top to bottom, and left to right.
     /// The pixels array is duplicated internally so you can discard it after the call.
     pub fn init(width: i32, height: i32, imgdata: ?[]const u8) Initializer {
-        var handle = c.create_image(Self, width, height, imgdata);
+        var handle = interop.create_image(Self, width, height, imgdata);
 
         if (handle) |valid| {
             return .{
@@ -228,36 +222,28 @@ pub const Image = opaque {
     /// Destroys an interface element and all its children.
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
-        c.destroy(self);
+        interop.destroy(self);
     }
 
     ///
     ///
     pub fn getDialog(self: *Self) ?*iup.Dialog {
-        if (c.IupGetDialog(c.getHandle(self))) |handle| {
-            return c.fromHandle(iup.Dialog, handle);
-        } else {
-            return null;
-        }
+        return interop.getDialog(self);
     }
 
     ///
     /// Returns the the child element that has the NAME attribute equals to the given value on the same dialog hierarchy.
     /// Works also for children of a menu that is associated with a dialog.
     pub fn getDialogChild(self: *Self, byName: [:0]const u8) ?Element {
-        var child = c.IupGetDialogChild(c.getHandle(self), c.toCStr(byName)) orelse return null;
-        var className = c.fromCStr(c.IupGetClassName(child));
-
-        return Element.fromClassName(className, child);
+        return interop.getDialogChild(self, byName);
     }
 
     ///
     /// Updates the size and layout of all controls in the same dialog.
     /// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
     pub fn refresh(self: *Self) void {
-        try Impl(Self).refresh(self);
+        Impl(Self).refresh(self);
     }
-
 
     /// 
     /// RESIZE (write-only): given a new size if format "widthxheight", changes
@@ -267,25 +253,23 @@ pub const Image = opaque {
     pub fn resize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RESIZE", .{}, value);
+        interop.setStrAttribute(self, "RESIZE", .{}, value);
     }
 
     pub fn getColors(self: *Self, index: i32) ?iup.Rgb {
-        return c.getRgb(self, "IDVALUE", .{index});
+        return interop.getRgb(self, "IDVALUE", .{index});
     }
 
     pub fn setColors(self: *Self, index: i32, rgb: iup.Rgb) void {
-        c.setRgb(self, "IDVALUE", .{index}, rgb);
+        interop.setRgb(self, "IDVALUE", .{index}, rgb);
     }
-
 
     /// 
     /// SCALED (read-only): returns Yes if the image has been resized.
     /// (since 3.25)
     pub fn getScaled(self: *Self) bool {
-        return c.getBoolAttribute(self, "SCALED", .{});
+        return interop.getBoolAttribute(self, "SCALED", .{});
     }
-
 
     /// 
     /// BPP (read-only): returns the number of bits per pixel in the image.
@@ -293,9 +277,8 @@ pub const Image = opaque {
     /// with IupImageRGBA returns 32.
     /// (since 3.0)
     pub fn getBpp(self: *Self) i32 {
-        return c.getIntAttribute(self, "BPP", .{});
+        return interop.getIntAttribute(self, "BPP", .{});
     }
-
 
     /// 
     /// RESHAPE (write-only): given a new size if format "widthxheight", allocates
@@ -305,9 +288,8 @@ pub const Image = opaque {
     pub fn reshape(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RESHAPE", .{}, value);
+        interop.setStrAttribute(self, "RESHAPE", .{}, value);
     }
-
 
     /// 
     /// CHANNELS (read-only): returns the number of channels in the image.
@@ -315,9 +297,8 @@ pub const Image = opaque {
     /// IupImageRGBA returns 4.
     /// (since 3.0)
     pub fn getChannels(self: *Self) i32 {
-        return c.getIntAttribute(self, "CHANNELS", .{});
+        return interop.getIntAttribute(self, "CHANNELS", .{});
     }
-
 
     /// 
     /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
@@ -327,10 +308,9 @@ pub const Image = opaque {
     /// coordinates in pixels.
     /// Default: "0:0".
     pub fn getHotspot(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "HOTSPOT", .{});
+        var str = interop.getStrAttribute(self, "HOTSPOT", .{});
         return iup.XYPos.parse(str, ':');
     }
-
 
     /// 
     /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
@@ -342,9 +322,8 @@ pub const Image = opaque {
     pub fn setHotspot(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ':');
-        c.setStrAttribute(self, "HOTSPOT", .{}, value);
+        interop.setStrAttribute(self, "HOTSPOT", .{}, value);
     }
-
 
     /// 
     /// AUTOSCALE: automatically scale the image by a given real factor.
@@ -355,9 +334,8 @@ pub const Image = opaque {
     /// (since 3.29).
     /// (since 3.16)
     pub fn getAutoScale(self: *Self) bool {
-        return c.getBoolAttribute(self, "AUTOSCALE", .{});
+        return interop.getBoolAttribute(self, "AUTOSCALE", .{});
     }
-
 
     /// 
     /// AUTOSCALE: automatically scale the image by a given real factor.
@@ -368,33 +346,30 @@ pub const Image = opaque {
     /// (since 3.29).
     /// (since 3.16)
     pub fn setAutoScale(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "AUTOSCALE", .{}, arg);
+        interop.setBoolAttribute(self, "AUTOSCALE", .{}, arg);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME", .{});
+        return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setHandle(self, arg);
+        interop.setHandle(self, arg);
     }
-
 
     /// 
     /// HEIGHT (read-only): Image height in pixels.
     pub fn getHeight(self: *Self) i32 {
-        return c.getIntAttribute(self, "HEIGHT", .{});
+        return interop.getIntAttribute(self, "HEIGHT", .{});
     }
-
 
     /// 
     /// CLEARCACHE (write-only): clears the internal native image cache, so WID can
     /// be dynamically changed.
     /// (since 3.24)
     pub fn clearCache(self: *Self) void {
-        c.setStrAttribute(self, "CLEARCACHE", .{}, null);
+        interop.setStrAttribute(self, "CLEARCACHE", .{}, null);
     }
-
 
     /// 
     /// BGCOLOR: The color used for transparency.
@@ -408,9 +383,8 @@ pub const Image = opaque {
     /// This implies that if the control background is not uniform then probably
     /// there will be a visible difference where it should be transparent.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BGCOLOR", .{});
+        return interop.getRgb(self, "BGCOLOR", .{});
     }
-
 
     /// 
     /// BGCOLOR: The color used for transparency.
@@ -424,35 +398,31 @@ pub const Image = opaque {
     /// This implies that if the control background is not uniform then probably
     /// there will be a visible difference where it should be transparent.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BGCOLOR", .{}, rgb);
+        interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
-
 
     /// 
     /// ORIGINALSCALE (read-only): returns the width and height before the image
     /// was scaled.
     /// (since 3.25)
     pub fn getOriginalScale(self: *Self) Size {
-        var str = c.getStrAttribute(self, "ORIGINALSCALE", .{});
+        var str = interop.getStrAttribute(self, "ORIGINALSCALE", .{});
         return Size.parse(str);
     }
-
 
     /// 
     /// WIDTH (read-only): Image width in pixels.
     pub fn getWidth(self: *Self) i32 {
-        return c.getIntAttribute(self, "WIDTH", .{});
+        return interop.getIntAttribute(self, "WIDTH", .{});
     }
-
 
     /// 
     /// RASTERSIZE (read-only): returns the image size in pixels.
     /// (since 3.0)
     pub fn getRasterSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "RASTERSIZE", .{});
+        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
-
 
     /// 
     /// WID (read-only): returns the internal pixels data pointer.
@@ -460,6 +430,6 @@ pub const Image = opaque {
     /// If the image was created in C then there is no way to access its pixels
     /// values in Lua, except as an userdata using the WID attribute.
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID", .{});
+        return interop.getIntAttribute(self, "WID", .{});
     }
 };

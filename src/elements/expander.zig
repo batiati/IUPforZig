@@ -8,7 +8,7 @@
 
 const std = @import("std");
 
-const c = @import("../c.zig");
+const interop = @import("../interop.zig");
 const iup = @import("../iup.zig");
 
 const Impl = @import("../impl.zig").Impl;
@@ -196,32 +196,30 @@ pub const Expander = opaque {
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setHandle(self.ref, arg);
+            interop.setHandle(self.ref, arg);
             return self.*;
         }
 
         pub fn setFrameTime(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "FRAMETIME", .{}, arg);
+            interop.setIntAttribute(self.ref, "FRAMETIME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// BACKCOLOR (non inheritable): background color of the bar handler.
         /// If not defined it will use the background color of the native parent.
         /// (since 3.9)
         pub fn setBackColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BACKCOLOR", .{}, rgb);
+            interop.setRgb(self.ref, "BACKCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// TITLEIMAGE (non inheritable): title image, shown in the bar handler near
@@ -230,27 +228,26 @@ pub const Expander = opaque {
         /// Shown only when BARPOSITION=TOP.
         /// (since 3.14)
         pub fn setTitleImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLEIMAGE", .{}, arg);
+            interop.setStrAttribute(self.ref, "TITLEIMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "POSITION", .{}, value);
+            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
             return self.*;
         }
 
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
+            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// IMAGE (non inheritable): image name to replace the arrow image by a custom
@@ -260,10 +257,9 @@ pub const Expander = opaque {
         /// See also IupImage.
         /// (since 3.11)
         pub fn setImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "IMAGE", .{}, arg);
+            interop.setStrAttribute(self.ref, "IMAGE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// HIGHCOLOR (non inheritable): title text color when highlighted.
@@ -271,28 +267,27 @@ pub const Expander = opaque {
         /// Defaults to the FORECOLOR if not defined.
         /// (since 3.14)
         pub fn setHighColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "HIGHCOLOR", .{}, rgb);
+            interop.setRgb(self.ref, "HIGHCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "THEME", .{}, arg);
+            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// EXPAND (non inheritable): the default value is "YES".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
-                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
-                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
-                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
-                .No => c.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
+                .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
+                .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
+                .Vertical => interop.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
+                .HorizontalFree => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
+                .VerticalFree => interop.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
+                .No => interop.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "EXPAND", .{});
+                interop.clearAttribute(self.ref, "EXPAND", .{});
             }
             return self.*;
         }
@@ -300,22 +295,21 @@ pub const Expander = opaque {
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "SIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "SIZE", .{}, value);
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
+            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "USERSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// TITLE (non inheritable): title text, shown in the bar handler near the
@@ -326,68 +320,65 @@ pub const Expander = opaque {
         /// button is left aligned.
         /// In all other situations the expand/collapse button is centered.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLE", .{}, arg);
+            interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
+            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
-                .Ignore => c.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
-                .No => c.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
+                .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
+                .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
+                .No => interop.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "FLOATING", .{});
+                interop.clearAttribute(self.ref, "FLOATING", .{});
             }
             return self.*;
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
+            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
 
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// BARSIZE (non inheritable): controls the size of the bar handler.
         /// Default: the height or width that fits all its internal elements according
         /// to BARPOSITION.
         pub fn setBarSize(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "BARSIZE", .{}, arg);
+            interop.setIntAttribute(self.ref, "BARSIZE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// FRAMECOLOR (non inheritable): frame line color.
         /// Default: the global attribute DLGFGCOLOR.
         /// (since 3.23)
         pub fn setFrameColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "FRAMECOLOR", .{}, rgb);
+            interop.setRgb(self.ref, "FRAMECOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
+            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", .{}, arg);
+            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// STATE (non inheritable): Show or hide the container elements.
@@ -397,41 +388,40 @@ pub const Expander = opaque {
         /// dialog so the child can be recomposed.
         pub fn setState(self: *Initializer, arg: ?State) Initializer {
             if (arg) |value| switch (value) {
-                .Open => c.setStrAttribute(self.ref, "STATE", .{}, "OPEN"),
-                .Closed => c.setStrAttribute(self.ref, "STATE", .{}, "CLOSED"),
+                .Open => interop.setStrAttribute(self.ref, "STATE", .{}, "OPEN"),
+                .Closed => interop.setStrAttribute(self.ref, "STATE", .{}, "CLOSED"),
             } else {
-                c.clearAttribute(self.ref, "STATE", .{});
+                interop.clearAttribute(self.ref, "STATE", .{});
             }
             return self.*;
         }
 
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setImageHighlight(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "IMAGEHIGHLIGHT", .{}, arg);
+            interop.setStrAttribute(self.ref, "IMAGEHIGHLIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
+            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MINSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NTHEME", .{}, arg);
+            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// EXTRABUTTONS (non inheritable) (creation only): sets the number of extra
@@ -441,10 +431,9 @@ pub const Expander = opaque {
         /// Default: 0.
         /// (since 3.11)
         pub fn setExtraButtons(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "EXTRABUTTONS", .{}, arg);
+            interop.setIntAttribute(self.ref, "EXTRABUTTONS", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// ANIMATION (non inheritable): enable animation during open/close.
@@ -457,56 +446,52 @@ pub const Expander = opaque {
         /// ((since 3.14)
         pub fn setAnimation(self: *Initializer, arg: ?Animation) Initializer {
             if (arg) |value| switch (value) {
-                .Slide => c.setStrAttribute(self.ref, "ANIMATION", .{}, "SLIDE"),
-                .Curtain => c.setStrAttribute(self.ref, "ANIMATION", .{}, "CURTAIN"),
-                .No => c.setStrAttribute(self.ref, "ANIMATION", .{}, "NO"),
+                .Slide => interop.setStrAttribute(self.ref, "ANIMATION", .{}, "SLIDE"),
+                .Curtain => interop.setStrAttribute(self.ref, "ANIMATION", .{}, "CURTAIN"),
+                .No => interop.setStrAttribute(self.ref, "ANIMATION", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "ANIMATION", .{});
+                interop.clearAttribute(self.ref, "ANIMATION", .{});
             }
             return self.*;
         }
-
 
         /// 
         /// FORECOLOR (non inheritable): title text color.
         /// Default: the global attribute DLGFGCOLOR.
         /// (since 3.9)
         pub fn setForeColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "FORECOLOR", .{}, rgb);
+            interop.setRgb(self.ref, "FORECOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
+            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// FRAMEWIDTH (non inheritable): frame line width.
         /// Default: 1.
         /// (since 3.23)
         pub fn setFrameWidth(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "FRAMEWIDTH", .{}, arg);
+            interop.setIntAttribute(self.ref, "FRAMEWIDTH", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// FRAME (non inheritable): enables the frame line around the bar area.
         /// Default: No.
         /// (since 3.23)
         pub fn setFrame(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "FRAME", .{}, arg);
+            interop.setBoolAttribute(self.ref, "FRAME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
         /// MAXSIZE, THEME: also accepted.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONT", .{}, arg);
+            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
 
@@ -609,42 +594,42 @@ pub const Expander = opaque {
     };
 
     pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attribute, .{}, arg);
+        interop.setStrAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attribute, .{});
+        return interop.getStrAttribute(self, attribute, .{});
     }
 
     pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attribute, .{}, arg);
+        interop.setIntAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attribute, .{});
+        return interop.getIntAttribute(self, attribute, .{});
     }
 
     pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attribute, .{}, arg);
+        interop.setBoolAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attribute, .{});
+        return interop.getBoolAttribute(self, attribute, .{});
     }
 
     pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute, .{});
+        return interop.getPtrAttribute(T, handle, attribute, .{});
     }
 
     pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, .{}, value);
+        interop.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
     pub fn init() Initializer {
-        var handle = c.create(Self);
+        var handle = interop.create(Self);
 
         if (handle) |valid| {
             return .{
@@ -659,7 +644,7 @@ pub const Expander = opaque {
     /// Destroys an interface element and all its children.
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
-        c.destroy(self);
+        interop.destroy(self);
     }
 
     ///
@@ -684,75 +669,65 @@ pub const Expander = opaque {
     ///
     ///
     pub fn getDialog(self: *Self) ?*iup.Dialog {
-        if (c.IupGetDialog(c.getHandle(self))) |handle| {
-            return c.fromHandle(iup.Dialog, handle);
-        } else {
-            return null;
-        }
+        return interop.getDialog(self);
     }
 
     ///
     /// Returns the the child element that has the NAME attribute equals to the given value on the same dialog hierarchy.
     /// Works also for children of a menu that is associated with a dialog.
     pub fn getDialogChild(self: *Self, byName: [:0]const u8) ?Element {
-        var child = c.IupGetDialogChild(c.getHandle(self), c.toCStr(byName)) orelse return null;
-        var className = c.fromCStr(c.IupGetClassName(child));
-
-        return Element.fromClassName(className, child);
+        return interop.getDialogChild(self, byName);
     }
 
     ///
     /// Updates the size and layout of all controls in the same dialog.
     /// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
     pub fn refresh(self: *Self) void {
-        try Impl(Self).refresh(self);
+        Impl(Self).refresh(self);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME", .{});
+        return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setHandle(self, arg);
+        interop.setHandle(self, arg);
     }
 
     pub fn getFrameTime(self: *Self) i32 {
-        return c.getIntAttribute(self, "FRAMETIME", .{});
+        return interop.getIntAttribute(self, "FRAMETIME", .{});
     }
 
     pub fn setFrameTime(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "FRAMETIME", .{}, arg);
+        interop.setIntAttribute(self, "FRAMETIME", .{}, arg);
     }
-
 
     /// 
     /// BACKCOLOR (non inheritable): background color of the bar handler.
     /// If not defined it will use the background color of the native parent.
     /// (since 3.9)
     pub fn getBackColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BACKCOLOR", .{});
+        return interop.getRgb(self, "BACKCOLOR", .{});
     }
-
 
     /// 
     /// BACKCOLOR (non inheritable): background color of the bar handler.
     /// If not defined it will use the background color of the native parent.
     /// (since 3.9)
     pub fn setBackColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BACKCOLOR", .{}, rgb);
+        interop.setRgb(self, "BACKCOLOR", .{}, rgb);
     }
 
     pub fn getMaxSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MAXSIZE", .{});
+        var str = interop.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MAXSIZE", .{}, value);
+        interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
-
 
     /// 
     /// TITLEIMAGE (non inheritable): title image, shown in the bar handler near
@@ -761,9 +736,8 @@ pub const Expander = opaque {
     /// Shown only when BARPOSITION=TOP.
     /// (since 3.14)
     pub fn getTitleImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLEIMAGE", .{});
+        return interop.getStrAttribute(self, "TITLEIMAGE", .{});
     }
-
 
     /// 
     /// TITLEIMAGE (non inheritable): title image, shown in the bar handler near
@@ -772,36 +746,35 @@ pub const Expander = opaque {
     /// Shown only when BARPOSITION=TOP.
     /// (since 3.14)
     pub fn setTitleImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLEIMAGE", .{}, arg);
+        interop.setStrAttribute(self, "TITLEIMAGE", .{}, arg);
     }
 
     pub fn getPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "POSITION", .{});
+        var str = interop.getStrAttribute(self, "POSITION", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setPosition(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "POSITION", .{}, value);
+        interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
     pub fn getCanFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "CANFOCUS", .{});
+        return interop.getBoolAttribute(self, "CANFOCUS", .{});
     }
 
     pub fn setCanFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CANFOCUS", .{}, arg);
+        interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
     }
 
     pub fn getVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "VISIBLE", .{});
+        return interop.getBoolAttribute(self, "VISIBLE", .{});
     }
 
     pub fn setVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "VISIBLE", .{}, arg);
+        interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
-
 
     /// 
     /// IMAGE (non inheritable): image name to replace the arrow image by a custom
@@ -811,9 +784,8 @@ pub const Expander = opaque {
     /// See also IupImage.
     /// (since 3.11)
     pub fn getImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "IMAGE", .{});
+        return interop.getStrAttribute(self, "IMAGE", .{});
     }
-
 
     /// 
     /// IMAGE (non inheritable): image name to replace the arrow image by a custom
@@ -823,9 +795,8 @@ pub const Expander = opaque {
     /// See also IupImage.
     /// (since 3.11)
     pub fn setImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "IMAGE", .{}, arg);
+        interop.setStrAttribute(self, "IMAGE", .{}, arg);
     }
-
 
     /// 
     /// HIGHCOLOR (non inheritable): title text color when highlighted.
@@ -833,9 +804,8 @@ pub const Expander = opaque {
     /// Defaults to the FORECOLOR if not defined.
     /// (since 3.14)
     pub fn getHighColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "HIGHCOLOR", .{});
+        return interop.getRgb(self, "HIGHCOLOR", .{});
     }
-
 
     /// 
     /// HIGHCOLOR (non inheritable): title text color when highlighted.
@@ -843,22 +813,21 @@ pub const Expander = opaque {
     /// Defaults to the FORECOLOR if not defined.
     /// (since 3.14)
     pub fn setHighColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "HIGHCOLOR", .{}, rgb);
+        interop.setRgb(self, "HIGHCOLOR", .{}, rgb);
     }
 
     pub fn getTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "THEME", .{});
+        return interop.getStrAttribute(self, "THEME", .{});
     }
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "THEME", .{}, arg);
+        interop.setStrAttribute(self, "THEME", .{}, arg);
     }
-
 
     /// 
     /// EXPAND (non inheritable): the default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
-        var ret = c.getStrAttribute(self, "EXPAND", .{});
+        var ret = interop.getStrAttribute(self, "EXPAND", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
@@ -869,64 +838,61 @@ pub const Expander = opaque {
         return null;
     }
 
-
     /// 
     /// EXPAND (non inheritable): the default value is "YES".
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "EXPAND", .{}, "YES"),
-            .Horizontal => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
-            .HorizontalFree => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
-            .VerticalFree => c.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
-            .No => c.setStrAttribute(self, "EXPAND", .{}, "NO"),
+            .Yes => interop.setStrAttribute(self, "EXPAND", .{}, "YES"),
+            .Horizontal => interop.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
+            .Vertical => interop.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
+            .HorizontalFree => interop.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
+            .VerticalFree => interop.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
+            .No => interop.setStrAttribute(self, "EXPAND", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "EXPAND", .{});
+            interop.clearAttribute(self, "EXPAND", .{});
         }
     }
 
     pub fn getSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "SIZE", .{});
+        var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "SIZE", .{}, value);
+        interop.setStrAttribute(self, "SIZE", .{}, value);
     }
-
 
     /// 
     /// WID (read-only): returns -1 if mapped.
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID", .{});
+        return interop.getIntAttribute(self, "WID", .{});
     }
 
     pub fn getFontSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "FONTSIZE", .{});
+        return interop.getIntAttribute(self, "FONTSIZE", .{});
     }
 
     pub fn setFontSize(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "FONTSIZE", .{}, arg);
+        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
     pub fn getNaturalSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "NATURALSIZE", .{});
+        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getUserSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "USERSIZE", .{});
+        var str = interop.getStrAttribute(self, "USERSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "USERSIZE", .{}, value);
+        interop.setStrAttribute(self, "USERSIZE", .{}, value);
     }
-
 
     /// 
     /// TITLE (non inheritable): title text, shown in the bar handler near the
@@ -937,9 +903,8 @@ pub const Expander = opaque {
     /// button is left aligned.
     /// In all other situations the expand/collapse button is centered.
     pub fn getTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLE", .{});
+        return interop.getStrAttribute(self, "TITLE", .{});
     }
-
 
     /// 
     /// TITLE (non inheritable): title text, shown in the bar handler near the
@@ -950,19 +915,19 @@ pub const Expander = opaque {
     /// button is left aligned.
     /// In all other situations the expand/collapse button is centered.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLE", .{}, arg);
+        interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
 
     pub fn getPropagateFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
+        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
+        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
-        var ret = c.getStrAttribute(self, "FLOATING", .{});
+        var ret = interop.getStrAttribute(self, "FLOATING", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
@@ -972,85 +937,80 @@ pub const Expander = opaque {
 
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "FLOATING", .{}, "YES"),
-            .Ignore => c.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
-            .No => c.setStrAttribute(self, "FLOATING", .{}, "NO"),
+            .Yes => interop.setStrAttribute(self, "FLOATING", .{}, "YES"),
+            .Ignore => interop.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
+            .No => interop.setStrAttribute(self, "FLOATING", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "FLOATING", .{});
+            interop.clearAttribute(self, "FLOATING", .{});
         }
     }
 
     pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NORMALIZERGROUP", .{});
+        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
     }
 
     pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
+        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
     pub fn getRasterSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "RASTERSIZE", .{});
+        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RASTERSIZE", .{}, value);
+        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
-
 
     /// 
     /// BARSIZE (non inheritable): controls the size of the bar handler.
     /// Default: the height or width that fits all its internal elements according
     /// to BARPOSITION.
     pub fn getBarSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "BARSIZE", .{});
+        return interop.getIntAttribute(self, "BARSIZE", .{});
     }
-
 
     /// 
     /// BARSIZE (non inheritable): controls the size of the bar handler.
     /// Default: the height or width that fits all its internal elements according
     /// to BARPOSITION.
     pub fn setBarSize(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "BARSIZE", .{}, arg);
+        interop.setIntAttribute(self, "BARSIZE", .{}, arg);
     }
-
 
     /// 
     /// FRAMECOLOR (non inheritable): frame line color.
     /// Default: the global attribute DLGFGCOLOR.
     /// (since 3.23)
     pub fn getFrameColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "FRAMECOLOR", .{});
+        return interop.getRgb(self, "FRAMECOLOR", .{});
     }
-
 
     /// 
     /// FRAMECOLOR (non inheritable): frame line color.
     /// Default: the global attribute DLGFGCOLOR.
     /// (since 3.23)
     pub fn setFrameColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "FRAMECOLOR", .{}, rgb);
+        interop.setRgb(self, "FRAMECOLOR", .{}, rgb);
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTFACE", .{});
+        return interop.getStrAttribute(self, "FONTFACE", .{});
     }
 
     pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTFACE", .{}, arg);
+        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME", .{});
+        return interop.getStrAttribute(self, "NAME", .{});
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", .{}, arg);
+        interop.setStrAttribute(self, "NAME", .{}, arg);
     }
-
 
     /// 
     /// STATE (non inheritable): Show or hide the container elements.
@@ -1059,13 +1019,12 @@ pub const Expander = opaque {
     /// Setting this attribute will automatically change the layout of the entire
     /// dialog so the child can be recomposed.
     pub fn getState(self: *Self) ?State {
-        var ret = c.getStrAttribute(self, "STATE", .{});
+        var ret = interop.getStrAttribute(self, "STATE", .{});
 
         if (std.ascii.eqlIgnoreCase("OPEN", ret)) return .Open;
         if (std.ascii.eqlIgnoreCase("CLOSED", ret)) return .Closed;
         return null;
     }
-
 
     /// 
     /// STATE (non inheritable): Show or hide the container elements.
@@ -1075,56 +1034,55 @@ pub const Expander = opaque {
     /// dialog so the child can be recomposed.
     pub fn setState(self: *Self, arg: ?State) void {
         if (arg) |value| switch (value) {
-            .Open => c.setStrAttribute(self, "STATE", .{}, "OPEN"),
-            .Closed => c.setStrAttribute(self, "STATE", .{}, "CLOSED"),
+            .Open => interop.setStrAttribute(self, "STATE", .{}, "OPEN"),
+            .Closed => interop.setStrAttribute(self, "STATE", .{}, "CLOSED"),
         } else {
-            c.clearAttribute(self, "STATE", .{});
+            interop.clearAttribute(self, "STATE", .{});
         }
     }
 
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE", .{});
+        return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
 
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", .{}, arg);
+        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
     }
 
     pub fn getImageHighlight(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "IMAGEHIGHLIGHT", .{});
+        return interop.getStrAttribute(self, "IMAGEHIGHLIGHT", .{});
     }
 
     pub fn setImageHighlight(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "IMAGEHIGHLIGHT", .{}, arg);
+        interop.setStrAttribute(self, "IMAGEHIGHLIGHT", .{}, arg);
     }
 
     pub fn getExpandWeight(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
+        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
     pub fn setExpandWeight(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
+        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
     pub fn getMinSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MINSIZE", .{});
+        var str = interop.getStrAttribute(self, "MINSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MINSIZE", .{}, value);
+        interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
     pub fn getNTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NTHEME", .{});
+        return interop.getStrAttribute(self, "NTHEME", .{});
     }
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NTHEME", .{}, arg);
+        interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
-
 
     /// 
     /// ANIMATION (non inheritable): enable animation during open/close.
@@ -1136,14 +1094,13 @@ pub const Expander = opaque {
     /// Default: NO.
     /// ((since 3.14)
     pub fn getAnimation(self: *Self) ?Animation {
-        var ret = c.getStrAttribute(self, "ANIMATION", .{});
+        var ret = interop.getStrAttribute(self, "ANIMATION", .{});
 
         if (std.ascii.eqlIgnoreCase("SLIDE", ret)) return .Slide;
         if (std.ascii.eqlIgnoreCase("CURTAIN", ret)) return .Curtain;
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
-
 
     /// 
     /// ANIMATION (non inheritable): enable animation during open/close.
@@ -1156,105 +1113,97 @@ pub const Expander = opaque {
     /// ((since 3.14)
     pub fn setAnimation(self: *Self, arg: ?Animation) void {
         if (arg) |value| switch (value) {
-            .Slide => c.setStrAttribute(self, "ANIMATION", .{}, "SLIDE"),
-            .Curtain => c.setStrAttribute(self, "ANIMATION", .{}, "CURTAIN"),
-            .No => c.setStrAttribute(self, "ANIMATION", .{}, "NO"),
+            .Slide => interop.setStrAttribute(self, "ANIMATION", .{}, "SLIDE"),
+            .Curtain => interop.setStrAttribute(self, "ANIMATION", .{}, "CURTAIN"),
+            .No => interop.setStrAttribute(self, "ANIMATION", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "ANIMATION", .{});
+            interop.clearAttribute(self, "ANIMATION", .{});
         }
     }
 
     pub fn getCharSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CHARSIZE", .{});
+        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getClientSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CLIENTSIZE", .{});
+        var str = interop.getStrAttribute(self, "CLIENTSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getClientOffset(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CLIENTOFFSET", .{});
+        var str = interop.getStrAttribute(self, "CLIENTOFFSET", .{});
         return Size.parse(str);
     }
-
 
     /// 
     /// FORECOLOR (non inheritable): title text color.
     /// Default: the global attribute DLGFGCOLOR.
     /// (since 3.9)
     pub fn getForeColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "FORECOLOR", .{});
+        return interop.getRgb(self, "FORECOLOR", .{});
     }
-
 
     /// 
     /// FORECOLOR (non inheritable): title text color.
     /// Default: the global attribute DLGFGCOLOR.
     /// (since 3.9)
     pub fn setForeColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "FORECOLOR", .{}, rgb);
+        interop.setRgb(self, "FORECOLOR", .{}, rgb);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTSTYLE", .{});
+        return interop.getStrAttribute(self, "FONTSTYLE", .{});
     }
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTSTYLE", .{}, arg);
+        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
-
 
     /// 
     /// FRAMEWIDTH (non inheritable): frame line width.
     /// Default: 1.
     /// (since 3.23)
     pub fn getFrameWidth(self: *Self) i32 {
-        return c.getIntAttribute(self, "FRAMEWIDTH", .{});
+        return interop.getIntAttribute(self, "FRAMEWIDTH", .{});
     }
-
 
     /// 
     /// FRAMEWIDTH (non inheritable): frame line width.
     /// Default: 1.
     /// (since 3.23)
     pub fn setFrameWidth(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "FRAMEWIDTH", .{}, arg);
+        interop.setIntAttribute(self, "FRAMEWIDTH", .{}, arg);
     }
-
 
     /// 
     /// FRAME (non inheritable): enables the frame line around the bar area.
     /// Default: No.
     /// (since 3.23)
     pub fn getFrame(self: *Self) bool {
-        return c.getBoolAttribute(self, "FRAME", .{});
+        return interop.getBoolAttribute(self, "FRAME", .{});
     }
-
 
     /// 
     /// FRAME (non inheritable): enables the frame line around the bar area.
     /// Default: No.
     /// (since 3.23)
     pub fn setFrame(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "FRAME", .{}, arg);
+        interop.setBoolAttribute(self, "FRAME", .{}, arg);
     }
-
 
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONT", .{});
+        return interop.getStrAttribute(self, "FONT", .{});
     }
-
 
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONT", .{}, arg);
+        interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
     /// 

@@ -110,12 +110,12 @@ fn rightclick_cb(tree: *Tree, id: i32) !void {
     defer popup.deinit();
 
     tree.setValue(id);
-    popup.popup(.MousePos, .MousePos);
+    try popup.popup(.MousePos, .MousePos);
 }
 
 fn removeNode(item: *Item) !void {
     var tree = item.getPtrAttribute(Tree, "tree").?;
-    
+
     const node = tree.getValue();
     tree.delNode(node, .Selected);
 }
@@ -126,9 +126,9 @@ fn addLeaf(item: *Item) !void {
     tree.addLeaf(node, "");
     var new_node = tree.getLastAddNode();
 
-    std.debug.print("new_node {}\n", .{ new_node});
+    std.debug.print("new_node {}\n", .{new_node});
     tree.setValue(new_node);
-    std.debug.print("current_node {}\n", .{ tree.getValue() });
+    std.debug.print("current_node {}\n", .{tree.getValue()});
     tree.rename();
 }
 

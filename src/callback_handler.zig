@@ -1,8 +1,9 @@
 const std = @import("std");
 const iup = @import("iup.zig");
-const c = @import("c.zig");
+const interop = @import("interop.zig");
 
 const Element = iup.Element;
+const Handle = iup.Handle;
 
 ///
 /// Translates the C-API IUP's signature to zig function
@@ -10,50 +11,49 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
     return struct {
 
         /// Attribute key to store a reference to the zig callback on IUP's side
-        const STORE = c.toCStr("__" ++ action);
-        const ACTION = c.toCStr(action);
+        const STORE = "__" ++ action;
+        const ACTION = action;
 
         const Self = @This();
 
         /// Set or remove the callback function
         pub fn setCallback(handle: *T, callback: ?TCallback) void {
             if (callback) |ptr| {
-                _ = c.IupSetCallback(c.getHandle(handle), ACTION, getNativeCallback(TCallback));
-                c.IupSetAttribute(c.getHandle(handle), STORE, @ptrCast([*c]const u8, ptr));
+                var nativeCallback = getNativeCallback(TCallback);
+                interop.setNativeCallback(handle, ACTION, nativeCallback);
+                interop.setCallbackStoreAttribute(TCallback, handle, STORE, ptr);
             } else {
-                _ = c.IupSetCallback(c.getHandle(handle), ACTION, null);
-                c.IupSetAttribute(c.getHandle(handle), STORE, null);
+                interop.setNativeCallback(handle, ACTION, null);
+                interop.setCallbackStoreAttribute(TCallback, handle, STORE, null);
             }
         }
 
         ///
         /// Invoke the attached function
         /// args must be a tuple matching the TCallbackFn signature
-        fn invoke(handle: ?*c.Ihandle, args: anytype) c_int {
+        fn invoke(handle: ?*Handle, args: anytype) c_int {
             var validHandle = handle orelse @panic("Invalid handle from callback");
 
             if (getCallback(validHandle)) |callback| {
                 var element = @ptrCast(*T, validHandle);
-                @call(.{}, callback, .{element} ++ args) catch |err| {
-                    iup.MainLoop.onError(Element.fromRef(element), err);
+                @call(.{}, callback, .{element} ++ args) catch |err| switch (err) {
+                    iup.CallbackResult.Ignore => return interop.consts.IUP_IGNORE,
+                    iup.CallbackResult.Continue => return interop.consts.IUP_CONTINUE,
+                    iup.CallbackResult.Close => return interop.consts.IUP_CLOSE,
+                    else => return iup.MainLoop.onError(Element.fromRef(element), err),
                 };
             }
 
-            return c.IUP_DEFAULT;
+            return interop.consts.IUP_DEFAULT;
         }
 
         /// Gets a zig function related on the IUP's handle
-        fn getCallback(handle: *c.Ihandle) ?TCallback {
-            var ptr = c.IupGetAttribute(handle, STORE);
-            if (ptr == null) {
-                return null;
-            } else {
-                return @ptrCast(TCallback, ptr);
-            }
+        fn getCallback(handle: *Handle) ?TCallback {
+            return interop.getCallbackStoreAttribute(TCallback, handle, STORE);
         }
 
         /// Gets a native function with the propper signature
-        fn getNativeCallback(comptime Function: type) c.Icallback {
+        fn getNativeCallback(comptime Function: type) interop.NativeCallbackFn {
             const native_callback = comptime blk: {
                 const info = @typeInfo(Function);
                 if (info != .Fn)
@@ -77,67 +77,67 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
                 } else if (args.len == 3 and args[1] == i32 and args[2] == i32) {
                     break :blk Self.nativeCallbackIFnii;
                 } else if (args.len == 3 and args[1] == i32 and args[2] == [:0]const u8) {
-                    break :blk Self.nativeCallbackIFnis;                    
+                    break :blk Self.nativeCallbackIFnis;
                 } else if (args.len == 4 and args[1] == i32 and args[2] == i32 and args[3] == i32) {
                     break :blk Self.nativeCallbackIFniii;
                 } else if (args.len == 4 and args[1] == [:0]const u8 and args[2] == i32 and args[3] == i32) {
                     break :blk Self.nativeCallbackIFnsii;
                 } else if (args.len == 5 and args[1] == i32 and args[2] == i32 and args[3] == i32 and args[4] == i32) {
-                    break :blk Self.nativeCallbackIFniiii;                    
+                    break :blk Self.nativeCallbackIFniiii;
                 } else if (args.len == 5 and args[1] == i32 and args[2] == i32 and args[3] == i32 and args[4] == [:0]const u8) {
                     break :blk Self.nativeCallbackIFniiis;
                 } else if (args.len == 6 and args[1] == i32 and args[2] == i32 and args[3] == i32 and args[4] == i32 and args[5] == [:0]const u8) {
-                    break :blk Self.nativeCallbackIFniiiis;                    
+                    break :blk Self.nativeCallbackIFniiiis;
                 } else {
                     @compileLog("args = ", args);
                     unreachable;
                 }
             };
 
-            return @ptrCast(c.Icallback, native_callback);
+            return @ptrCast(interop.NativeCallbackFn, native_callback);
         }
 
         // TODO: Add all supported callbacks
         // See iupcbs.h for more details
 
-        fn nativeCallbackIFn(handle: ?*c.Ihandle) callconv(.C) c_int {
+        fn nativeCallbackIFn(handle: ?*Handle) callconv(.C) c_int {
             return invoke(handle, .{});
         }
 
-        fn nativeCallbackIFni(handle: ?*c.Ihandle, arg0: i32) callconv(.C) c_int {
+        fn nativeCallbackIFni(handle: ?*Handle, arg0: i32) callconv(.C) c_int {
             return invoke(handle, .{arg0});
         }
 
-        fn nativeCallbackIFns(handle: ?*c.Ihandle, arg0: [*]const u8) callconv(.C) c_int {
-            return invoke(handle, .{ c.fromCStr(arg0) });
+        fn nativeCallbackIFns(handle: ?*Handle, arg0: [*]const u8) callconv(.C) c_int {
+            return invoke(handle, .{interop.fromCStr(arg0)});
         }
 
-        fn nativeCallbackIFnii(handle: ?*c.Ihandle, arg0: i32, arg1: i32) callconv(.C) c_int {
+        fn nativeCallbackIFnii(handle: ?*Handle, arg0: i32, arg1: i32) callconv(.C) c_int {
             return invoke(handle, .{ arg0, arg1 });
         }
 
-        fn nativeCallbackIFnis(handle: ?*c.Ihandle, arg0: i32, arg1: [*]const u8) callconv(.C) c_int {
-            return invoke(handle, .{ arg0, c.fromCStr(arg1) });
+        fn nativeCallbackIFnis(handle: ?*Handle, arg0: i32, arg1: [*]const u8) callconv(.C) c_int {
+            return invoke(handle, .{ arg0, interop.fromCStr(arg1) });
         }
 
-        fn nativeCallbackIFniii(handle: ?*c.Ihandle, arg0: i32, arg1: i32, arg2: i32) callconv(.C) c_int {
+        fn nativeCallbackIFniii(handle: ?*Handle, arg0: i32, arg1: i32, arg2: i32) callconv(.C) c_int {
             return invoke(handle, .{ arg0, arg1, arg2 });
         }
 
-        fn nativeCallbackIFniiii(handle: ?*c.Ihandle, arg0: i32, arg1: i32, arg2: i32, arg3: i32) callconv(.C) c_int {
+        fn nativeCallbackIFniiii(handle: ?*Handle, arg0: i32, arg1: i32, arg2: i32, arg3: i32) callconv(.C) c_int {
             return invoke(handle, .{ arg0, arg1, arg2, arg3 });
-        }        
-
-        fn nativeCallbackIFnsii(handle: ?*c.Ihandle, arg0: [*]const u8, arg1: i32, arg2: i32) callconv(.C) c_int {
-            return invoke(handle, .{ c.fromCStr(arg0), arg1, arg2});
         }
 
-        fn nativeCallbackIFniiis(handle: ?*c.Ihandle, arg0: i32, arg1: i32, arg2: i32, arg3: [*]const u8) callconv(.C) c_int {
-            return invoke(handle, .{ arg0, arg1, arg2, c.fromCStr(arg3)});
+        fn nativeCallbackIFnsii(handle: ?*Handle, arg0: [*]const u8, arg1: i32, arg2: i32) callconv(.C) c_int {
+            return invoke(handle, .{ interop.fromCStr(arg0), arg1, arg2 });
         }
 
-        fn nativeCallbackIFniiiis(handle: ?*c.Ihandle, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [*]const u8) callconv(.C) c_int {
-            return invoke(handle, .{ arg0, arg1, arg2, arg3, c.fromCStr(arg4)});
-        }        
+        fn nativeCallbackIFniiis(handle: ?*Handle, arg0: i32, arg1: i32, arg2: i32, arg3: [*]const u8) callconv(.C) c_int {
+            return invoke(handle, .{ arg0, arg1, arg2, interop.fromCStr(arg3) });
+        }
+
+        fn nativeCallbackIFniiiis(handle: ?*Handle, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [*]const u8) callconv(.C) c_int {
+            return invoke(handle, .{ arg0, arg1, arg2, arg3, interop.fromCStr(arg4) });
+        }
     };
 }

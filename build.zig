@@ -3,7 +3,6 @@ const Builder = std.build.Builder;
 const Pkg = std.build.Pkg;
 
 fn addIupReference(step: *std.build.LibExeObjStep) !void {
-
     if (step.target.isWindows()) {
 
         // workarround, forcing MSVC ABI
@@ -18,7 +17,7 @@ fn addIupReference(step: *std.build.LibExeObjStep) !void {
         step.linkSystemLibrary("Advapi32");
 
         // Workarround for
-        // #9002 Find native include and libraries is broken with msvc ABI 
+        // #9002 Find native include and libraries is broken with msvc ABI
         // https://github.com/ziglang/zig/issues/9002
 
         step.addLibPath("lib/uwp");
@@ -27,14 +26,13 @@ fn addIupReference(step: *std.build.LibExeObjStep) !void {
 
         step.addLibPath("C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.16.27023\\lib\\x64");
 
-
         // Link againts .lib files
         step.addLibPath("lib/win64");
-        
+
         step.linkSystemLibrary("iupfiledlg");
         step.linkSystemLibrary("iupole");
         step.linkSystemLibrary("iupgl");
-        step.linkSystemLibrary("zlib1"); 
+        step.linkSystemLibrary("zlib1");
     }
 
     // Please visit IUP's download page for your platform
@@ -85,10 +83,10 @@ pub fn build(b: *Builder) !void {
     addExample(b, "image", "src/image_example.zig");
     addExample(b, "list", "src/list_example.zig");
     addExample(b, "tree", "src/tree_example.zig");
+    addExample(b, "mdi", "src/mdi_example.zig");
 }
 
 fn addExample(b: *Builder, comptime name: []const u8, comptime file: []const u8) void {
-
     const mode = b.standardReleaseOptions();
 
     const example = b.addExecutable(name, file);
@@ -101,5 +99,5 @@ fn addExample(b: *Builder, comptime name: []const u8, comptime file: []const u8)
     example_cmd.step.dependOn(b.getInstallStep());
 
     const example_step = b.step(name, "Example: " ++ name);
-    example_step.dependOn(&example_cmd.step);    
+    example_step.dependOn(&example_cmd.step);
 }

@@ -5,12 +5,18 @@
 const std = @import("std");
 const iup = @import("iup.zig");
 
-const allocator = std.heap.c_allocator;
 const fmt = std.fmt;
 
 usingnamespace iup;
 
+var allocator: *std.mem.Allocator = undefined;
+
 pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+
+    allocator = &gpa.allocator;
+
     try MainLoop.open();
     defer MainLoop.close();
 

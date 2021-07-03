@@ -1,7 +1,9 @@
 const std = @import("std");
-const c = @import("c.zig");
+const interop = @import("interop.zig");
 const iup = @import("iup.zig");
 
+///
+/// Global handler for unhandled errors thrown inside callback functions
 pub const ErrorHandlerFn = fn (Element, anyerror) anyerror!void;
 
 const Self = @This();
@@ -13,10 +15,7 @@ var errorHandler: ?ErrorHandlerFn = null;
 ///
 /// Initializes the IUP toolkit. Must be called before any other IUP function.
 pub fn open() iup.Error!void {
-    var ret = c.IupOpen(null, null);
-    if (ret == c.IUP_ERROR) return iup.Error.OpenFailed;
-
-    c.IupImageLibOpen();
+    try interop.open();
 }
 
 ///
@@ -29,18 +28,21 @@ pub fn setErrorHandler(errorHandler: ?ErrorHandlerFn) void {
 ///
 /// Terminates the current message loop. It has the same effect of a callback returning IUP_CLOSE.
 pub fn exitLoop() void {
-    c.IupExitLoop();
+    interop.exitLoop();
 }
 
 ///
 /// Called by the message loop
-pub fn onError(element: Element, err: anyerror) void {
+pub fn onError(element: Element, err: anyerror) i32 {
     if (Self.errorHandler) |func| {
-        func(element, err) catch |rethrow| {
+        if (func(element, err)) {
+            return interop.consts.IUP_DEFAULT;
+        } else |rethrow| {
             exitError = rethrow;
-            c.IupExitLoop();
-        };
+        }
     }
+
+    return interop.consts.IUP_CLOSE;
 }
 
 ///
@@ -57,19 +59,19 @@ pub fn onError(element: Element, err: anyerror) void {
 /// When the last visible dialog is hidden the IupExitLoop function is automatically called, 
 /// causing the IupMainLoop to return. To avoid that set LOCKLOOP=YES before hiding the last dialog.
 pub fn beginLoop() !void {
-    _ = c.IupMainLoop();
+    interop.beginLoop();
     if (exitError) |err| return err;
 }
 
 ///
 /// Returns a string with the IUP version number.
 pub fn showVersion() void {
-    c.IupVersionShow();
+    interop.showVersion();
 }
 
 ///
 /// Ends the IUP toolkit and releases internal memory.
 /// It will also automatically destroy all dialogs and all elements that have names.
 pub fn close() void {
-    _ = c.IupClose();
+    interop.close();
 }

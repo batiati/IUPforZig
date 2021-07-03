@@ -8,7 +8,7 @@
 
 const std = @import("std");
 
-const c = @import("../c.zig");
+const interop = @import("../interop.zig");
 const iup = @import("../iup.zig");
 
 const Impl = @import("../impl.zig").Impl;
@@ -128,53 +128,49 @@ pub const Param = opaque {
         }
 
         pub fn setDirectory(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DIRECTORY", .{}, arg);
+            interop.setStrAttribute(self.ref, "DIRECTORY", .{}, arg);
             return self.*;
         }
 
         pub fn setNoOverwritePrompt(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "NOOVERWRITEPROMPT", .{}, arg);
+            interop.setBoolAttribute(self.ref, "NOOVERWRITEPROMPT", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TITLE: text of the parameter, used as label.
         /// For all parameters.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLE", .{}, arg);
+            interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MULTILINE: can be Yes or No.
         /// Defines if the edit box can have more than one line.
         /// For 'm' parameter.
         pub fn setMultiline(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MULTILINE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MULTILINE", .{}, arg);
             return self.*;
         }
 
         pub fn setFilter(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FILTER", .{}, arg);
+            interop.setStrAttribute(self.ref, "FILTER", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TIP: text of the tip.
         /// For all parameters.
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIP", .{}, arg);
+            interop.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
 
         pub fn setMax(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "MAX", .{}, arg);
+            interop.setDoubleAttribute(self.ref, "MAX", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// BUTTON1, BUTTON2, BUTTON3: button titles.
@@ -182,29 +178,27 @@ pub const Param = opaque {
         /// when IupParamBox is directly used.
         /// For 'u' parameter.
         pub fn setButton1(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "BUTTON1", .{}, arg);
+            interop.setStrAttribute(self.ref, "BUTTON1", .{}, arg);
             return self.*;
         }
 
         pub fn setButton2(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "BUTTON2", .{}, arg);
+            interop.setStrAttribute(self.ref, "BUTTON2", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MASK: mask for the edit box input.
         /// For 's' and 'm' parameters.
         pub fn setMask(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "MASK", .{}, arg);
+            interop.setStrAttribute(self.ref, "MASK", .{}, arg);
             return self.*;
         }
 
         pub fn setButton3(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "BUTTON3", .{}, arg);
+            interop.setStrAttribute(self.ref, "BUTTON3", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
@@ -213,10 +207,9 @@ pub const Param = opaque {
         /// And describe the type of the parameter.
         /// For all parameters.
         pub fn setType(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TYPE", .{}, arg);
+            interop.setStrAttribute(self.ref, "TYPE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// VALUE - the value of the parameter.
@@ -225,10 +218,9 @@ pub const Param = opaque {
         /// will be applied to the control, to get the old value use the VALUE
         /// attribute for the CONTROL returned Ihandle*.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "VALUE", .{}, arg);
+            interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
@@ -237,27 +229,27 @@ pub const Param = opaque {
         /// For 'f' parameter.
         pub fn setDialogType(self: *Initializer, arg: ?DialogType) Initializer {
             if (arg) |value| switch (value) {
-                .Save => c.setStrAttribute(self.ref, "DIALOGTYPE", .{}, "SAVE"),
-                .Dir => c.setStrAttribute(self.ref, "DIALOGTYPE", .{}, "DIR"),
-                .Open => c.setStrAttribute(self.ref, "DIALOGTYPE", .{}, "OPEN"),
+                .Save => interop.setStrAttribute(self.ref, "DIALOGTYPE", .{}, "SAVE"),
+                .Dir => interop.setStrAttribute(self.ref, "DIALOGTYPE", .{}, "DIR"),
+                .Open => interop.setStrAttribute(self.ref, "DIALOGTYPE", .{}, "OPEN"),
             } else {
-                c.clearAttribute(self.ref, "DIALOGTYPE", .{});
+                interop.clearAttribute(self.ref, "DIALOGTYPE", .{});
             }
             return self.*;
         }
 
         pub fn setNoChangeDir(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "NOCHANGEDIR", .{}, arg);
+            interop.setBoolAttribute(self.ref, "NOCHANGEDIR", .{}, arg);
             return self.*;
         }
 
         pub fn setMin(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "MIN", .{}, arg);
+            interop.setDoubleAttribute(self.ref, "MIN", .{}, arg);
             return self.*;
         }
 
         pub fn setStep(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "STEP", .{}, arg);
+            interop.setDoubleAttribute(self.ref, "STEP", .{}, arg);
             return self.*;
         }
 
@@ -320,42 +312,42 @@ pub const Param = opaque {
     };
 
     pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attribute, .{}, arg);
+        interop.setStrAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attribute, .{});
+        return interop.getStrAttribute(self, attribute, .{});
     }
 
     pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attribute, .{}, arg);
+        interop.setIntAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attribute, .{});
+        return interop.getIntAttribute(self, attribute, .{});
     }
 
     pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attribute, .{}, arg);
+        interop.setBoolAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attribute, .{});
+        return interop.getBoolAttribute(self, attribute, .{});
     }
 
     pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute, .{});
+        return interop.getPtrAttribute(T, handle, attribute, .{});
     }
 
     pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, .{}, value);
+        interop.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
     pub fn init() Initializer {
-        var handle = c.create(Self);
+        var handle = interop.create(Self);
 
         if (handle) |valid| {
             return .{
@@ -370,118 +362,104 @@ pub const Param = opaque {
     /// Destroys an interface element and all its children.
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
-        c.destroy(self);
+        interop.destroy(self);
     }
 
     ///
     ///
     pub fn getDialog(self: *Self) ?*iup.Dialog {
-        if (c.IupGetDialog(c.getHandle(self))) |handle| {
-            return c.fromHandle(iup.Dialog, handle);
-        } else {
-            return null;
-        }
+        return interop.getDialog(self);
     }
 
     ///
     /// Returns the the child element that has the NAME attribute equals to the given value on the same dialog hierarchy.
     /// Works also for children of a menu that is associated with a dialog.
     pub fn getDialogChild(self: *Self, byName: [:0]const u8) ?Element {
-        var child = c.IupGetDialogChild(c.getHandle(self), c.toCStr(byName)) orelse return null;
-        var className = c.fromCStr(c.IupGetClassName(child));
-
-        return Element.fromClassName(className, child);
+        return interop.getDialogChild(self, byName);
     }
 
     ///
     /// Updates the size and layout of all controls in the same dialog.
     /// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
     pub fn refresh(self: *Self) void {
-        try Impl(Self).refresh(self);
+        Impl(Self).refresh(self);
     }
 
     pub fn getDirectory(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DIRECTORY", .{});
+        return interop.getStrAttribute(self, "DIRECTORY", .{});
     }
 
     pub fn setDirectory(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DIRECTORY", .{}, arg);
+        interop.setStrAttribute(self, "DIRECTORY", .{}, arg);
     }
 
     pub fn getNoOverwritePrompt(self: *Self) bool {
-        return c.getBoolAttribute(self, "NOOVERWRITEPROMPT", .{});
+        return interop.getBoolAttribute(self, "NOOVERWRITEPROMPT", .{});
     }
 
     pub fn setNoOverwritePrompt(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "NOOVERWRITEPROMPT", .{}, arg);
+        interop.setBoolAttribute(self, "NOOVERWRITEPROMPT", .{}, arg);
     }
-
 
     /// 
     /// TITLE: text of the parameter, used as label.
     /// For all parameters.
     pub fn getTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLE", .{});
+        return interop.getStrAttribute(self, "TITLE", .{});
     }
-
 
     /// 
     /// TITLE: text of the parameter, used as label.
     /// For all parameters.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLE", .{}, arg);
+        interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
-
 
     /// 
     /// MULTILINE: can be Yes or No.
     /// Defines if the edit box can have more than one line.
     /// For 'm' parameter.
     pub fn getMultiline(self: *Self) bool {
-        return c.getBoolAttribute(self, "MULTILINE", .{});
+        return interop.getBoolAttribute(self, "MULTILINE", .{});
     }
-
 
     /// 
     /// MULTILINE: can be Yes or No.
     /// Defines if the edit box can have more than one line.
     /// For 'm' parameter.
     pub fn setMultiline(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MULTILINE", .{}, arg);
+        interop.setBoolAttribute(self, "MULTILINE", .{}, arg);
     }
 
     pub fn getFilter(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FILTER", .{});
+        return interop.getStrAttribute(self, "FILTER", .{});
     }
 
     pub fn setFilter(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FILTER", .{}, arg);
+        interop.setStrAttribute(self, "FILTER", .{}, arg);
     }
-
 
     /// 
     /// TIP: text of the tip.
     /// For all parameters.
     pub fn getTip(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIP", .{});
+        return interop.getStrAttribute(self, "TIP", .{});
     }
-
 
     /// 
     /// TIP: text of the tip.
     /// For all parameters.
     pub fn setTip(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIP", .{}, arg);
+        interop.setStrAttribute(self, "TIP", .{}, arg);
     }
 
     pub fn getMax(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "MAX", .{});
+        return interop.getDoubleAttribute(self, "MAX", .{});
     }
 
     pub fn setMax(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "MAX", .{}, arg);
+        interop.setDoubleAttribute(self, "MAX", .{}, arg);
     }
-
 
     /// 
     /// BUTTON1, BUTTON2, BUTTON3: button titles.
@@ -489,9 +467,8 @@ pub const Param = opaque {
     /// when IupParamBox is directly used.
     /// For 'u' parameter.
     pub fn getButton1(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "BUTTON1", .{});
+        return interop.getStrAttribute(self, "BUTTON1", .{});
     }
-
 
     /// 
     /// BUTTON1, BUTTON2, BUTTON3: button titles.
@@ -499,41 +476,38 @@ pub const Param = opaque {
     /// when IupParamBox is directly used.
     /// For 'u' parameter.
     pub fn setButton1(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "BUTTON1", .{}, arg);
+        interop.setStrAttribute(self, "BUTTON1", .{}, arg);
     }
 
     pub fn getButton2(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "BUTTON2", .{});
+        return interop.getStrAttribute(self, "BUTTON2", .{});
     }
 
     pub fn setButton2(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "BUTTON2", .{}, arg);
+        interop.setStrAttribute(self, "BUTTON2", .{}, arg);
     }
-
 
     /// 
     /// MASK: mask for the edit box input.
     /// For 's' and 'm' parameters.
     pub fn getMask(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "MASK", .{});
+        return interop.getStrAttribute(self, "MASK", .{});
     }
-
 
     /// 
     /// MASK: mask for the edit box input.
     /// For 's' and 'm' parameters.
     pub fn setMask(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "MASK", .{}, arg);
+        interop.setStrAttribute(self, "MASK", .{}, arg);
     }
 
     pub fn getButton3(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "BUTTON3", .{});
+        return interop.getStrAttribute(self, "BUTTON3", .{});
     }
 
     pub fn setButton3(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "BUTTON3", .{}, arg);
+        interop.setStrAttribute(self, "BUTTON3", .{}, arg);
     }
-
 
     /// 
     /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
@@ -542,9 +516,8 @@ pub const Param = opaque {
     /// And describe the type of the parameter.
     /// For all parameters.
     pub fn getType(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TYPE", .{});
+        return interop.getStrAttribute(self, "TYPE", .{});
     }
-
 
     /// 
     /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
@@ -553,9 +526,8 @@ pub const Param = opaque {
     /// And describe the type of the parameter.
     /// For all parameters.
     pub fn setType(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TYPE", .{}, arg);
+        interop.setStrAttribute(self, "TYPE", .{}, arg);
     }
-
 
     /// 
     /// VALUE - the value of the parameter.
@@ -564,9 +536,8 @@ pub const Param = opaque {
     /// will be applied to the control, to get the old value use the VALUE
     /// attribute for the CONTROL returned Ihandle*.
     pub fn getValue(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "VALUE", .{});
+        return interop.getStrAttribute(self, "VALUE", .{});
     }
-
 
     /// 
     /// VALUE - the value of the parameter.
@@ -575,9 +546,8 @@ pub const Param = opaque {
     /// will be applied to the control, to get the old value use the VALUE
     /// attribute for the CONTROL returned Ihandle*.
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "VALUE", .{}, arg);
+        interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
-
 
     /// 
     /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
@@ -585,14 +555,13 @@ pub const Param = opaque {
     /// See IupFileDlg.
     /// For 'f' parameter.
     pub fn getDialogType(self: *Self) ?DialogType {
-        var ret = c.getStrAttribute(self, "DIALOGTYPE", .{});
+        var ret = interop.getStrAttribute(self, "DIALOGTYPE", .{});
 
         if (std.ascii.eqlIgnoreCase("SAVE", ret)) return .Save;
         if (std.ascii.eqlIgnoreCase("DIR", ret)) return .Dir;
         if (std.ascii.eqlIgnoreCase("OPEN", ret)) return .Open;
         return null;
     }
-
 
     /// 
     /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
@@ -601,36 +570,36 @@ pub const Param = opaque {
     /// For 'f' parameter.
     pub fn setDialogType(self: *Self, arg: ?DialogType) void {
         if (arg) |value| switch (value) {
-            .Save => c.setStrAttribute(self, "DIALOGTYPE", .{}, "SAVE"),
-            .Dir => c.setStrAttribute(self, "DIALOGTYPE", .{}, "DIR"),
-            .Open => c.setStrAttribute(self, "DIALOGTYPE", .{}, "OPEN"),
+            .Save => interop.setStrAttribute(self, "DIALOGTYPE", .{}, "SAVE"),
+            .Dir => interop.setStrAttribute(self, "DIALOGTYPE", .{}, "DIR"),
+            .Open => interop.setStrAttribute(self, "DIALOGTYPE", .{}, "OPEN"),
         } else {
-            c.clearAttribute(self, "DIALOGTYPE", .{});
+            interop.clearAttribute(self, "DIALOGTYPE", .{});
         }
     }
 
     pub fn getNoChangeDir(self: *Self) bool {
-        return c.getBoolAttribute(self, "NOCHANGEDIR", .{});
+        return interop.getBoolAttribute(self, "NOCHANGEDIR", .{});
     }
 
     pub fn setNoChangeDir(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "NOCHANGEDIR", .{}, arg);
+        interop.setBoolAttribute(self, "NOCHANGEDIR", .{}, arg);
     }
 
     pub fn getMin(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "MIN", .{});
+        return interop.getDoubleAttribute(self, "MIN", .{});
     }
 
     pub fn setMin(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "MIN", .{}, arg);
+        interop.setDoubleAttribute(self, "MIN", .{}, arg);
     }
 
     pub fn getStep(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "STEP", .{});
+        return interop.getDoubleAttribute(self, "STEP", .{});
     }
 
     pub fn setStep(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "STEP", .{}, arg);
+        interop.setDoubleAttribute(self, "STEP", .{}, arg);
     }
 
     pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {

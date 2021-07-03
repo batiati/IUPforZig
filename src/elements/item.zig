@@ -8,7 +8,7 @@
 
 const std = @import("std");
 
-const c = @import("../c.zig");
+const interop = @import("../interop.zig");
 const iup = @import("../iup.zig");
 
 const Impl = @import("../impl.zig").Impl;
@@ -157,14 +157,12 @@ pub const Item = opaque {
             return self.*;
         }
 
-
         /// 
         /// ACTIVE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TITLE (non inheritable): Item text.
@@ -174,19 +172,17 @@ pub const Item = opaque {
         /// When in a menu bar an item that has a mnemonic can be activated from any
         /// control in the dialog using the "Alt+key" combination.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLE", .{}, arg);
+            interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
         /// mark image when VALUE=ON.
         pub fn setImPress(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "IMPRESS", .{}, arg);
+            interop.setStrAttribute(self.ref, "IMPRESS", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the check
@@ -196,20 +192,19 @@ pub const Item = opaque {
         /// A recommended size would be 16x16 to fit the image in the menu item.
         /// In Windows, if larger than the check mark area it will be cropped.
         pub fn setImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "IMAGE", .{}, arg);
+            interop.setStrAttribute(self.ref, "IMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setHandle(self.ref, arg);
+            interop.setHandle(self.ref, arg);
             return self.*;
         }
 
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BGCOLOR", .{}, rgb);
+            interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
-
 
         /// 
         /// TITLEIMAGE (non inheritable): Image name of the title image.
@@ -220,25 +215,23 @@ pub const Item = opaque {
         /// In GTK, it will appear on the check mark area.
         /// (since 3.0)
         pub fn setTitleImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLEIMAGE", .{}, arg);
+            interop.setStrAttribute(self.ref, "TITLEIMAGE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// KEY (non inheritable): Underlines a key character in the submenu title.
         /// It is updated only when TITLE is updated.
         /// Deprecated (since 3.0), use the mnemonic support directly in the TITLE attribute.
         pub fn setKey(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "KEY", .{}, arg);
+            interop.setIntAttribute(self.ref, "KEY", .{}, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", .{}, arg);
+            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// VALUE (non inheritable): Indicates the item's state.
@@ -251,14 +244,13 @@ pub const Item = opaque {
         /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
         pub fn setValue(self: *Initializer, arg: ?Value) Initializer {
             if (arg) |value| switch (value) {
-                .On => c.setStrAttribute(self.ref, "VALUE", .{}, "ON"),
-                .Off => c.setStrAttribute(self.ref, "VALUE", .{}, "OFF"),
+                .On => interop.setStrAttribute(self.ref, "VALUE", .{}, "ON"),
+                .Off => interop.setStrAttribute(self.ref, "VALUE", .{}, "OFF"),
             } else {
-                c.clearAttribute(self.ref, "VALUE", .{});
+                interop.clearAttribute(self.ref, "VALUE", .{});
             }
             return self.*;
         }
-
 
         /// 
         /// AUTOTOGGLE (non inheritable): enables the automatic toggle of VALUE state
@@ -266,7 +258,7 @@ pub const Item = opaque {
         /// Default: NO.
         /// (since 3.0)
         pub fn setAutoToggle(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "AUTOTOGGLE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "AUTOTOGGLE", .{}, arg);
             return self.*;
         }
 
@@ -369,42 +361,42 @@ pub const Item = opaque {
     };
 
     pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attribute, .{}, arg);
+        interop.setStrAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attribute, .{});
+        return interop.getStrAttribute(self, attribute, .{});
     }
 
     pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attribute, .{}, arg);
+        interop.setIntAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attribute, .{});
+        return interop.getIntAttribute(self, attribute, .{});
     }
 
     pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attribute, .{}, arg);
+        interop.setBoolAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attribute, .{});
+        return interop.getBoolAttribute(self, attribute, .{});
     }
 
     pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute, .{});
+        return interop.getPtrAttribute(T, handle, attribute, .{});
     }
 
     pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, .{}, value);
+        interop.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
     pub fn init() Initializer {
-        var handle = c.create(Self);
+        var handle = interop.create(Self);
 
         if (handle) |valid| {
             return .{
@@ -419,50 +411,40 @@ pub const Item = opaque {
     /// Destroys an interface element and all its children.
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
-        c.destroy(self);
+        interop.destroy(self);
     }
 
     ///
     ///
     pub fn getDialog(self: *Self) ?*iup.Dialog {
-        if (c.IupGetDialog(c.getHandle(self))) |handle| {
-            return c.fromHandle(iup.Dialog, handle);
-        } else {
-            return null;
-        }
+        return interop.getDialog(self);
     }
 
     ///
     /// Returns the the child element that has the NAME attribute equals to the given value on the same dialog hierarchy.
     /// Works also for children of a menu that is associated with a dialog.
     pub fn getDialogChild(self: *Self, byName: [:0]const u8) ?Element {
-        var child = c.IupGetDialogChild(c.getHandle(self), c.toCStr(byName)) orelse return null;
-        var className = c.fromCStr(c.IupGetClassName(child));
-
-        return Element.fromClassName(className, child);
+        return interop.getDialogChild(self, byName);
     }
 
     ///
     /// Updates the size and layout of all controls in the same dialog.
     /// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
     pub fn refresh(self: *Self) void {
-        try Impl(Self).refresh(self);
+        Impl(Self).refresh(self);
     }
-
 
     /// 
     /// ACTIVE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE", .{});
+        return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
-
 
     /// 
     /// ACTIVE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", .{}, arg);
+        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
     }
-
 
     /// 
     /// TITLE (non inheritable): Item text.
@@ -472,9 +454,8 @@ pub const Item = opaque {
     /// When in a menu bar an item that has a mnemonic can be activated from any
     /// control in the dialog using the "Alt+key" combination.
     pub fn getTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLE", .{});
+        return interop.getStrAttribute(self, "TITLE", .{});
     }
-
 
     /// 
     /// TITLE (non inheritable): Item text.
@@ -484,25 +465,22 @@ pub const Item = opaque {
     /// When in a menu bar an item that has a mnemonic can be activated from any
     /// control in the dialog using the "Alt+key" combination.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLE", .{}, arg);
+        interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
-
 
     /// 
     /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=ON.
     pub fn getImPress(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "IMPRESS", .{});
+        return interop.getStrAttribute(self, "IMPRESS", .{});
     }
-
 
     /// 
     /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=ON.
     pub fn setImPress(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "IMPRESS", .{}, arg);
+        interop.setStrAttribute(self, "IMPRESS", .{}, arg);
     }
-
 
     /// 
     /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the check
@@ -512,9 +490,8 @@ pub const Item = opaque {
     /// A recommended size would be 16x16 to fit the image in the menu item.
     /// In Windows, if larger than the check mark area it will be cropped.
     pub fn getImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "IMAGE", .{});
+        return interop.getStrAttribute(self, "IMAGE", .{});
     }
-
 
     /// 
     /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the check
@@ -524,25 +501,24 @@ pub const Item = opaque {
     /// A recommended size would be 16x16 to fit the image in the menu item.
     /// In Windows, if larger than the check mark area it will be cropped.
     pub fn setImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "IMAGE", .{}, arg);
+        interop.setStrAttribute(self, "IMAGE", .{}, arg);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME", .{});
+        return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setHandle(self, arg);
+        interop.setHandle(self, arg);
     }
 
     pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BGCOLOR", .{});
+        return interop.getRgb(self, "BGCOLOR", .{});
     }
 
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BGCOLOR", .{}, rgb);
+        interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
-
 
     /// 
     /// TITLEIMAGE (non inheritable): Image name of the title image.
@@ -553,9 +529,8 @@ pub const Item = opaque {
     /// In GTK, it will appear on the check mark area.
     /// (since 3.0)
     pub fn getTitleImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLEIMAGE", .{});
+        return interop.getStrAttribute(self, "TITLEIMAGE", .{});
     }
-
 
     /// 
     /// TITLEIMAGE (non inheritable): Image name of the title image.
@@ -566,35 +541,32 @@ pub const Item = opaque {
     /// In GTK, it will appear on the check mark area.
     /// (since 3.0)
     pub fn setTitleImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLEIMAGE", .{}, arg);
+        interop.setStrAttribute(self, "TITLEIMAGE", .{}, arg);
     }
-
 
     /// 
     /// KEY (non inheritable): Underlines a key character in the submenu title.
     /// It is updated only when TITLE is updated.
     /// Deprecated (since 3.0), use the mnemonic support directly in the TITLE attribute.
     pub fn getKey(self: *Self) i32 {
-        return c.getIntAttribute(self, "KEY", .{});
+        return interop.getIntAttribute(self, "KEY", .{});
     }
-
 
     /// 
     /// KEY (non inheritable): Underlines a key character in the submenu title.
     /// It is updated only when TITLE is updated.
     /// Deprecated (since 3.0), use the mnemonic support directly in the TITLE attribute.
     pub fn setKey(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "KEY", .{}, arg);
+        interop.setIntAttribute(self, "KEY", .{}, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME", .{});
+        return interop.getStrAttribute(self, "NAME", .{});
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", .{}, arg);
+        interop.setStrAttribute(self, "NAME", .{}, arg);
     }
-
 
     /// 
     /// VALUE (non inheritable): Indicates the item's state.
@@ -606,13 +578,12 @@ pub const Item = opaque {
     /// Since GTK 2.14 to have a menu item that can be marked you must set the
     /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
     pub fn getValue(self: *Self) ?Value {
-        var ret = c.getStrAttribute(self, "VALUE", .{});
+        var ret = interop.getStrAttribute(self, "VALUE", .{});
 
         if (std.ascii.eqlIgnoreCase("ON", ret)) return .On;
         if (std.ascii.eqlIgnoreCase("OFF", ret)) return .Off;
         return null;
     }
-
 
     /// 
     /// VALUE (non inheritable): Indicates the item's state.
@@ -625,20 +596,18 @@ pub const Item = opaque {
     /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
     pub fn setValue(self: *Self, arg: ?Value) void {
         if (arg) |value| switch (value) {
-            .On => c.setStrAttribute(self, "VALUE", .{}, "ON"),
-            .Off => c.setStrAttribute(self, "VALUE", .{}, "OFF"),
+            .On => interop.setStrAttribute(self, "VALUE", .{}, "ON"),
+            .Off => interop.setStrAttribute(self, "VALUE", .{}, "OFF"),
         } else {
-            c.clearAttribute(self, "VALUE", .{});
+            interop.clearAttribute(self, "VALUE", .{});
         }
     }
-
 
     /// 
     /// WID (non inheritable): In Windows, returns the HMENU of the parent menu.
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID", .{});
+        return interop.getIntAttribute(self, "WID", .{});
     }
-
 
     /// 
     /// AUTOTOGGLE (non inheritable): enables the automatic toggle of VALUE state
@@ -646,9 +615,8 @@ pub const Item = opaque {
     /// Default: NO.
     /// (since 3.0)
     pub fn getAutoToggle(self: *Self) bool {
-        return c.getBoolAttribute(self, "AUTOTOGGLE", .{});
+        return interop.getBoolAttribute(self, "AUTOTOGGLE", .{});
     }
-
 
     /// 
     /// AUTOTOGGLE (non inheritable): enables the automatic toggle of VALUE state
@@ -656,7 +624,7 @@ pub const Item = opaque {
     /// Default: NO.
     /// (since 3.0)
     pub fn setAutoToggle(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "AUTOTOGGLE", .{}, arg);
+        interop.setBoolAttribute(self, "AUTOTOGGLE", .{}, arg);
     }
 
     pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {

@@ -8,7 +8,7 @@
 
 const std = @import("std");
 
-const c = @import("../c.zig");
+const interop = @import("../interop.zig");
 const iup = @import("../iup.zig");
 
 const Impl = @import("../impl.zig").Impl;
@@ -204,10 +204,9 @@ pub const GridBox = opaque {
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setHandle(self.ref, arg);
+            interop.setHandle(self.ref, arg);
             return self.*;
         }
-
 
         /// 
         /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
@@ -221,33 +220,31 @@ pub const GridBox = opaque {
         /// that the children will have their sizes changed.
         pub fn setNormalizeSize(self: *Initializer, arg: ?NormalizeSize) Initializer {
             if (arg) |value| switch (value) {
-                .Horizontal => c.setStrAttribute(self.ref, "NORMALIZESIZE", .{}, "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "NORMALIZESIZE", .{}, "VERTICAL"),
-                .Both => c.setStrAttribute(self.ref, "NORMALIZESIZE", .{}, "BOTH"),
-                .None => c.setStrAttribute(self.ref, "NORMALIZESIZE", .{}, "NONE"),
+                .Horizontal => interop.setStrAttribute(self.ref, "NORMALIZESIZE", .{}, "HORIZONTAL"),
+                .Vertical => interop.setStrAttribute(self.ref, "NORMALIZESIZE", .{}, "VERTICAL"),
+                .Both => interop.setStrAttribute(self.ref, "NORMALIZESIZE", .{}, "BOTH"),
+                .None => interop.setStrAttribute(self.ref, "NORMALIZESIZE", .{}, "NONE"),
             } else {
-                c.clearAttribute(self.ref, "NORMALIZESIZE", .{});
+                interop.clearAttribute(self.ref, "NORMALIZESIZE", .{});
             }
             return self.*;
         }
-
 
         /// 
         /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
         /// is in the same units of the SIZE attribute for the height.
         /// Default: "0".
         pub fn setGapLin(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "GAPLIN", .{}, arg);
+            interop.setIntAttribute(self.ref, "GAPLIN", .{}, arg);
             return self.*;
         }
 
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// EXPANDCHILDREN (non inheritable): forces all children to expand in the
@@ -257,12 +254,12 @@ pub const GridBox = opaque {
         /// This has the same effect as setting EXPAND on each child.
         pub fn setExpandChildren(self: *Initializer, arg: ?ExpandChildren) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "EXPANDCHILDREN", .{}, "YES"),
-                .Horizontal => c.setStrAttribute(self.ref, "EXPANDCHILDREN", .{}, "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "EXPANDCHILDREN", .{}, "VERTICAL"),
-                .None => c.setStrAttribute(self.ref, "EXPANDCHILDREN", .{}, "NONE"),
+                .Yes => interop.setStrAttribute(self.ref, "EXPANDCHILDREN", .{}, "YES"),
+                .Horizontal => interop.setStrAttribute(self.ref, "EXPANDCHILDREN", .{}, "HORIZONTAL"),
+                .Vertical => interop.setStrAttribute(self.ref, "EXPANDCHILDREN", .{}, "VERTICAL"),
+                .None => interop.setStrAttribute(self.ref, "EXPANDCHILDREN", .{}, "NONE"),
             } else {
-                c.clearAttribute(self.ref, "EXPANDCHILDREN", .{});
+                interop.clearAttribute(self.ref, "EXPANDCHILDREN", .{});
             }
             return self.*;
         }
@@ -270,35 +267,33 @@ pub const GridBox = opaque {
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "POSITION", .{}, value);
+            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
             return self.*;
         }
 
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
+            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
         /// CGAPCOL is in the same units of the SIZE attribute for the height.
         /// Default: "0".
         pub fn setCGapCol(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CGAPCOL", .{}, arg);
+            interop.setIntAttribute(self.ref, "CGAPCOL", .{}, arg);
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "THEME", .{}, arg);
+            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -309,28 +304,26 @@ pub const GridBox = opaque {
         pub fn setCMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
-            c.setStrAttribute(self.ref, "CMARGIN", .{}, value);
+            interop.setStrAttribute(self.ref, "CMARGIN", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// EXPAND (non inheritable*): The default value is "YES".
         /// See the documentation of the attribute for EXPAND inheritance.
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
-                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
-                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
-                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
-                .No => c.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
+                .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
+                .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
+                .Vertical => interop.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
+                .HorizontalFree => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
+                .VerticalFree => interop.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
+                .No => interop.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "EXPAND", .{});
+                interop.clearAttribute(self.ref, "EXPAND", .{});
             }
             return self.*;
         }
-
 
         /// 
         /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
@@ -338,20 +331,18 @@ pub const GridBox = opaque {
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "SIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "SIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
         /// is in the same units of the SIZE attribute for the height.
         /// Default: "0".
         pub fn setCGapLin(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CGAPLIN", .{}, arg);
+            interop.setIntAttribute(self.ref, "CGAPLIN", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// ORIENTATION (non inheritable): controls the distribution of the children in
@@ -360,40 +351,38 @@ pub const GridBox = opaque {
         /// Default: HORIZONTAL.
         pub fn setOrientation(self: *Initializer, arg: ?Orientation) Initializer {
             if (arg) |value| switch (value) {
-                .Horizontal => c.setStrAttribute(self.ref, "ORIENTATION", .{}, "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "ORIENTATION", .{}, "VERTICAL"),
+                .Horizontal => interop.setStrAttribute(self.ref, "ORIENTATION", .{}, "HORIZONTAL"),
+                .Vertical => interop.setStrAttribute(self.ref, "ORIENTATION", .{}, "VERTICAL"),
             } else {
-                c.clearAttribute(self.ref, "ORIENTATION", .{});
+                interop.clearAttribute(self.ref, "ORIENTATION", .{});
             }
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
+            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "USERSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
         /// are non inheritable.
         pub fn setNGapCol(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "NGAPCOL", .{}, arg);
+            interop.setIntAttribute(self.ref, "NGAPCOL", .{}, arg);
             return self.*;
         }
 
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
+            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -401,60 +390,56 @@ pub const GridBox = opaque {
         /// Default: "NO".
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
-                .Ignore => c.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
-                .No => c.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
+                .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
+                .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
+                .No => interop.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "FLOATING", .{});
+                interop.clearAttribute(self.ref, "FLOATING", .{});
             }
             return self.*;
         }
-
 
         /// 
         /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
         pub fn setNMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
-            c.setStrAttribute(self.ref, "NMARGIN", .{}, value);
+            interop.setStrAttribute(self.ref, "NMARGIN", .{}, value);
             return self.*;
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
+            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
 
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
         /// are non inheritable.
         pub fn setNcGapCol(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "NCGAPCOL", .{}, arg);
+            interop.setIntAttribute(self.ref, "NCGAPCOL", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
         /// are non inheritable.
         pub fn setNGapLin(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "NGAPLIN", .{}, arg);
+            interop.setIntAttribute(self.ref, "NGAPLIN", .{}, arg);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
+            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// NUMDIV: controls the number of divisions along the distribution according
@@ -465,71 +450,67 @@ pub const GridBox = opaque {
         /// number of elements in the orientation direction.
         /// Default: AUTO.
         pub fn setNumDiv(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "NUMDIV", .{}, arg);
+            interop.setIntAttribute(self.ref, "NUMDIV", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
         /// are non inheritable.
         pub fn setNcGapLin(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "NCGAPLIN", .{}, arg);
+            interop.setIntAttribute(self.ref, "NCGAPLIN", .{}, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", .{}, arg);
+            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
 
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
+            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MINSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NTHEME", .{}, arg);
+            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
+            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
         /// CGAPCOL is in the same units of the SIZE attribute for the height.
         /// Default: "0".
         pub fn setGapCol(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "GAPCOL", .{}, arg);
+            interop.setIntAttribute(self.ref, "GAPCOL", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
         pub fn setNcMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
-            c.setStrAttribute(self.ref, "NCMARGIN", .{}, value);
+            interop.setStrAttribute(self.ref, "NCMARGIN", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -540,12 +521,12 @@ pub const GridBox = opaque {
         pub fn setMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
-            c.setStrAttribute(self.ref, "MARGIN", .{}, value);
+            interop.setStrAttribute(self.ref, "MARGIN", .{}, value);
             return self.*;
         }
 
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONT", .{}, arg);
+            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
 
@@ -614,42 +595,42 @@ pub const GridBox = opaque {
     };
 
     pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attribute, .{}, arg);
+        interop.setStrAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attribute, .{});
+        return interop.getStrAttribute(self, attribute, .{});
     }
 
     pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attribute, .{}, arg);
+        interop.setIntAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attribute, .{});
+        return interop.getIntAttribute(self, attribute, .{});
     }
 
     pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attribute, .{}, arg);
+        interop.setBoolAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attribute, .{});
+        return interop.getBoolAttribute(self, attribute, .{});
     }
 
     pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute, .{});
+        return interop.getPtrAttribute(T, handle, attribute, .{});
     }
 
     pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, .{}, value);
+        interop.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
     pub fn init() Initializer {
-        var handle = c.create(Self);
+        var handle = interop.create(Self);
 
         if (handle) |valid| {
             return .{
@@ -664,7 +645,7 @@ pub const GridBox = opaque {
     /// Destroys an interface element and all its children.
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
-        c.destroy(self);
+        interop.destroy(self);
     }
 
     ///
@@ -689,38 +670,30 @@ pub const GridBox = opaque {
     ///
     ///
     pub fn getDialog(self: *Self) ?*iup.Dialog {
-        if (c.IupGetDialog(c.getHandle(self))) |handle| {
-            return c.fromHandle(iup.Dialog, handle);
-        } else {
-            return null;
-        }
+        return interop.getDialog(self);
     }
 
     ///
     /// Returns the the child element that has the NAME attribute equals to the given value on the same dialog hierarchy.
     /// Works also for children of a menu that is associated with a dialog.
     pub fn getDialogChild(self: *Self, byName: [:0]const u8) ?Element {
-        var child = c.IupGetDialogChild(c.getHandle(self), c.toCStr(byName)) orelse return null;
-        var className = c.fromCStr(c.IupGetClassName(child));
-
-        return Element.fromClassName(className, child);
+        return interop.getDialogChild(self, byName);
     }
 
     ///
     /// Updates the size and layout of all controls in the same dialog.
     /// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
     pub fn refresh(self: *Self) void {
-        try Impl(Self).refresh(self);
+        Impl(Self).refresh(self);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME", .{});
+        return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setHandle(self, arg);
+        interop.setHandle(self, arg);
     }
-
 
     /// 
     /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
@@ -733,7 +706,7 @@ pub const GridBox = opaque {
     /// Notice that this is different from the HOMOGENEOUS* attributes in the sense
     /// that the children will have their sizes changed.
     pub fn getNormalizeSize(self: *Self) ?NormalizeSize {
-        var ret = c.getStrAttribute(self, "NORMALIZESIZE", .{});
+        var ret = interop.getStrAttribute(self, "NORMALIZESIZE", .{});
 
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
         if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
@@ -741,7 +714,6 @@ pub const GridBox = opaque {
         if (std.ascii.eqlIgnoreCase("NONE", ret)) return .None;
         return null;
     }
-
 
     /// 
     /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
@@ -755,44 +727,41 @@ pub const GridBox = opaque {
     /// that the children will have their sizes changed.
     pub fn setNormalizeSize(self: *Self, arg: ?NormalizeSize) void {
         if (arg) |value| switch (value) {
-            .Horizontal => c.setStrAttribute(self, "NORMALIZESIZE", .{}, "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "NORMALIZESIZE", .{}, "VERTICAL"),
-            .Both => c.setStrAttribute(self, "NORMALIZESIZE", .{}, "BOTH"),
-            .None => c.setStrAttribute(self, "NORMALIZESIZE", .{}, "NONE"),
+            .Horizontal => interop.setStrAttribute(self, "NORMALIZESIZE", .{}, "HORIZONTAL"),
+            .Vertical => interop.setStrAttribute(self, "NORMALIZESIZE", .{}, "VERTICAL"),
+            .Both => interop.setStrAttribute(self, "NORMALIZESIZE", .{}, "BOTH"),
+            .None => interop.setStrAttribute(self, "NORMALIZESIZE", .{}, "NONE"),
         } else {
-            c.clearAttribute(self, "NORMALIZESIZE", .{});
+            interop.clearAttribute(self, "NORMALIZESIZE", .{});
         }
     }
-
 
     /// 
     /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
     /// is in the same units of the SIZE attribute for the height.
     /// Default: "0".
     pub fn getGapLin(self: *Self) i32 {
-        return c.getIntAttribute(self, "GAPLIN", .{});
+        return interop.getIntAttribute(self, "GAPLIN", .{});
     }
-
 
     /// 
     /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
     /// is in the same units of the SIZE attribute for the height.
     /// Default: "0".
     pub fn setGapLin(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "GAPLIN", .{}, arg);
+        interop.setIntAttribute(self, "GAPLIN", .{}, arg);
     }
 
     pub fn getMaxSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MAXSIZE", .{});
+        var str = interop.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MAXSIZE", .{}, value);
+        interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
-
 
     /// 
     /// EXPANDCHILDREN (non inheritable): forces all children to expand in the
@@ -801,7 +770,7 @@ pub const GridBox = opaque {
     /// Default: "NO".
     /// This has the same effect as setting EXPAND on each child.
     pub fn getExpandChildren(self: *Self) ?ExpandChildren {
-        var ret = c.getStrAttribute(self, "EXPANDCHILDREN", .{});
+        var ret = interop.getStrAttribute(self, "EXPANDCHILDREN", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
@@ -809,7 +778,6 @@ pub const GridBox = opaque {
         if (std.ascii.eqlIgnoreCase("NONE", ret)) return .None;
         return null;
     }
-
 
     /// 
     /// EXPANDCHILDREN (non inheritable): forces all children to expand in the
@@ -819,68 +787,65 @@ pub const GridBox = opaque {
     /// This has the same effect as setting EXPAND on each child.
     pub fn setExpandChildren(self: *Self, arg: ?ExpandChildren) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "EXPANDCHILDREN", .{}, "YES"),
-            .Horizontal => c.setStrAttribute(self, "EXPANDCHILDREN", .{}, "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "EXPANDCHILDREN", .{}, "VERTICAL"),
-            .None => c.setStrAttribute(self, "EXPANDCHILDREN", .{}, "NONE"),
+            .Yes => interop.setStrAttribute(self, "EXPANDCHILDREN", .{}, "YES"),
+            .Horizontal => interop.setStrAttribute(self, "EXPANDCHILDREN", .{}, "HORIZONTAL"),
+            .Vertical => interop.setStrAttribute(self, "EXPANDCHILDREN", .{}, "VERTICAL"),
+            .None => interop.setStrAttribute(self, "EXPANDCHILDREN", .{}, "NONE"),
         } else {
-            c.clearAttribute(self, "EXPANDCHILDREN", .{});
+            interop.clearAttribute(self, "EXPANDCHILDREN", .{});
         }
     }
 
     pub fn getPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "POSITION", .{});
+        var str = interop.getStrAttribute(self, "POSITION", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setPosition(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "POSITION", .{}, value);
+        interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
     pub fn getCanFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "CANFOCUS", .{});
+        return interop.getBoolAttribute(self, "CANFOCUS", .{});
     }
 
     pub fn setCanFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CANFOCUS", .{}, arg);
+        interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
     }
 
     pub fn getVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "VISIBLE", .{});
+        return interop.getBoolAttribute(self, "VISIBLE", .{});
     }
 
     pub fn setVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "VISIBLE", .{}, arg);
+        interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
-
 
     /// 
     /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
     /// CGAPCOL is in the same units of the SIZE attribute for the height.
     /// Default: "0".
     pub fn getCGapCol(self: *Self) i32 {
-        return c.getIntAttribute(self, "CGAPCOL", .{});
+        return interop.getIntAttribute(self, "CGAPCOL", .{});
     }
-
 
     /// 
     /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
     /// CGAPCOL is in the same units of the SIZE attribute for the height.
     /// Default: "0".
     pub fn setCGapCol(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CGAPCOL", .{}, arg);
+        interop.setIntAttribute(self, "CGAPCOL", .{}, arg);
     }
 
     pub fn getTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "THEME", .{});
+        return interop.getStrAttribute(self, "THEME", .{});
     }
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "THEME", .{}, arg);
+        interop.setStrAttribute(self, "THEME", .{}, arg);
     }
-
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -889,10 +854,9 @@ pub const GridBox = opaque {
     /// values corresponding to the horizontal and vertical margins, respectively.
     /// Default: "0x0" (no margin).
     pub fn getCMargin(self: *Self) Margin {
-        var str = c.getStrAttribute(self, "CMARGIN", .{});
+        var str = interop.getStrAttribute(self, "CMARGIN", .{});
         return Margin.parse(str);
     }
-
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -903,15 +867,14 @@ pub const GridBox = opaque {
     pub fn setCMargin(self: *Self, horiz: i32, vert: i32) void {
         var buffer: [128]u8 = undefined;
         var value = Margin.intIntToString(&buffer, horiz, vert);
-        c.setStrAttribute(self, "CMARGIN", .{}, value);
+        interop.setStrAttribute(self, "CMARGIN", .{}, value);
     }
-
 
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
     /// See the documentation of the attribute for EXPAND inheritance.
     pub fn getExpand(self: *Self) ?Expand {
-        var ret = c.getStrAttribute(self, "EXPAND", .{});
+        var ret = interop.getStrAttribute(self, "EXPAND", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
@@ -922,32 +885,29 @@ pub const GridBox = opaque {
         return null;
     }
 
-
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
     /// See the documentation of the attribute for EXPAND inheritance.
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "EXPAND", .{}, "YES"),
-            .Horizontal => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
-            .HorizontalFree => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
-            .VerticalFree => c.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
-            .No => c.setStrAttribute(self, "EXPAND", .{}, "NO"),
+            .Yes => interop.setStrAttribute(self, "EXPAND", .{}, "YES"),
+            .Horizontal => interop.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
+            .Vertical => interop.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
+            .HorizontalFree => interop.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
+            .VerticalFree => interop.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
+            .No => interop.setStrAttribute(self, "EXPAND", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "EXPAND", .{});
+            interop.clearAttribute(self, "EXPAND", .{});
         }
     }
-
 
     /// 
     /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn getSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "SIZE", .{});
+        var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
-
 
     /// 
     /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
@@ -955,34 +915,30 @@ pub const GridBox = opaque {
     pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "SIZE", .{}, value);
+        interop.setStrAttribute(self, "SIZE", .{}, value);
     }
-
 
     /// 
     /// WID (read-only): returns -1 if mapped.
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID", .{});
+        return interop.getIntAttribute(self, "WID", .{});
     }
-
 
     /// 
     /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
     /// is in the same units of the SIZE attribute for the height.
     /// Default: "0".
     pub fn getCGapLin(self: *Self) i32 {
-        return c.getIntAttribute(self, "CGAPLIN", .{});
+        return interop.getIntAttribute(self, "CGAPLIN", .{});
     }
-
 
     /// 
     /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
     /// is in the same units of the SIZE attribute for the height.
     /// Default: "0".
     pub fn setCGapLin(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CGAPLIN", .{}, arg);
+        interop.setIntAttribute(self, "CGAPLIN", .{}, arg);
     }
-
 
     /// 
     /// ORIENTATION (non inheritable): controls the distribution of the children in
@@ -990,13 +946,12 @@ pub const GridBox = opaque {
     /// Can be: HORIZONTAL or VERTICAL.
     /// Default: HORIZONTAL.
     pub fn getOrientation(self: *Self) ?Orientation {
-        var ret = c.getStrAttribute(self, "ORIENTATION", .{});
+        var ret = interop.getStrAttribute(self, "ORIENTATION", .{});
 
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
         if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
         return null;
     }
-
 
     /// 
     /// ORIENTATION (non inheritable): controls the distribution of the children in
@@ -1005,68 +960,65 @@ pub const GridBox = opaque {
     /// Default: HORIZONTAL.
     pub fn setOrientation(self: *Self, arg: ?Orientation) void {
         if (arg) |value| switch (value) {
-            .Horizontal => c.setStrAttribute(self, "ORIENTATION", .{}, "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "ORIENTATION", .{}, "VERTICAL"),
+            .Horizontal => interop.setStrAttribute(self, "ORIENTATION", .{}, "HORIZONTAL"),
+            .Vertical => interop.setStrAttribute(self, "ORIENTATION", .{}, "VERTICAL"),
         } else {
-            c.clearAttribute(self, "ORIENTATION", .{});
+            interop.clearAttribute(self, "ORIENTATION", .{});
         }
     }
 
     pub fn getFontSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "FONTSIZE", .{});
+        return interop.getIntAttribute(self, "FONTSIZE", .{});
     }
 
     pub fn setFontSize(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "FONTSIZE", .{}, arg);
+        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
     pub fn getNaturalSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "NATURALSIZE", .{});
+        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getUserSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "USERSIZE", .{});
+        var str = interop.getStrAttribute(self, "USERSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "USERSIZE", .{}, value);
+        interop.setStrAttribute(self, "USERSIZE", .{}, value);
     }
-
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn getNGapCol(self: *Self) i32 {
-        return c.getIntAttribute(self, "NGAPCOL", .{});
+        return interop.getIntAttribute(self, "NGAPCOL", .{});
     }
-
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn setNGapCol(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "NGAPCOL", .{}, arg);
+        interop.setIntAttribute(self, "NGAPCOL", .{}, arg);
     }
 
     pub fn getPropagateFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
+        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
+        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
-
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
     pub fn getFloating(self: *Self) ?Floating {
-        var ret = c.getStrAttribute(self, "FLOATING", .{});
+        var ret = interop.getStrAttribute(self, "FLOATING", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
@@ -1074,97 +1026,89 @@ pub const GridBox = opaque {
         return null;
     }
 
-
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "FLOATING", .{}, "YES"),
-            .Ignore => c.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
-            .No => c.setStrAttribute(self, "FLOATING", .{}, "NO"),
+            .Yes => interop.setStrAttribute(self, "FLOATING", .{}, "YES"),
+            .Ignore => interop.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
+            .No => interop.setStrAttribute(self, "FLOATING", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "FLOATING", .{});
+            interop.clearAttribute(self, "FLOATING", .{});
         }
     }
-
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     pub fn getNMargin(self: *Self) Margin {
-        var str = c.getStrAttribute(self, "NMARGIN", .{});
+        var str = interop.getStrAttribute(self, "NMARGIN", .{});
         return Margin.parse(str);
     }
-
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     pub fn setNMargin(self: *Self, horiz: i32, vert: i32) void {
         var buffer: [128]u8 = undefined;
         var value = Margin.intIntToString(&buffer, horiz, vert);
-        c.setStrAttribute(self, "NMARGIN", .{}, value);
+        interop.setStrAttribute(self, "NMARGIN", .{}, value);
     }
 
     pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NORMALIZERGROUP", .{});
+        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
     }
 
     pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
+        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
     pub fn getRasterSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "RASTERSIZE", .{});
+        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RASTERSIZE", .{}, value);
+        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
-
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn getNcGapCol(self: *Self) i32 {
-        return c.getIntAttribute(self, "NCGAPCOL", .{});
+        return interop.getIntAttribute(self, "NCGAPCOL", .{});
     }
-
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn setNcGapCol(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "NCGAPCOL", .{}, arg);
+        interop.setIntAttribute(self, "NCGAPCOL", .{}, arg);
     }
-
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn getNGapLin(self: *Self) i32 {
-        return c.getIntAttribute(self, "NGAPLIN", .{});
+        return interop.getIntAttribute(self, "NGAPLIN", .{});
     }
-
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn setNGapLin(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "NGAPLIN", .{}, arg);
+        interop.setIntAttribute(self, "NGAPLIN", .{}, arg);
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTFACE", .{});
+        return interop.getStrAttribute(self, "FONTFACE", .{});
     }
 
     pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTFACE", .{}, arg);
+        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
-
 
     /// 
     /// NUMDIV: controls the number of divisions along the distribution according
@@ -1175,9 +1119,8 @@ pub const GridBox = opaque {
     /// number of elements in the orientation direction.
     /// Default: AUTO.
     pub fn getNumDiv(self: *Self) i32 {
-        return c.getIntAttribute(self, "NUMDIV", .{});
+        return interop.getIntAttribute(self, "NUMDIV", .{});
     }
-
 
     /// 
     /// NUMDIV: controls the number of divisions along the distribution according
@@ -1188,140 +1131,131 @@ pub const GridBox = opaque {
     /// number of elements in the orientation direction.
     /// Default: AUTO.
     pub fn setNumDiv(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "NUMDIV", .{}, arg);
+        interop.setIntAttribute(self, "NUMDIV", .{}, arg);
     }
-
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn getNcGapLin(self: *Self) i32 {
-        return c.getIntAttribute(self, "NCGAPLIN", .{});
+        return interop.getIntAttribute(self, "NCGAPLIN", .{});
     }
-
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn setNcGapLin(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "NCGAPLIN", .{}, arg);
+        interop.setIntAttribute(self, "NCGAPLIN", .{}, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME", .{});
+        return interop.getStrAttribute(self, "NAME", .{});
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", .{}, arg);
+        interop.setStrAttribute(self, "NAME", .{}, arg);
     }
-
 
     /// 
     /// NUMCOL (read-only): returns the number of columns.
     pub fn getNumCol(self: *Self) i32 {
-        return c.getIntAttribute(self, "NUMCOL", .{});
+        return interop.getIntAttribute(self, "NUMCOL", .{});
     }
 
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE", .{});
+        return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
 
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", .{}, arg);
+        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
     }
 
     pub fn getExpandWeight(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
+        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
     pub fn setExpandWeight(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
+        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
     pub fn getMinSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MINSIZE", .{});
+        var str = interop.getStrAttribute(self, "MINSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MINSIZE", .{}, value);
+        interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
-
 
     /// 
     /// NUMLIN (read-only): returns the number of lines.
     pub fn getNumLin(self: *Self) i32 {
-        return c.getIntAttribute(self, "NUMLIN", .{});
+        return interop.getIntAttribute(self, "NUMLIN", .{});
     }
 
     pub fn getNTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NTHEME", .{});
+        return interop.getStrAttribute(self, "NTHEME", .{});
     }
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NTHEME", .{}, arg);
+        interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
     pub fn getCharSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CHARSIZE", .{});
+        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getClientSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CLIENTSIZE", .{});
+        var str = interop.getStrAttribute(self, "CLIENTSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getClientOffset(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CLIENTOFFSET", .{});
+        var str = interop.getStrAttribute(self, "CLIENTOFFSET", .{});
         return Size.parse(str);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTSTYLE", .{});
+        return interop.getStrAttribute(self, "FONTSTYLE", .{});
     }
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTSTYLE", .{}, arg);
+        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
-
 
     /// 
     /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
     /// CGAPCOL is in the same units of the SIZE attribute for the height.
     /// Default: "0".
     pub fn getGapCol(self: *Self) i32 {
-        return c.getIntAttribute(self, "GAPCOL", .{});
+        return interop.getIntAttribute(self, "GAPCOL", .{});
     }
-
 
     /// 
     /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
     /// CGAPCOL is in the same units of the SIZE attribute for the height.
     /// Default: "0".
     pub fn setGapCol(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "GAPCOL", .{}, arg);
+        interop.setIntAttribute(self, "GAPCOL", .{}, arg);
     }
-
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     pub fn getNcMargin(self: *Self) Margin {
-        var str = c.getStrAttribute(self, "NCMARGIN", .{});
+        var str = interop.getStrAttribute(self, "NCMARGIN", .{});
         return Margin.parse(str);
     }
-
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     pub fn setNcMargin(self: *Self, horiz: i32, vert: i32) void {
         var buffer: [128]u8 = undefined;
         var value = Margin.intIntToString(&buffer, horiz, vert);
-        c.setStrAttribute(self, "NCMARGIN", .{}, value);
+        interop.setStrAttribute(self, "NCMARGIN", .{}, value);
     }
-
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -1330,10 +1264,9 @@ pub const GridBox = opaque {
     /// values corresponding to the horizontal and vertical margins, respectively.
     /// Default: "0x0" (no margin).
     pub fn getMargin(self: *Self) Margin {
-        var str = c.getStrAttribute(self, "MARGIN", .{});
+        var str = interop.getStrAttribute(self, "MARGIN", .{});
         return Margin.parse(str);
     }
-
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -1344,15 +1277,15 @@ pub const GridBox = opaque {
     pub fn setMargin(self: *Self, horiz: i32, vert: i32) void {
         var buffer: [128]u8 = undefined;
         var value = Margin.intIntToString(&buffer, horiz, vert);
-        c.setStrAttribute(self, "MARGIN", .{}, value);
+        interop.setStrAttribute(self, "MARGIN", .{}, value);
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONT", .{});
+        return interop.getStrAttribute(self, "FONT", .{});
     }
 
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONT", .{}, arg);
+        interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
     pub fn setUpDateAttribfromFontCallback(self: *Self, callback: ?OnUpDateAttribfromFontFn) void {

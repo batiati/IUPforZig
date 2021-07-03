@@ -14,10 +14,10 @@ const Impl = @import("../impl.zig").Impl;
 const CallbackHandler = @import("../callback_handler.zig").CallbackHandler;
 
 const iup = @import("iup.zig");
-const c = @import("c.zig");
+const interop = @import("interop.zig");
 const ChildrenIterator = iup.ChildrenIterator;
 
-pub const Handle = c.Ihandle;
+pub const Handle = interop.Handle;
 pub const Fill = @import("elements/fill.zig").Fill;
 pub const DetachBox = @import("elements/detach_box.zig").DetachBox;
 pub const Split = @import("elements/split.zig").Split;
@@ -587,19 +587,19 @@ pub const Element = union(enum) {
     }
 
     pub fn setAttribute(self: Element, attribute: [:0]const u8, value: [:0]const u8) void {
-        c.setStrAttribute(self.getHandle(), attribute, .{}, value);
+        interop.setStrAttribute(self.getHandle(), attribute, .{}, value);
     }
 
     pub fn getAttribute(self: Element, attribute: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self.getHandle(), attribute, .{});
+        return interop.getStrAttribute(self.getHandle(), attribute, .{});
     }
 
     pub fn setTag(self: Element, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, self.getHandle(), attribute, .{}, value);
+        interop.setPtrAttribute(T, self.getHandle(), attribute, .{}, value);
     }
 
     pub fn getTag(self: Element, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, self.getHandle(), attribute, .{});
+        return interop.getPtrAttribute(T, self.getHandle(), attribute, .{});
     }
 };
 

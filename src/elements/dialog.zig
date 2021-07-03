@@ -8,7 +8,7 @@
 
 const std = @import("std");
 
-const c = @import("../c.zig");
+const interop = @import("../interop.zig");
 const iup = @import("../iup.zig");
 
 const Impl = @import("../impl.zig").Impl;
@@ -414,20 +414,19 @@ pub const Dialog = opaque {
         }
 
         pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
+            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setHandle(self.ref, arg);
+            interop.setHandle(self.ref, arg);
             return self.*;
         }
 
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
+            interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
-
 
         /// 
         /// MDICLIENT (creation only) [Windows Only] (non inheritable): Configure the
@@ -438,18 +437,16 @@ pub const Dialog = opaque {
         /// The MDI frame must have one and only one MDI client.
         /// Default: NO.
         pub fn setMdiClient(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MDICLIENT", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MDICLIENT", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// CONTROL [Windows Only] (creation only): Embeds the dialog inside another window.
         pub fn setControl(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CONTROL", .{}, arg);
+            interop.setBoolAttribute(self.ref, "CONTROL", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MENU: Name of a menu.
@@ -458,15 +455,14 @@ pub const Dialog = opaque {
         /// Use IupSetHandle or IupSetAttributeHandle to associate a menu to a name.
         /// See also IupMenu.
         pub fn setMenu(self: *Initializer, arg: *iup.Menu) Initializer {
-            c.setHandleAttribute(self.ref, "MENU", .{}, arg);
+            interop.setHandleAttribute(self.ref, "MENU", .{}, arg);
             return self.*;
         }
 
         pub fn setNoFlush(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "NOFLUSH", .{}, arg);
+            interop.setBoolAttribute(self.ref, "NOFLUSH", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
@@ -476,10 +472,9 @@ pub const Dialog = opaque {
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// TRAYTIPBALLOONTITLEICON [Windows Only]: When using the balloon format, the
@@ -487,10 +482,9 @@ pub const Dialog = opaque {
         /// Must be set before setting the TRAYTIP attribute.
         /// (since 3.6)
         pub fn setTrayTipBalloonTitleIcon(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TRAYTIPBALLOONTITLEICON", .{}, arg);
+            interop.setIntAttribute(self.ref, "TRAYTIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
@@ -502,10 +496,9 @@ pub const Dialog = opaque {
         /// Works also for GTK but as the SHAPEIMAGE attribute.
         /// (since 3.16)
         pub fn setOpacityImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "OPACITYIMAGE", .{}, arg);
+            interop.setStrAttribute(self.ref, "OPACITYIMAGE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// HELPBUTTON [Windows Only] (creation only): Inserts a help button in the
@@ -517,29 +510,26 @@ pub const Dialog = opaque {
         /// Possible values: YES, NO.
         /// Default: NO.
         pub fn setHelpButton(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "HELPBUTTON", .{}, arg);
+            interop.setBoolAttribute(self.ref, "HELPBUTTON", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// SHOWNOFOCUS: do not set focus after show.
         /// (since 3.30)
         pub fn setShowNoFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWNOFOCUS", .{}, arg);
+            interop.setBoolAttribute(self.ref, "SHOWNOFOCUS", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MAXIMIZEATPARENT [Windows Only]: when using multiple monitors, maximize the
         /// dialog in the same monitor that the parent dialog is.
         /// (since 3.28)
         pub fn setMaximizeAtParent(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MAXIMIZEATPARENT", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MAXIMIZEATPARENT", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
@@ -548,17 +538,16 @@ pub const Dialog = opaque {
         /// initialized when mapped (since 3.16).
         /// (GTK 2.12)
         pub fn setOpacity(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "OPACITY", .{}, arg);
+            interop.setIntAttribute(self.ref, "OPACITY", .{}, arg);
             return self.*;
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "POSITION", .{}, value);
+            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// COMPOSITED [Windows Only] (creation only): controls if the window will have
@@ -569,10 +558,9 @@ pub const Dialog = opaque {
         /// IupFlat*, IupGL*, IupPlot and IupMatrix, because IupCanvas uses CS_OWNDC in
         /// the window class.
         pub fn setComposited(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "COMPOSITED", .{}, arg);
+            interop.setBoolAttribute(self.ref, "COMPOSITED", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
@@ -580,43 +568,40 @@ pub const Dialog = opaque {
         /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
         /// it will be automatically enabled.
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
+            interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIP", .{}, arg);
+            interop.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
 
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
+            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// ICON: Dialogs icon.
         /// The Windows SDK recommends that cursors and icons should be implemented as
         /// resources rather than created at run time.
         pub fn setIcon(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "ICON", .{}, arg);
+            interop.setStrAttribute(self.ref, "ICON", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// VISIBLE: Simply call IupShow or IupHide for the dialog.
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
@@ -631,18 +616,16 @@ pub const Dialog = opaque {
         /// One drawback is that menu bars will not work.
         /// (since 3.18) (renamed in 3.22)
         pub fn setCustomFrameDraw(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CUSTOMFRAMEDRAW", .{}, arg);
+            interop.setBoolAttribute(self.ref, "CUSTOMFRAMEDRAW", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// CURSOR (non inheritable): Defines a cursor for the dialog.
         pub fn setCursor(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "CURSOR", .{}, arg);
+            interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MENUBOX (creation only): Requires a system menu box from the window manager.
@@ -652,20 +635,19 @@ pub const Dialog = opaque {
         /// be possible to be changed from IUP.
         /// In Windows if hidden will hide also MAXBOX and MINBOX.
         pub fn setMenuBox(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MENUBOX", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MENUBOX", .{}, arg);
             return self.*;
         }
 
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
             if (arg) |value| switch (value) {
-                .Top => c.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
-                .Bottom => c.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
+                .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
+                .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
             } else {
-                c.clearAttribute(self.ref, "ZORDER", .{});
+                interop.clearAttribute(self.ref, "ZORDER", .{});
             }
             return self.*;
         }
-
 
         /// 
         /// MAXBOX (creation only): Requires a maximize button from the window manager.
@@ -676,29 +658,27 @@ pub const Dialog = opaque {
         /// In Windows MAXBOX is hidden only if MINBOX is hidden as well, or else it
         /// will be just disabled.
         pub fn setMaxBox(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MAXBOX", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MAXBOX", .{}, arg);
             return self.*;
         }
 
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
+            interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
         /// to a dialog hint.
         pub fn setDialogHint(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DIALOGHINT", .{}, arg);
+            interop.setBoolAttribute(self.ref, "DIALOGHINT", .{}, arg);
             return self.*;
         }
 
         pub fn setShowMinimizeNext(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWMINIMIZENEXT", .{}, arg);
+            interop.setBoolAttribute(self.ref, "SHOWMINIMIZENEXT", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// DIALOGFRAME: Set the common decorations for modal dialogs.
@@ -706,20 +686,18 @@ pub const Dialog = opaque {
         /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
         /// removed, but the Close button remains.
         pub fn setDialogFrame(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DIALOGFRAME", .{}, arg);
+            interop.setBoolAttribute(self.ref, "DIALOGFRAME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// NACTIVE (non inheritable): same as ACTIVE but does not affects the controls
         /// inside the dialog.
         /// (since 3.13)
         pub fn setNActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "NACTIVE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "NACTIVE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TRAYTIPBALLOONTITLE [Windows Only]: When using the balloon format, the tip
@@ -727,15 +705,14 @@ pub const Dialog = opaque {
         /// Must be set before setting the TRAYTIP attribute.
         /// (since 3.6)
         pub fn setTrayTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TRAYTIPBALLOONTITLE", .{}, arg);
+            interop.setStrAttribute(self.ref, "TRAYTIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "THEME", .{}, arg);
+            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// SAVEUNDER [Windows and Motif Only] (creation only): When this attribute is
@@ -747,25 +724,23 @@ pub const Dialog = opaque {
         /// To save memory disable it for your main dialog.
         /// Not available in GTK.
         pub fn setSaveUnder(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SAVEUNDER", .{}, arg);
+            interop.setBoolAttribute(self.ref, "SAVEUNDER", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
         /// system tray.
         /// (GTK 2.10 and GTK < 3.14)
         pub fn setTray(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TRAY", .{}, arg);
+            interop.setBoolAttribute(self.ref, "TRAY", .{}, arg);
             return self.*;
         }
 
         pub fn setDragCursorCopy(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
+            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TASKBARPROGRESS [Windows Only] (write-only): this functionality enables the
@@ -773,10 +748,9 @@ pub const Dialog = opaque {
         /// (Available only for Visual C++ 10 and above).
         /// Default: NO (since 3.10).
         pub fn setTaskbarProgress(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TASKBARPROGRESS", .{}, arg);
+            interop.setIntAttribute(self.ref, "TASKBARPROGRESS", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// CHILDOFFSET: Allow to specify a position offset for the child.
@@ -790,27 +764,25 @@ pub const Dialog = opaque {
         pub fn setChildOffset(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
+            interop.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// EXPAND (non inheritable): The default value is "YES".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
-                .Horizontal => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
-                .Vertical => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
-                .HorizontalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
-                .VerticalFree => c.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
-                .No => c.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
+                .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
+                .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
+                .Vertical => interop.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
+                .HorizontalFree => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
+                .VerticalFree => interop.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
+                .No => interop.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "EXPAND", .{});
+                interop.clearAttribute(self.ref, "EXPAND", .{});
             }
             return self.*;
         }
-
 
         /// 
         /// SIZE (non inheritable): Dialogs size.
@@ -861,20 +833,18 @@ pub const Dialog = opaque {
         pub fn setSize(self: *Initializer, width: ?iup.ScreenSize, height: ?iup.ScreenSize) Initializer {
             var buffer: [128]u8 = undefined;
             var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "SIZE", .{}, str);
+            interop.setStrAttribute(self.ref, "SIZE", .{}, str);
             return self.*;
         }
-
 
         /// 
         /// MDIMENU (creation only) [Windows Only]: Name of a IupMenu to be used as the
         /// Window list of a MDI frame.
         /// The system will automatically add the list of MDI child windows there.
-        pub fn setMdiMenu(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
+        pub fn setMdiMenu(self: *Initializer, arg: *iup.Menu) Initializer {
+            interop.setHandleAttribute(self.ref, "MDIMENU", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// STARTFOCUS: Name of the element that must receive the focus right after the
@@ -884,37 +854,36 @@ pub const Dialog = opaque {
         /// Updated after SHOW_CB is called and only if the focus was not changed
         /// during the callback.
         pub fn setStartFocus(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "STARTFOCUS", .{}, arg);
+            interop.setStrAttribute(self.ref, "STARTFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
+            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
 
         pub fn setTrayTipDelay(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TRAYTIPDELAY", .{}, arg);
+            interop.setIntAttribute(self.ref, "TRAYTIPDELAY", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
+            interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "USERSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
             return self.*;
         }
 
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
+            interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// CUSTOMFRAMECAPTIONLIMITS [Windows Only] (non inheritable): limits of the
@@ -930,17 +899,16 @@ pub const Dialog = opaque {
         pub fn setCustomFrameCaptionLimits(self: *Initializer, begin: i32, end: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-            c.setStrAttribute(self.ref, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
+            interop.setStrAttribute(self.ref, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
             return self.*;
         }
 
         pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            c.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
+            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
@@ -958,10 +926,9 @@ pub const Dialog = opaque {
         /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
         /// Frame notes bellow.
         pub fn setCustomFrame(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CUSTOMFRAME", .{}, arg);
+            interop.setBoolAttribute(self.ref, "CUSTOMFRAME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TITLE (non inheritable): Dialogs title.
@@ -970,20 +937,18 @@ pub const Dialog = opaque {
         /// and MINBOX=NO, before map.
         /// But in Motif and GTK it will hide it only if RESIZE=NO also.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TITLE", .{}, arg);
+            interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// DEFAULTESC: Name of the button activated when the user press Esc when focus
         /// is in another control of the dialog.
         /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
         pub fn setDefaultEsc(self: *Initializer, arg: *iup.Button) Initializer {
-            c.setHandleAttribute(self.ref, "DEFAULTESC", .{}, arg);
+            interop.setHandleAttribute(self.ref, "DEFAULTESC", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// PLACEMENT: Changes how the dialog will be shown.
@@ -1000,40 +965,39 @@ pub const Dialog = opaque {
         /// the next top-level window in the Z order when minimizing (since 3.15).
         pub fn setPlacement(self: *Initializer, arg: ?Placement) Initializer {
             if (arg) |value| switch (value) {
-                .Maximized => c.setStrAttribute(self.ref, "PLACEMENT", .{}, "MAXIMIZED"),
-                .Minimized => c.setStrAttribute(self.ref, "PLACEMENT", .{}, "MINIMIZED"),
-                .Full => c.setStrAttribute(self.ref, "PLACEMENT", .{}, "FULL"),
+                .Maximized => interop.setStrAttribute(self.ref, "PLACEMENT", .{}, "MAXIMIZED"),
+                .Minimized => interop.setStrAttribute(self.ref, "PLACEMENT", .{}, "MINIMIZED"),
+                .Full => interop.setStrAttribute(self.ref, "PLACEMENT", .{}, "FULL"),
             } else {
-                c.clearAttribute(self.ref, "PLACEMENT", .{});
+                interop.clearAttribute(self.ref, "PLACEMENT", .{});
             }
             return self.*;
         }
 
         pub fn setLayerAlpha(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "LAYERALPHA", .{}, arg);
+            interop.setIntAttribute(self.ref, "LAYERALPHA", .{}, arg);
             return self.*;
         }
 
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
+            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BGCOLOR", .{}, rgb);
+            interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
+            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
+            interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TRAYTIPBALLOON [Windows Only]: The tip window will have the appearance of a
@@ -1042,15 +1006,14 @@ pub const Dialog = opaque {
         /// Must be set before setting the TRAYTIP attribute.
         /// (since 3.6)
         pub fn setTrayTipBalloon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TRAYTIPBALLOON", .{}, arg);
+            interop.setBoolAttribute(self.ref, "TRAYTIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// RESIZE (creation only): Allows interactively changing the dialogs size.
@@ -1059,10 +1022,9 @@ pub const Dialog = opaque {
         /// In Motif the decorations are controlled by the Window Manager and may not
         /// be possible to be changed from IUP.
         pub fn setResize(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "RESIZE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "RESIZE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MDIARRANGE [Windows Only] (write-only): Action to arrange MDI child windows.
@@ -1070,32 +1032,31 @@ pub const Dialog = opaque {
         /// the minimized icons).
         pub fn mdiArrange(self: *Initializer, arg: ?MdiArrange) Initializer {
             if (arg) |value| switch (value) {
-                .TileHorizontal => c.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
-                .TileVertical => c.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEVERTICAL"),
-                .Cascade => c.setStrAttribute(self.ref, "MDIARRANGE", .{}, "CASCADE"),
-                .Icon => c.setStrAttribute(self.ref, "MDIARRANGE", .{}, "ICON"),
+                .TileHorizontal => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
+                .TileVertical => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEVERTICAL"),
+                .Cascade => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "CASCADE"),
+                .Icon => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "ICON"),
             } else {
-                c.clearAttribute(self.ref, "MDIARRANGE", .{});
+                interop.clearAttribute(self.ref, "MDIARRANGE", .{});
             }
             return self.*;
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (arg) |value| switch (value) {
-                .Yes => c.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
-                .Ignore => c.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
-                .No => c.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
+                .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
+                .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
+                .No => interop.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
             } else {
-                c.clearAttribute(self.ref, "FLOATING", .{});
+                interop.clearAttribute(self.ref, "FLOATING", .{});
             }
             return self.*;
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
+            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
@@ -1137,10 +1098,9 @@ pub const Dialog = opaque {
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
@@ -1149,45 +1109,43 @@ pub const Dialog = opaque {
         /// The pixels colors will be ignored, only the alpha channel is used.
         /// (since 3.26)
         pub fn setShapeImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "SHAPEIMAGE", .{}, arg);
+            interop.setStrAttribute(self.ref, "SHAPEIMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
+            interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
+            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
             return self.*;
         }
 
         pub fn setShowNoActivate(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHOWNOACTIVATE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "SHOWNOACTIVATE", .{}, arg);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
+            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
         pub fn setMaximizeAtDialog(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MAXIMIZEATDIALOG", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MAXIMIZEATDIALOG", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TOPMOST [Windows and GTK Only]: puts the dialog always in front of all
         /// other dialogs in all applications.
         /// Default: NO.
         pub fn topMost(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TOPMOST", .{}, arg);
+            interop.setBoolAttribute(self.ref, "TOPMOST", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
@@ -1198,19 +1156,18 @@ pub const Dialog = opaque {
         /// (since 3.28)
         pub fn setTaskbarButton(self: *Initializer, arg: ?TaskbarButton) Initializer {
             if (arg) |value| switch (value) {
-                .Show => c.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "SHOW"),
-                .Hide => c.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "HIDE"),
+                .Show => interop.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "SHOW"),
+                .Hide => interop.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "HIDE"),
             } else {
-                c.clearAttribute(self.ref, "TASKBARBUTTON", .{});
+                interop.clearAttribute(self.ref, "TASKBARBUTTON", .{});
             }
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NAME", .{}, arg);
+            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MINBOX (creation only): Requires a minimize button from the window manager.
@@ -1220,33 +1177,30 @@ pub const Dialog = opaque {
         /// In Windows MINBOX is hidden only if MAXBOX is hidden as well, or else it
         /// will be just disabled.
         pub fn setMinBox(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MINBOX", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MINBOX", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// DEFAULTENTER: Name of the button activated when the user press Enter when
         /// focus is in another control of the dialog.
         /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
         pub fn setDefaultEnter(self: *Initializer, arg: *iup.Button) Initializer {
-            c.setHandleAttribute(self.ref, "DEFAULTENTER", .{}, arg);
+            interop.setHandleAttribute(self.ref, "DEFAULTENTER", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
+            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
         pub fn setParentDialog(self: *Initializer, arg: *iup.Dialog) Initializer {
-            c.setHandleAttribute(self.ref, "PARENTDIALOG", .{}, arg);
+            interop.setHandleAttribute(self.ref, "PARENTDIALOG", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// BACKGROUND (non inheritable): Dialog background color or image.
@@ -1257,10 +1211,9 @@ pub const Dialog = opaque {
         /// Not working in GTK 3.
         /// (since 3.0)
         pub fn setBackground(self: *Initializer, rgb: iup.Rgb) Initializer {
-            c.setRgb(self.ref, "BACKGROUND", .{}, rgb);
+            interop.setRgb(self.ref, "BACKGROUND", .{}, rgb);
             return self.*;
         }
-
 
         /// 
         /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
@@ -1272,20 +1225,18 @@ pub const Dialog = opaque {
         /// IMPORTANT: when you hide using HIDETASKBAR, you must show using HIDETASKBAR also.
         /// Possible values: YES, NO.
         pub fn setHideTaskbar(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "HIDETASKBAR", .{}, arg);
+            interop.setBoolAttribute(self.ref, "HIDETASKBAR", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
         /// Use "YES" to activate it.
         /// Useful for multithreaded applications.
         pub fn setBringFront(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "BRINGFRONT", .{}, arg);
+            interop.setBoolAttribute(self.ref, "BRINGFRONT", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
@@ -1294,10 +1245,9 @@ pub const Dialog = opaque {
         /// resources rather than created at run time.
         /// (GTK 2.10 and GTK < 3.14)
         pub fn setTrayImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TRAYIMAGE", .{}, arg);
+            interop.setStrAttribute(self.ref, "TRAYIMAGE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// ACTIVE, BGCOLOR, FONT, EXPAND, SCREENPOSITION, WID, TIP, CLIENTOFFSET,
@@ -1305,20 +1255,19 @@ pub const Dialog = opaque {
         /// Note that ACTIVE, BGCOLOR and FONT will also affect all the controls inside
         /// the dialog.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            c.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
+            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MINSIZE: Minimum size for the dialog in raster units (pixels).
@@ -1330,10 +1279,9 @@ pub const Dialog = opaque {
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "MINSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// CUSTOMFRAMECAPTIONHEIGHT [Windows Only] (non inheritable): height of the
@@ -1341,15 +1289,14 @@ pub const Dialog = opaque {
         /// If not defined it will use the system size.
         /// (since 3.18) (renamed in 3.22)
         pub fn setCustomFrameCaptionHeight(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
+            interop.setIntAttribute(self.ref, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "NTHEME", .{}, arg);
+            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// BORDER (non inheritable) (creation only): Shows a resize border around the dialog.
@@ -1357,10 +1304,9 @@ pub const Dialog = opaque {
         /// BORDER=NO is useful only when RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
         /// and TITLE=NULL, if any of these are defined there will be always some border.
         pub fn setBorder(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "BORDER", .{}, arg);
+            interop.setBoolAttribute(self.ref, "BORDER", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
@@ -1377,51 +1323,47 @@ pub const Dialog = opaque {
         /// See the Custom Frame notes bellow.
         /// (since 3.28)
         pub fn setCustomFramesImulate(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "CUSTOMFRAMESIMULATE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "CUSTOMFRAMESIMULATE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MDICLOSEALL [Windows Only] (write-only): Action to close and destroy all
         /// MDI child windows.
         /// The CLOSE_CB callback will be called for each child.
         pub fn mdiCloseAll(self: *Initializer) Initializer {
-            c.setStrAttribute(self.ref, "MDICLOSEALL", .{}, null);
+            interop.setStrAttribute(self.ref, "MDICLOSEALL", .{}, null);
             return self.*;
         }
-
 
         /// 
         /// SHRINK: Allows changing the elements distribution when the dialog is
         /// smaller than the minimum size.
         /// Default: NO.
         pub fn setShrink(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SHRINK", .{}, arg);
+            interop.setBoolAttribute(self.ref, "SHRINK", .{}, arg);
             return self.*;
         }
 
         pub fn setClientSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            c.setStrAttribute(self.ref, "CLIENTSIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "CLIENTSIZE", .{}, value);
             return self.*;
         }
-
 
         /// 
         /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
         /// (GTK 2.10 and GTK < 3.14)
         pub fn setTrayTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "TRAYTIP", .{}, arg);
+            interop.setStrAttribute(self.ref, "TRAYTIP", .{}, arg);
             return self.*;
         }
 
         pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
+            interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TOOLBOX [Windows Only] (creation only): makes the dialog look like a
@@ -1429,10 +1371,9 @@ pub const Dialog = opaque {
         /// It is only valid if the PARENTDIALOG or NATIVEPARENT attribute is also defined.
         /// Default: NO.
         pub fn setToolBox(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TOOLBOX", .{}, arg);
+            interop.setBoolAttribute(self.ref, "TOOLBOX", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MDIFRAME (creation only) [Windows Only] (non inheritable): Configure this
@@ -1440,20 +1381,19 @@ pub const Dialog = opaque {
         /// Can be YES or NO.
         /// Default: NO.
         pub fn setMdiFrame(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MDIFRAME", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MDIFRAME", .{}, arg);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
+            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
 
         pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
+            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// MDICHILD (creation only) [Windows Only]: Configure this dialog to be a MDI child.
@@ -1462,10 +1402,9 @@ pub const Dialog = opaque {
         /// Each MDI child is automatically named if it does not have one.
         /// Default: NO.
         pub fn setMdiChild(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "MDICHILD", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MDICHILD", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// TASKBARPROGRESSSTATE [Windows Only] (write-only): sets the type and state
@@ -1475,17 +1414,16 @@ pub const Dialog = opaque {
         /// Default: NORMAL (since 3.10).
         pub fn taskbarProgressState(self: *Initializer, arg: ?TaskbarProgressState) Initializer {
             if (arg) |value| switch (value) {
-                .NoProgress => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
-                .Indeterminate => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
-                .Error => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "ERROR"),
-                .Paused => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "PAUSED"),
-                .Normal => c.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NORMAL"),
+                .NoProgress => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
+                .Indeterminate => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
+                .Error => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "ERROR"),
+                .Paused => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "PAUSED"),
+                .Normal => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NORMAL"),
             } else {
-                c.clearAttribute(self.ref, "TASKBARPROGRESSSTATE", .{});
+                interop.clearAttribute(self.ref, "TASKBARPROGRESSSTATE", .{});
             }
             return self.*;
         }
-
 
         /// 
         /// TASKBARPROGRESSVALUE [Windows Only] (write-only): updates a progress bar
@@ -1493,10 +1431,9 @@ pub const Dialog = opaque {
         /// full operation.
         /// The value must be between 0 and 100 (since 3.10).
         pub fn taskbarProgressValue(self: *Initializer, arg: i32) Initializer {
-            c.setIntAttribute(self.ref, "TASKBARPROGRESSVALUE", .{}, arg);
+            interop.setIntAttribute(self.ref, "TASKBARPROGRESSVALUE", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// FULLSCREEN: Makes the dialog occupy the whole screen over any system bars
@@ -1507,32 +1444,31 @@ pub const Dialog = opaque {
         /// In Motif if set to YES when the dialog is hidden, then it can not be
         /// changed after it is visible.
         pub fn fullScreen(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "FULLSCREEN", .{}, arg);
+            interop.setBoolAttribute(self.ref, "FULLSCREEN", .{}, arg);
             return self.*;
         }
 
         pub fn setMaximizedIalog(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "MAXIMIZEDIALOG", .{}, arg);
+            interop.setStrAttribute(self.ref, "MAXIMIZEDIALOG", .{}, arg);
             return self.*;
         }
 
         pub fn setDragCursor(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
+            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            c.setStrAttribute(self.ref, "FONT", .{}, arg);
+            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
-
 
         /// 
         /// SIMULATEMODAL (write-only): disable all other visible dialogs, just like
         /// when the dialog is made modal.
         /// (since 3.21)
         pub fn simulateModal(self: *Initializer, arg: bool) Initializer {
-            c.setBoolAttribute(self.ref, "SIMULATEMODAL", .{}, arg);
+            interop.setBoolAttribute(self.ref, "SIMULATEMODAL", .{}, arg);
             return self.*;
         }
 
@@ -1901,42 +1837,42 @@ pub const Dialog = opaque {
     };
 
     pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attribute, .{}, arg);
+        interop.setStrAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attribute, .{});
+        return interop.getStrAttribute(self, attribute, .{});
     }
 
     pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attribute, .{}, arg);
+        interop.setIntAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attribute, .{});
+        return interop.getIntAttribute(self, attribute, .{});
     }
 
     pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attribute, .{}, arg);
+        interop.setBoolAttribute(self, attribute, .{}, arg);
     }
 
     pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attribute, .{});
+        return interop.getBoolAttribute(self, attribute, .{});
     }
 
     pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute, .{});
+        return interop.getPtrAttribute(T, handle, attribute, .{});
     }
 
     pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, .{}, value);
+        interop.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
     pub fn init() Initializer {
-        var handle = c.create(Self);
+        var handle = interop.create(Self);
 
         if (handle) |valid| {
             return .{
@@ -1951,7 +1887,7 @@ pub const Dialog = opaque {
     /// Destroys an interface element and all its children.
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
-        c.destroy(self);
+        interop.destroy(self);
     }
 
     ///
@@ -1973,63 +1909,55 @@ pub const Dialog = opaque {
         return ChildrenIterator.init(self);
     }
 
-    pub fn popup(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) void {
-        _ = c.IupPopup(c.getHandle(self), @enumToInt(x), @enumToInt(y));
+    pub fn popup(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) !void {
+        try interop.popup(self, x, y);
     }
 
     pub fn hide(self: *Self) !void {
-        _ = c.IupHide(c.getHandle(self));
+        try interop.hide(self);
     }
 
     pub fn showXY(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) !void {
-        const ret = c.IupShowXY(@ptrCast(*Handle, self), @enumToInt(x), @enumToInt(y));
-        if (ret == c.IUP_ERROR) {
-            debug.print("{} ret={}\n", .{ Error.OpenFailed, ret });
-            return Error.OpenFailed;
-        }
+        try interop.showXY(self, x, y);
     }
 
     ///
     /// Returns the the child element that has the NAME attribute equals to the given value on the same dialog hierarchy.
     /// Works also for children of a menu that is associated with a dialog.
     pub fn getDialogChild(self: *Self, byName: [:0]const u8) ?Element {
-        var child = c.IupGetDialogChild(c.getHandle(self), c.toCStr(byName)) orelse return null;
-        var className = c.fromCStr(c.IupGetClassName(child));
-
-        return Element.fromClassName(className, child);
+        return interop.getDialogChild(self, byName);
     }
 
     ///
     /// Updates the size and layout of all controls in the same dialog.
     /// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
     pub fn refresh(self: *Self) void {
-        try Impl(Self).refresh(self);
+        Impl(Self).refresh(self);
     }
 
     pub fn getTipBalloon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPBALLOON", .{});
+        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
     }
 
     pub fn setTipBalloon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
+        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "HANDLENAME", .{});
+        return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        c.setHandle(self, arg);
+        interop.setHandle(self, arg);
     }
 
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TIPBGCOLOR", .{});
+        return interop.getRgb(self, "TIPBGCOLOR", .{});
     }
 
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TIPBGCOLOR", .{}, rgb);
+        interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
-
 
     /// 
     /// MENU: Name of a menu.
@@ -2038,13 +1966,12 @@ pub const Dialog = opaque {
     /// Use IupSetHandle or IupSetAttributeHandle to associate a menu to a name.
     /// See also IupMenu.
     pub fn getMenu(self: *Self) ?*iup.Menu {
-        if (c.getHandleAttribute(self, "MENU", .{})) |handle| {
+        if (interop.getHandleAttribute(self, "MENU", .{})) |handle| {
             return @ptrCast(*iup.Menu, handle);
         } else {
             return null;
         }
     }
-
 
     /// 
     /// MENU: Name of a menu.
@@ -2053,17 +1980,16 @@ pub const Dialog = opaque {
     /// Use IupSetHandle or IupSetAttributeHandle to associate a menu to a name.
     /// See also IupMenu.
     pub fn setMenu(self: *Self, arg: *iup.Menu) void {
-        c.setHandleAttribute(self, "MENU", .{}, arg);
+        interop.setHandleAttribute(self, "MENU", .{}, arg);
     }
 
     pub fn getNoFlush(self: *Self) bool {
-        return c.getBoolAttribute(self, "NOFLUSH", .{});
+        return interop.getBoolAttribute(self, "NOFLUSH", .{});
     }
 
     pub fn setNoFlush(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "NOFLUSH", .{}, arg);
+        interop.setBoolAttribute(self, "NOFLUSH", .{}, arg);
     }
-
 
     /// 
     /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
@@ -2071,10 +1997,9 @@ pub const Dialog = opaque {
     /// Default: 65535x65535.
     /// (since 3.0)
     pub fn getMaxSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MAXSIZE", .{});
+        var str = interop.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
     }
-
 
     /// 
     /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
@@ -2084,9 +2009,8 @@ pub const Dialog = opaque {
     pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MAXSIZE", .{}, value);
+        interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
-
 
     /// 
     /// TRAYTIPBALLOONTITLEICON [Windows Only]: When using the balloon format, the
@@ -2094,9 +2018,8 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn getTrayTipBalloonTitleIcon(self: *Self) i32 {
-        return c.getIntAttribute(self, "TRAYTIPBALLOONTITLEICON", .{});
+        return interop.getIntAttribute(self, "TRAYTIPBALLOONTITLEICON", .{});
     }
-
 
     /// 
     /// TRAYTIPBALLOONTITLEICON [Windows Only]: When using the balloon format, the
@@ -2104,9 +2027,8 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn setTrayTipBalloonTitleIcon(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TRAYTIPBALLOONTITLEICON", .{}, arg);
+        interop.setIntAttribute(self, "TRAYTIPBALLOONTITLEICON", .{}, arg);
     }
-
 
     /// 
     /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
@@ -2118,9 +2040,8 @@ pub const Dialog = opaque {
     /// Works also for GTK but as the SHAPEIMAGE attribute.
     /// (since 3.16)
     pub fn getOpacityImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "OPACITYIMAGE", .{});
+        return interop.getStrAttribute(self, "OPACITYIMAGE", .{});
     }
-
 
     /// 
     /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
@@ -2132,48 +2053,43 @@ pub const Dialog = opaque {
     /// Works also for GTK but as the SHAPEIMAGE attribute.
     /// (since 3.16)
     pub fn setOpacityImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "OPACITYIMAGE", .{}, arg);
+        interop.setStrAttribute(self, "OPACITYIMAGE", .{}, arg);
     }
-
 
     /// 
     /// SHOWNOFOCUS: do not set focus after show.
     /// (since 3.30)
     pub fn getShowNoFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHOWNOFOCUS", .{});
+        return interop.getBoolAttribute(self, "SHOWNOFOCUS", .{});
     }
-
 
     /// 
     /// SHOWNOFOCUS: do not set focus after show.
     /// (since 3.30)
     pub fn setShowNoFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWNOFOCUS", .{}, arg);
+        interop.setBoolAttribute(self, "SHOWNOFOCUS", .{}, arg);
     }
 
     pub fn getScreenPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "SCREENPOSITION", .{});
+        var str = interop.getStrAttribute(self, "SCREENPOSITION", .{});
         return iup.XYPos.parse(str, ',');
     }
-
 
     /// 
     /// MAXIMIZEATPARENT [Windows Only]: when using multiple monitors, maximize the
     /// dialog in the same monitor that the parent dialog is.
     /// (since 3.28)
     pub fn getMaximizeAtParent(self: *Self) bool {
-        return c.getBoolAttribute(self, "MAXIMIZEATPARENT", .{});
+        return interop.getBoolAttribute(self, "MAXIMIZEATPARENT", .{});
     }
-
 
     /// 
     /// MAXIMIZEATPARENT [Windows Only]: when using multiple monitors, maximize the
     /// dialog in the same monitor that the parent dialog is.
     /// (since 3.28)
     pub fn setMaximizeAtParent(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MAXIMIZEATPARENT", .{}, arg);
+        interop.setBoolAttribute(self, "MAXIMIZEATPARENT", .{}, arg);
     }
-
 
     /// 
     /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
@@ -2182,9 +2098,8 @@ pub const Dialog = opaque {
     /// initialized when mapped (since 3.16).
     /// (GTK 2.12)
     pub fn getOpacity(self: *Self) i32 {
-        return c.getIntAttribute(self, "OPACITY", .{});
+        return interop.getIntAttribute(self, "OPACITY", .{});
     }
-
 
     /// 
     /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
@@ -2193,20 +2108,19 @@ pub const Dialog = opaque {
     /// initialized when mapped (since 3.16).
     /// (GTK 2.12)
     pub fn setOpacity(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "OPACITY", .{}, arg);
+        interop.setIntAttribute(self, "OPACITY", .{}, arg);
     }
 
     pub fn getPosition(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "POSITION", .{});
+        var str = interop.getStrAttribute(self, "POSITION", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setPosition(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "POSITION", .{}, value);
+        interop.setStrAttribute(self, "POSITION", .{}, value);
     }
-
 
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
@@ -2214,9 +2128,8 @@ pub const Dialog = opaque {
     /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
     /// it will be automatically enabled.
     pub fn getDropFilesTarget(self: *Self) bool {
-        return c.getBoolAttribute(self, "DROPFILESTARGET", .{});
+        return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
-
 
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
@@ -2224,73 +2137,67 @@ pub const Dialog = opaque {
     /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
     /// it will be automatically enabled.
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
+        interop.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
     }
-
 
     /// 
     /// BORDERSIZE (non inheritable) (read only): returns the border size.
     /// (since 3.18)
     pub fn getBorderSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "BORDERSIZE", .{});
+        return interop.getIntAttribute(self, "BORDERSIZE", .{});
     }
 
     pub fn getTip(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIP", .{});
+        return interop.getStrAttribute(self, "TIP", .{});
     }
 
     pub fn setTip(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIP", .{}, arg);
+        interop.setStrAttribute(self, "TIP", .{}, arg);
     }
 
     pub fn getCanFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "CANFOCUS", .{});
+        return interop.getBoolAttribute(self, "CANFOCUS", .{});
     }
 
     pub fn setCanFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CANFOCUS", .{}, arg);
+        interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
     }
 
     pub fn getDragSourceMove(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGSOURCEMOVE", .{});
+        return interop.getBoolAttribute(self, "DRAGSOURCEMOVE", .{});
     }
 
     pub fn setDragSourceMove(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
+        interop.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
     }
-
 
     /// 
     /// ICON: Dialogs icon.
     /// The Windows SDK recommends that cursors and icons should be implemented as
     /// resources rather than created at run time.
     pub fn getIcon(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "ICON", .{});
+        return interop.getStrAttribute(self, "ICON", .{});
     }
-
 
     /// 
     /// ICON: Dialogs icon.
     /// The Windows SDK recommends that cursors and icons should be implemented as
     /// resources rather than created at run time.
     pub fn setIcon(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "ICON", .{}, arg);
+        interop.setStrAttribute(self, "ICON", .{}, arg);
     }
-
 
     /// 
     /// VISIBLE: Simply call IupShow or IupHide for the dialog.
     pub fn getVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "VISIBLE", .{});
+        return interop.getBoolAttribute(self, "VISIBLE", .{});
     }
-
 
     /// 
     /// VISIBLE: Simply call IupShow or IupHide for the dialog.
     pub fn setVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "VISIBLE", .{}, arg);
+        interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
-
 
     /// 
     /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
@@ -2305,9 +2212,8 @@ pub const Dialog = opaque {
     /// One drawback is that menu bars will not work.
     /// (since 3.18) (renamed in 3.22)
     pub fn getCustomFrameDraw(self: *Self) bool {
-        return c.getBoolAttribute(self, "CUSTOMFRAMEDRAW", .{});
+        return interop.getBoolAttribute(self, "CUSTOMFRAMEDRAW", .{});
     }
-
 
     /// 
     /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
@@ -2322,81 +2228,75 @@ pub const Dialog = opaque {
     /// One drawback is that menu bars will not work.
     /// (since 3.18) (renamed in 3.22)
     pub fn setCustomFrameDraw(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CUSTOMFRAMEDRAW", .{}, arg);
+        interop.setBoolAttribute(self, "CUSTOMFRAMEDRAW", .{}, arg);
     }
-
 
     /// 
     /// CURSOR (non inheritable): Defines a cursor for the dialog.
     pub fn getCursor(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "CURSOR", .{});
+        return interop.getStrAttribute(self, "CURSOR", .{});
     }
-
 
     /// 
     /// CURSOR (non inheritable): Defines a cursor for the dialog.
     pub fn setCursor(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "CURSOR", .{}, arg);
+        interop.setStrAttribute(self, "CURSOR", .{}, arg);
     }
 
     pub fn zOrder(self: *Self, arg: ?ZOrder) void {
         if (arg) |value| switch (value) {
-            .Top => c.setStrAttribute(self, "ZORDER", .{}, "TOP"),
-            .Bottom => c.setStrAttribute(self, "ZORDER", .{}, "BOTTOM"),
+            .Top => interop.setStrAttribute(self, "ZORDER", .{}, "TOP"),
+            .Bottom => interop.setStrAttribute(self, "ZORDER", .{}, "BOTTOM"),
         } else {
-            c.clearAttribute(self, "ZORDER", .{});
+            interop.clearAttribute(self, "ZORDER", .{});
         }
     }
 
     pub fn getX(self: *Self) i32 {
-        return c.getIntAttribute(self, "X", .{});
+        return interop.getIntAttribute(self, "X", .{});
     }
 
     pub fn getY(self: *Self) i32 {
-        return c.getIntAttribute(self, "Y", .{});
+        return interop.getIntAttribute(self, "Y", .{});
     }
-
 
     /// 
     /// MDIACTIVE [Windows Only] (read-only): Returns the name of the current
     /// active MDI child.
     /// Use IupGetAttributeHandle to directly retrieve the child handle.
     pub fn getMdiActive(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "MDIACTIVE", .{});
+        return interop.getStrAttribute(self, "MDIACTIVE", .{});
     }
 
     pub fn getDragDrop(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGDROP", .{});
+        return interop.getBoolAttribute(self, "DRAGDROP", .{});
     }
 
     pub fn setDragDrop(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGDROP", .{}, arg);
+        interop.setBoolAttribute(self, "DRAGDROP", .{}, arg);
     }
-
 
     /// 
     /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
     /// to a dialog hint.
     pub fn getDialogHint(self: *Self) bool {
-        return c.getBoolAttribute(self, "DIALOGHINT", .{});
+        return interop.getBoolAttribute(self, "DIALOGHINT", .{});
     }
-
 
     /// 
     /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
     /// to a dialog hint.
     pub fn setDialogHint(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DIALOGHINT", .{}, arg);
+        interop.setBoolAttribute(self, "DIALOGHINT", .{}, arg);
     }
 
     pub fn getShowMinimizeNext(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHOWMINIMIZENEXT", .{});
+        return interop.getBoolAttribute(self, "SHOWMINIMIZENEXT", .{});
     }
 
     pub fn setShowMinimizeNext(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWMINIMIZENEXT", .{}, arg);
+        interop.setBoolAttribute(self, "SHOWMINIMIZENEXT", .{}, arg);
     }
-
 
     /// 
     /// DIALOGFRAME: Set the common decorations for modal dialogs.
@@ -2404,9 +2304,8 @@ pub const Dialog = opaque {
     /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
     /// removed, but the Close button remains.
     pub fn getDialogFrame(self: *Self) bool {
-        return c.getBoolAttribute(self, "DIALOGFRAME", .{});
+        return interop.getBoolAttribute(self, "DIALOGFRAME", .{});
     }
-
 
     /// 
     /// DIALOGFRAME: Set the common decorations for modal dialogs.
@@ -2414,27 +2313,24 @@ pub const Dialog = opaque {
     /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
     /// removed, but the Close button remains.
     pub fn setDialogFrame(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DIALOGFRAME", .{}, arg);
+        interop.setBoolAttribute(self, "DIALOGFRAME", .{}, arg);
     }
-
 
     /// 
     /// NACTIVE (non inheritable): same as ACTIVE but does not affects the controls
     /// inside the dialog.
     /// (since 3.13)
     pub fn getNActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "NACTIVE", .{});
+        return interop.getBoolAttribute(self, "NACTIVE", .{});
     }
-
 
     /// 
     /// NACTIVE (non inheritable): same as ACTIVE but does not affects the controls
     /// inside the dialog.
     /// (since 3.13)
     pub fn setNActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "NACTIVE", .{}, arg);
+        interop.setBoolAttribute(self, "NACTIVE", .{}, arg);
     }
-
 
     /// 
     /// TRAYTIPBALLOONTITLE [Windows Only]: When using the balloon format, the tip
@@ -2442,9 +2338,8 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn getTrayTipBalloonTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TRAYTIPBALLOONTITLE", .{});
+        return interop.getStrAttribute(self, "TRAYTIPBALLOONTITLE", .{});
     }
-
 
     /// 
     /// TRAYTIPBALLOONTITLE [Windows Only]: When using the balloon format, the tip
@@ -2452,43 +2347,40 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn setTrayTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TRAYTIPBALLOONTITLE", .{}, arg);
+        interop.setStrAttribute(self, "TRAYTIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "THEME", .{});
+        return interop.getStrAttribute(self, "THEME", .{});
     }
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "THEME", .{}, arg);
+        interop.setStrAttribute(self, "THEME", .{}, arg);
     }
-
 
     /// 
     /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
     /// system tray.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn getTray(self: *Self) bool {
-        return c.getBoolAttribute(self, "TRAY", .{});
+        return interop.getBoolAttribute(self, "TRAY", .{});
     }
-
 
     /// 
     /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
     /// system tray.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn setTray(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TRAY", .{}, arg);
+        interop.setBoolAttribute(self, "TRAY", .{}, arg);
     }
 
     pub fn getDragCursorCopy(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGCURSORCOPY", .{});
+        return interop.getStrAttribute(self, "DRAGCURSORCOPY", .{});
     }
 
     pub fn setDragCursorCopy(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
+        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
-
 
     /// 
     /// TASKBARPROGRESS [Windows Only] (write-only): this functionality enables the
@@ -2496,9 +2388,8 @@ pub const Dialog = opaque {
     /// (Available only for Visual C++ 10 and above).
     /// Default: NO (since 3.10).
     pub fn getTaskbarProgress(self: *Self) i32 {
-        return c.getIntAttribute(self, "TASKBARPROGRESS", .{});
+        return interop.getIntAttribute(self, "TASKBARPROGRESS", .{});
     }
-
 
     /// 
     /// TASKBARPROGRESS [Windows Only] (write-only): this functionality enables the
@@ -2506,9 +2397,8 @@ pub const Dialog = opaque {
     /// (Available only for Visual C++ 10 and above).
     /// Default: NO (since 3.10).
     pub fn setTaskbarProgress(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TASKBARPROGRESS", .{}, arg);
+        interop.setIntAttribute(self, "TASKBARPROGRESS", .{}, arg);
     }
-
 
     /// 
     /// CHILDOFFSET: Allow to specify a position offset for the child.
@@ -2520,10 +2410,9 @@ pub const Dialog = opaque {
     /// Default: 0x0.
     /// (since 3.14)
     pub fn getChildOffset(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CHILDOFFSET", .{});
+        var str = interop.getStrAttribute(self, "CHILDOFFSET", .{});
         return Size.parse(str);
     }
-
 
     /// 
     /// CHILDOFFSET: Allow to specify a position offset for the child.
@@ -2537,14 +2426,13 @@ pub const Dialog = opaque {
     pub fn setChildOffset(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "CHILDOFFSET", .{}, value);
+        interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
-
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
-        var ret = c.getStrAttribute(self, "EXPAND", .{});
+        var ret = interop.getStrAttribute(self, "EXPAND", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
@@ -2555,22 +2443,20 @@ pub const Dialog = opaque {
         return null;
     }
 
-
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "EXPAND", .{}, "YES"),
-            .Horizontal => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
-            .Vertical => c.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
-            .HorizontalFree => c.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
-            .VerticalFree => c.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
-            .No => c.setStrAttribute(self, "EXPAND", .{}, "NO"),
+            .Yes => interop.setStrAttribute(self, "EXPAND", .{}, "YES"),
+            .Horizontal => interop.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
+            .Vertical => interop.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
+            .HorizontalFree => interop.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
+            .VerticalFree => interop.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
+            .No => interop.setStrAttribute(self, "EXPAND", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "EXPAND", .{});
+            interop.clearAttribute(self, "EXPAND", .{});
         }
     }
-
 
     /// 
     /// SIZE (non inheritable): Dialogs size.
@@ -2619,10 +2505,9 @@ pub const Dialog = opaque {
     /// To only change the User size in pixels, without resetting the Current size,
     /// set the USERSIZE attribute (since 3.12).
     pub fn getSize(self: *Self) iup.DialogSize {
-        var str = c.getStrAttribute(self, "SIZE", .{});
+        var str = interop.getStrAttribute(self, "SIZE", .{});
         return iup.DialogSize.parse(str);
     }
-
 
     /// 
     /// SIZE (non inheritable): Dialogs size.
@@ -2673,13 +2558,12 @@ pub const Dialog = opaque {
     pub fn setSize(self: *Self, width: ?iup.ScreenSize, height: ?iup.ScreenSize) void {
         var buffer: [128]u8 = undefined;
         var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
-        c.setStrAttribute(self, "SIZE", .{}, str);
+        interop.setStrAttribute(self, "SIZE", .{}, str);
     }
 
     pub fn getWId(self: *Self) i32 {
-        return c.getIntAttribute(self, "WID", .{});
+        return interop.getIntAttribute(self, "WID", .{});
     }
-
 
     /// 
     /// STARTFOCUS: Name of the element that must receive the focus right after the
@@ -2689,9 +2573,8 @@ pub const Dialog = opaque {
     /// Updated after SHOW_CB is called and only if the focus was not changed
     /// during the callback.
     pub fn getStartFocus(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "STARTFOCUS", .{});
+        return interop.getStrAttribute(self, "STARTFOCUS", .{});
     }
-
 
     /// 
     /// STARTFOCUS: Name of the element that must receive the focus right after the
@@ -2701,57 +2584,56 @@ pub const Dialog = opaque {
     /// Updated after SHOW_CB is called and only if the focus was not changed
     /// during the callback.
     pub fn setStartFocus(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "STARTFOCUS", .{}, arg);
+        interop.setStrAttribute(self, "STARTFOCUS", .{}, arg);
     }
 
     pub fn getFontSize(self: *Self) i32 {
-        return c.getIntAttribute(self, "FONTSIZE", .{});
+        return interop.getIntAttribute(self, "FONTSIZE", .{});
     }
 
     pub fn setFontSize(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "FONTSIZE", .{}, arg);
+        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
     pub fn getNaturalSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "NATURALSIZE", .{});
+        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getTrayTipDelay(self: *Self) i32 {
-        return c.getIntAttribute(self, "TRAYTIPDELAY", .{});
+        return interop.getIntAttribute(self, "TRAYTIPDELAY", .{});
     }
 
     pub fn setTrayTipDelay(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TRAYTIPDELAY", .{}, arg);
+        interop.setIntAttribute(self, "TRAYTIPDELAY", .{}, arg);
     }
 
     pub fn getDropTypes(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DROPTYPES", .{});
+        return interop.getStrAttribute(self, "DROPTYPES", .{});
     }
 
     pub fn setDropTypes(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DROPTYPES", .{}, arg);
+        interop.setStrAttribute(self, "DROPTYPES", .{}, arg);
     }
 
     pub fn getUserSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "USERSIZE", .{});
+        var str = interop.getStrAttribute(self, "USERSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "USERSIZE", .{}, value);
+        interop.setStrAttribute(self, "USERSIZE", .{}, value);
     }
 
     pub fn getTipDelay(self: *Self) i32 {
-        return c.getIntAttribute(self, "TIPDELAY", .{});
+        return interop.getIntAttribute(self, "TIPDELAY", .{});
     }
 
     pub fn setTipDelay(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TIPDELAY", .{}, arg);
+        interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
-
 
     /// 
     /// CUSTOMFRAMECAPTIONLIMITS [Windows Only] (non inheritable): limits of the
@@ -2765,10 +2647,9 @@ pub const Dialog = opaque {
     /// caption element horizontal position and size for the limits (since 3.22).
     /// (since 3.18)
     pub fn getCustomFrameCaptionLimits(self: *Self) iup.Range {
-        var str = c.getStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", .{});
+        var str = interop.getStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", .{});
         return iup.Range.parse(str, ',');
     }
-
 
     /// 
     /// CUSTOMFRAMECAPTIONLIMITS [Windows Only] (non inheritable): limits of the
@@ -2784,20 +2665,19 @@ pub const Dialog = opaque {
     pub fn setCustomFrameCaptionLimits(self: *Self, begin: i32, end: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-        c.setStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
+        interop.setStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
     }
 
     pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = c.getStrAttribute(self, "DRAGSTART", .{});
+        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
         return iup.XYPos.parse(str, ',');
     }
 
     pub fn setDragStart(self: *Self, x: i32, y: i32) void {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        c.setStrAttribute(self, "DRAGSTART", .{}, value);
+        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
     }
-
 
     /// 
     /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
@@ -2815,9 +2695,8 @@ pub const Dialog = opaque {
     /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
     /// Frame notes bellow.
     pub fn getCustomFrame(self: *Self) bool {
-        return c.getBoolAttribute(self, "CUSTOMFRAME", .{});
+        return interop.getBoolAttribute(self, "CUSTOMFRAME", .{});
     }
-
 
     /// 
     /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
@@ -2835,9 +2714,8 @@ pub const Dialog = opaque {
     /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
     /// Frame notes bellow.
     pub fn setCustomFrame(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
+        interop.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
     }
-
 
     /// 
     /// MDINEXT [Windows Only] (read-only): Returns the name of the next available
@@ -2847,9 +2725,8 @@ pub const Dialog = opaque {
     /// If the application is going to destroy the child retrieve the next child
     /// before destroying the current.
     pub fn getMdiNext(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "MDINEXT", .{});
+        return interop.getStrAttribute(self, "MDINEXT", .{});
     }
-
 
     /// 
     /// TITLE (non inheritable): Dialogs title.
@@ -2858,9 +2735,8 @@ pub const Dialog = opaque {
     /// and MINBOX=NO, before map.
     /// But in Motif and GTK it will hide it only if RESIZE=NO also.
     pub fn getTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TITLE", .{});
+        return interop.getStrAttribute(self, "TITLE", .{});
     }
-
 
     /// 
     /// TITLE (non inheritable): Dialogs title.
@@ -2869,31 +2745,28 @@ pub const Dialog = opaque {
     /// and MINBOX=NO, before map.
     /// But in Motif and GTK it will hide it only if RESIZE=NO also.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TITLE", .{}, arg);
+        interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
-
 
     /// 
     /// DEFAULTESC: Name of the button activated when the user press Esc when focus
     /// is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn getDefaultEsc(self: *Self) ?*iup.Button {
-        if (c.getHandleAttribute(self, "DEFAULTESC", .{})) |handle| {
+        if (interop.getHandleAttribute(self, "DEFAULTESC", .{})) |handle| {
             return @ptrCast(*iup.Button, handle);
         } else {
             return null;
         }
     }
 
-
     /// 
     /// DEFAULTESC: Name of the button activated when the user press Esc when focus
     /// is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn setDefaultEsc(self: *Self, arg: *iup.Button) void {
-        c.setHandleAttribute(self, "DEFAULTESC", .{}, arg);
+        interop.setHandleAttribute(self, "DEFAULTESC", .{}, arg);
     }
-
 
     /// 
     /// PLACEMENT: Changes how the dialog will be shown.
@@ -2909,14 +2782,13 @@ pub const Dialog = opaque {
     /// In Windows, the SHOWMINIMIZENEXT attribute can be set to Yes to activate
     /// the next top-level window in the Z order when minimizing (since 3.15).
     pub fn getPlacement(self: *Self) ?Placement {
-        var ret = c.getStrAttribute(self, "PLACEMENT", .{});
+        var ret = interop.getStrAttribute(self, "PLACEMENT", .{});
 
         if (std.ascii.eqlIgnoreCase("MAXIMIZED", ret)) return .Maximized;
         if (std.ascii.eqlIgnoreCase("MINIMIZED", ret)) return .Minimized;
         if (std.ascii.eqlIgnoreCase("FULL", ret)) return .Full;
         return null;
     }
-
 
     /// 
     /// PLACEMENT: Changes how the dialog will be shown.
@@ -2933,54 +2805,53 @@ pub const Dialog = opaque {
     /// the next top-level window in the Z order when minimizing (since 3.15).
     pub fn setPlacement(self: *Self, arg: ?Placement) void {
         if (arg) |value| switch (value) {
-            .Maximized => c.setStrAttribute(self, "PLACEMENT", .{}, "MAXIMIZED"),
-            .Minimized => c.setStrAttribute(self, "PLACEMENT", .{}, "MINIMIZED"),
-            .Full => c.setStrAttribute(self, "PLACEMENT", .{}, "FULL"),
+            .Maximized => interop.setStrAttribute(self, "PLACEMENT", .{}, "MAXIMIZED"),
+            .Minimized => interop.setStrAttribute(self, "PLACEMENT", .{}, "MINIMIZED"),
+            .Full => interop.setStrAttribute(self, "PLACEMENT", .{}, "FULL"),
         } else {
-            c.clearAttribute(self, "PLACEMENT", .{});
+            interop.clearAttribute(self, "PLACEMENT", .{});
         }
     }
 
     pub fn getLayerAlpha(self: *Self) i32 {
-        return c.getIntAttribute(self, "LAYERALPHA", .{});
+        return interop.getIntAttribute(self, "LAYERALPHA", .{});
     }
 
     pub fn setLayerAlpha(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "LAYERALPHA", .{}, arg);
+        interop.setIntAttribute(self, "LAYERALPHA", .{}, arg);
     }
 
     pub fn getPropagateFocus(self: *Self) bool {
-        return c.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
+        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
+        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
     pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BGCOLOR", .{});
+        return interop.getRgb(self, "BGCOLOR", .{});
     }
 
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BGCOLOR", .{}, rgb);
+        interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
     pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TIPBALLOONTITLE", .{});
+        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
     }
 
     pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
+        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getDropTarget(self: *Self) bool {
-        return c.getBoolAttribute(self, "DROPTARGET", .{});
+        return interop.getBoolAttribute(self, "DROPTARGET", .{});
     }
 
     pub fn setDropTarget(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DROPTARGET", .{}, arg);
+        interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
     }
-
 
     /// 
     /// TRAYTIPBALLOON [Windows Only]: The tip window will have the appearance of a
@@ -2989,9 +2860,8 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn getTrayTipBalloon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TRAYTIPBALLOON", .{});
+        return interop.getBoolAttribute(self, "TRAYTIPBALLOON", .{});
     }
-
 
     /// 
     /// TRAYTIPBALLOON [Windows Only]: The tip window will have the appearance of a
@@ -3000,17 +2870,16 @@ pub const Dialog = opaque {
     /// Must be set before setting the TRAYTIP attribute.
     /// (since 3.6)
     pub fn setTrayTipBalloon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TRAYTIPBALLOON", .{}, arg);
+        interop.setBoolAttribute(self, "TRAYTIPBALLOON", .{}, arg);
     }
 
     pub fn getDragSource(self: *Self) bool {
-        return c.getBoolAttribute(self, "DRAGSOURCE", .{});
+        return interop.getBoolAttribute(self, "DRAGSOURCE", .{});
     }
 
     pub fn setDragSource(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
+        interop.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
     }
-
 
     /// 
     /// MDIARRANGE [Windows Only] (write-only): Action to arrange MDI child windows.
@@ -3018,26 +2887,25 @@ pub const Dialog = opaque {
     /// the minimized icons).
     pub fn mdiArrange(self: *Self, arg: ?MdiArrange) void {
         if (arg) |value| switch (value) {
-            .TileHorizontal => c.setStrAttribute(self, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
-            .TileVertical => c.setStrAttribute(self, "MDIARRANGE", .{}, "TILEVERTICAL"),
-            .Cascade => c.setStrAttribute(self, "MDIARRANGE", .{}, "CASCADE"),
-            .Icon => c.setStrAttribute(self, "MDIARRANGE", .{}, "ICON"),
+            .TileHorizontal => interop.setStrAttribute(self, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
+            .TileVertical => interop.setStrAttribute(self, "MDIARRANGE", .{}, "TILEVERTICAL"),
+            .Cascade => interop.setStrAttribute(self, "MDIARRANGE", .{}, "CASCADE"),
+            .Icon => interop.setStrAttribute(self, "MDIARRANGE", .{}, "ICON"),
         } else {
-            c.clearAttribute(self, "MDIARRANGE", .{});
+            interop.clearAttribute(self, "MDIARRANGE", .{});
         }
     }
-
 
     /// 
     /// MAXIMIZED [Windows and GTK Only] (read-only): indicates if the dialog is maximized.
     /// Can be YES or NO.
     /// (since 3.12)
     pub fn getMaximized(self: *Self) bool {
-        return c.getBoolAttribute(self, "MAXIMIZED", .{});
+        return interop.getBoolAttribute(self, "MAXIMIZED", .{});
     }
 
     pub fn getFloating(self: *Self) ?Floating {
-        var ret = c.getStrAttribute(self, "FLOATING", .{});
+        var ret = interop.getStrAttribute(self, "FLOATING", .{});
 
         if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
         if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
@@ -3047,22 +2915,21 @@ pub const Dialog = opaque {
 
     pub fn setFloating(self: *Self, arg: ?Floating) void {
         if (arg) |value| switch (value) {
-            .Yes => c.setStrAttribute(self, "FLOATING", .{}, "YES"),
-            .Ignore => c.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
-            .No => c.setStrAttribute(self, "FLOATING", .{}, "NO"),
+            .Yes => interop.setStrAttribute(self, "FLOATING", .{}, "YES"),
+            .Ignore => interop.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
+            .No => interop.setStrAttribute(self, "FLOATING", .{}, "NO"),
         } else {
-            c.clearAttribute(self, "FLOATING", .{});
+            interop.clearAttribute(self, "FLOATING", .{});
         }
     }
 
     pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NORMALIZERGROUP", .{});
+        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
     }
 
     pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
+        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
-
 
     /// 
     /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
@@ -3102,10 +2969,9 @@ pub const Dialog = opaque {
     /// To only change the User size in pixels, without resetting the Current size,
     /// set the USERSIZE attribute (since 3.12).
     pub fn getRasterSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "RASTERSIZE", .{});
+        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
-
 
     /// 
     /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
@@ -3147,9 +3013,8 @@ pub const Dialog = opaque {
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "RASTERSIZE", .{}, value);
+        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
-
 
     /// 
     /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
@@ -3158,9 +3023,8 @@ pub const Dialog = opaque {
     /// The pixels colors will be ignored, only the alpha channel is used.
     /// (since 3.26)
     pub fn getShapeImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "SHAPEIMAGE", .{});
+        return interop.getStrAttribute(self, "SHAPEIMAGE", .{});
     }
-
 
     /// 
     /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
@@ -3169,58 +3033,56 @@ pub const Dialog = opaque {
     /// The pixels colors will be ignored, only the alpha channel is used.
     /// (since 3.26)
     pub fn setShapeImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "SHAPEIMAGE", .{}, arg);
+        interop.setStrAttribute(self, "SHAPEIMAGE", .{}, arg);
     }
 
     pub fn getTipFgColor(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "TIPFGCOLOR", .{});
+        return interop.getRgb(self, "TIPFGCOLOR", .{});
     }
 
     pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "TIPFGCOLOR", .{}, rgb);
+        interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
     pub fn getControlId(self: *Self) i32 {
-        return c.getIntAttribute(self, "CONTROLID", .{});
+        return interop.getIntAttribute(self, "CONTROLID", .{});
     }
 
     pub fn setControlId(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CONTROLID", .{}, arg);
+        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
     }
 
     pub fn getShowNoActivate(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHOWNOACTIVATE", .{});
+        return interop.getBoolAttribute(self, "SHOWNOACTIVATE", .{});
     }
 
     pub fn setShowNoActivate(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHOWNOACTIVATE", .{}, arg);
+        interop.setBoolAttribute(self, "SHOWNOACTIVATE", .{}, arg);
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTFACE", .{});
+        return interop.getStrAttribute(self, "FONTFACE", .{});
     }
 
     pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTFACE", .{}, arg);
+        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
     pub fn getMaximizeAtDialog(self: *Self) bool {
-        return c.getBoolAttribute(self, "MAXIMIZEATDIALOG", .{});
+        return interop.getBoolAttribute(self, "MAXIMIZEATDIALOG", .{});
     }
 
     pub fn setMaximizeAtDialog(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "MAXIMIZEATDIALOG", .{}, arg);
+        interop.setBoolAttribute(self, "MAXIMIZEATDIALOG", .{}, arg);
     }
-
 
     /// 
     /// TOPMOST [Windows and GTK Only]: puts the dialog always in front of all
     /// other dialogs in all applications.
     /// Default: NO.
     pub fn topMost(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TOPMOST", .{}, arg);
+        interop.setBoolAttribute(self, "TOPMOST", .{}, arg);
     }
-
 
     /// 
     /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
@@ -3230,13 +3092,12 @@ pub const Dialog = opaque {
     /// will be hidden.
     /// (since 3.28)
     pub fn getTaskbarButton(self: *Self) ?TaskbarButton {
-        var ret = c.getStrAttribute(self, "TASKBARBUTTON", .{});
+        var ret = interop.getStrAttribute(self, "TASKBARBUTTON", .{});
 
         if (std.ascii.eqlIgnoreCase("SHOW", ret)) return .Show;
         if (std.ascii.eqlIgnoreCase("HIDE", ret)) return .Hide;
         return null;
     }
-
 
     /// 
     /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
@@ -3247,43 +3108,40 @@ pub const Dialog = opaque {
     /// (since 3.28)
     pub fn setTaskbarButton(self: *Self, arg: ?TaskbarButton) void {
         if (arg) |value| switch (value) {
-            .Show => c.setStrAttribute(self, "TASKBARBUTTON", .{}, "SHOW"),
-            .Hide => c.setStrAttribute(self, "TASKBARBUTTON", .{}, "HIDE"),
+            .Show => interop.setStrAttribute(self, "TASKBARBUTTON", .{}, "SHOW"),
+            .Hide => interop.setStrAttribute(self, "TASKBARBUTTON", .{}, "HIDE"),
         } else {
-            c.clearAttribute(self, "TASKBARBUTTON", .{});
+            interop.clearAttribute(self, "TASKBARBUTTON", .{});
         }
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NAME", .{});
+        return interop.getStrAttribute(self, "NAME", .{});
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NAME", .{}, arg);
+        interop.setStrAttribute(self, "NAME", .{}, arg);
     }
-
 
     /// 
     /// DEFAULTENTER: Name of the button activated when the user press Enter when
     /// focus is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn getDefaultEnter(self: *Self) ?*iup.Button {
-        if (c.getHandleAttribute(self, "DEFAULTENTER", .{})) |handle| {
+        if (interop.getHandleAttribute(self, "DEFAULTENTER", .{})) |handle| {
             return @ptrCast(*iup.Button, handle);
         } else {
             return null;
         }
     }
 
-
     /// 
     /// DEFAULTENTER: Name of the button activated when the user press Enter when
     /// focus is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn setDefaultEnter(self: *Self, arg: *iup.Button) void {
-        c.setHandleAttribute(self, "DEFAULTENTER", .{}, arg);
+        interop.setHandleAttribute(self, "DEFAULTENTER", .{}, arg);
     }
-
 
     /// 
     /// MODAL (read-only): Returns the popup state.
@@ -3292,17 +3150,16 @@ pub const Dialog = opaque {
     /// At the first time the dialog is shown, MODAL is not set yet when SHOW_CB is called.
     /// (since 3.0)
     pub fn getModal(self: *Self) bool {
-        return c.getBoolAttribute(self, "MODAL", .{});
+        return interop.getBoolAttribute(self, "MODAL", .{});
     }
 
     pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
+        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
     }
 
     pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
+        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
-
 
     /// 
     /// BACKGROUND (non inheritable): Dialog background color or image.
@@ -3313,9 +3170,8 @@ pub const Dialog = opaque {
     /// Not working in GTK 3.
     /// (since 3.0)
     pub fn getBackground(self: *Self) ?iup.Rgb {
-        return c.getRgb(self, "BACKGROUND", .{});
+        return interop.getRgb(self, "BACKGROUND", .{});
     }
-
 
     /// 
     /// BACKGROUND (non inheritable): Dialog background color or image.
@@ -3326,9 +3182,8 @@ pub const Dialog = opaque {
     /// Not working in GTK 3.
     /// (since 3.0)
     pub fn setBackground(self: *Self, rgb: iup.Rgb) void {
-        c.setRgb(self, "BACKGROUND", .{}, rgb);
+        interop.setRgb(self, "BACKGROUND", .{}, rgb);
     }
-
 
     /// 
     /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
@@ -3340,9 +3195,8 @@ pub const Dialog = opaque {
     /// IMPORTANT: when you hide using HIDETASKBAR, you must show using HIDETASKBAR also.
     /// Possible values: YES, NO.
     pub fn getHideTaskbar(self: *Self) bool {
-        return c.getBoolAttribute(self, "HIDETASKBAR", .{});
+        return interop.getBoolAttribute(self, "HIDETASKBAR", .{});
     }
-
 
     /// 
     /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
@@ -3354,27 +3208,24 @@ pub const Dialog = opaque {
     /// IMPORTANT: when you hide using HIDETASKBAR, you must show using HIDETASKBAR also.
     /// Possible values: YES, NO.
     pub fn setHideTaskbar(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
+        interop.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
     }
-
 
     /// 
     /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
     /// Use "YES" to activate it.
     /// Useful for multithreaded applications.
     pub fn getBringFront(self: *Self) bool {
-        return c.getBoolAttribute(self, "BRINGFRONT", .{});
+        return interop.getBoolAttribute(self, "BRINGFRONT", .{});
     }
-
 
     /// 
     /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
     /// Use "YES" to activate it.
     /// Useful for multithreaded applications.
     pub fn setBringFront(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "BRINGFRONT", .{}, arg);
+        interop.setBoolAttribute(self, "BRINGFRONT", .{}, arg);
     }
-
 
     /// 
     /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
@@ -3383,9 +3234,8 @@ pub const Dialog = opaque {
     /// resources rather than created at run time.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn getTrayImage(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TRAYIMAGE", .{});
+        return interop.getStrAttribute(self, "TRAYIMAGE", .{});
     }
-
 
     /// 
     /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
@@ -3394,9 +3244,8 @@ pub const Dialog = opaque {
     /// resources rather than created at run time.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn setTrayImage(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TRAYIMAGE", .{}, arg);
+        interop.setStrAttribute(self, "TRAYIMAGE", .{}, arg);
     }
-
 
     /// 
     /// ACTIVE, BGCOLOR, FONT, EXPAND, SCREENPOSITION, WID, TIP, CLIENTOFFSET,
@@ -3404,9 +3253,8 @@ pub const Dialog = opaque {
     /// Note that ACTIVE, BGCOLOR and FONT will also affect all the controls inside
     /// the dialog.
     pub fn getActive(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVE", .{});
+        return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
-
 
     /// 
     /// ACTIVE, BGCOLOR, FONT, EXPAND, SCREENPOSITION, WID, TIP, CLIENTOFFSET,
@@ -3414,25 +3262,24 @@ pub const Dialog = opaque {
     /// Note that ACTIVE, BGCOLOR and FONT will also affect all the controls inside
     /// the dialog.
     pub fn setActive(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "ACTIVE", .{}, arg);
+        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
     }
 
     pub fn getTipVisible(self: *Self) bool {
-        return c.getBoolAttribute(self, "TIPVISIBLE", .{});
+        return interop.getBoolAttribute(self, "TIPVISIBLE", .{});
     }
 
     pub fn setTipVisible(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
+        interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
     pub fn getExpandWeight(self: *Self) f64 {
-        return c.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
+        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
     pub fn setExpandWeight(self: *Self, arg: f64) void {
-        c.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
+        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
-
 
     /// 
     /// MINSIZE: Minimum size for the dialog in raster units (pixels).
@@ -3442,10 +3289,9 @@ pub const Dialog = opaque {
     /// Windows the horizontal minimum size includes the window decoration buttons.
     /// (since 3.0)
     pub fn getMinSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "MINSIZE", .{});
+        var str = interop.getStrAttribute(self, "MINSIZE", .{});
         return Size.parse(str);
     }
-
 
     /// 
     /// MINSIZE: Minimum size for the dialog in raster units (pixels).
@@ -3457,9 +3303,8 @@ pub const Dialog = opaque {
     pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "MINSIZE", .{}, value);
+        interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
-
 
     /// 
     /// ACTIVEWINDOW [Windows and GTK Only] (read-only): informs if the dialog is
@@ -3467,9 +3312,8 @@ pub const Dialog = opaque {
     /// Can be Yes or No.
     /// (since 3.4)
     pub fn getActiveWindow(self: *Self) bool {
-        return c.getBoolAttribute(self, "ACTIVEWINDOW", .{});
+        return interop.getBoolAttribute(self, "ACTIVEWINDOW", .{});
     }
-
 
     /// 
     /// CUSTOMFRAMECAPTIONHEIGHT [Windows Only] (non inheritable): height of the
@@ -3477,9 +3321,8 @@ pub const Dialog = opaque {
     /// If not defined it will use the system size.
     /// (since 3.18) (renamed in 3.22)
     pub fn getCustomFrameCaptionHeight(self: *Self) i32 {
-        return c.getIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", .{});
+        return interop.getIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", .{});
     }
-
 
     /// 
     /// CUSTOMFRAMECAPTIONHEIGHT [Windows Only] (non inheritable): height of the
@@ -3487,17 +3330,16 @@ pub const Dialog = opaque {
     /// If not defined it will use the system size.
     /// (since 3.18) (renamed in 3.22)
     pub fn setCustomFrameCaptionHeight(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
+        interop.setIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
     }
 
     pub fn getNTheme(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "NTHEME", .{});
+        return interop.getStrAttribute(self, "NTHEME", .{});
     }
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "NTHEME", .{}, arg);
+        interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
-
 
     /// 
     /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
@@ -3514,9 +3356,8 @@ pub const Dialog = opaque {
     /// See the Custom Frame notes bellow.
     /// (since 3.28)
     pub fn getCustomFramesImulate(self: *Self) bool {
-        return c.getBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{});
+        return interop.getBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{});
     }
-
 
     /// 
     /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
@@ -3533,97 +3374,91 @@ pub const Dialog = opaque {
     /// See the Custom Frame notes bellow.
     /// (since 3.28)
     pub fn setCustomFramesImulate(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{}, arg);
+        interop.setBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{}, arg);
     }
-
 
     /// 
     /// MDICLOSEALL [Windows Only] (write-only): Action to close and destroy all
     /// MDI child windows.
     /// The CLOSE_CB callback will be called for each child.
     pub fn mdiCloseAll(self: *Self) void {
-        c.setStrAttribute(self, "MDICLOSEALL", .{}, null);
+        interop.setStrAttribute(self, "MDICLOSEALL", .{}, null);
     }
-
 
     /// 
     /// SHRINK: Allows changing the elements distribution when the dialog is
     /// smaller than the minimum size.
     /// Default: NO.
     pub fn getShrink(self: *Self) bool {
-        return c.getBoolAttribute(self, "SHRINK", .{});
+        return interop.getBoolAttribute(self, "SHRINK", .{});
     }
-
 
     /// 
     /// SHRINK: Allows changing the elements distribution when the dialog is
     /// smaller than the minimum size.
     /// Default: NO.
     pub fn setShrink(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SHRINK", .{}, arg);
+        interop.setBoolAttribute(self, "SHRINK", .{}, arg);
     }
 
     pub fn getCharSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CHARSIZE", .{});
+        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn getClientSize(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CLIENTSIZE", .{});
+        var str = interop.getStrAttribute(self, "CLIENTSIZE", .{});
         return Size.parse(str);
     }
 
     pub fn setClientSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        c.setStrAttribute(self, "CLIENTSIZE", .{}, value);
+        interop.setStrAttribute(self, "CLIENTSIZE", .{}, value);
     }
 
     pub fn getClientOffset(self: *Self) Size {
-        var str = c.getStrAttribute(self, "CLIENTOFFSET", .{});
+        var str = interop.getStrAttribute(self, "CLIENTOFFSET", .{});
         return Size.parse(str);
     }
-
 
     /// 
     /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn getTrayTip(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "TRAYTIP", .{});
+        return interop.getStrAttribute(self, "TRAYTIP", .{});
     }
-
 
     /// 
     /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn setTrayTip(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "TRAYTIP", .{}, arg);
+        interop.setStrAttribute(self, "TRAYTIP", .{}, arg);
     }
 
     pub fn getDragTypes(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGTYPES", .{});
+        return interop.getStrAttribute(self, "DRAGTYPES", .{});
     }
 
     pub fn setDragTypes(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGTYPES", .{}, arg);
+        interop.setStrAttribute(self, "DRAGTYPES", .{}, arg);
     }
 
     pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONTSTYLE", .{});
+        return interop.getStrAttribute(self, "FONTSTYLE", .{});
     }
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONTSTYLE", .{}, arg);
+        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
     pub fn getTouch(self: *Self) bool {
-        return c.getBoolAttribute(self, "TOUCH", .{});
+        return interop.getBoolAttribute(self, "TOUCH", .{});
     }
 
     pub fn setTouch(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "TOUCH", .{}, arg);
+        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
-
 
     /// 
     /// TASKBARPROGRESSSTATE [Windows Only] (write-only): sets the type and state
@@ -3633,16 +3468,15 @@ pub const Dialog = opaque {
     /// Default: NORMAL (since 3.10).
     pub fn taskbarProgressState(self: *Self, arg: ?TaskbarProgressState) void {
         if (arg) |value| switch (value) {
-            .NoProgress => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
-            .Indeterminate => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
-            .Error => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "ERROR"),
-            .Paused => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "PAUSED"),
-            .Normal => c.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "NORMAL"),
+            .NoProgress => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
+            .Indeterminate => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
+            .Error => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "ERROR"),
+            .Paused => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "PAUSED"),
+            .Normal => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "NORMAL"),
         } else {
-            c.clearAttribute(self, "TASKBARPROGRESSSTATE", .{});
+            interop.clearAttribute(self, "TASKBARPROGRESSSTATE", .{});
         }
     }
-
 
     /// 
     /// TASKBARPROGRESSVALUE [Windows Only] (write-only): updates a progress bar
@@ -3650,9 +3484,8 @@ pub const Dialog = opaque {
     /// full operation.
     /// The value must be between 0 and 100 (since 3.10).
     pub fn taskbarProgressValue(self: *Self, arg: i32) void {
-        c.setIntAttribute(self, "TASKBARPROGRESSVALUE", .{}, arg);
+        interop.setIntAttribute(self, "TASKBARPROGRESSVALUE", .{}, arg);
     }
-
 
     /// 
     /// FULLSCREEN: Makes the dialog occupy the whole screen over any system bars
@@ -3663,49 +3496,47 @@ pub const Dialog = opaque {
     /// In Motif if set to YES when the dialog is hidden, then it can not be
     /// changed after it is visible.
     pub fn fullScreen(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "FULLSCREEN", .{}, arg);
+        interop.setBoolAttribute(self, "FULLSCREEN", .{}, arg);
     }
 
     pub fn getMaximizedIalog(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "MAXIMIZEDIALOG", .{});
+        return interop.getStrAttribute(self, "MAXIMIZEDIALOG", .{});
     }
 
     pub fn setMaximizedIalog(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "MAXIMIZEDIALOG", .{}, arg);
+        interop.setStrAttribute(self, "MAXIMIZEDIALOG", .{}, arg);
     }
 
     pub fn getDragCursor(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "DRAGCURSOR", .{});
+        return interop.getStrAttribute(self, "DRAGCURSOR", .{});
     }
 
     pub fn setDragCursor(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
+        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
-
 
     /// 
     /// MINIMIZED [Windows and GTK Only] (read-only): indicates if the dialog is minimized.
     /// Can be YES or NO.
     /// (since 3.15)
     pub fn getMinimized(self: *Self) bool {
-        return c.getBoolAttribute(self, "MINIMIZED", .{});
+        return interop.getBoolAttribute(self, "MINIMIZED", .{});
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
-        return c.getStrAttribute(self, "FONT", .{});
+        return interop.getStrAttribute(self, "FONT", .{});
     }
 
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        c.setStrAttribute(self, "FONT", .{}, arg);
+        interop.setStrAttribute(self, "FONT", .{}, arg);
     }
-
 
     /// 
     /// SIMULATEMODAL (write-only): disable all other visible dialogs, just like
     /// when the dialog is made modal.
     /// (since 3.21)
     pub fn simulateModal(self: *Self, arg: bool) void {
-        c.setBoolAttribute(self, "SIMULATEMODAL", .{}, arg);
+        interop.setBoolAttribute(self, "SIMULATEMODAL", .{}, arg);
     }
 
     pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
