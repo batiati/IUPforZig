@@ -31,6 +31,7 @@ const Margin = iup.Margin;
 /// It inherits from IupLabel.
 pub const AnimatedLabel = opaque {
     pub const CLASS_NAME = "animatedlabel";
+    pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
     pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
@@ -250,27 +251,38 @@ pub const AnimatedLabel = opaque {
             return self.*;
         }
 
+        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandle(self.ref, arg);
+            return self.*;
+        }
+
         pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            interop.setHandle(self.ref, arg);
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setWordWrap(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "WORDWRAP", .{}, arg);
             return self.*;
         }
@@ -280,11 +292,13 @@ pub const AnimatedLabel = opaque {
         /// If the IupUser element has a FRAMETIME attribute it will be used to set the
         /// IupAnimatedLabel FRAMETIME attribute, but it can be overwritten later on.
         pub fn setFrameTime(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FRAMETIME", .{}, arg);
             return self.*;
         }
 
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
@@ -292,6 +306,7 @@ pub const AnimatedLabel = opaque {
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
@@ -299,41 +314,59 @@ pub const AnimatedLabel = opaque {
         }
 
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
 
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
             return self.*;
         }
 
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
 
         pub fn setSeparator(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "SEPARATOR", .{}, arg);
             return self.*;
         }
 
-        pub fn setImage(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setImage(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "IMAGE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "IMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
                 .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
@@ -343,27 +376,54 @@ pub const AnimatedLabel = opaque {
             return self.*;
         }
 
+        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
+            return self.*;
+        }
+
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
 
-        pub fn setDragCursorCopy(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
 
         pub fn setHtTransparent(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "HTTRANSPARENT", .{}, arg);
             return self.*;
         }
 
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -378,6 +438,7 @@ pub const AnimatedLabel = opaque {
         }
 
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
@@ -385,6 +446,7 @@ pub const AnimatedLabel = opaque {
         }
 
         pub fn setPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "PADDING", .{}, value);
@@ -392,16 +454,19 @@ pub const AnimatedLabel = opaque {
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
@@ -409,11 +474,13 @@ pub const AnimatedLabel = opaque {
         }
 
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
             return self.*;
         }
 
         pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
@@ -421,41 +488,49 @@ pub const AnimatedLabel = opaque {
         }
 
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
             return self.*;
         }
 
         pub fn setMarkup(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MARKUP", .{}, arg);
             return self.*;
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -467,11 +542,13 @@ pub const AnimatedLabel = opaque {
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
 
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
@@ -483,41 +560,49 @@ pub const AnimatedLabel = opaque {
         /// The value is ignored.
         /// By default the animation is stopped.
         pub fn start(self: *Initializer) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "START", .{}, null);
             return self.*;
         }
 
         pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setControlId(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
 
         pub fn setEllipsis(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "ELLIPSIS", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
         pub fn setCPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "CPADDING", .{}, value);
@@ -525,21 +610,25 @@ pub const AnimatedLabel = opaque {
         }
 
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
@@ -547,6 +636,7 @@ pub const AnimatedLabel = opaque {
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
@@ -557,33 +647,107 @@ pub const AnimatedLabel = opaque {
         /// IupImage as children.
         /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
         /// In Lua you can also use the element reference directly.
-        pub fn setAnimation(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setAnimation(self: *Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "ANIMATION", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setAnimationHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "ANIMATION", .{}, arg);
             return self.*;
         }
 
         pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
 
         pub fn setTouch(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
             return self.*;
         }
 
-        pub fn setDragCursor(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+        /// n starts at 0.
+        /// See also IupImage.
+        /// In Motif, the image is shown only if TABTITLEn is NULL.
+        /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+        /// When set after map will update the TABIMAGE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
+        /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABTITLEn (non inheritable): Contains the text to be shown in the
+        /// respective tab title.
+        /// n starts at 0.
+        /// If this value is NULL, it will remain empty.
+        /// The "&" character can be used to define a mnemonic, the next character will
+        /// be used as key.
+        /// Use "&&" to show the "&" character instead on defining a mnemonic.
+        /// The button can be activated from any control in the dialog using the
+        /// "Alt+key" combination.
+        /// (mnemonic support since 3.3).
+        /// When set after map will update the TABTITLE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
+        /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
             return self.*;
         }
 
@@ -822,12 +986,16 @@ pub const AnimatedLabel = opaque {
         return interop.getBoolAttribute(self, attribute, .{});
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return interop.getPtrAttribute(T, handle, attribute, .{});
+    pub fn getPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return interop.getPtrAttribute(T, self, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        interop.setPtrAttribute(T, handle, attribute, .{}, value);
+    pub fn setPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        interop.setPtrAttribute(T, self, attribute, .{}, value);
+    }
+
+    pub fn setHandle(self: *Self, arg: [:0]const u8) void {
+        interop.setHandle(self, arg);
     }
 
     ///
@@ -846,10 +1014,40 @@ pub const AnimatedLabel = opaque {
     }
 
     /// 
+    /// Displays a dialog in the current position, or changes a control VISIBLE attribute.
+    /// For dialogs it is equivalent to call IupShowXY using IUP_CURRENT. See IupShowXY for more details.
+    /// For other controls, to call IupShow is the same as setting VISIBLE=YES.
+    pub fn show(self: *Self) !void {
+        try interop.show(self);
+    }
+
+    ///
+    /// Hides an interface element. This function has the same effect as attributing value "NO" to the interface element’s VISIBLE attribute.
+    /// Once a dialog is hidden, either by means of IupHide or by changing the VISIBLE attribute or by means of a click in the window close button, the elements inside this dialog are not destroyed, so that you can show the dialog again. To destroy dialogs, the IupDestroy function must be called.
+    pub fn hide(self: *Self) void {
+        interop.hide(self);
+    }
+
+    /// 
     /// Destroys an interface element and all its children.
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
+    }
+
+    /// 
+    /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
+    /// It will also called recursively to create the native element of all the children in the element's tree.
+    /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
+    /// This function is automatically called before the dialog is shown in IupShow, IupShowXY or IupPopup.
+    /// If the element is a dialog then the abstract layout will be updated even if the dialog is already mapped. If the dialog is visible the elements will be immediately repositioned. Calling IupMap for an already mapped dialog is the same as only calling IupRefresh for the dialog.
+    /// Calling IupMap for an already mapped element that is not a dialog does nothing.
+    /// If you add new elements to an already mapped dialog you must call IupMap for that elements. And then call IupRefresh to update the dialog layout.
+    /// If the WID attribute of an element is NULL, it means the element was not already mapped. Some containers do not have a native element associated, like VBOX and HBOX. In this case their WID is a fake value (void*)(-1).
+    /// It is useful for the application to call IupMap when the value of the WID attribute must be known, i.e. the native element must exist, before a dialog is made visible.
+    /// The MAP_CB callback is called at the end of the IupMap function, after all processing, so it can also be used to create other things that depend on the WID attribute. But notice that for non dialog elements it will be called before the dialog layout has been updated, so the element current size will still be 0x0 (since 3.14).
+    pub fn map(self: *Self) !void {
+        try interop.map(self);
     }
 
     ///
@@ -893,7 +1091,7 @@ pub const AnimatedLabel = opaque {
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setHandle(self, arg);
+        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
@@ -1003,11 +1201,20 @@ pub const AnimatedLabel = opaque {
         interop.setStrAttribute(self, "SEPARATOR", .{}, arg);
     }
 
-    pub fn getImage(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "IMAGE", .{});
+    pub fn getImage(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "IMAGE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setImage(self: *Self, arg: [:0]const u8) void {
+    pub fn setImage(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "IMAGE", .{}, arg);
+    }
+
+    pub fn setImageHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "IMAGE", .{}, arg);
     }
 
@@ -1018,6 +1225,22 @@ pub const AnimatedLabel = opaque {
         } else {
             interop.clearAttribute(self, "ZORDER", .{});
         }
+    }
+
+    pub fn getHFont(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setHFont(self: *Self, arg: anytype) !void {
+        interop.setHandleAttribute(self, "HFONT", .{}, arg);
+    }
+
+    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HFONT", .{}, arg);
     }
 
     pub fn getX(self: *Self) i32 {
@@ -1044,11 +1267,20 @@ pub const AnimatedLabel = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
-    pub fn getDragCursorCopy(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAGCURSORCOPY", .{});
+    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setDragCursorCopy(self: *Self, arg: [:0]const u8) void {
+    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
+    }
+
+    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
 
@@ -1280,6 +1512,14 @@ pub const AnimatedLabel = opaque {
         interop.setIntAttribute(self, "CONTROLID", .{}, arg);
     }
 
+    pub fn getFirstControlHandle(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "FIRST_CONTROL_HANDLE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
     pub fn getFontFace(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONTFACE", .{});
     }
@@ -1310,6 +1550,14 @@ pub const AnimatedLabel = opaque {
 
     pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
+    }
+
+    pub fn getNextControlHandle(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "NEXT_CONTROL_HANDLE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
     pub fn getCPadding(self: *Self) Size {
@@ -1372,8 +1620,12 @@ pub const AnimatedLabel = opaque {
     /// IupImage as children.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
     /// In Lua you can also use the element reference directly.
-    pub fn getAnimation(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "ANIMATION", .{});
+    pub fn getAnimation(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "ANIMATION", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
     /// 
@@ -1382,7 +1634,11 @@ pub const AnimatedLabel = opaque {
     /// IupImage as children.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
     /// In Lua you can also use the element reference directly.
-    pub fn setAnimation(self: *Self, arg: [:0]const u8) void {
+    pub fn setAnimation(self: *Self, arg: anytype) !void {
+        interop.setHandleAttribute(self, "ANIMATION", .{}, arg);
+    }
+
+    pub fn setAnimationHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "ANIMATION", .{}, arg);
     }
 
@@ -1415,11 +1671,20 @@ pub const AnimatedLabel = opaque {
         interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
-    pub fn getDragCursor(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAGCURSOR", .{});
+    pub fn getDragCursor(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setDragCursor(self: *Self, arg: [:0]const u8) void {
+    pub fn setDragCursor(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
+    }
+
+    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
 
@@ -1429,6 +1694,91 @@ pub const AnimatedLabel = opaque {
 
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONT", .{}, arg);
+    }
+
+    /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn getTabImage(self: *Self, index: i32) ?iup.Element {
+        if (interop.getHandleAttribute(self, "TABIMAGE", .{index})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn setTabImage(self: *Self, index: i32, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "TABIMAGE", .{index}, arg);
+    }
+
+    pub fn setTabImageHandleName(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
+    }
+
+    /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
+        return interop.getStrAttribute(self, "TABTITLE", .{index});
+    }
+
+    /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn setTabTitle(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
     pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
@@ -1795,18 +2145,6 @@ test "AnimatedLabel Separator" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "AnimatedLabel Image" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.AnimatedLabel.init().setImage("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getImage();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "AnimatedLabel DragDrop" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1827,18 +2165,6 @@ test "AnimatedLabel Theme" {
     defer item.deinit();
 
     var ret = item.getTheme();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "AnimatedLabel DragCursorCopy" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.AnimatedLabel.init().setDragCursorCopy("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragCursorCopy();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -2215,18 +2541,6 @@ test "AnimatedLabel NTheme" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "AnimatedLabel Animation" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.AnimatedLabel.init().setAnimation("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getAnimation();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "AnimatedLabel DragTypes" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2261,18 +2575,6 @@ test "AnimatedLabel Touch" {
     var ret = item.getTouch();
 
     try std.testing.expect(ret == true);
-}
-
-test "AnimatedLabel DragCursor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.AnimatedLabel.init().setDragCursor("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragCursor();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "AnimatedLabel Font" {

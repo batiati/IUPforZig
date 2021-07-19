@@ -6,11 +6,11 @@ const iup = @import("iup.zig");
 /// Global handler for unhandled errors thrown inside callback functions
 pub const ErrorHandlerFn = fn (Element, anyerror) anyerror!void;
 
-const Self = @This();
+const MainLoop = @This();
 const Element = iup.Element;
 
-var exitError: ?anyerror = null;
-var errorHandler: ?ErrorHandlerFn = null;
+var exit_error: ?anyerror = null;
+var error_handler: ?ErrorHandlerFn = null;
 
 ///
 /// Initializes the IUP toolkit. Must be called before any other IUP function.
@@ -21,8 +21,8 @@ pub fn open() iup.Error!void {
 ///
 /// Sets a callback function to handle errors returned inside the main loop
 /// Rethrow the error to terminate the application
-pub fn setErrorHandler(errorHandler: ?ErrorHandlerFn) void {
-    Self.errorHandler = errorHandler;
+pub fn setErrorHandler(value: ?ErrorHandlerFn) void {
+    MainLoop.error_handler = value;
 }
 
 ///
@@ -34,11 +34,11 @@ pub fn exitLoop() void {
 ///
 /// Called by the message loop
 pub fn onError(element: Element, err: anyerror) i32 {
-    if (Self.errorHandler) |func| {
+    if (MainLoop.error_handler) |func| {
         if (func(element, err)) {
             return interop.consts.IUP_DEFAULT;
-        } else |rethrow| {
-            exitError = rethrow;
+        } else |rethrown| {
+            MainLoop.exit_error = rethrown;
         }
     }
 
@@ -60,7 +60,7 @@ pub fn onError(element: Element, err: anyerror) i32 {
 /// causing the IupMainLoop to return. To avoid that set LOCKLOOP=YES before hiding the last dialog.
 pub fn beginLoop() !void {
     interop.beginLoop();
-    if (exitError) |err| return err;
+    if (exit_error) |err| return err;
 }
 
 ///

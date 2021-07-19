@@ -152,7 +152,7 @@ pub fn Impl(comptime T: type) type {
 
             if (parent) |valid| {
                 if (title == null) dialog.setTitle(valid.getTitle());
-                dialog.setParentDialog(valid);
+                try dialog.setParentDialog(valid);
             }
             _ = try dialog.popup(.CenterParent, .CenterParent);
         }

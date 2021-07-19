@@ -43,9 +43,9 @@ fn create_dialog() !*Dialog {
                                 .setTitle("Button with image")
                                 .setName("btn_image")
                                 .setCanFocus(false)
-                                .setImPress(img_press.getHandleName())
-                                .setImage(img_release.getHandleName())
-                                .setIMinActive(img_inactive.getHandleName()) //wrong name!
+                                .setImPress(img_press)
+                                .setImage(img_release)
+                                .setIMinActive(img_inactive) //wrong name!
                                 .setButtonCallback(btn_image_button),
                             Button.init()
                                 .setTitle("on/off")
@@ -133,7 +133,7 @@ const images = struct {
     /// Defines pressed button's image
     pub fn getRelease() !*Image {
         return try (Image.init(16, 16, pixelmap[0..])
-            .setHandleName("img_release")
+            .setHandle("img_release")
             .setColors(1, .{ .r = 215, .g = 215, .b = 215 })
             .setColors(2, .{ .r = 40, .g = 40, .b = 40 })
             .setColors(3, .{ .r = 30, .g = 50, .b = 210 })
@@ -143,7 +143,7 @@ const images = struct {
 
     pub fn getPress() !*Image {
         return try (Image.init(16, 16, pixelmap[0..])
-            .setHandleName("img_press")
+            .setHandle("img_press")
             .setColors(1, .{ .r = 40, .g = 40, .b = 40 })
             .setColors(2, .{ .r = 215, .g = 215, .b = 215 })
             .setColors(3, .{ .r = 0, .g = 20, .b = 180 })
@@ -153,7 +153,7 @@ const images = struct {
 
     pub fn getInactive() !*Image {
         return try (Image.init(16, 16, pixelmap[0..])
-            .setHandleName("img_inactive")
+            .setHandle("img_inactive")
             .setColors(1, .{ .r = 215, .g = 215, .b = 215 })
             .setColors(2, .{ .r = 40, .g = 40, .b = 40 })
             .setColors(3, .{ .r = 100, .g = 100, .b = 100 })

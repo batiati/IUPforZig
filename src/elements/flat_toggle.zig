@@ -33,6 +33,7 @@ const Margin = iup.Margin;
 /// It inherits from IupCanvas.
 pub const FlatToggle = opaque {
     pub const CLASS_NAME = "flattoggle";
+    pub const NATIVE_TYPE = iup.NativeType.Canvas;
     const Self = @This();
 
     pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
@@ -506,35 +507,83 @@ pub const FlatToggle = opaque {
             return self.*;
         }
 
+        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandle(self.ref, arg);
+            return self.*;
+        }
+
         /// 
         /// FGCOLOR: Text color.
         /// Default: the global attribute DLGFGCOLOR.
         pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            interop.setHandle(self.ref, arg);
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
 
+        /// 
+        /// FRONTIMAGEHIGHLIGHT (non inheritable): foreground image name of the element
+        /// in highlight state.
+        /// If it is not defined then the FRONTIMAGE is used.
+        pub fn setFrontImageHighlight(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "FRONTIMAGEHIGHLIGHT", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setFrontImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FRONTIMAGEHIGHLIGHT", .{}, arg);
+            return self.*;
+        }
+
         pub fn setXMin(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "XMIN", .{}, arg);
             return self.*;
         }
 
+        pub fn setCheckImageNotDefHighlight(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGENOTDEFHIGHLIGHT", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageNotDefHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGENOTDEFHIGHLIGHT", .{}, arg);
+            return self.*;
+        }
+
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
@@ -542,12 +591,50 @@ pub const FlatToggle = opaque {
         }
 
         pub fn setDrawTextWrap(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawUsedIRect2d(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWUSEDIRECT2D", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setCheckImageNotDefInactive(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGENOTDEFINACTIVE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageNotDefInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGENOTDEFINACTIVE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// CHECKIMAGEHIGHLIGHT (non inheritable): check box image name of the element
+        /// in highlight state when VALUE=OFF.
+        /// If it is not defined then the CHECKIMAGE is used.
+        pub fn setCheckImageHighlight(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGEHIGHLIGHT", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGEHIGHLIGHT", .{}, arg);
             return self.*;
         }
 
@@ -557,11 +644,13 @@ pub const FlatToggle = opaque {
         /// Default: Yes.
         /// (since 3.26)
         pub fn setFocusFeedback(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "FOCUSFEEDBACK", .{}, arg);
             return self.*;
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
@@ -569,11 +658,13 @@ pub const FlatToggle = opaque {
         }
 
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawTextAlignment(self: *Initializer, arg: ?DrawTextAlignment) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .ACenter => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ACENTER"),
                 .ARight => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ARIGHT"),
@@ -585,12 +676,30 @@ pub const FlatToggle = opaque {
         }
 
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawTextLayoutCenter(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTLAYOUTCENTER", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setCheckImageOnInactive(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGEONINACTIVE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageOnInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGEONINACTIVE", .{}, arg);
             return self.*;
         }
 
@@ -600,11 +709,13 @@ pub const FlatToggle = opaque {
         /// In Windows the button will respect CANFOCUS in opposite to the other controls.
         /// Default: YES.
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
             return self.*;
         }
@@ -615,11 +726,13 @@ pub const FlatToggle = opaque {
         /// Can be set to NULL.
         /// If NULL BGCOLOR will be used instead.
         pub fn setPsColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "PSCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
@@ -628,27 +741,52 @@ pub const FlatToggle = opaque {
         /// IMAGE (non inheritable): Image name.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// See also IupImage.
-        pub fn setImage(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setImage(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "IMAGE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "IMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setLineX(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "LINEX", .{}, arg);
             return self.*;
         }
 
-        pub fn setCursor(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CURSOR", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setLineY(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "LINEY", .{}, arg);
             return self.*;
         }
 
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
                 .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
@@ -659,31 +797,59 @@ pub const FlatToggle = opaque {
         }
 
         pub fn setDrawLineWidth(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "DRAWLINEWIDTH", .{}, arg);
             return self.*;
         }
 
+        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
+            return self.*;
+        }
+
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawAntialias(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "DRAWANTIALIAS", .{}, arg);
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
 
-        pub fn setDragCursorCopy(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
 
         pub fn setHtTransparent(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "HTTRANSPARENT", .{}, arg);
             return self.*;
         }
@@ -691,6 +857,7 @@ pub const FlatToggle = opaque {
         /// 
         /// EXPAND (non inheritable): The default value is "NO".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -704,12 +871,30 @@ pub const FlatToggle = opaque {
             return self.*;
         }
 
+        pub fn setCheckImageOnPress(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGEONPRESS", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageOnPressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGEONPRESS", .{}, arg);
+            return self.*;
+        }
+
         pub fn setDrawFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
             return self.*;
         }
 
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
@@ -728,6 +913,7 @@ pub const FlatToggle = opaque {
         /// title, if any, plus PADDING and SPACING (if both image and title are
         /// present), and the check box if visible.
         pub fn setPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "PADDING", .{}, value);
@@ -735,11 +921,13 @@ pub const FlatToggle = opaque {
         }
 
         pub fn setPosX(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "POSX", .{}, arg);
             return self.*;
         }
 
         pub fn setPosY(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "POSY", .{}, arg);
             return self.*;
         }
@@ -748,6 +936,7 @@ pub const FlatToggle = opaque {
         /// BORDERHLCOLOR: color used for borders when highlighted.
         /// Default use BORDERCOLOR.
         pub fn setBorderHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BORDERHLCOLOR", .{}, rgb);
             return self.*;
         }
@@ -757,12 +946,37 @@ pub const FlatToggle = opaque {
         /// If not defined FGCOLOR will be used instead.
         /// (since 3.26)
         pub fn setTextHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TEXTHLCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setYMin(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// CHECKIMAGE (non inheritable): image name to be used as check box when
+        /// VALUE=OFF, be sure the image size is equal to CHECKSIZE-2.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+        /// See also IupImage.
+        /// If this attribute is defined the check box is not drawn, the images will be
+        /// used instead.
+        pub fn setCheckImage(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGE", .{}, arg);
             return self.*;
         }
 
@@ -773,26 +987,47 @@ pub const FlatToggle = opaque {
         /// It will be ignored when TEXTWRAP=Yes.
         /// (since 3.25)
         pub fn setTextEllipsis(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TEXTELLIPSIS", .{}, arg);
             return self.*;
         }
 
+        pub fn setCheckImageNotDef(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGENOTDEF", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageNotDefHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGENOTDEF", .{}, arg);
+            return self.*;
+        }
+
         pub fn setDrawMakeInactive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWMAKEINACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
@@ -800,16 +1035,40 @@ pub const FlatToggle = opaque {
         }
 
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
             return self.*;
         }
 
+        /// 
+        /// BACKIMAGEINACTIVE (non inheritable): background image name of the element
+        /// when inactive.
+        /// If it is not defined then the BACKIMAGE is used and its colors will be
+        /// replaced by a modified version creating the disabled effect.
+        pub fn setBackImageInactive(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "BACKIMAGEINACTIVE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setBackImageInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "BACKIMAGEINACTIVE", .{}, arg);
+            return self.*;
+        }
+
         pub fn setScrollBar(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SCROLLBAR", .{}, arg);
             return self.*;
         }
 
         pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
@@ -820,11 +1079,13 @@ pub const FlatToggle = opaque {
         /// TITLE (non inheritable): toggle text.
         /// The '\n' character is accepted for line change.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setXAutoHide(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "XAUTOHIDE", .{}, arg);
             return self.*;
         }
@@ -834,11 +1095,13 @@ pub const FlatToggle = opaque {
         /// the next native parent with FOCUS_CB defined.
         /// Default: NO.
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setXMax(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "XMAX", .{}, arg);
             return self.*;
         }
@@ -850,46 +1113,75 @@ pub const FlatToggle = opaque {
         /// very small.
         /// If not defined it will use the background color of the native parent.
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
+        /// 
+        /// CHECKIMAGEPRESS (non inheritable): check box image name of the element in
+        /// pressed state when VALUE=OFF.
+        /// If it is not defined then the CHECKIMAGE is used.
+        pub fn setCheckImagePress(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGEPRESS", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImagePressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGEPRESS", .{}, arg);
+            return self.*;
+        }
+
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setDX(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "DX", .{}, arg);
             return self.*;
         }
 
         pub fn setDY(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "DY", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawTextEllipsis(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTELLIPSIS", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawTextClip(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTCLIP", .{}, arg);
             return self.*;
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -901,6 +1193,7 @@ pub const FlatToggle = opaque {
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
@@ -912,6 +1205,7 @@ pub const FlatToggle = opaque {
         /// title, if any, plus PADDING and SPACING (if both image and title are
         /// present), and the check box if visible.
         pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "SPACING", .{}, arg);
             return self.*;
         }
@@ -920,11 +1214,13 @@ pub const FlatToggle = opaque {
         /// BORDERPSCOLOR: color used for borders when pressed or selected.
         /// Default use BORDERCOLOR.
         pub fn setBorderPsColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BORDERPSCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
@@ -936,6 +1232,7 @@ pub const FlatToggle = opaque {
         /// If not defined FGCOLOR will be used instead.
         /// (since 3.26)
         pub fn setTextPsColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TEXTPSCOLOR", .{}, rgb);
             return self.*;
         }
@@ -945,17 +1242,97 @@ pub const FlatToggle = opaque {
         /// Default: "50 150 255".
         /// This is for the IupFlatToggle drawn border.
         pub fn setBorderColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BORDERCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
 
+        pub fn setCheckImageOnHighlight(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGEONHIGHLIGHT", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageOnHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGEONHIGHLIGHT", .{}, arg);
+            return self.*;
+        }
+
         pub fn setControlId(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// FRONTIMAGEINACTIVE (non inheritable): foreground image name of the element
+        /// when inactive.
+        /// If it is not defined then the FRONTIMAGE is used and its colors will be
+        /// replaced by a modified version creating the disabled effect.
+        pub fn setFrontImageInactive(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "FRONTIMAGEINACTIVE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setFrontImageInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FRONTIMAGEINACTIVE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// BACKIMAGEHIGHLIGHT (non inheritable): background image name of the element
+        /// in highlight state.
+        /// If it is not defined then the BACKIMAGE is used.
+        pub fn setBackImageHighlight(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "BACKIMAGEHIGHLIGHT", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setBackImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "BACKIMAGEHIGHLIGHT", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// FRONTIMAGEPRESS (non inheritable): foreground image name of the element in
+        /// pressed state.
+        /// If it is not defined then the FRONTIMAGE is used.
+        pub fn setFrontImagePress(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "FRONTIMAGEPRESS", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setFrontImagePressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FRONTIMAGEPRESS", .{}, arg);
             return self.*;
         }
 
@@ -965,6 +1342,7 @@ pub const FlatToggle = opaque {
         /// It will actually set the SPACING attribute.
         /// (since 3.29)
         pub fn setCSpacing(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "CSPACING", .{}, arg);
             return self.*;
         }
@@ -975,6 +1353,7 @@ pub const FlatToggle = opaque {
         /// Can be set to NULL.
         /// If NULL BGCOLOR will be used instead.
         pub fn setHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "HLCOLOR", .{}, rgb);
             return self.*;
         }
@@ -985,52 +1364,131 @@ pub const FlatToggle = opaque {
         /// it is drawn at last.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// See also IupImage.
-        pub fn setFrontImage(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setFrontImage(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "FRONTIMAGE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setFrontImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FRONTIMAGE", .{}, arg);
             return self.*;
         }
 
+        pub fn setCheckImageNotDefPress(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGENOTDEFPRESS", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageNotDefPressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGENOTDEFPRESS", .{}, arg);
+            return self.*;
+        }
+
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "DRAWCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setDrawTextOrientation(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "DRAWTEXTORIENTATION", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "DRAWBGCOLOR", .{}, rgb);
             return self.*;
         }
 
+        /// 
+        /// IMAGEPRESS (non inheritable): Image name of the element in pressed state.
+        /// If it is not defined then the IMAGE is used.
+        /// Finally notice that the name of the secondary image attributes are
+        /// different (for instance IMINACTIVE is IMAGEINACTIVE, IMPRESS is IMAGEPRESS,
+        /// and so on).
+        pub fn setImagePress(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "IMAGEPRESS", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setImagePressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "IMAGEPRESS", .{}, arg);
+            return self.*;
+        }
+
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
 
         pub fn setBackingStore(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "BACKINGSTORE", .{}, arg);
             return self.*;
         }
 
+        /// 
+        /// CHECKIMAGEINACTIVE (non inheritable): check box image name of the element
+        /// when inactive and VALUE=OFF.
+        /// If it is not defined then the CHECKIMAGE is used and its colors will be
+        /// replaced by a modified version creating the disabled effect.
+        pub fn setCheckImageInactive(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGEINACTIVE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGEINACTIVE", .{}, arg);
+            return self.*;
+        }
+
         pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
         pub fn setYAutoHide(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "YAUTOHIDE", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawStyle(self: *Initializer, arg: ?DrawStyle) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Fill => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "FILL"),
                 .StrokeDash => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH"),
@@ -1044,6 +1502,18 @@ pub const FlatToggle = opaque {
             return self.*;
         }
 
+        pub fn setHwnd(self: *Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "HWND", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setHwndHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HWND", .{}, arg);
+            return self.*;
+        }
+
         /// 
         /// VALUE (non inheritable): Toggle's state.
         /// Values can be "ON", "OFF" or "TOGGLE".
@@ -1053,6 +1523,7 @@ pub const FlatToggle = opaque {
         /// Can only be set to ON if the toggle is inside a radio, it will
         /// automatically set to OFF the previous toggle that was ON in the radio.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
@@ -1065,6 +1536,7 @@ pub const FlatToggle = opaque {
         /// Default: No.
         /// (since 3.25)
         pub fn setBackImageZoom(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "BACKIMAGEZOOM", .{}, arg);
             return self.*;
         }
@@ -1074,6 +1546,7 @@ pub const FlatToggle = opaque {
         /// It will actually set the PADDING attribute.
         /// (since 3.29)
         pub fn setCPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "CPADDING", .{}, value);
@@ -1085,6 +1558,7 @@ pub const FlatToggle = opaque {
         /// The text size will adapt to include the rotated space.
         /// (since 3.25)
         pub fn setTextOrientation(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "TEXTORIENTATION", .{}, arg);
             return self.*;
         }
@@ -1096,6 +1570,7 @@ pub const FlatToggle = opaque {
         /// Can be Yes or No.
         /// Default: No.
         pub fn setFitToBackImage(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "FITTOBACKIMAGE", .{}, arg);
             return self.*;
         }
@@ -1104,11 +1579,13 @@ pub const FlatToggle = opaque {
         /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
         /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
@@ -1116,12 +1593,24 @@ pub const FlatToggle = opaque {
         /// 
         /// IMAGEHIGHLIGHT (non inheritable): Image name of the element in highlight state.
         /// If it is not defined then the IMAGE is used.
-        pub fn setImageHighlight(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setImageHighlight(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "IMAGEHIGHLIGHT", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "IMAGEHIGHLIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setYMax(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "YMAX", .{}, arg);
             return self.*;
         }
@@ -1130,17 +1619,53 @@ pub const FlatToggle = opaque {
         /// BACKIMAGE (non inheritable): image name to be used as background.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// See also IupImage.
-        pub fn setBackImage(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setBackImage(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "BACKIMAGE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setBackImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "BACKIMAGE", .{}, arg);
             return self.*;
         }
 
+        /// 
+        /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
+        /// If it is not defined then the IMAGE is used and its colors will be replaced
+        /// by a modified version creating the disabled effect.
+        /// Finally notice that the name of the secondary image attributes are
+        /// different (for instance IMINACTIVE is IMAGEINACTIVE, IMPRESS is IMAGEPRESS,
+        /// and so on).
+        pub fn setImageInactive(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "IMAGEINACTIVE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setImageInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "IMAGEINACTIVE", .{}, arg);
+            return self.*;
+        }
+
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
@@ -1153,11 +1678,13 @@ pub const FlatToggle = opaque {
         /// When SHOWBORDER=Yes and BGCOLOR is not defined, the actual BGCOLOR will be
         /// a darker version of the background color of the native parent.
         pub fn setShowBorder(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SHOWBORDER", .{}, arg);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
@@ -1166,6 +1693,7 @@ pub const FlatToggle = opaque {
         /// BORDER (creation only): the default value is "NO".
         /// This is the IupCanvas border.
         pub fn setBorder(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "BORDER", .{}, arg);
             return self.*;
         }
@@ -1174,6 +1702,7 @@ pub const FlatToggle = opaque {
         /// IGNORERADIO (non inheritable): when set the toggle will not behave as a
         /// radio when inside an IupRadio hierarchy.
         pub fn setIgnoreRadio(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "IGNORERADIO", .{}, arg);
             return self.*;
         }
@@ -1184,6 +1713,7 @@ pub const FlatToggle = opaque {
         /// Can be: LEFT, RIGHT, TOP, BOTTOM.
         /// Default: LEFT.
         pub fn setImagePosition(self: *Initializer, arg: ?ImagePosition) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Left => interop.setStrAttribute(self.ref, "IMAGEPOSITION", .{}, "LEFT"),
                 .Right => interop.setStrAttribute(self.ref, "IMAGEPOSITION", .{}, "RIGHT"),
@@ -1196,11 +1726,13 @@ pub const FlatToggle = opaque {
         }
 
         pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setWheelDropFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "WHEELDROPFOCUS", .{}, arg);
             return self.*;
         }
@@ -1213,11 +1745,13 @@ pub const FlatToggle = opaque {
         /// When the check box is shown the borders are not shown, and the background
         /// is not highlighted.
         pub fn setBorderWidth(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "BORDERWIDTH", .{}, arg);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
@@ -1227,6 +1761,7 @@ pub const FlatToggle = opaque {
         /// Can be: ALEFT, ARIGHT or ACENTER.
         /// Default: ALEFT.
         pub fn setTextAlignment(self: *Initializer, arg: ?TextAlignment) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .ARight => interop.setStrAttribute(self.ref, "TEXTALIGNMENT", .{}, "ARIGHT"),
                 .ALeft => interop.setStrAttribute(self.ref, "TEXTALIGNMENT", .{}, "ALEFT"),
@@ -1238,7 +1773,24 @@ pub const FlatToggle = opaque {
         }
 
         pub fn setTouch(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setCheckImageOn(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CHECKIMAGEON", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCheckImageOnHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CHECKIMAGEON", .{}, arg);
             return self.*;
         }
 
@@ -1251,17 +1803,120 @@ pub const FlatToggle = opaque {
         /// EXPAND=VERTICAL or set a SIZE/RASTERSIZE with enough height for the wrapped lines.
         /// (since 3.25)
         pub fn setTextWrap(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TEXTWRAP", .{}, arg);
             return self.*;
         }
 
-        pub fn setDragCursor(self: *Initializer, arg: [:0]const u8) Initializer {
+        /// 
+        /// BACKIMAGEPRESS (non inheritable): background image name of the element in
+        /// pressed state.
+        /// If it is not defined then the BACKIMAGE is used.
+        pub fn setBackImagePress(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "BACKIMAGEPRESS", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setBackImagePressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "BACKIMAGEPRESS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setMdiClient(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "MDICLIENT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setMdiMenu(self: *Initializer, arg: *iup.Menu) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "MDIMENU", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setMdiMenuHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+        /// n starts at 0.
+        /// See also IupImage.
+        /// In Motif, the image is shown only if TABTITLEn is NULL.
+        /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+        /// When set after map will update the TABIMAGE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
+        /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABTITLEn (non inheritable): Contains the text to be shown in the
+        /// respective tab title.
+        /// n starts at 0.
+        /// If this value is NULL, it will remain empty.
+        /// The "&" character can be used to define a mnemonic, the next character will
+        /// be used as key.
+        /// Use "&&" to show the "&" character instead on defining a mnemonic.
+        /// The button can be activated from any control in the dialog using the
+        /// "Alt+key" combination.
+        /// (mnemonic support since 3.3).
+        /// When set after map will update the TABTITLE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
+        /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
             return self.*;
         }
 
@@ -1802,12 +2457,16 @@ pub const FlatToggle = opaque {
         return interop.getBoolAttribute(self, attribute, .{});
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return interop.getPtrAttribute(T, handle, attribute, .{});
+    pub fn getPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return interop.getPtrAttribute(T, self, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        interop.setPtrAttribute(T, handle, attribute, .{}, value);
+    pub fn setPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        interop.setPtrAttribute(T, self, attribute, .{}, value);
+    }
+
+    pub fn setHandle(self: *Self, arg: [:0]const u8) void {
+        interop.setHandle(self, arg);
     }
 
     ///
@@ -1830,6 +2489,21 @@ pub const FlatToggle = opaque {
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
+    }
+
+    /// 
+    /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
+    /// It will also called recursively to create the native element of all the children in the element's tree.
+    /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
+    /// This function is automatically called before the dialog is shown in IupShow, IupShowXY or IupPopup.
+    /// If the element is a dialog then the abstract layout will be updated even if the dialog is already mapped. If the dialog is visible the elements will be immediately repositioned. Calling IupMap for an already mapped dialog is the same as only calling IupRefresh for the dialog.
+    /// Calling IupMap for an already mapped element that is not a dialog does nothing.
+    /// If you add new elements to an already mapped dialog you must call IupMap for that elements. And then call IupRefresh to update the dialog layout.
+    /// If the WID attribute of an element is NULL, it means the element was not already mapped. Some containers do not have a native element associated, like VBOX and HBOX. In this case their WID is a fake value (void*)(-1).
+    /// It is useful for the application to call IupMap when the value of the WID attribute must be known, i.e. the native element must exist, before a dialog is made visible.
+    /// The MAP_CB callback is called at the end of the IupMap function, after all processing, so it can also be used to create other things that depend on the WID attribute. But notice that for non dialog elements it will be called before the dialog layout has been updated, so the element current size will still be 0x0 (since 3.14).
+    pub fn map(self: *Self) !void {
+        try interop.map(self);
     }
 
     ///
@@ -1879,7 +2553,7 @@ pub const FlatToggle = opaque {
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setHandle(self, arg);
+        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
@@ -1897,12 +2571,54 @@ pub const FlatToggle = opaque {
         return interop.getBoolAttribute(self, "HASFOCUS", .{});
     }
 
+    /// 
+    /// FRONTIMAGEHIGHLIGHT (non inheritable): foreground image name of the element
+    /// in highlight state.
+    /// If it is not defined then the FRONTIMAGE is used.
+    pub fn getFrontImageHighlight(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "FRONTIMAGEHIGHLIGHT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// FRONTIMAGEHIGHLIGHT (non inheritable): foreground image name of the element
+    /// in highlight state.
+    /// If it is not defined then the FRONTIMAGE is used.
+    pub fn setFrontImageHighlight(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "FRONTIMAGEHIGHLIGHT", .{}, arg);
+    }
+
+    pub fn setFrontImageHighlightHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FRONTIMAGEHIGHLIGHT", .{}, arg);
+    }
+
     pub fn getXMin(self: *Self) i32 {
         return interop.getIntAttribute(self, "XMIN", .{});
     }
 
     pub fn setXMin(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "XMIN", .{}, arg);
+    }
+
+    pub fn getCheckImageNotDefHighlight(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGENOTDEFHIGHLIGHT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setCheckImageNotDefHighlight(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGENOTDEFHIGHLIGHT", .{}, arg);
+    }
+
+    pub fn setCheckImageNotDefHighlightHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGENOTDEFHIGHLIGHT", .{}, arg);
     }
 
     pub fn getMaxSize(self: *Self) Size {
@@ -1932,9 +2648,51 @@ pub const FlatToggle = opaque {
         interop.setBoolAttribute(self, "DRAWUSEDIRECT2D", .{}, arg);
     }
 
+    pub fn getCheckImageNotDefInactive(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGENOTDEFINACTIVE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setCheckImageNotDefInactive(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGENOTDEFINACTIVE", .{}, arg);
+    }
+
+    pub fn setCheckImageNotDefInactiveHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGENOTDEFINACTIVE", .{}, arg);
+    }
+
     pub fn getScreenPosition(self: *Self) iup.XYPos {
         var str = interop.getStrAttribute(self, "SCREENPOSITION", .{});
         return iup.XYPos.parse(str, ',');
+    }
+
+    /// 
+    /// CHECKIMAGEHIGHLIGHT (non inheritable): check box image name of the element
+    /// in highlight state when VALUE=OFF.
+    /// If it is not defined then the CHECKIMAGE is used.
+    pub fn getCheckImageHighlight(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGEHIGHLIGHT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// CHECKIMAGEHIGHLIGHT (non inheritable): check box image name of the element
+    /// in highlight state when VALUE=OFF.
+    /// If it is not defined then the CHECKIMAGE is used.
+    pub fn setCheckImageHighlight(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGEHIGHLIGHT", .{}, arg);
+    }
+
+    pub fn setCheckImageHighlightHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGEHIGHLIGHT", .{}, arg);
     }
 
     /// 
@@ -2009,6 +2767,23 @@ pub const FlatToggle = opaque {
         interop.setBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", .{}, arg);
     }
 
+    pub fn getCheckImageOnInactive(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGEONINACTIVE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setCheckImageOnInactive(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGEONINACTIVE", .{}, arg);
+    }
+
+    pub fn setCheckImageOnInactiveHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGEONINACTIVE", .{}, arg);
+    }
+
     pub fn getDragSourceMove(self: *Self) bool {
         return interop.getBoolAttribute(self, "DRAGSOURCEMOVE", .{});
     }
@@ -2047,15 +2822,24 @@ pub const FlatToggle = opaque {
     /// IMAGE (non inheritable): Image name.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
-    pub fn getImage(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "IMAGE", .{});
+    pub fn getImage(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "IMAGE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
     /// 
     /// IMAGE (non inheritable): Image name.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
-    pub fn setImage(self: *Self, arg: [:0]const u8) void {
+    pub fn setImage(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "IMAGE", .{}, arg);
+    }
+
+    pub fn setImageHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "IMAGE", .{}, arg);
     }
 
@@ -2067,11 +2851,20 @@ pub const FlatToggle = opaque {
         interop.setDoubleAttribute(self, "LINEX", .{}, arg);
     }
 
-    pub fn getCursor(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "CURSOR", .{});
+    pub fn getCursor(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CURSOR", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setCursor(self: *Self, arg: [:0]const u8) void {
+    pub fn setCursor(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CURSOR", .{}, arg);
+    }
+
+    pub fn setCursorHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "CURSOR", .{}, arg);
     }
 
@@ -2098,6 +2891,22 @@ pub const FlatToggle = opaque {
 
     pub fn setDrawLineWidth(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "DRAWLINEWIDTH", .{}, arg);
+    }
+
+    pub fn getHFont(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setHFont(self: *Self, arg: anytype) !void {
+        interop.setHandleAttribute(self, "HFONT", .{}, arg);
+    }
+
+    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HFONT", .{}, arg);
     }
 
     pub fn getX(self: *Self) i32 {
@@ -2132,11 +2941,20 @@ pub const FlatToggle = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
-    pub fn getDragCursorCopy(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAGCURSORCOPY", .{});
+    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setDragCursorCopy(self: *Self, arg: [:0]const u8) void {
+    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
+    }
+
+    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
 
@@ -2175,6 +2993,23 @@ pub const FlatToggle = opaque {
         } else {
             interop.clearAttribute(self, "EXPAND", .{});
         }
+    }
+
+    pub fn getCheckImageOnPress(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGEONPRESS", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setCheckImageOnPress(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGEONPRESS", .{}, arg);
+    }
+
+    pub fn setCheckImageOnPressHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGEONPRESS", .{}, arg);
     }
 
     pub fn getDrawFont(self: *Self) [:0]const u8 {
@@ -2288,6 +3123,37 @@ pub const FlatToggle = opaque {
     }
 
     /// 
+    /// CHECKIMAGE (non inheritable): image name to be used as check box when
+    /// VALUE=OFF, be sure the image size is equal to CHECKSIZE-2.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// See also IupImage.
+    /// If this attribute is defined the check box is not drawn, the images will be
+    /// used instead.
+    pub fn getCheckImage(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// CHECKIMAGE (non inheritable): image name to be used as check box when
+    /// VALUE=OFF, be sure the image size is equal to CHECKSIZE-2.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// See also IupImage.
+    /// If this attribute is defined the check box is not drawn, the images will be
+    /// used instead.
+    pub fn setCheckImage(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGE", .{}, arg);
+    }
+
+    pub fn setCheckImageHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGE", .{}, arg);
+    }
+
+    /// 
     /// TEXTELLIPSIS (non inheritable): If the text is larger that its box, an
     /// ellipsis ("...") will be placed near the last visible part of the text and
     /// replace the invisible part.
@@ -2305,6 +3171,23 @@ pub const FlatToggle = opaque {
     /// (since 3.25)
     pub fn setTextEllipsis(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TEXTELLIPSIS", .{}, arg);
+    }
+
+    pub fn getCheckImageNotDef(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGENOTDEF", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setCheckImageNotDef(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGENOTDEF", .{}, arg);
+    }
+
+    pub fn setCheckImageNotDefHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGENOTDEF", .{}, arg);
     }
 
     pub fn getDrawMakeInactive(self: *Self) bool {
@@ -2353,6 +3236,33 @@ pub const FlatToggle = opaque {
 
     pub fn setTipDelay(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
+    }
+
+    /// 
+    /// BACKIMAGEINACTIVE (non inheritable): background image name of the element
+    /// when inactive.
+    /// If it is not defined then the BACKIMAGE is used and its colors will be
+    /// replaced by a modified version creating the disabled effect.
+    pub fn getBackImageInactive(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "BACKIMAGEINACTIVE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// BACKIMAGEINACTIVE (non inheritable): background image name of the element
+    /// when inactive.
+    /// If it is not defined then the BACKIMAGE is used and its colors will be
+    /// replaced by a modified version creating the disabled effect.
+    pub fn setBackImageInactive(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "BACKIMAGEINACTIVE", .{}, arg);
+    }
+
+    pub fn setBackImageInactiveHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "BACKIMAGEINACTIVE", .{}, arg);
     }
 
     pub fn getScrollBar(self: *Self) bool {
@@ -2457,6 +3367,31 @@ pub const FlatToggle = opaque {
 
     pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
+    }
+
+    /// 
+    /// CHECKIMAGEPRESS (non inheritable): check box image name of the element in
+    /// pressed state when VALUE=OFF.
+    /// If it is not defined then the CHECKIMAGE is used.
+    pub fn getCheckImagePress(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGEPRESS", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// CHECKIMAGEPRESS (non inheritable): check box image name of the element in
+    /// pressed state when VALUE=OFF.
+    /// If it is not defined then the CHECKIMAGE is used.
+    pub fn setCheckImagePress(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGEPRESS", .{}, arg);
+    }
+
+    pub fn setCheckImagePressHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGEPRESS", .{}, arg);
     }
 
     pub fn getDropTarget(self: *Self) bool {
@@ -2630,12 +3565,106 @@ pub const FlatToggle = opaque {
         return interop.getBoolAttribute(self, "YHIDDEN", .{});
     }
 
+    pub fn getCheckImageOnHighlight(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGEONHIGHLIGHT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setCheckImageOnHighlight(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGEONHIGHLIGHT", .{}, arg);
+    }
+
+    pub fn setCheckImageOnHighlightHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGEONHIGHLIGHT", .{}, arg);
+    }
+
     pub fn getControlId(self: *Self) i32 {
         return interop.getIntAttribute(self, "CONTROLID", .{});
     }
 
     pub fn setControlId(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "CONTROLID", .{}, arg);
+    }
+
+    /// 
+    /// FRONTIMAGEINACTIVE (non inheritable): foreground image name of the element
+    /// when inactive.
+    /// If it is not defined then the FRONTIMAGE is used and its colors will be
+    /// replaced by a modified version creating the disabled effect.
+    pub fn getFrontImageInactive(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "FRONTIMAGEINACTIVE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// FRONTIMAGEINACTIVE (non inheritable): foreground image name of the element
+    /// when inactive.
+    /// If it is not defined then the FRONTIMAGE is used and its colors will be
+    /// replaced by a modified version creating the disabled effect.
+    pub fn setFrontImageInactive(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "FRONTIMAGEINACTIVE", .{}, arg);
+    }
+
+    pub fn setFrontImageInactiveHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FRONTIMAGEINACTIVE", .{}, arg);
+    }
+
+    /// 
+    /// BACKIMAGEHIGHLIGHT (non inheritable): background image name of the element
+    /// in highlight state.
+    /// If it is not defined then the BACKIMAGE is used.
+    pub fn getBackImageHighlight(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "BACKIMAGEHIGHLIGHT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// BACKIMAGEHIGHLIGHT (non inheritable): background image name of the element
+    /// in highlight state.
+    /// If it is not defined then the BACKIMAGE is used.
+    pub fn setBackImageHighlight(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "BACKIMAGEHIGHLIGHT", .{}, arg);
+    }
+
+    pub fn setBackImageHighlightHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "BACKIMAGEHIGHLIGHT", .{}, arg);
+    }
+
+    /// 
+    /// FRONTIMAGEPRESS (non inheritable): foreground image name of the element in
+    /// pressed state.
+    /// If it is not defined then the FRONTIMAGE is used.
+    pub fn getFrontImagePress(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "FRONTIMAGEPRESS", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// FRONTIMAGEPRESS (non inheritable): foreground image name of the element in
+    /// pressed state.
+    /// If it is not defined then the FRONTIMAGE is used.
+    pub fn setFrontImagePress(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "FRONTIMAGEPRESS", .{}, arg);
+    }
+
+    pub fn setFrontImagePressHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FRONTIMAGEPRESS", .{}, arg);
     }
 
     /// 
@@ -2685,8 +3714,12 @@ pub const FlatToggle = opaque {
     /// it is drawn at last.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
-    pub fn getFrontImage(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FRONTIMAGE", .{});
+    pub fn getFrontImage(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "FRONTIMAGE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
     /// 
@@ -2695,8 +3728,30 @@ pub const FlatToggle = opaque {
     /// it is drawn at last.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
-    pub fn setFrontImage(self: *Self, arg: [:0]const u8) void {
+    pub fn setFrontImage(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "FRONTIMAGE", .{}, arg);
+    }
+
+    pub fn setFrontImageHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FRONTIMAGE", .{}, arg);
+    }
+
+    pub fn getCheckImageNotDefPress(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGENOTDEFPRESS", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setCheckImageNotDefPress(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGENOTDEFPRESS", .{}, arg);
+    }
+
+    pub fn setCheckImageNotDefPressHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGENOTDEFPRESS", .{}, arg);
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
@@ -2731,6 +3786,35 @@ pub const FlatToggle = opaque {
         interop.setRgb(self, "DRAWBGCOLOR", .{}, rgb);
     }
 
+    /// 
+    /// IMAGEPRESS (non inheritable): Image name of the element in pressed state.
+    /// If it is not defined then the IMAGE is used.
+    /// Finally notice that the name of the secondary image attributes are
+    /// different (for instance IMINACTIVE is IMAGEINACTIVE, IMPRESS is IMAGEPRESS,
+    /// and so on).
+    pub fn getImagePress(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "IMAGEPRESS", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// IMAGEPRESS (non inheritable): Image name of the element in pressed state.
+    /// If it is not defined then the IMAGE is used.
+    /// Finally notice that the name of the secondary image attributes are
+    /// different (for instance IMINACTIVE is IMAGEINACTIVE, IMPRESS is IMAGEPRESS,
+    /// and so on).
+    pub fn setImagePress(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "IMAGEPRESS", .{}, arg);
+    }
+
+    pub fn setImagePressHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "IMAGEPRESS", .{}, arg);
+    }
+
     pub fn getName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "NAME", .{});
     }
@@ -2745,6 +3829,33 @@ pub const FlatToggle = opaque {
 
     pub fn setBackingStore(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "BACKINGSTORE", .{}, arg);
+    }
+
+    /// 
+    /// CHECKIMAGEINACTIVE (non inheritable): check box image name of the element
+    /// when inactive and VALUE=OFF.
+    /// If it is not defined then the CHECKIMAGE is used and its colors will be
+    /// replaced by a modified version creating the disabled effect.
+    pub fn getCheckImageInactive(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGEINACTIVE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// CHECKIMAGEINACTIVE (non inheritable): check box image name of the element
+    /// when inactive and VALUE=OFF.
+    /// If it is not defined then the CHECKIMAGE is used and its colors will be
+    /// replaced by a modified version creating the disabled effect.
+    pub fn setCheckImageInactive(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGEINACTIVE", .{}, arg);
+    }
+
+    pub fn setCheckImageInactiveHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGEINACTIVE", .{}, arg);
     }
 
     pub fn getDrawDriver(self: *Self) [:0]const u8 {
@@ -2790,6 +3901,22 @@ pub const FlatToggle = opaque {
         } else {
             interop.clearAttribute(self, "DRAWSTYLE", .{});
         }
+    }
+
+    pub fn getHwnd(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "HWND", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setHwnd(self: *Self, arg: anytype) !void {
+        interop.setHandleAttribute(self, "HWND", .{}, arg);
+    }
+
+    pub fn setHwndHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HWND", .{}, arg);
     }
 
     /// 
@@ -2918,14 +4045,23 @@ pub const FlatToggle = opaque {
     /// 
     /// IMAGEHIGHLIGHT (non inheritable): Image name of the element in highlight state.
     /// If it is not defined then the IMAGE is used.
-    pub fn getImageHighlight(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "IMAGEHIGHLIGHT", .{});
+    pub fn getImageHighlight(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "IMAGEHIGHLIGHT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
     /// 
     /// IMAGEHIGHLIGHT (non inheritable): Image name of the element in highlight state.
     /// If it is not defined then the IMAGE is used.
-    pub fn setImageHighlight(self: *Self, arg: [:0]const u8) void {
+    pub fn setImageHighlight(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "IMAGEHIGHLIGHT", .{}, arg);
+    }
+
+    pub fn setImageHighlightHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "IMAGEHIGHLIGHT", .{}, arg);
     }
 
@@ -2941,16 +4077,56 @@ pub const FlatToggle = opaque {
     /// BACKIMAGE (non inheritable): image name to be used as background.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
-    pub fn getBackImage(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "BACKIMAGE", .{});
+    pub fn getBackImage(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "BACKIMAGE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
     /// 
     /// BACKIMAGE (non inheritable): image name to be used as background.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
-    pub fn setBackImage(self: *Self, arg: [:0]const u8) void {
+    pub fn setBackImage(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "BACKIMAGE", .{}, arg);
+    }
+
+    pub fn setBackImageHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "BACKIMAGE", .{}, arg);
+    }
+
+    /// 
+    /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
+    /// If it is not defined then the IMAGE is used and its colors will be replaced
+    /// by a modified version creating the disabled effect.
+    /// Finally notice that the name of the secondary image attributes are
+    /// different (for instance IMINACTIVE is IMAGEINACTIVE, IMPRESS is IMAGEPRESS,
+    /// and so on).
+    pub fn getImageInactive(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "IMAGEINACTIVE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
+    /// If it is not defined then the IMAGE is used and its colors will be replaced
+    /// by a modified version creating the disabled effect.
+    /// Finally notice that the name of the secondary image attributes are
+    /// different (for instance IMINACTIVE is IMAGEINACTIVE, IMPRESS is IMAGEPRESS,
+    /// and so on).
+    pub fn setImageInactive(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "IMAGEINACTIVE", .{}, arg);
+    }
+
+    pub fn setImageInactiveHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "IMAGEINACTIVE", .{}, arg);
     }
 
     pub fn getExpandWeight(self: *Self) f64 {
@@ -3129,6 +4305,23 @@ pub const FlatToggle = opaque {
         interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
+    pub fn getCheckImageOn(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CHECKIMAGEON", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setCheckImageOn(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CHECKIMAGEON", .{}, arg);
+    }
+
+    pub fn setCheckImageOnHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CHECKIMAGEON", .{}, arg);
+    }
+
     /// 
     /// TEXTWRAP (non inheritable): For single line texts if the text is larger
     /// than its box the line will be automatically broken in multiple lines.
@@ -3153,11 +4346,45 @@ pub const FlatToggle = opaque {
         interop.setBoolAttribute(self, "TEXTWRAP", .{}, arg);
     }
 
-    pub fn getDragCursor(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAGCURSOR", .{});
+    /// 
+    /// BACKIMAGEPRESS (non inheritable): background image name of the element in
+    /// pressed state.
+    /// If it is not defined then the BACKIMAGE is used.
+    pub fn getBackImagePress(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "BACKIMAGEPRESS", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setDragCursor(self: *Self, arg: [:0]const u8) void {
+    /// 
+    /// BACKIMAGEPRESS (non inheritable): background image name of the element in
+    /// pressed state.
+    /// If it is not defined then the BACKIMAGE is used.
+    pub fn setBackImagePress(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "BACKIMAGEPRESS", .{}, arg);
+    }
+
+    pub fn setBackImagePressHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "BACKIMAGEPRESS", .{}, arg);
+    }
+
+    pub fn getDragCursor(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setDragCursor(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
+    }
+
+    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
 
@@ -3174,6 +4401,115 @@ pub const FlatToggle = opaque {
     /// Can be Yes or No.
     pub fn getPressed(self: *Self) bool {
         return interop.getBoolAttribute(self, "PRESSED", .{});
+    }
+
+    pub fn getMdiClient(self: *Self) bool {
+        return interop.getBoolAttribute(self, "MDICLIENT", .{});
+    }
+
+    pub fn setMdiClient(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "MDICLIENT", .{}, arg);
+    }
+
+    pub fn getMdiMenu(self: *Self) ?*iup.Menu {
+        if (interop.getHandleAttribute(self, "MDIMENU", .{})) |handle| {
+            return @ptrCast(*iup.Menu, handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setMdiMenu(self: *Self, arg: *iup.Menu) void {
+        interop.setHandleAttribute(self, "MDIMENU", .{}, arg);
+    }
+
+    pub fn setMdiMenuHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "MDIMENU", .{}, arg);
+    }
+
+    /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn getTabImage(self: *Self, index: i32) ?iup.Element {
+        if (interop.getHandleAttribute(self, "TABIMAGE", .{index})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn setTabImage(self: *Self, index: i32, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "TABIMAGE", .{index}, arg);
+    }
+
+    pub fn setTabImageHandleName(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
+    }
+
+    /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
+        return interop.getStrAttribute(self, "TABTITLE", .{index});
+    }
+
+    /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn setTabTitle(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
     pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
@@ -3857,18 +5193,6 @@ test "FlatToggle Visible" {
     try std.testing.expect(ret == true);
 }
 
-test "FlatToggle Image" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setImage("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getImage();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "FlatToggle LineX" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3879,18 +5203,6 @@ test "FlatToggle LineX" {
     var ret = item.getLineX();
 
     try std.testing.expect(ret == @as(f64, 3.14));
-}
-
-test "FlatToggle Cursor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setCursor("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getCursor();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "FlatToggle LineY" {
@@ -3949,18 +5261,6 @@ test "FlatToggle Theme" {
     defer item.deinit();
 
     var ret = item.getTheme();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatToggle DragCursorCopy" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setDragCursorCopy("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragCursorCopy();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -4457,18 +5757,6 @@ test "FlatToggle HlColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "FlatToggle FrontImage" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setFrontImage("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getFrontImage();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "FlatToggle FontFace" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4661,18 +5949,6 @@ test "FlatToggle TipVisible" {
     try std.testing.expect(ret == true);
 }
 
-test "FlatToggle ImageHighlight" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setImageHighlight("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getImageHighlight();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "FlatToggle YMax" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4683,18 +5959,6 @@ test "FlatToggle YMax" {
     var ret = item.getYMax();
 
     try std.testing.expect(ret == 42);
-}
-
-test "FlatToggle BackImage" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setBackImage("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getBackImage();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "FlatToggle ExpandWeight" {
@@ -4851,18 +6115,6 @@ test "FlatToggle TextWrap" {
     var ret = item.getTextWrap();
 
     try std.testing.expect(ret == true);
-}
-
-test "FlatToggle DragCursor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setDragCursor("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragCursor();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "FlatToggle Font" {

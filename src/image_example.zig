@@ -38,7 +38,7 @@ fn create_dialog() !*Dialog {
     return try (Dialog.init()
         .setTitle("IUPforZig - Images")
         .setSize(.Third, .Quarter)
-        .setCursor(img_cursor.getHandleName())
+        .setCursor(img_cursor)
         .setChildren(
         .{
             VBox.init()
@@ -58,7 +58,7 @@ fn create_dialog() !*Dialog {
                                         .setChildren(
                                         .{
                                             Button.init()
-                                                .setImage(img_x.getHandleName()),
+                                                .setImage(img_x),
                                         },
                                     ),
                                     Frame.init()
@@ -67,7 +67,7 @@ fn create_dialog() !*Dialog {
                                         .setChildren(
                                         .{
                                             Label.init()
-                                                .setImage(img_x.getHandleName()),
+                                                .setImage(img_x),
                                         },
                                     ),
                                     Frame.init()
@@ -76,7 +76,7 @@ fn create_dialog() !*Dialog {
                                         .setChildren(
                                         .{
                                             Toggle.init()
-                                                .setImage(img_x.getHandleName()),
+                                                .setImage(img_x),
                                         },
                                     ),
                                     Frame.init()
@@ -91,9 +91,9 @@ fn create_dialog() !*Dialog {
                                                         .setChildren(
                                                         .{
                                                             Toggle.init()
-                                                                .setImage(img_x.getHandleName()),
+                                                                .setImage(img_x),
                                                             Toggle.init()
-                                                                .setImage(img_x.getHandleName()),
+                                                                .setImage(img_x),
                                                         },
                                                     ),
                                                 },
@@ -172,7 +172,7 @@ const images = struct {
 
     pub fn getX() !*Image {
         return try (Image.init(11, 11, pixelmap_x[0..])
-            .setHandleName("img_x")
+            .setHandle("img_x")
             .setColors(1, .{ .r = 0, .g = 1, .b = 0 })
             .setColors(2, .{ .r = 255, .g = 0, .b = 0 })
             .setColors(3, .{ .r = 255, .g = 255, .b = 0 })
@@ -181,7 +181,7 @@ const images = struct {
 
     pub fn getCursor() !*Image {
         return try (Image.init(32, 32, pixelmap_cursor[0..])
-            .setHandleName("img_cursor ")
+            .setHandle("img_cursor ")
             .setHotspot(21, 10)
             .setColors(1, .{ .r = 255, .g = 0, .b = 0 })
             .setColors(2, .{ .r = 128, .g = 0, .b = 0 })

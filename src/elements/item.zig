@@ -29,6 +29,7 @@ const Margin = iup.Margin;
 /// When selected, it generates an action.
 pub const Item = opaque {
     pub const CLASS_NAME = "item";
+    pub const NATIVE_TYPE = iup.NativeType.Menu;
     const Self = @This();
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
@@ -157,9 +158,16 @@ pub const Item = opaque {
             return self.*;
         }
 
+        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandle(self.ref, arg);
+            return self.*;
+        }
+
         /// 
         /// ACTIVE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
@@ -172,6 +180,7 @@ pub const Item = opaque {
         /// When in a menu bar an item that has a mnemonic can be activated from any
         /// control in the dialog using the "Alt+key" combination.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
@@ -179,7 +188,18 @@ pub const Item = opaque {
         /// 
         /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
         /// mark image when VALUE=ON.
-        pub fn setImPress(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setImPress(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "IMPRESS", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setImPressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "IMPRESS", .{}, arg);
             return self.*;
         }
@@ -191,17 +211,30 @@ pub const Item = opaque {
         /// Ignored if item in a menu bar.
         /// A recommended size would be 16x16 to fit the image in the menu item.
         /// In Windows, if larger than the check mark area it will be cropped.
-        pub fn setImage(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setImage(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "IMAGE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "IMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            interop.setHandle(self.ref, arg);
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
@@ -214,7 +247,18 @@ pub const Item = opaque {
         /// only images will be possible to set (TITLE will be hidden).
         /// In GTK, it will appear on the check mark area.
         /// (since 3.0)
-        pub fn setTitleImage(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setTitleImage(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "TITLEIMAGE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setTitleImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TITLEIMAGE", .{}, arg);
             return self.*;
         }
@@ -224,11 +268,13 @@ pub const Item = opaque {
         /// It is updated only when TITLE is updated.
         /// Deprecated (since 3.0), use the mnemonic support directly in the TITLE attribute.
         pub fn setKey(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "KEY", .{}, arg);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
@@ -243,6 +289,7 @@ pub const Item = opaque {
         /// Since GTK 2.14 to have a menu item that can be marked you must set the
         /// VALUE attribute to ON or OFF, or set HIDEMARK=NO, before mapping the control.
         pub fn setValue(self: *Initializer, arg: ?Value) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .On => interop.setStrAttribute(self.ref, "VALUE", .{}, "ON"),
                 .Off => interop.setStrAttribute(self.ref, "VALUE", .{}, "OFF"),
@@ -258,7 +305,87 @@ pub const Item = opaque {
         /// Default: NO.
         /// (since 3.0)
         pub fn setAutoToggle(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "AUTOTOGGLE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
+        /// expand weight, then it is used to multiply the free space used for expansion.
+        /// (since 3.1)
+        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+        /// then its size and position will be ignored by the layout processing.
+        /// Default: "NO".
+        /// (since 3.0)
+        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
+                .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
+                .No => interop.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
+            } else {
+                interop.clearAttribute(self.ref, "FLOATING", .{});
+            }
+            return self.*;
+        }
+
+        /// 
+        /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+        /// n starts at 0.
+        /// See also IupImage.
+        /// In Motif, the image is shown only if TABTITLEn is NULL.
+        /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+        /// When set after map will update the TABIMAGE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
+        /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABTITLEn (non inheritable): Contains the text to be shown in the
+        /// respective tab title.
+        /// n starts at 0.
+        /// If this value is NULL, it will remain empty.
+        /// The "&" character can be used to define a mnemonic, the next character will
+        /// be used as key.
+        /// Use "&&" to show the "&" character instead on defining a mnemonic.
+        /// The button can be activated from any control in the dialog using the
+        /// "Alt+key" combination.
+        /// (mnemonic support since 3.3).
+        /// When set after map will update the TABTITLE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
+        /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
             return self.*;
         }
 
@@ -384,12 +511,16 @@ pub const Item = opaque {
         return interop.getBoolAttribute(self, attribute, .{});
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return interop.getPtrAttribute(T, handle, attribute, .{});
+    pub fn getPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return interop.getPtrAttribute(T, self, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        interop.setPtrAttribute(T, handle, attribute, .{}, value);
+    pub fn setPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        interop.setPtrAttribute(T, self, attribute, .{}, value);
+    }
+
+    pub fn setHandle(self: *Self, arg: [:0]const u8) void {
+        interop.setHandle(self, arg);
     }
 
     ///
@@ -412,6 +543,21 @@ pub const Item = opaque {
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
+    }
+
+    /// 
+    /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
+    /// It will also called recursively to create the native element of all the children in the element's tree.
+    /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
+    /// This function is automatically called before the dialog is shown in IupShow, IupShowXY or IupPopup.
+    /// If the element is a dialog then the abstract layout will be updated even if the dialog is already mapped. If the dialog is visible the elements will be immediately repositioned. Calling IupMap for an already mapped dialog is the same as only calling IupRefresh for the dialog.
+    /// Calling IupMap for an already mapped element that is not a dialog does nothing.
+    /// If you add new elements to an already mapped dialog you must call IupMap for that elements. And then call IupRefresh to update the dialog layout.
+    /// If the WID attribute of an element is NULL, it means the element was not already mapped. Some containers do not have a native element associated, like VBOX and HBOX. In this case their WID is a fake value (void*)(-1).
+    /// It is useful for the application to call IupMap when the value of the WID attribute must be known, i.e. the native element must exist, before a dialog is made visible.
+    /// The MAP_CB callback is called at the end of the IupMap function, after all processing, so it can also be used to create other things that depend on the WID attribute. But notice that for non dialog elements it will be called before the dialog layout has been updated, so the element current size will still be 0x0 (since 3.14).
+    pub fn map(self: *Self) !void {
+        try interop.map(self);
     }
 
     ///
@@ -471,14 +617,23 @@ pub const Item = opaque {
     /// 
     /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=ON.
-    pub fn getImPress(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "IMPRESS", .{});
+    pub fn getImPress(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "IMPRESS", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
     /// 
     /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=ON.
-    pub fn setImPress(self: *Self, arg: [:0]const u8) void {
+    pub fn setImPress(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "IMPRESS", .{}, arg);
+    }
+
+    pub fn setImPressHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "IMPRESS", .{}, arg);
     }
 
@@ -489,8 +644,12 @@ pub const Item = opaque {
     /// Ignored if item in a menu bar.
     /// A recommended size would be 16x16 to fit the image in the menu item.
     /// In Windows, if larger than the check mark area it will be cropped.
-    pub fn getImage(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "IMAGE", .{});
+    pub fn getImage(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "IMAGE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
     /// 
@@ -500,7 +659,12 @@ pub const Item = opaque {
     /// Ignored if item in a menu bar.
     /// A recommended size would be 16x16 to fit the image in the menu item.
     /// In Windows, if larger than the check mark area it will be cropped.
-    pub fn setImage(self: *Self, arg: [:0]const u8) void {
+    pub fn setImage(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "IMAGE", .{}, arg);
+    }
+
+    pub fn setImageHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "IMAGE", .{}, arg);
     }
 
@@ -509,7 +673,7 @@ pub const Item = opaque {
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setHandle(self, arg);
+        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
     pub fn getBgColor(self: *Self) ?iup.Rgb {
@@ -528,8 +692,12 @@ pub const Item = opaque {
     /// only images will be possible to set (TITLE will be hidden).
     /// In GTK, it will appear on the check mark area.
     /// (since 3.0)
-    pub fn getTitleImage(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TITLEIMAGE", .{});
+    pub fn getTitleImage(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "TITLEIMAGE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
     /// 
@@ -540,7 +708,12 @@ pub const Item = opaque {
     /// only images will be possible to set (TITLE will be hidden).
     /// In GTK, it will appear on the check mark area.
     /// (since 3.0)
-    pub fn setTitleImage(self: *Self, arg: [:0]const u8) void {
+    pub fn setTitleImage(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "TITLEIMAGE", .{}, arg);
+    }
+
+    pub fn setTitleImageHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TITLEIMAGE", .{}, arg);
     }
 
@@ -625,6 +798,136 @@ pub const Item = opaque {
     /// (since 3.0)
     pub fn setAutoToggle(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "AUTOTOGGLE", .{}, arg);
+    }
+
+    /// 
+    /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
+    /// expand weight, then it is used to multiply the free space used for expansion.
+    /// (since 3.1)
+    pub fn getExpandWeight(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
+    }
+
+    /// 
+    /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
+    /// expand weight, then it is used to multiply the free space used for expansion.
+    /// (since 3.1)
+    pub fn setExpandWeight(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
+    }
+
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
+    pub fn getFloating(self: *Self) ?Floating {
+        var ret = interop.getStrAttribute(self, "FLOATING", .{});
+
+        if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
+        if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
+        if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
+        return null;
+    }
+
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
+    pub fn setFloating(self: *Self, arg: ?Floating) void {
+        if (arg) |value| switch (value) {
+            .Yes => interop.setStrAttribute(self, "FLOATING", .{}, "YES"),
+            .Ignore => interop.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
+            .No => interop.setStrAttribute(self, "FLOATING", .{}, "NO"),
+        } else {
+            interop.clearAttribute(self, "FLOATING", .{});
+        }
+    }
+
+    /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn getTabImage(self: *Self, index: i32) ?iup.Element {
+        if (interop.getHandleAttribute(self, "TABIMAGE", .{index})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn setTabImage(self: *Self, index: i32, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "TABIMAGE", .{index}, arg);
+    }
+
+    pub fn setTabImageHandleName(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
+    }
+
+    /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
+        return interop.getStrAttribute(self, "TABTITLE", .{index});
+    }
+
+    /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn setTabTitle(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
     pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
@@ -741,30 +1044,6 @@ test "Item Title" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Item ImPress" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Item.init().setImPress("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getImPress();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Item Image" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Item.init().setImage("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getImage();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "Item HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -787,18 +1066,6 @@ test "Item BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "Item TitleImage" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Item.init().setTitleImage("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTitleImage();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Item Key" {

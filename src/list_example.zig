@@ -54,10 +54,10 @@ fn create_dialog() !*Dialog {
                             .setItems(3, "Bronze")
                             .setItems(4, "Tecgraf")
                             .setItems(5, "None")
-                            .image(1, img_gold.getHandleName())
-                            .image(2, img_silver.getHandleName())
-                            .image(3, img_bronze.getHandleName())
-                            .image(4, img_tecgraf.getHandleName())},
+                            .image(1, img_gold)
+                            .image(2, img_silver)
+                            .image(3, img_bronze)
+                            .image(4, img_tecgraf)},
                     ),
                     Frame.init()
                         .setTitle("Competed in")
@@ -91,9 +91,9 @@ fn create_dialog() !*Dialog {
                                 .setItems(5, "US$ 20,000")
                                 .setItems(6, "US$ 50,000")
                                 .setItems(7, "More than US$ 100,000")
-                                .image(1, img_prize.getHandleName())
-                                .image(2, img_prize.getHandleName())
-                                .image(3, img_tecgraf.getHandleName()),
+                                .image(1, img_prize)
+                                .image(2, img_prize)
+                                .image(3, img_tecgraf),
                         },
                     ),
                 },
@@ -150,7 +150,7 @@ const images = struct {
         }; // zig fmt: on
 
         return try (ImageRgba.init(32, 32, image_data[0..])
-            .setHandleName("Tecgraf")
+            .setHandle("Tecgraf")
             .unwrap());
     }
 
@@ -179,7 +179,7 @@ const images = struct {
         }; // zig fmt: on
 
         return try (ImageRgb.init(20, 20, image_data_24[0..])
-            .setHandleName("IMG").unwrap());
+            .setHandle("IMG").unwrap());
     }
 
     pub fn loadGold() !*Image {
@@ -208,7 +208,7 @@ const images = struct {
             .setColors(2, .{ .r = 128, .g = 128, .b = 0 })
             .setColors(3, .{ .r = 255, .g = 0, .b = 0 })
             .setColors(4, .{ .r = 255, .g = 255, .b = 0 })
-            .setHandleName("IMGGOLD")
+            .setHandle("IMGGOLD")
             .unwrap());
     }
 
@@ -238,7 +238,7 @@ const images = struct {
             .setColors(2, .{ .r = 128, .g = 128, .b = 128 })
             .setColors(3, .{ .r = 192, .g = 192, .b = 192 })
             .setColors(4, .{ .r = 255, .g = 255, .b = 255 })
-            .setHandleName("IMGSILVER")
+            .setHandle("IMGSILVER")
             .unwrap());
     }
 
@@ -268,7 +268,7 @@ const images = struct {
             .setColors(2, .{ .r = 0, .g = 128, .b = 0 })
             .setColors(3, .{ .r = 128, .g = 128, .b = 0 })
             .setColors(4, .{ .r = 128, .g = 128, .b = 128 })
-            .setHandleName("IMGBRONZE")
+            .setHandle("IMGBRONZE")
             .unwrap());
     }
 };

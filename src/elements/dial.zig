@@ -31,6 +31,7 @@ const Margin = iup.Margin;
 /// on the CD library anymore.)
 pub const Dial = opaque {
     pub const CLASS_NAME = "dial";
+    pub const NATIVE_TYPE = iup.NativeType.Canvas;
     const Self = @This();
 
     pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
@@ -504,36 +505,48 @@ pub const Dial = opaque {
             return self.*;
         }
 
+        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandle(self.ref, arg);
+            return self.*;
+        }
+
         /// 
         /// FGCOLOR: foreground color.
         /// The default value is "64 64 64".
         /// (appears in circular dial since 3.24)
         pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            interop.setHandle(self.ref, arg);
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setXMin(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "XMIN", .{}, arg);
             return self.*;
         }
 
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
@@ -541,16 +554,19 @@ pub const Dial = opaque {
         }
 
         pub fn setDrawTextWrap(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawUsedIRect2d(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWUSEDIRECT2D", .{}, arg);
             return self.*;
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
@@ -558,11 +574,13 @@ pub const Dial = opaque {
         }
 
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawTextAlignment(self: *Initializer, arg: ?DrawTextAlignment) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .ACenter => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ACENTER"),
                 .ARight => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ARIGHT"),
@@ -574,51 +592,71 @@ pub const Dial = opaque {
         }
 
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawTextLayoutCenter(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTLAYOUTCENTER", .{}, arg);
             return self.*;
         }
 
         pub fn setType(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "TYPE", .{}, arg);
             return self.*;
         }
 
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
             return self.*;
         }
 
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
 
         pub fn setLineX(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "LINEX", .{}, arg);
             return self.*;
         }
 
-        pub fn setCursor(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CURSOR", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setLineY(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "LINEY", .{}, arg);
             return self.*;
         }
 
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
                 .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
@@ -629,21 +667,37 @@ pub const Dial = opaque {
         }
 
         pub fn setDrawLineWidth(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "DRAWLINEWIDTH", .{}, arg);
             return self.*;
         }
 
+        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
+            return self.*;
+        }
+
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawAntialias(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "DRAWANTIALIAS", .{}, arg);
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
@@ -653,16 +707,29 @@ pub const Dial = opaque {
         /// Default: "160 160 160".
         /// (since 3.24)
         pub fn setFlatColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "FLATCOLOR", .{}, rgb);
             return self.*;
         }
 
-        pub fn setDragCursorCopy(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
 
         pub fn setHtTransparent(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "HTTRANSPARENT", .{}, arg);
             return self.*;
         }
@@ -670,6 +737,7 @@ pub const Dial = opaque {
         /// 
         /// EXPAND: the default is "NO".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -684,6 +752,7 @@ pub const Dial = opaque {
         }
 
         pub fn setDrawFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
             return self.*;
         }
@@ -693,6 +762,7 @@ pub const Dial = opaque {
         /// according to the dial orientation.
         /// Set to NULL to allow the automatic layout use smaller values.
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
@@ -700,16 +770,19 @@ pub const Dial = opaque {
         }
 
         pub fn setPosX(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "POSX", .{}, arg);
             return self.*;
         }
 
         pub fn setPosY(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "POSY", .{}, arg);
             return self.*;
         }
 
         pub fn setYMin(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
             return self.*;
         }
@@ -723,6 +796,7 @@ pub const Dial = opaque {
         /// Circular increments when moved counter clock wise, and decrements when
         /// moved clock wise.
         pub fn setOrientation(self: *Initializer, arg: ?Orientation) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Horizontal => interop.setStrAttribute(self.ref, "ORIENTATION", .{}, "HORIZONTAL"),
                 .Vertical => interop.setStrAttribute(self.ref, "ORIENTATION", .{}, "VERTICAL"),
@@ -733,21 +807,25 @@ pub const Dial = opaque {
         }
 
         pub fn setDrawMakeInactive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWMAKEINACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
@@ -755,16 +833,19 @@ pub const Dial = opaque {
         }
 
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
             return self.*;
         }
 
         pub fn setScrollBar(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SCROLLBAR", .{}, arg);
             return self.*;
         }
 
         pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
@@ -772,61 +853,73 @@ pub const Dial = opaque {
         }
 
         pub fn setXAutoHide(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "XAUTOHIDE", .{}, arg);
             return self.*;
         }
 
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setXMax(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "XMAX", .{}, arg);
             return self.*;
         }
 
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setDX(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "DX", .{}, arg);
             return self.*;
         }
 
         pub fn setDY(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "DY", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawTextEllipsis(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTELLIPSIS", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawTextClip(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTCLIP", .{}, arg);
             return self.*;
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -838,11 +931,13 @@ pub const Dial = opaque {
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
 
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
@@ -850,56 +945,67 @@ pub const Dial = opaque {
         }
 
         pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setControlId(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "DRAWCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setDrawTextOrientation(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "DRAWTEXTORIENTATION", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "DRAWBGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
 
         pub fn setBackingStore(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "BACKINGSTORE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
         pub fn setYAutoHide(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "YAUTOHIDE", .{}, arg);
             return self.*;
         }
 
         pub fn setDrawStyle(self: *Initializer, arg: ?DrawStyle) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Fill => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "FILL"),
                 .StrokeDash => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH"),
@@ -913,6 +1019,18 @@ pub const Dial = opaque {
             return self.*;
         }
 
+        pub fn setHwnd(self: *Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "HWND", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setHwndHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HWND", .{}, arg);
+            return self.*;
+        }
+
         /// 
         /// VALUE (non inheritable): The dial angular value in radians always.
         /// The value is reset to zero when the interaction is started, except for ORIENTATION=CIRCULAR.
@@ -920,6 +1038,7 @@ pub const Dial = opaque {
         /// When orientation is circular the dial measure absolute angles, where the
         /// origin is at 3 O'clock.
         pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
@@ -928,26 +1047,31 @@ pub const Dial = opaque {
         /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
         /// TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
 
         pub fn setYMax(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "YMAX", .{}, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
@@ -960,42 +1084,130 @@ pub const Dial = opaque {
         /// Default: No.
         /// (since 3.24)
         pub fn setFlat(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "FLAT", .{}, arg);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
 
         pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setWheelDropFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "WHEELDROPFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
 
         pub fn setTouch(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
             return self.*;
         }
 
-        pub fn setDragCursor(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setMdiClient(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "MDICLIENT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setMdiMenu(self: *Initializer, arg: *iup.Menu) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "MDIMENU", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setMdiMenuHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+        /// n starts at 0.
+        /// See also IupImage.
+        /// In Motif, the image is shown only if TABTITLEn is NULL.
+        /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+        /// When set after map will update the TABIMAGE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
+        /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABTITLEn (non inheritable): Contains the text to be shown in the
+        /// respective tab title.
+        /// n starts at 0.
+        /// If this value is NULL, it will remain empty.
+        /// The "&" character can be used to define a mnemonic, the next character will
+        /// be used as key.
+        /// Use "&&" to show the "&" character instead on defining a mnemonic.
+        /// The button can be activated from any control in the dialog using the
+        /// "Alt+key" combination.
+        /// (mnemonic support since 3.3).
+        /// When set after map will update the TABTITLE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
+        /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
             return self.*;
         }
 
@@ -1532,12 +1744,16 @@ pub const Dial = opaque {
         return interop.getBoolAttribute(self, attribute, .{});
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return interop.getPtrAttribute(T, handle, attribute, .{});
+    pub fn getPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return interop.getPtrAttribute(T, self, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        interop.setPtrAttribute(T, handle, attribute, .{}, value);
+    pub fn setPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        interop.setPtrAttribute(T, self, attribute, .{}, value);
+    }
+
+    pub fn setHandle(self: *Self, arg: [:0]const u8) void {
+        interop.setHandle(self, arg);
     }
 
     ///
@@ -1560,6 +1776,21 @@ pub const Dial = opaque {
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
+    }
+
+    /// 
+    /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
+    /// It will also called recursively to create the native element of all the children in the element's tree.
+    /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
+    /// This function is automatically called before the dialog is shown in IupShow, IupShowXY or IupPopup.
+    /// If the element is a dialog then the abstract layout will be updated even if the dialog is already mapped. If the dialog is visible the elements will be immediately repositioned. Calling IupMap for an already mapped dialog is the same as only calling IupRefresh for the dialog.
+    /// Calling IupMap for an already mapped element that is not a dialog does nothing.
+    /// If you add new elements to an already mapped dialog you must call IupMap for that elements. And then call IupRefresh to update the dialog layout.
+    /// If the WID attribute of an element is NULL, it means the element was not already mapped. Some containers do not have a native element associated, like VBOX and HBOX. In this case their WID is a fake value (void*)(-1).
+    /// It is useful for the application to call IupMap when the value of the WID attribute must be known, i.e. the native element must exist, before a dialog is made visible.
+    /// The MAP_CB callback is called at the end of the IupMap function, after all processing, so it can also be used to create other things that depend on the WID attribute. But notice that for non dialog elements it will be called before the dialog layout has been updated, so the element current size will still be 0x0 (since 3.14).
+    pub fn map(self: *Self) !void {
+        try interop.map(self);
     }
 
     ///
@@ -1611,7 +1842,7 @@ pub const Dial = opaque {
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setHandle(self, arg);
+        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
@@ -1756,11 +1987,20 @@ pub const Dial = opaque {
         interop.setDoubleAttribute(self, "LINEX", .{}, arg);
     }
 
-    pub fn getCursor(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "CURSOR", .{});
+    pub fn getCursor(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CURSOR", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setCursor(self: *Self, arg: [:0]const u8) void {
+    pub fn setCursor(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CURSOR", .{}, arg);
+    }
+
+    pub fn setCursorHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "CURSOR", .{}, arg);
     }
 
@@ -1787,6 +2027,22 @@ pub const Dial = opaque {
 
     pub fn setDrawLineWidth(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "DRAWLINEWIDTH", .{}, arg);
+    }
+
+    pub fn getHFont(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setHFont(self: *Self, arg: anytype) !void {
+        interop.setHandleAttribute(self, "HFONT", .{}, arg);
+    }
+
+    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HFONT", .{}, arg);
     }
 
     pub fn getX(self: *Self) i32 {
@@ -1837,11 +2093,20 @@ pub const Dial = opaque {
         interop.setRgb(self, "FLATCOLOR", .{}, rgb);
     }
 
-    pub fn getDragCursorCopy(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAGCURSORCOPY", .{});
+    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setDragCursorCopy(self: *Self, arg: [:0]const u8) void {
+    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
+    }
+
+    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
 
@@ -2252,6 +2517,22 @@ pub const Dial = opaque {
         }
     }
 
+    pub fn getHwnd(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "HWND", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setHwnd(self: *Self, arg: anytype) !void {
+        interop.setHandleAttribute(self, "HWND", .{}, arg);
+    }
+
+    pub fn setHwndHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HWND", .{}, arg);
+    }
+
     /// 
     /// VALUE (non inheritable): The dial angular value in radians always.
     /// The value is reset to zero when the interaction is started, except for ORIENTATION=CIRCULAR.
@@ -2388,11 +2669,20 @@ pub const Dial = opaque {
         interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
-    pub fn getDragCursor(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAGCURSOR", .{});
+    pub fn getDragCursor(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setDragCursor(self: *Self, arg: [:0]const u8) void {
+    pub fn setDragCursor(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
+    }
+
+    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
 
@@ -2402,6 +2692,115 @@ pub const Dial = opaque {
 
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONT", .{}, arg);
+    }
+
+    pub fn getMdiClient(self: *Self) bool {
+        return interop.getBoolAttribute(self, "MDICLIENT", .{});
+    }
+
+    pub fn setMdiClient(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "MDICLIENT", .{}, arg);
+    }
+
+    pub fn getMdiMenu(self: *Self) ?*iup.Menu {
+        if (interop.getHandleAttribute(self, "MDIMENU", .{})) |handle| {
+            return @ptrCast(*iup.Menu, handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setMdiMenu(self: *Self, arg: *iup.Menu) void {
+        interop.setHandleAttribute(self, "MDIMENU", .{}, arg);
+    }
+
+    pub fn setMdiMenuHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "MDIMENU", .{}, arg);
+    }
+
+    /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn getTabImage(self: *Self, index: i32) ?iup.Element {
+        if (interop.getHandleAttribute(self, "TABIMAGE", .{index})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn setTabImage(self: *Self, index: i32, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "TABIMAGE", .{index}, arg);
+    }
+
+    pub fn setTabImageHandleName(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
+    }
+
+    /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
+        return interop.getStrAttribute(self, "TABTITLE", .{index});
+    }
+
+    /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn setTabTitle(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
     pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
@@ -3096,18 +3495,6 @@ test "Dial LineX" {
     try std.testing.expect(ret == @as(f64, 3.14));
 }
 
-test "Dial Cursor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dial.init().setCursor("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getCursor();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "Dial LineY" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3178,18 +3565,6 @@ test "Dial FlatColor" {
     var ret = item.getFlatColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "Dial DragCursorCopy" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dial.init().setDragCursorCopy("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragCursorCopy();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Dial HtTransparent" {
@@ -3802,18 +4177,6 @@ test "Dial Touch" {
     var ret = item.getTouch();
 
     try std.testing.expect(ret == true);
-}
-
-test "Dial DragCursor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dial.init().setDragCursor("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragCursor();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Dial Font" {

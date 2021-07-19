@@ -145,20 +145,20 @@ pub const Notepad = struct {
                     .setCanFocus(false)
                     .setFlat(true)
                     .setTip("Open (Crtl+O)")
-                    .setImage("IUP_FileOpen"),
+                    .setImageHandleName("IUP_FileOpen"),
                 Button.init()
                     .setActionCallback(onButtonSave)
                     .setCanFocus(false)
                     .setFlat(true)
                     .setTip("Save (Crtl+S)")
-                    .setImage("IUP_FileSave"),
+                    .setImageHandleName("IUP_FileSave"),
                 Label.init().setSeparator(.Vertical),
                 Button.init()
                     .setActionCallback(onButtonFind)
                     .setCanFocus(false)
                     .setFlat(true)
                     .setTip("Find (Crtl+F)")
-                    .setImage("IUP_EditFind"),
+                    .setImageHandleName("IUP_EditFind"),
             },
         );
     }
@@ -283,7 +283,7 @@ const find_dialog = struct {
 
     fn onClose(button: *Button) !void {
         var dialog = button.getDialog() orelse unreachable;
-        try dialog.hide();
+        dialog.hide();
     }
 
     fn createDialog(parent: *Dialog) !*Dialog {
@@ -440,12 +440,12 @@ const goto_dialog = struct {
         }
 
         dlg.setIntAttribute(go_to_attr, go_to);
-        try dlg.hide();
+        dlg.hide();
     }
 
     fn onButtonCancel(button: *Button) !void {
         var dlg = button.getDialog() orelse unreachable;
         dlg.setIntAttribute(go_to_attr, 0);
-        try dlg.hide();
+        dlg.hide();
     }
 };

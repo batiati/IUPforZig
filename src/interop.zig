@@ -311,6 +311,11 @@ pub inline fn setPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]
     }
 }
 
+pub inline fn validateHandle(native_type: iup.NativeType, handle: anytype) !void {
+    const ElementType = std.meta.Child(@TypeOf(handle));
+    if (ElementType.NATIVE_TYPE != native_type) return iup.Error.InvalidElement;
+}
+
 pub fn getRgb(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) iup.Rgb {
     validateIds(ids_tuple);
 
@@ -381,14 +386,24 @@ pub inline fn showXY(handle: anytype, x: iup.DialogPosX, y: iup.DialogPosY) iup.
     if (ret == c.IUP_ERROR) return iup.Error.InvalidAction;
 }
 
+pub inline fn show(handle: anytype) iup.Error!void {
+    const ret = c.IupShow(getHandle(handle));
+    if (ret == c.IUP_ERROR) return iup.Error.InvalidAction;
+}
+
+pub inline fn map(handle: anytype) iup.Error!void {
+    const ret = c.IupMap(getHandle(handle));
+    if (ret == c.IUP_ERROR) return iup.Error.InvalidAction;
+}
+
 pub inline fn popup(handle: anytype, x: iup.DialogPosX, y: iup.DialogPosY) iup.Error!void {
     const ret = c.IupPopup(getHandle(handle), @enumToInt(x), @enumToInt(y));
     if (ret == c.IUP_ERROR) return iup.Error.InvalidAction;
 }
 
-pub inline fn hide(handle: anytype) iup.Error!void {
-    const ret = c.IupHide(getHandle(handle));
-    if (ret == c.IUP_ERROR) return iup.Error.InvalidAction;
+pub inline fn hide(handle: anytype) void {
+    //Returns: IUP_NOERROR always.
+    _ = c.IupHide(getHandle(handle));
 }
 
 pub inline fn getDialog(handle: anytype) ?*iup.Dialog {

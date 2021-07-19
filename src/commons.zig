@@ -4,6 +4,8 @@ const interop = @import("interop.zig");
 const ascii = std.ascii;
 const testing = std.testing;
 
+pub const NativeType = enum { Void, Control, Canvas, Dialog, Image, Menu, Other };
+
 pub const Error = error{
     ///
     /// Open function must be called before any action
@@ -20,6 +22,10 @@ pub const Error = error{
     ///
     /// Wrong child usage
     InvalidChild,
+
+    ///
+    /// Wrong element usage
+    InvalidElement,
 };
 
 pub const CallbackResult = error{

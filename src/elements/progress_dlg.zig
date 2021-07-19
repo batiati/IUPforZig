@@ -30,6 +30,7 @@ const Margin = iup.Margin;
 /// The dialog is meant to be shown with the show functions IupShow or IupShowXY.
 pub const ProgressDlg = opaque {
     pub const CLASS_NAME = "progressdlg";
+    pub const NATIVE_TYPE = iup.NativeType.Dialog;
     const Self = @This();
 
     pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
@@ -373,49 +374,70 @@ pub const ProgressDlg = opaque {
             return self.*;
         }
 
+        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandle(self.ref, arg);
+            return self.*;
+        }
+
         /// 
         /// COUNT: current count of iterations.
         pub fn setCount(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "COUNT", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            interop.setHandle(self.ref, arg);
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setMdiClient(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MDICLIENT", .{}, arg);
             return self.*;
         }
 
         pub fn setControl(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CONTROL", .{}, arg);
             return self.*;
         }
 
         pub fn setMenu(self: *Initializer, arg: *iup.Menu) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setHandleAttribute(self.ref, "MENU", .{}, arg);
             return self.*;
         }
 
+        pub fn setMenuHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "MENU", .{}, arg);
+            return self.*;
+        }
+
         pub fn setNoFlush(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "NOFLUSH", .{}, arg);
             return self.*;
         }
 
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
@@ -423,36 +445,43 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setTrayTipBalloonTitleIcon(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TRAYTIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
         pub fn setOpacityImage(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "OPACITYIMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setHelpButton(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "HELPBUTTON", .{}, arg);
             return self.*;
         }
 
         pub fn setShowNoFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SHOWNOFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setMaximizeAtParent(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MAXIMIZEATPARENT", .{}, arg);
             return self.*;
         }
 
         pub fn setOpacity(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "OPACITY", .{}, arg);
             return self.*;
         }
 
         pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
@@ -460,26 +489,31 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setComposited(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "COMPOSITED", .{}, arg);
             return self.*;
         }
 
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
 
         pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
             return self.*;
         }
@@ -487,6 +521,7 @@ pub const ProgressDlg = opaque {
         /// 
         /// ICON: Dialog’s icon.
         pub fn setIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "ICON", .{}, arg);
             return self.*;
         }
@@ -494,26 +529,41 @@ pub const ProgressDlg = opaque {
         /// 
         /// VISIBLE: Simply call IupShow or IupHide for the dialog.
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
 
         pub fn setCustomFrameDraw(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CUSTOMFRAMEDRAW", .{}, arg);
             return self.*;
         }
 
-        pub fn setCursor(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CURSOR", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setMenuBox(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MENUBOX", .{}, arg);
             return self.*;
         }
 
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
                 .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
@@ -523,67 +573,102 @@ pub const ProgressDlg = opaque {
             return self.*;
         }
 
+        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
+            return self.*;
+        }
+
         pub fn setMaxBox(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MAXBOX", .{}, arg);
             return self.*;
         }
 
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
             return self.*;
         }
 
         pub fn setDialogHint(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DIALOGHINT", .{}, arg);
             return self.*;
         }
 
         pub fn setShowMinimizeNext(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SHOWMINIMIZENEXT", .{}, arg);
             return self.*;
         }
 
         pub fn setDialogFrame(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DIALOGFRAME", .{}, arg);
             return self.*;
         }
 
         pub fn setNActive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "NACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setTrayTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TRAYTIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
 
         pub fn setSaveUnder(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SAVEUNDER", .{}, arg);
             return self.*;
         }
 
         pub fn setTray(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TRAY", .{}, arg);
             return self.*;
         }
 
-        pub fn setDragCursorCopy(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
 
         pub fn setTaskbarProgress(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TASKBARPROGRESS", .{}, arg);
             return self.*;
         }
 
         pub fn setChildOffset(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
@@ -591,6 +676,7 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -605,6 +691,7 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setSize(self: *Initializer, width: ?iup.ScreenSize, height: ?iup.ScreenSize) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, str);
@@ -612,31 +699,43 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setMdiMenu(self: *Initializer, arg: *iup.Menu) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setHandleAttribute(self.ref, "MDIMENU", .{}, arg);
             return self.*;
         }
 
+        pub fn setMdiMenuHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
+            return self.*;
+        }
+
         pub fn setStartFocus(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "STARTFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
 
         pub fn setTrayTipDelay(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TRAYTIPDELAY", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
@@ -644,11 +743,13 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
             return self.*;
         }
 
         pub fn setCustomFrameCaptionLimits(self: *Initializer, begin: i32, end: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = iup.Range.intIntToString(&buffer, begin, end, ',');
             interop.setStrAttribute(self.ref, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
@@ -656,6 +757,7 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
@@ -663,6 +765,7 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setCustomFrame(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CUSTOMFRAME", .{}, arg);
             return self.*;
         }
@@ -674,16 +777,25 @@ pub const ProgressDlg = opaque {
         /// less space on screen.
         /// TITLE: Dialog title.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setDefaultEsc(self: *Initializer, arg: *iup.Button) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setHandleAttribute(self.ref, "DEFAULTESC", .{}, arg);
             return self.*;
         }
 
+        pub fn setDefaultEscHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "DEFAULTESC", .{}, arg);
+            return self.*;
+        }
+
         pub fn setPlacement(self: *Initializer, arg: ?Placement) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Maximized => interop.setStrAttribute(self.ref, "PLACEMENT", .{}, "MAXIMIZED"),
                 .Minimized => interop.setStrAttribute(self.ref, "PLACEMENT", .{}, "MINIMIZED"),
@@ -695,36 +807,43 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setLayerAlpha(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "LAYERALPHA", .{}, arg);
             return self.*;
         }
 
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
             return self.*;
         }
 
         pub fn setTrayTipBalloon(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TRAYTIPBALLOON", .{}, arg);
             return self.*;
         }
 
         pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
             return self.*;
         }
@@ -732,11 +851,13 @@ pub const ProgressDlg = opaque {
         /// 
         /// RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
         pub fn setResize(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "RESIZE", .{}, arg);
             return self.*;
         }
 
         pub fn mdiArrange(self: *Initializer, arg: ?MdiArrange) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .TileHorizontal => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
                 .TileVertical => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEVERTICAL"),
@@ -749,6 +870,7 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -760,11 +882,13 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
 
         pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
@@ -772,41 +896,49 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setShapeImage(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "SHAPEIMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setControlId(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
             return self.*;
         }
 
         pub fn setShowNoActivate(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SHOWNOACTIVATE", .{}, arg);
             return self.*;
         }
 
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
         pub fn setMaximizeAtDialog(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MAXIMIZEATDIALOG", .{}, arg);
             return self.*;
         }
 
         pub fn topMost(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TOPMOST", .{}, arg);
             return self.*;
         }
 
         pub fn setTaskbarButton(self: *Initializer, arg: ?TaskbarButton) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Show => interop.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "SHOW"),
                 .Hide => interop.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "HIDE"),
@@ -817,6 +949,7 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
@@ -832,6 +965,7 @@ pub const ProgressDlg = opaque {
         /// display an undefined state animation (same as setting MARQUEE=Yes in
         /// IupProgressBar), to resume processing set the state attribute to PROCESSING.
         pub fn setState(self: *Initializer, arg: ?State) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .Aborted => interop.setStrAttribute(self.ref, "STATE", .{}, "ABORTED"),
                 .Processing => interop.setStrAttribute(self.ref, "STATE", .{}, "PROCESSING"),
@@ -844,16 +978,25 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setMinBox(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MINBOX", .{}, arg);
             return self.*;
         }
 
         pub fn setDefaultEnter(self: *Initializer, arg: *iup.Button) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setHandleAttribute(self.ref, "DEFAULTENTER", .{}, arg);
             return self.*;
         }
 
+        pub fn setDefaultEnterHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "DEFAULTENTER", .{}, arg);
+            return self.*;
+        }
+
         pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
@@ -861,47 +1004,88 @@ pub const ProgressDlg = opaque {
         /// 
         /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
         /// This dialog will be always in front of the parent dialog.
-        pub fn setParentDialog(self: *Initializer, arg: *iup.Dialog) Initializer {
-            interop.setHandleAttribute(self.ref, "PARENTDIALOG", .{}, arg);
+        pub fn setParentDialog(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Dialog, arg)) {
+                interop.setHandleAttribute(self.ref, "PARENTDIALOG", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setParentDialogHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "PARENTDIALOG", .{}, arg);
             return self.*;
         }
 
         pub fn setBackground(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BACKGROUND", .{}, rgb);
             return self.*;
         }
 
         pub fn setHideTaskbar(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "HIDETASKBAR", .{}, arg);
             return self.*;
         }
 
+        pub fn setHwnd(self: *Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "HWND", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setHwndHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HWND", .{}, arg);
+            return self.*;
+        }
+
         pub fn setBringFront(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "BRINGFRONT", .{}, arg);
             return self.*;
         }
 
-        pub fn setTrayImage(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setTrayImage(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "TRAYIMAGE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setTrayImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TRAYIMAGE", .{}, arg);
             return self.*;
         }
 
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
         pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
 
         pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
@@ -909,36 +1093,43 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setCustomFrameCaptionHeight(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
             return self.*;
         }
 
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
 
         pub fn setBorder(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "BORDER", .{}, arg);
             return self.*;
         }
 
         pub fn setCustomFramesImulate(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CUSTOMFRAMESIMULATE", .{}, arg);
             return self.*;
         }
 
         pub fn mdiCloseAll(self: *Initializer) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "MDICLOSEALL", .{}, null);
             return self.*;
         }
 
         pub fn setShrink(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SHRINK", .{}, arg);
             return self.*;
         }
 
         pub fn setClientSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "CLIENTSIZE", .{}, value);
@@ -946,41 +1137,49 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn setTrayTip(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TRAYTIP", .{}, arg);
             return self.*;
         }
 
         pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
             return self.*;
         }
 
         pub fn setToolBox(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TOOLBOX", .{}, arg);
             return self.*;
         }
 
         pub fn setMdiFrame(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MDIFRAME", .{}, arg);
             return self.*;
         }
 
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
 
         pub fn setTouch(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
             return self.*;
         }
 
         pub fn setMdiChild(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MDICHILD", .{}, arg);
             return self.*;
         }
 
         pub fn taskbarProgressState(self: *Initializer, arg: ?TaskbarProgressState) Initializer {
+            if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
                 .NoProgress => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
                 .Indeterminate => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
@@ -994,32 +1193,112 @@ pub const ProgressDlg = opaque {
         }
 
         pub fn taskbarProgressValue(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TASKBARPROGRESSVALUE", .{}, arg);
             return self.*;
         }
 
         pub fn fullScreen(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "FULLSCREEN", .{}, arg);
             return self.*;
         }
 
+        pub fn setNativeParent(self: *Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "NATIVEPARENT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setNativeParentHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NATIVEPARENT", .{}, arg);
+            return self.*;
+        }
+
         pub fn setMaximizedIalog(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "MAXIMIZEDIALOG", .{}, arg);
             return self.*;
         }
 
-        pub fn setDragCursor(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
 
         pub fn simulateModal(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SIMULATEMODAL", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+        /// n starts at 0.
+        /// See also IupImage.
+        /// In Motif, the image is shown only if TABTITLEn is NULL.
+        /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+        /// When set after map will update the TABIMAGE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
+        /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABTITLEn (non inheritable): Contains the text to be shown in the
+        /// respective tab title.
+        /// n starts at 0.
+        /// If this value is NULL, it will remain empty.
+        /// The "&" character can be used to define a mnemonic, the next character will
+        /// be used as key.
+        /// Use "&&" to show the "&" character instead on defining a mnemonic.
+        /// The button can be activated from any control in the dialog using the
+        /// "Alt+key" combination.
+        /// (mnemonic support since 3.3).
+        /// When set after map will update the TABTITLE attribute on the respective
+        /// child (since 3.10).
+        /// (since 3.0).
+        /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
             return self.*;
         }
 
@@ -1396,12 +1675,16 @@ pub const ProgressDlg = opaque {
         return interop.getBoolAttribute(self, attribute, .{});
     }
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return interop.getPtrAttribute(T, handle, attribute, .{});
+    pub fn getPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return interop.getPtrAttribute(T, self, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        interop.setPtrAttribute(T, handle, attribute, .{}, value);
+    pub fn setPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        interop.setPtrAttribute(T, self, attribute, .{}, value);
+    }
+
+    pub fn setHandle(self: *Self, arg: [:0]const u8) void {
+        interop.setHandle(self, arg);
     }
 
     ///
@@ -1420,18 +1703,44 @@ pub const ProgressDlg = opaque {
     }
 
     /// 
+    /// Displays a dialog in the current position, or changes a control VISIBLE attribute.
+    /// For dialogs it is equivalent to call IupShowXY using IUP_CURRENT. See IupShowXY for more details.
+    /// For other controls, to call IupShow is the same as setting VISIBLE=YES.
+    pub fn show(self: *Self) !void {
+        try interop.show(self);
+    }
+
+    ///
+    /// Hides an interface element. This function has the same effect as attributing value "NO" to the interface element’s VISIBLE attribute.
+    /// Once a dialog is hidden, either by means of IupHide or by changing the VISIBLE attribute or by means of a click in the window close button, the elements inside this dialog are not destroyed, so that you can show the dialog again. To destroy dialogs, the IupDestroy function must be called.
+    pub fn hide(self: *Self) void {
+        interop.hide(self);
+    }
+
+    /// 
     /// Destroys an interface element and all its children.
     /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    pub fn popup(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) !void {
-        try interop.popup(self, x, y);
+    /// 
+    /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
+    /// It will also called recursively to create the native element of all the children in the element's tree.
+    /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
+    /// This function is automatically called before the dialog is shown in IupShow, IupShowXY or IupPopup.
+    /// If the element is a dialog then the abstract layout will be updated even if the dialog is already mapped. If the dialog is visible the elements will be immediately repositioned. Calling IupMap for an already mapped dialog is the same as only calling IupRefresh for the dialog.
+    /// Calling IupMap for an already mapped element that is not a dialog does nothing.
+    /// If you add new elements to an already mapped dialog you must call IupMap for that elements. And then call IupRefresh to update the dialog layout.
+    /// If the WID attribute of an element is NULL, it means the element was not already mapped. Some containers do not have a native element associated, like VBOX and HBOX. In this case their WID is a fake value (void*)(-1).
+    /// It is useful for the application to call IupMap when the value of the WID attribute must be known, i.e. the native element must exist, before a dialog is made visible.
+    /// The MAP_CB callback is called at the end of the IupMap function, after all processing, so it can also be used to create other things that depend on the WID attribute. But notice that for non dialog elements it will be called before the dialog layout has been updated, so the element current size will still be 0x0 (since 3.14).
+    pub fn map(self: *Self) !void {
+        try interop.map(self);
     }
 
-    pub fn hide(self: *Self) !void {
-        try interop.hide(self);
+    pub fn popup(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) !void {
+        try interop.popup(self, x, y);
     }
 
     pub fn showXY(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) !void {
@@ -1477,7 +1786,7 @@ pub const ProgressDlg = opaque {
     }
 
     pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setHandle(self, arg);
+        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
@@ -1514,6 +1823,10 @@ pub const ProgressDlg = opaque {
 
     pub fn setMenu(self: *Self, arg: *iup.Menu) void {
         interop.setHandleAttribute(self, "MENU", .{}, arg);
+    }
+
+    pub fn setMenuHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "MENU", .{}, arg);
     }
 
     pub fn getNoFlush(self: *Self) bool {
@@ -1675,11 +1988,20 @@ pub const ProgressDlg = opaque {
         interop.setBoolAttribute(self, "CUSTOMFRAMEDRAW", .{}, arg);
     }
 
-    pub fn getCursor(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "CURSOR", .{});
+    pub fn getCursor(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CURSOR", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setCursor(self: *Self, arg: [:0]const u8) void {
+    pub fn setCursor(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CURSOR", .{}, arg);
+    }
+
+    pub fn setCursorHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "CURSOR", .{}, arg);
     }
 
@@ -1698,6 +2020,22 @@ pub const ProgressDlg = opaque {
         } else {
             interop.clearAttribute(self, "ZORDER", .{});
         }
+    }
+
+    pub fn getHFont(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setHFont(self: *Self, arg: anytype) !void {
+        interop.setHandleAttribute(self, "HFONT", .{}, arg);
+    }
+
+    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HFONT", .{}, arg);
     }
 
     pub fn getX(self: *Self) i32 {
@@ -1792,11 +2130,20 @@ pub const ProgressDlg = opaque {
         interop.setBoolAttribute(self, "TRAY", .{}, arg);
     }
 
-    pub fn getDragCursorCopy(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAGCURSORCOPY", .{});
+    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setDragCursorCopy(self: *Self, arg: [:0]const u8) void {
+    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
+    }
+
+    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
 
@@ -1869,6 +2216,10 @@ pub const ProgressDlg = opaque {
 
     pub fn setMdiMenu(self: *Self, arg: *iup.Menu) void {
         interop.setHandleAttribute(self, "MDIMENU", .{}, arg);
+    }
+
+    pub fn setMdiMenuHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
     pub fn getStartFocus(self: *Self) [:0]const u8 {
@@ -1991,6 +2342,10 @@ pub const ProgressDlg = opaque {
 
     pub fn setDefaultEsc(self: *Self, arg: *iup.Button) void {
         interop.setHandleAttribute(self, "DEFAULTESC", .{}, arg);
+    }
+
+    pub fn setDefaultEscHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "DEFAULTESC", .{}, arg);
     }
 
     pub fn getPlacement(self: *Self) ?Placement {
@@ -2271,6 +2626,10 @@ pub const ProgressDlg = opaque {
         interop.setHandleAttribute(self, "DEFAULTENTER", .{}, arg);
     }
 
+    pub fn setDefaultEnterHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "DEFAULTENTER", .{}, arg);
+    }
+
     pub fn getModal(self: *Self) bool {
         return interop.getBoolAttribute(self, "MODAL", .{});
     }
@@ -2299,6 +2658,22 @@ pub const ProgressDlg = opaque {
         interop.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
     }
 
+    pub fn getHwnd(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "HWND", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setHwnd(self: *Self, arg: anytype) !void {
+        interop.setHandleAttribute(self, "HWND", .{}, arg);
+    }
+
+    pub fn setHwndHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HWND", .{}, arg);
+    }
+
     pub fn getBringFront(self: *Self) bool {
         return interop.getBoolAttribute(self, "BRINGFRONT", .{});
     }
@@ -2307,11 +2682,20 @@ pub const ProgressDlg = opaque {
         interop.setBoolAttribute(self, "BRINGFRONT", .{}, arg);
     }
 
-    pub fn getTrayImage(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TRAYIMAGE", .{});
+    pub fn getTrayImage(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "TRAYIMAGE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setTrayImage(self: *Self, arg: [:0]const u8) void {
+    pub fn setTrayImage(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "TRAYIMAGE", .{}, arg);
+    }
+
+    pub fn setTrayImageHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TRAYIMAGE", .{}, arg);
     }
 
@@ -2495,6 +2879,22 @@ pub const ProgressDlg = opaque {
         interop.setBoolAttribute(self, "FULLSCREEN", .{}, arg);
     }
 
+    pub fn getNativeParent(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "NATIVEPARENT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setNativeParent(self: *Self, arg: anytype) !void {
+        interop.setHandleAttribute(self, "NATIVEPARENT", .{}, arg);
+    }
+
+    pub fn setNativeParentHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NATIVEPARENT", .{}, arg);
+    }
+
     pub fn getMaximizedIalog(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "MAXIMIZEDIALOG", .{});
     }
@@ -2503,11 +2903,20 @@ pub const ProgressDlg = opaque {
         interop.setStrAttribute(self, "MAXIMIZEDIALOG", .{}, arg);
     }
 
-    pub fn getDragCursor(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAGCURSOR", .{});
+    pub fn getDragCursor(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
     }
 
-    pub fn setDragCursor(self: *Self, arg: [:0]const u8) void {
+    pub fn setDragCursor(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
+    }
+
+    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
 
@@ -2525,6 +2934,91 @@ pub const ProgressDlg = opaque {
 
     pub fn simulateModal(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "SIMULATEMODAL", .{}, arg);
+    }
+
+    /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn getTabImage(self: *Self, index: i32) ?iup.Element {
+        if (interop.getHandleAttribute(self, "TABIMAGE", .{index})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// In Motif, the image is shown only if TABTITLEn is NULL.
+    /// In Windows and Motif set the BGCOLOR attribute before setting the image.
+    /// When set after map will update the TABIMAGE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn setTabImage(self: *Self, index: i32, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "TABIMAGE", .{index}, arg);
+    }
+
+    pub fn setTabImageHandleName(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
+    }
+
+    /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
+        return interop.getStrAttribute(self, "TABTITLE", .{index});
+    }
+
+    /// 
+    /// TABTITLEn (non inheritable): Contains the text to be shown in the
+    /// respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// The "&" character can be used to define a mnemonic, the next character will
+    /// be used as key.
+    /// Use "&&" to show the "&" character instead on defining a mnemonic.
+    /// The button can be activated from any control in the dialog using the
+    /// "Alt+key" combination.
+    /// (mnemonic support since 3.3).
+    /// When set after map will update the TABTITLE attribute on the respective
+    /// child (since 3.10).
+    /// (since 3.0).
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    pub fn setTabTitle(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
     pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
@@ -3123,18 +3617,6 @@ test "ProgressDlg CustomFrameDraw" {
     try std.testing.expect(ret == true);
 }
 
-test "ProgressDlg Cursor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressDlg.init().setCursor("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getCursor();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "ProgressDlg MenuBox" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3265,18 +3747,6 @@ test "ProgressDlg Tray" {
     var ret = item.getTray();
 
     try std.testing.expect(ret == true);
-}
-
-test "ProgressDlg DragCursorCopy" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressDlg.init().setDragCursorCopy("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragCursorCopy();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "ProgressDlg TaskbarProgress" {
@@ -3747,18 +4217,6 @@ test "ProgressDlg BringFront" {
     try std.testing.expect(ret == true);
 }
 
-test "ProgressDlg TrayImage" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressDlg.init().setTrayImage("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTrayImage();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "ProgressDlg Active" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3971,18 +4429,6 @@ test "ProgressDlg MaximizedIalog" {
     defer item.deinit();
 
     var ret = item.getMaximizedIalog();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "ProgressDlg DragCursor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressDlg.init().setDragCursor("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragCursor();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
