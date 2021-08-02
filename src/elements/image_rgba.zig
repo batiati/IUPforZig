@@ -246,6 +246,10 @@ pub const ImageRgba = opaque {
         interop.setHandle(self, arg);
     }
 
+    pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
+        return interop.fromHandleName(Self, handle_name);
+    }
+
     ///
     /// Creates an image to be shown on a label, button, toggle, or as a cursor.
     /// width: Image width in pixels.

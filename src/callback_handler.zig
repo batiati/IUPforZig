@@ -28,20 +28,42 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
             }
         }
 
+        pub fn setGlobalCallback(callback: ?TCallback) void {
+            if (callback) |ptr| {
+                var nativeCallback = getNativeCallback(TCallback);
+                interop.setNativeCallback({}, ACTION, nativeCallback);
+                interop.setCallbackStoreAttribute(TCallback, {}, STORE, ptr);
+            } else {
+                interop.setNativeCallback({}, ACTION, null);
+                interop.setCallbackStoreAttribute(TCallback, {}, STORE, null);
+            }
+        }
+
         ///
         /// Invoke the attached function
         /// args must be a tuple matching the TCallbackFn signature
         fn invoke(handle: ?*Handle, args: anytype) c_int {
-            var validHandle = handle orelse @panic("Invalid handle from callback");
+            if (T == void) {
+                if (getGlobalCallback()) |callback| {
+                    @call(.{}, callback, args) catch |err| switch (err) {
+                        iup.CallbackResult.Ignore => return interop.consts.IUP_IGNORE,
+                        iup.CallbackResult.Continue => return interop.consts.IUP_CONTINUE,
+                        iup.CallbackResult.Close => return interop.consts.IUP_CLOSE,
+                        else => return iup.MainLoop.onError(null, err),
+                    };
+                }
+            } else {
+                var validHandle = handle orelse @panic("Invalid handle from callback");
 
-            if (getCallback(validHandle)) |callback| {
-                var element = @ptrCast(*T, validHandle);
-                @call(.{}, callback, .{element} ++ args) catch |err| switch (err) {
-                    iup.CallbackResult.Ignore => return interop.consts.IUP_IGNORE,
-                    iup.CallbackResult.Continue => return interop.consts.IUP_CONTINUE,
-                    iup.CallbackResult.Close => return interop.consts.IUP_CLOSE,
-                    else => return iup.MainLoop.onError(Element.fromRef(element), err),
-                };
+                if (getCallback(validHandle)) |callback| {
+                    var element = @ptrCast(*T, validHandle);
+                    @call(.{}, callback, .{element} ++ args) catch |err| switch (err) {
+                        iup.CallbackResult.Ignore => return interop.consts.IUP_IGNORE,
+                        iup.CallbackResult.Continue => return interop.consts.IUP_CONTINUE,
+                        iup.CallbackResult.Close => return interop.consts.IUP_CLOSE,
+                        else => return iup.MainLoop.onError(Element.fromRef(element), err),
+                    };
+                }
             }
 
             return interop.consts.IUP_DEFAULT;
@@ -50,6 +72,11 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
         /// Gets a zig function related on the IUP's handle
         fn getCallback(handle: *Handle) ?TCallback {
             return interop.getCallbackStoreAttribute(TCallback, handle, STORE);
+        }
+
+        /// Gets a zig function related on the IUP's global handle
+        fn getGlobalCallback() ?TCallback {
+            return interop.getCallbackStoreAttribute(TCallback, {}, STORE);
         }
 
         /// Gets a native function with the propper signature
@@ -68,7 +95,9 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
                 // TODO: Add all supported callbacks
                 // See iupcbs.h for more details
 
-                if (args.len == 1) {
+                if (args.len == 0) {
+                    break :blk Self.nativeCallbackFn;
+                } else if (args.len == 1) {
                     break :blk Self.nativeCallbackIFn;
                 } else if (args.len == 2 and args[1] == i32) {
                     break :blk Self.nativeCallbackIFni;
@@ -99,6 +128,10 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
 
         // TODO: Add all supported callbacks
         // See iupcbs.h for more details
+
+        fn nativeCallbackFn() callconv(.C) c_int {
+            return invoke(null, .{});
+        }
 
         fn nativeCallbackIFn(handle: ?*Handle) callconv(.C) c_int {
             return invoke(handle, .{});

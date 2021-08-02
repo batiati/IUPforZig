@@ -880,6 +880,12 @@ pub const FontDlg = opaque {
             return self.*;
         }
 
+        pub fn setShowColor(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "SHOWCOLOR", .{}, arg);
+            return self.*;
+        }
+
         pub fn setControlId(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
@@ -1636,6 +1642,10 @@ pub const FontDlg = opaque {
 
     pub fn setHandle(self: *Self, arg: [:0]const u8) void {
         interop.setHandle(self, arg);
+    }
+
+    pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
+        return interop.fromHandleName(Self, handle_name);
     }
 
     ///
@@ -2448,6 +2458,14 @@ pub const FontDlg = opaque {
 
     pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
+    }
+
+    pub fn getShowColor(self: *Self) bool {
+        return interop.getBoolAttribute(self, "SHOWCOLOR", .{});
+    }
+
+    pub fn setShowColor(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "SHOWCOLOR", .{}, arg);
     }
 
     pub fn getControlId(self: *Self) i32 {
@@ -3984,6 +4002,18 @@ test "FontDlg TipFgColor" {
     var ret = item.getTipFgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "FontDlg ShowColor" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FontDlg.init().setShowColor(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getShowColor();
+
+    try std.testing.expect(ret == true);
 }
 
 test "FontDlg ControlId" {

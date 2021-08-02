@@ -378,9 +378,9 @@ pub const ProgressBar = opaque {
         /// 
         /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
         /// controlling the current position.
-        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setValue(self: *Initializer, arg: f64) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
+            interop.setDoubleAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
 
@@ -426,6 +426,17 @@ pub const ProgressBar = opaque {
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// DASHED (creation only in Windows) [Windows and GTK only]: Changes the style
+        /// of the progress bar for a dashed pattern.
+        /// Default is "NO".
+        /// In Windows it is not supported since Windows Vista when using Visual Styles.
+        pub fn setDashed(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DASHED", .{}, arg);
             return self.*;
         }
 
@@ -572,6 +583,10 @@ pub const ProgressBar = opaque {
 
     pub fn setHandle(self: *Self, arg: [:0]const u8) void {
         interop.setHandle(self, arg);
+    }
+
+    pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
+        return interop.fromHandleName(Self, handle_name);
     }
 
     ///
@@ -981,15 +996,15 @@ pub const ProgressBar = opaque {
     /// 
     /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
     /// controlling the current position.
-    pub fn getValue(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "VALUE", .{});
+    pub fn getValue(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "VALUE", .{});
     }
 
     /// 
     /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
     /// controlling the current position.
-    pub fn setValue(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "VALUE", .{}, arg);
+    pub fn setValue(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "VALUE", .{}, arg);
     }
 
     /// 
@@ -1534,12 +1549,12 @@ test "ProgressBar Value" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.ProgressBar.init().setValue("Hello").unwrap());
+    var item = try (iup.ProgressBar.init().setValue(3.14).unwrap());
     defer item.deinit();
 
     var ret = item.getValue();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == @as(f64, 3.14));
 }
 
 test "ProgressBar Active" {

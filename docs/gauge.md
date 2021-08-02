@@ -8,17 +8,20 @@
 
 A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
 
-## Examples
+## Gauge example
 
-Those examples were directly ported from original C examples, with no feature changes.
+Creates a dialog with a `Gauge` control
 
-https://webserver2.tecgraf.puc-rio.br/iup/examples
+Source code: [gauge_example.zig](../src/gauge_example.zig).
 
-- [Simple notepad (in progress)](simple_notepad.md)
-- [Tabs](tabs.md)
-- [Button](button.md)
-- [Image](image.md)
-- [List](list.md)
-- [Tree](tree.md)
-- [MDI](mdi.md)
-- [Gauge](gauge.md)
+> Type `zig build gauge` to run this example.
+
+Converted from original example in C
+https://webserver2.tecgraf.puc-rio.br/iup/examples/C/gauge.c
+
+## Screenshots
+
+Windows Classic
+
+![MDI Windows](GaugeWindows.gif)
+

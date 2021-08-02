@@ -16,6 +16,7 @@ A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [
 - [List](docs/list.md)
 - [Tree](docs/tree.md)
 - [MDI](docs/mdi.md)
+- [Gauge](docs/gauge.md)
 - [Simple notepad (in progress)](docs/simple_notepad.md)
 
 ![Simple Notepad Windows](docs/SimpleNotepadWindows.gif)

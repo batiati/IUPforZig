@@ -43,15 +43,26 @@ pub const consts = struct {
 };
 
 pub inline fn getHandle(handle: anytype) *Handle {
-    if (@TypeOf(handle) == iup.Element) {
+    const HandleType = @TypeOf(handle);
+    const typeInfo = @typeInfo(HandleType);
+
+    if (HandleType == iup.Element) {
         return handle.getHandle();
-    } else {
+    } else if (typeInfo == .Pointer and @typeInfo(typeInfo.Pointer.child) == .Opaque) {
         return @ptrCast(*Handle, handle);
+    } else {
+        @compileError("Invalid handle type " ++ @typeName(@TypeOf(handle)));
     }
 }
 
 pub inline fn fromHandle(comptime T: type, handle: *Handle) *T {
     return @ptrCast(*T, handle);
+}
+
+pub inline fn fromHandleName(comptime T: type, handle_name: [:0]const u8) ?*T {
+    var handle = c.IupGetHandle(toCStr(handle_name));
+    if (handle == null) return null;
+    return fromHandle(T, handle.?);
 }
 
 pub inline fn toCStr(value: ?[:0]const u8) [*c]const u8 {
@@ -145,12 +156,15 @@ pub inline fn setStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tupl
 pub inline fn clearAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) void {
     validateIds(ids_tuple);
 
+    // Global callbacks have null handler
+    const handlePtr: ?*Handle = if (@TypeOf(handle) == void) null else getHandle(handle);
+
     if (ids_tuple.len == 0) {
-        c.IupSetAttribute(getHandle(handle), getAttribute(attribute), null);
+        c.IupSetAttribute(handlePtr, getAttribute(attribute), null);
     } else if (ids_tuple.len == 1) {
-        c.IupSetAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", null);
+        c.IupSetAttributeId(handlePtr, getAttribute(attribute), ids_tuple.@"0", null);
     } else {
-        c.IupSetAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", null);
+        c.IupSetAttributeId2(handlePtr, getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", null);
     }
 }
 
@@ -363,21 +377,31 @@ pub inline fn setRgb(handle: anytype, attribute: [:0]const u8, ids_tuple: anytyp
 }
 
 pub inline fn setNativeCallback(handle: anytype, attribute: [:0]const u8, callback: NativeCallbackFn) void {
-    _ = c.IupSetCallback(getHandle(handle), attribute, callback);
+    if (@TypeOf(handle) == void) {
+        // Global callback
+        _ = c.IupSetFunction(attribute, callback);
+    } else {
+        _ = c.IupSetCallback(getHandle(handle), attribute, callback);
+    }
 }
 
 pub inline fn setCallbackStoreAttribute(comptime TCallback: type, handle: anytype, attribute: [:0]const u8, value: ?TCallback) void {
     if (value) |ptr| {
-        c.IupSetAttribute(getHandle(handle), toCStr(attribute), @ptrCast([*c]const u8, ptr));
+        // Global callbacks have null handler
+        const handlePtr: ?*Handle = if (@TypeOf(handle) == void) null else getHandle(handle);
+        c.IupSetAttribute(handlePtr, toCStr(attribute), @ptrCast([*c]const u8, ptr));
     } else {
         clearAttribute(handle, attribute, .{});
     }
 }
 
 pub inline fn getCallbackStoreAttribute(comptime TCallback: type, handle: anytype, attribute: [:0]const u8) ?TCallback {
-    var ret = c.IupGetAttribute(getHandle(handle), toCStr(attribute));
-    if (ret == null) return null;
 
+    // Global callbacks have null handler
+    const handlePtr: ?*Handle = if (@TypeOf(handle) == void) null else getHandle(handle);
+
+    var ret = c.IupGetAttribute(handlePtr, toCStr(attribute));
+    if (ret == null) return null;
     return @ptrCast(TCallback, ret);
 }
 

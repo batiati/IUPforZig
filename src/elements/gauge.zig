@@ -977,9 +977,9 @@ pub const Gauge = opaque {
         /// If the gauge is dashed the text is never shown.
         /// Possible values: "YES" or "NO".
         /// Default: "YES".
-        pub fn setShowText(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setShowText(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "SHOWTEXT", .{}, arg);
+            interop.setBoolAttribute(self.ref, "SHOWTEXT", .{}, arg);
             return self.*;
         }
 
@@ -1037,9 +1037,9 @@ pub const Gauge = opaque {
         /// 
         /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
         /// controlling the current position.
-        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setValue(self: *Initializer, arg: f64) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
+            interop.setDoubleAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
 
@@ -1113,6 +1113,15 @@ pub const Gauge = opaque {
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// DASHED: Changes the style of the gauge for a dashed pattern.
+        /// Default is "NO".
+        pub fn setDashed(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DASHED", .{}, arg);
             return self.*;
         }
 
@@ -1737,6 +1746,10 @@ pub const Gauge = opaque {
 
     pub fn setHandle(self: *Self, arg: [:0]const u8) void {
         interop.setHandle(self, arg);
+    }
+
+    pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
+        return interop.fromHandleName(Self, handle_name);
     }
 
     ///
@@ -2493,8 +2506,8 @@ pub const Gauge = opaque {
     /// If the gauge is dashed the text is never shown.
     /// Possible values: "YES" or "NO".
     /// Default: "YES".
-    pub fn getShowText(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "SHOWTEXT", .{});
+    pub fn getShowText(self: *Self) bool {
+        return interop.getBoolAttribute(self, "SHOWTEXT", .{});
     }
 
     /// 
@@ -2502,8 +2515,8 @@ pub const Gauge = opaque {
     /// If the gauge is dashed the text is never shown.
     /// Possible values: "YES" or "NO".
     /// Default: "YES".
-    pub fn setShowText(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "SHOWTEXT", .{}, arg);
+    pub fn setShowText(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "SHOWTEXT", .{}, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
@@ -2586,15 +2599,15 @@ pub const Gauge = opaque {
     /// 
     /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
     /// controlling the current position.
-    pub fn getValue(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "VALUE", .{});
+    pub fn getValue(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "VALUE", .{});
     }
 
     /// 
     /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
     /// controlling the current position.
-    pub fn setValue(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "VALUE", .{}, arg);
+    pub fn setValue(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "VALUE", .{}, arg);
     }
 
     /// 
@@ -2703,6 +2716,20 @@ pub const Gauge = opaque {
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
+    }
+
+    /// 
+    /// DASHED: Changes the style of the gauge for a dashed pattern.
+    /// Default is "NO".
+    pub fn getDashed(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DASHED", .{});
+    }
+
+    /// 
+    /// DASHED: Changes the style of the gauge for a dashed pattern.
+    /// Default is "NO".
+    pub fn setDashed(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DASHED", .{}, arg);
     }
 
     pub fn getBorder(self: *Self) bool {
@@ -4053,12 +4080,12 @@ test "Gauge ShowText" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Gauge.init().setShowText("Hello").unwrap());
+    var item = try (iup.Gauge.init().setShowText(true).unwrap());
     defer item.deinit();
 
     var ret = item.getShowText();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == true);
 }
 
 test "Gauge Name" {
@@ -4125,12 +4152,12 @@ test "Gauge Value" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Gauge.init().setValue("Hello").unwrap());
+    var item = try (iup.Gauge.init().setValue(3.14).unwrap());
     defer item.deinit();
 
     var ret = item.getValue();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == @as(f64, 3.14));
 }
 
 test "Gauge CPadding" {
@@ -4239,6 +4266,18 @@ test "Gauge NTheme" {
     var ret = item.getNTheme();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "Gauge Dashed" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Gauge.init().setDashed(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDashed();
+
+    try std.testing.expect(ret == true);
 }
 
 test "Gauge DragTypes" {

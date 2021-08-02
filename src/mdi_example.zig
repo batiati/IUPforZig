@@ -1,6 +1,3 @@
-/// Creates a tree with some branches and leaves. 
-/// Two callbacks are registered: one deletes marked nodes when the Del key is pressed, 
-/// and the other, called when the right mouse button is pressed, opens a menu with options.
 /// From original example in C
 /// https://webserver2.tecgraf.puc-rio.br/iup/examples/C/mdi.c
 const std = @import("std");
@@ -194,10 +191,10 @@ fn createDialog(parent: *Dialog, id: i32) !*Dialog {
                         .setSize(80, 60)
                         .setExpand(.Yes)
                         .setValue(
-                        \\IupMultiline Text
-                        \\Second Line
-                        \\Third Line
-                    ),
+                            \\IupMultiline Text
+                            \\Second Line
+                            \\Third Line
+                        ),
                 },
             ),
         },

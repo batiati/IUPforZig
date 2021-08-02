@@ -1775,6 +1775,10 @@ pub const List = opaque {
         interop.setHandle(self, arg);
     }
 
+    pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
+        return interop.fromHandleName(Self, handle_name);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.

@@ -2,9 +2,17 @@ const std = @import("std");
 const interop = @import("interop.zig");
 const iup = @import("iup.zig");
 
+const CallbackHandler = @import("callback_handler.zig").CallbackHandler;
+
 ///
 /// Global handler for unhandled errors thrown inside callback functions
-pub const ErrorHandlerFn = fn (Element, anyerror) anyerror!void;
+pub const ErrorHandlerFn = fn (?Element, anyerror) anyerror!void;
+
+///
+/// Global handler for IDLE
+/// Predefined IUP action, generated when there are no events or messages to be processed.
+/// Often used to perform background operations.
+pub const IdleHandlerFn = fn () anyerror!void;
 
 const MainLoop = @This();
 const Element = iup.Element;
@@ -32,8 +40,17 @@ pub fn exitLoop() void {
 }
 
 ///
+/// Global handler for IDLE
+/// Predefined IUP action, generated when there are no events or messages to be processed.
+/// Often used to perform background operations.
+pub fn setIdleCallback(value: ?IdleHandlerFn) void {
+    const Handler = CallbackHandler(void, IdleHandlerFn, "IDLE_ACTION");
+    Handler.setGlobalCallback(value);
+}
+
+///
 /// Called by the message loop
-pub fn onError(element: Element, err: anyerror) i32 {
+pub fn onError(element: ?Element, err: anyerror) i32 {
     if (MainLoop.error_handler) |func| {
         if (func(element, err)) {
             return interop.consts.IUP_DEFAULT;
