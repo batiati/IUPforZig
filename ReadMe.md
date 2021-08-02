@@ -10,14 +10,14 @@ A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [
 
 ## Examples
 
-- [Tabs](docs/tabs.md)
+- [Simple notepad (in progress)](docs/simple_notepad.md)
 - [Button](docs/button.md)
 - [Image](docs/image.md)
 - [List](docs/list.md)
 - [Tree](docs/tree.md)
 - [MDI](docs/mdi.md)
 - [Gauge](docs/gauge.md)
-- [Simple notepad (in progress)](docs/simple_notepad.md)
+- [Tabs](docs/tabs.md)
 
 ![Simple Notepad Windows](docs/SimpleNotepadWindows.gif)
 
