@@ -35,8 +35,6 @@ pub const List = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     /// 
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
@@ -93,8 +91,6 @@ pub const List = opaque {
     /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
     /// IupToggle
     pub const OnActionFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: i32) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
@@ -428,12 +424,6 @@ pub const List = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -462,6 +452,12 @@ pub const List = opaque {
         pub fn setMaskDecimalSymbol(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "MASKDECIMALSYMBOL", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
 
@@ -556,18 +552,6 @@ pub const List = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         /// 
         /// SHOWIMAGE (creation only) [Windows and GTK Only]: enables the use of an
         /// image for each item.
@@ -600,22 +584,6 @@ pub const List = opaque {
             } else {
                 interop.clearAttribute(self.ref, "MASKREAL", .{});
             }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
 
@@ -690,6 +658,12 @@ pub const List = opaque {
             return self.*;
         }
 
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
+            return self.*;
+        }
+
         /// 
         /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
         /// support drag and drop of items between lists (IupList or IupFlatList), in
@@ -722,7 +696,7 @@ pub const List = opaque {
         /// near to make it visible.
         /// Valid only when DROPDOWN=NO.
         /// (since 3.0)
-        pub fn topItem(self: *Initializer, arg: i32) Initializer {
+        pub fn setTopItem(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TOPITEM", .{}, arg);
             return self.*;
@@ -785,14 +759,6 @@ pub const List = opaque {
             return self.*;
         }
 
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
-            return self.*;
-        }
-
         /// 
         /// SHOWDRAGDROP (creation only) (non inheritable): enables the internal drag
         /// and drop of items in the same list, and enables the DRAGDROP_CB callback.
@@ -826,12 +792,6 @@ pub const List = opaque {
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -933,12 +893,6 @@ pub const List = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
         /// 
         /// CSPACING: same as SPACING but using the units of the vertical part of the
         /// SIZE attribute.
@@ -999,12 +953,6 @@ pub const List = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
-            return self.*;
-        }
-
         /// 
         /// MULTIPLE (creation only): Allows selecting several items simultaneously
         /// (multiple list).
@@ -1054,12 +1002,6 @@ pub const List = opaque {
             return self.*;
         }
 
-        pub fn setFilter(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FILTER", .{}, arg);
-            return self.*;
-        }
-
         pub fn setSelectedText(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "SELECTEDTEXT", .{}, arg);
@@ -1086,12 +1028,6 @@ pub const List = opaque {
         pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setCueBanner(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "CUEBANNER", .{}, arg);
             return self.*;
         }
 
@@ -1182,15 +1118,9 @@ pub const List = opaque {
         /// Set to NO to add many items to the list without updating the display.
         /// Default: "YES".
         /// (since 3.3)
-        pub fn autoRedraw(self: *Initializer, arg: bool) Initializer {
+        pub fn setAutoRedraw(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "AUTOREDRAW", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
             return self.*;
         }
 
@@ -1237,22 +1167,6 @@ pub const List = opaque {
         pub fn append(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "APPEND", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
@@ -1320,12 +1234,6 @@ pub const List = opaque {
         pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
@@ -1406,12 +1314,6 @@ pub const List = opaque {
         /// IupToggle
         pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1877,14 +1779,6 @@ pub const List = opaque {
         interop.setRgb(self, "FGCOLOR", .{}, rgb);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -1928,6 +1822,14 @@ pub const List = opaque {
 
     pub fn setMaskDecimalSymbol(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "MASKDECIMALSYMBOL", .{}, arg);
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
     pub fn getMaxSize(self: *Self) Size {
@@ -2027,22 +1929,6 @@ pub const List = opaque {
         }
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -2082,23 +1968,6 @@ pub const List = opaque {
         } else {
             interop.clearAttribute(self, "MASKREAL", .{});
         }
-    }
-
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
 
     pub fn getExpand(self: *Self) ?Expand {
@@ -2220,6 +2089,14 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "DROPEXPAND", .{}, arg);
     }
 
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
     /// 
     /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
     /// support drag and drop of items between lists (IupList or IupFlatList), in
@@ -2261,7 +2138,16 @@ pub const List = opaque {
     /// near to make it visible.
     /// Valid only when DROPDOWN=NO.
     /// (since 3.0)
-    pub fn topItem(self: *Self, arg: i32) void {
+    pub fn getTopItem(self: *Self) i32 {
+        return interop.getIntAttribute(self, "TOPITEM", .{});
+    }
+
+    /// 
+    /// TOPITEM (write-only): position the given item at the top of the list or
+    /// near to make it visible.
+    /// Valid only when DROPDOWN=NO.
+    /// (since 3.0)
+    pub fn setTopItem(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "TOPITEM", .{}, arg);
     }
 
@@ -2359,17 +2245,6 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "SCROLLBAR", .{}, arg);
     }
 
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
-    }
-
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -2406,14 +2281,6 @@ pub const List = opaque {
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getDropTarget(self: *Self) bool {
@@ -2532,14 +2399,6 @@ pub const List = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     /// 
     /// CSPACING: same as SPACING but using the units of the vertical part of the
     /// SIZE attribute.
@@ -2623,14 +2482,6 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "MASKCASEI", .{}, arg);
     }
 
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
-    }
-
     pub fn getSelectionPos(self: *Self) iup.Range {
         var str = interop.getStrAttribute(self, "SELECTIONPOS", .{});
         return iup.Range.parse(str, ',');
@@ -2698,14 +2549,6 @@ pub const List = opaque {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
 
-    pub fn getFilter(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FILTER", .{});
-    }
-
-    pub fn setFilter(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FILTER", .{}, arg);
-    }
-
     pub fn getSelectedText(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "SELECTEDTEXT", .{});
     }
@@ -2745,14 +2588,6 @@ pub const List = opaque {
 
     pub fn setTipVisible(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
-    }
-
-    pub fn getCueBanner(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "CUEBANNER", .{});
-    }
-
-    pub fn setCueBanner(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "CUEBANNER", .{}, arg);
     }
 
     /// 
@@ -2878,16 +2713,18 @@ pub const List = opaque {
     /// Set to NO to add many items to the list without updating the display.
     /// Default: "YES".
     /// (since 3.3)
-    pub fn autoRedraw(self: *Self, arg: bool) void {
+    pub fn getAutoRedraw(self: *Self) bool {
+        return interop.getBoolAttribute(self, "AUTOREDRAW", .{});
+    }
+
+    /// 
+    /// AUTOREDRAW [Windows] (non inheritable): automatically redraws the list when
+    /// something has change.
+    /// Set to NO to add many items to the list without updating the display.
+    /// Default: "YES".
+    /// (since 3.3)
+    pub fn setAutoRedraw(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "AUTOREDRAW", .{}, arg);
-    }
-
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
     pub fn getClipboard(self: *Self) ?Clipboard {
@@ -2930,23 +2767,6 @@ pub const List = opaque {
     /// EDITBOX=YES and effective only for the edit box inside the list.
     pub fn append(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "APPEND", .{}, arg);
-    }
-
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
 
     pub fn getMaskNoEmpty(self: *Self) bool {
@@ -3056,11 +2876,6 @@ pub const List = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     /// 
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
@@ -3133,11 +2948,6 @@ pub const List = opaque {
     /// IupToggle
     pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
         const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -3454,18 +3264,6 @@ test "List FgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "List TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.List.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "List HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3510,6 +3308,18 @@ test "List MaskDecimalSymbol" {
     defer item.deinit();
 
     var ret = item.getMaskDecimalSymbol();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "List TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.List.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -3718,6 +3528,18 @@ test "List DropExpand" {
     try std.testing.expect(ret == true);
 }
 
+test "List TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.List.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "List DragDropList" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3728,6 +3550,18 @@ test "List DragDropList" {
     var ret = item.getDragDropList();
 
     try std.testing.expect(ret == true);
+}
+
+test "List TopItem" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.List.init().setTopItem(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getTopItem();
+
+    try std.testing.expect(ret == 42);
 }
 
 test "List FontSize" {
@@ -3802,18 +3636,6 @@ test "List ScrollBar" {
     try std.testing.expect(ret == true);
 }
 
-test "List DragStart" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.List.init().setDragStart(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragStart();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
 test "List PropagateFocus" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3836,18 +3658,6 @@ test "List BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "List TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.List.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "List DropTarget" {
@@ -3934,18 +3744,6 @@ test "List TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "List ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.List.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "List CSpacing" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4018,18 +3816,6 @@ test "List MaskCasei" {
     try std.testing.expect(ret == true);
 }
 
-test "List TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.List.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "List SelectionPos" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4050,18 +3836,6 @@ test "List Value" {
     defer item.deinit();
 
     var ret = item.getValue();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "List Filter" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.List.init().setFilter("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getFilter();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -4112,18 +3886,6 @@ test "List TipVisible" {
     var ret = item.getTipVisible();
 
     try std.testing.expect(ret == true);
-}
-
-test "List CueBanner" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.List.init().setCueBanner("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getCueBanner();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "List ExpandWeight" {
@@ -4234,14 +3996,14 @@ test "List FontStyle" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "List Touch" {
+test "List AutoRedraw" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.List.init().setTouch(true).unwrap());
+    var item = try (iup.List.init().setAutoRedraw(true).unwrap());
     defer item.deinit();
 
-    var ret = item.getTouch();
+    var ret = item.getAutoRedraw();
 
     try std.testing.expect(ret == true);
 }

@@ -231,18 +231,6 @@ pub const Split = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         /// 
         /// When AUTOHIDE=Yes the control will set FLOATING=IGNORE and VISIBLE=NO for
         /// the child to be auto-hidden, then back to FLOATING=NO and VISIBLE=Yes when shown.
@@ -765,22 +753,6 @@ pub const Split = opaque {
 
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
-    }
-
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
     }
 
     pub fn getNaturalSize(self: *Self) Size {

@@ -6,7 +6,30 @@
 const std = @import("std");
 const iup = @import("iup.zig");
 
-usingnamespace iup;
+const MainLoop = iup.MainLoop;
+const Dialog = iup.Dialog;
+const Button = iup.Button;
+const MessageDlg = iup.MessageDlg;
+const Multiline = iup.Multiline;
+const Label = iup.Label;
+const Text = iup.Text;
+const VBox = iup.VBox;
+const HBox = iup.HBox;
+const Menu = iup.Menu;
+const SubMenu = iup.SubMenu;
+const Separator = iup.Separator;
+const Fill = iup.Fill;
+const Item = iup.Item;
+const FileDlg = iup.FileDlg;
+const Toggle = iup.Toggle;
+const List = iup.List;
+const Frame = iup.Frame;
+const Radio = iup.Radio;
+const ScreenSize = iup.ScreenSize;
+const Image = iup.Image;
+const ImageRgb = iup.ImageRgb;
+const ImageRgba = iup.ImageRgba;
+const Rgb = iup.Rgb;
 
 pub fn main() !void {
     try MainLoop.open();
@@ -104,11 +127,13 @@ fn create_dialog() !*Dialog {
 }
 
 fn list_multiple_cb(list: *List, value: [:0]const u8, index: i32, selected: i32) !void {
+    _ = list;
     const str = if (selected == 0) "deselected" else "selected";
     std.debug.print("Item {} - {s} - {} {s}\n", .{ index, value, selected, str });
 }
 
 fn dragdrop_cb(list: *List, drag_id: i32, drop_id: i32, is_shift: i32, is_control: i32) !void {
+    _ = list;
     std.debug.print("DRAGDROP_CP ({})->({}) shift={}, crtl={}\n", .{ drag_id, drop_id, is_shift, is_control });
 }
 

@@ -3,7 +3,32 @@
 const std = @import("std");
 const iup = @import("iup.zig");
 
-usingnamespace iup;
+const MainLoop = iup.MainLoop;
+const Dialog = iup.Dialog;
+const Button = iup.Button;
+const MessageDlg = iup.MessageDlg;
+const Multiline = iup.Multiline;
+const Label = iup.Label;
+const Text = iup.Text;
+const VBox = iup.VBox;
+const HBox = iup.HBox;
+const Menu = iup.Menu;
+const SubMenu = iup.SubMenu;
+const Separator = iup.Separator;
+const Fill = iup.Fill;
+const Item = iup.Item;
+const FileDlg = iup.FileDlg;
+const Toggle = iup.Toggle;
+const List = iup.List;
+const Frame = iup.Frame;
+const Radio = iup.Radio;
+const Canvas = iup.Canvas;
+const ScreenSize = iup.ScreenSize;
+const Image = iup.Image;
+const ImageRgb = iup.ImageRgb;
+const ImageRgba = iup.ImageRgba;
+const Rgb = iup.Rgb;
+const Gauge = iup.Gauge;
 
 const DEFAULT_SPEED: f64 = 0.00001;
 var speed = DEFAULT_SPEED;
@@ -83,6 +108,7 @@ fn onPause(self: *Button) anyerror!void {
 }
 
 fn onRewind(self: *Button) anyerror!void {
+    _ = self;
     if (speed < 0) {
         speed *= 2;
     } else {
@@ -91,6 +117,7 @@ fn onRewind(self: *Button) anyerror!void {
 }
 
 fn onForward(self: *Button) anyerror!void {
+    _ = self;
     if (speed > 0) {
         speed *= 2;
     } else {
@@ -99,6 +126,7 @@ fn onForward(self: *Button) anyerror!void {
 }
 
 fn onShow(self: *Button) anyerror!void {
+    _ = self;
     var gauge = Gauge.fromHandleName("gauge") orelse return;
     if (gauge.getShowText()) {
         gauge.setShowText(false);

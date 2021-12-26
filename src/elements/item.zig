@@ -110,6 +110,16 @@ pub const Item = opaque {
         On,
         Off,
     };
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
+    pub const Floating = enum {
+        Yes,
+        Ignore,
+        No,
+    };
 
     pub const Initializer = struct {
         last_error: ?anyerror = null,
@@ -205,6 +215,24 @@ pub const Item = opaque {
         }
 
         /// 
+        /// HIDEMARK [Motif and GTK Only]: If enabled the item cannot be checked, since
+        /// the check box will not be shown.
+        /// If all items in a menu enable it, then no empty space will be shown in
+        /// front of the items.
+        /// Normally the unmarked check box will not be shown, but since GTK 2.14 the
+        /// unmarked check box is always shown.
+        /// If your item will not be marked you must set HIDEMARK=YES, since this is
+        /// the most common case we changed the default value to YES for this version
+        /// of GTK, but if VALUE is defined the default goes back to NO.
+        /// Default: NO.
+        /// (since 3.0)
+        pub fn setHideMark(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HIDEMARK", .{}, arg);
+            return self.*;
+        }
+
+        /// 
         /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the check
         /// mark image when VALUE=OFF.
         /// In Windows, an item in a menu bar cannot have a check mark.
@@ -270,6 +298,12 @@ pub const Item = opaque {
         pub fn setKey(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "KEY", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
 
@@ -642,6 +676,38 @@ pub const Item = opaque {
     }
 
     /// 
+    /// HIDEMARK [Motif and GTK Only]: If enabled the item cannot be checked, since
+    /// the check box will not be shown.
+    /// If all items in a menu enable it, then no empty space will be shown in
+    /// front of the items.
+    /// Normally the unmarked check box will not be shown, but since GTK 2.14 the
+    /// unmarked check box is always shown.
+    /// If your item will not be marked you must set HIDEMARK=YES, since this is
+    /// the most common case we changed the default value to YES for this version
+    /// of GTK, but if VALUE is defined the default goes back to NO.
+    /// Default: NO.
+    /// (since 3.0)
+    pub fn getHideMark(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "HIDEMARK", .{});
+    }
+
+    /// 
+    /// HIDEMARK [Motif and GTK Only]: If enabled the item cannot be checked, since
+    /// the check box will not be shown.
+    /// If all items in a menu enable it, then no empty space will be shown in
+    /// front of the items.
+    /// Normally the unmarked check box will not be shown, but since GTK 2.14 the
+    /// unmarked check box is always shown.
+    /// If your item will not be marked you must set HIDEMARK=YES, since this is
+    /// the most common case we changed the default value to YES for this version
+    /// of GTK, but if VALUE is defined the default goes back to NO.
+    /// Default: NO.
+    /// (since 3.0)
+    pub fn setHideMark(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HIDEMARK", .{}, arg);
+    }
+
+    /// 
     /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=OFF.
     /// In Windows, an item in a menu bar cannot have a check mark.
@@ -735,6 +801,14 @@ pub const Item = opaque {
     /// Deprecated (since 3.0), use the mnemonic support directly in the TITLE attribute.
     pub fn setKey(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "KEY", .{}, arg);
+    }
+
+    pub fn getFont(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONT", .{});
+    }
+
+    pub fn setFont(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
@@ -1048,6 +1122,18 @@ test "Item Title" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "Item HideMark" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Item.init().setHideMark("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getHideMark();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "Item HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1082,6 +1168,18 @@ test "Item Key" {
     var ret = item.getKey();
 
     try std.testing.expect(ret == 42);
+}
+
+test "Item Font" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Item.init().setFont("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getFont();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Item Name" {

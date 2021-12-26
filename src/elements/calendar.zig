@@ -33,8 +33,6 @@ pub const Calendar = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     /// 
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
@@ -74,8 +72,6 @@ pub const Calendar = opaque {
     /// Returns: IUP_CLOSE will be processed.
     /// Affects All elements with user interaction.
     pub const OnHelpFn = fn (self: *Self) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
@@ -251,12 +247,6 @@ pub const Calendar = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -266,6 +256,12 @@ pub const Calendar = opaque {
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
 
@@ -314,18 +310,6 @@ pub const Calendar = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
@@ -355,6 +339,12 @@ pub const Calendar = opaque {
             return self.*;
         }
 
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
+            return self.*;
+        }
+
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
@@ -378,12 +368,6 @@ pub const Calendar = opaque {
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -419,12 +403,6 @@ pub const Calendar = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
@@ -434,12 +412,6 @@ pub const Calendar = opaque {
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -489,12 +461,6 @@ pub const Calendar = opaque {
         pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
             return self.*;
         }
 
@@ -556,12 +522,6 @@ pub const Calendar = opaque {
             return self.*;
         }
 
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
         /// 
         /// K_ANY K_ANY Action generated when a keyboard event occurs.
         /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
@@ -606,12 +566,6 @@ pub const Calendar = opaque {
         /// Affects All elements with user interaction.
         pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
             const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -870,14 +824,6 @@ pub const Calendar = opaque {
         Impl(Self).refresh(self);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -899,6 +845,14 @@ pub const Calendar = opaque {
     pub fn getToday(self: *Self) ?iup.Date {
         var str = interop.getStrAttribute(self, "TODAY", .{});
         return iup.Date.parse(str);
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
     pub fn getMaxSize(self: *Self) Size {
@@ -961,22 +915,6 @@ pub const Calendar = opaque {
         }
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -1033,6 +971,14 @@ pub const Calendar = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
     pub fn getFontSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "FONTSIZE", .{});
     }
@@ -1071,14 +1017,6 @@ pub const Calendar = opaque {
 
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
@@ -1127,14 +1065,6 @@ pub const Calendar = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     pub fn getFontFace(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONTFACE", .{});
     }
@@ -1149,14 +1079,6 @@ pub const Calendar = opaque {
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "NAME", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
     /// 
@@ -1231,14 +1153,6 @@ pub const Calendar = opaque {
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
-    }
-
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
@@ -1334,11 +1248,6 @@ pub const Calendar = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     /// 
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
@@ -1382,11 +1291,6 @@ pub const Calendar = opaque {
     /// Affects All elements with user interaction.
     pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
         const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -1522,18 +1426,6 @@ pub const Calendar = opaque {
     }
 };
 
-test "Calendar TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Calendar.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Calendar HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1556,6 +1448,18 @@ test "Calendar TipBgColor" {
     var ret = item.getTipBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "Calendar TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Calendar.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Calendar MaxSize" {
@@ -1654,6 +1558,18 @@ test "Calendar Size" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
+test "Calendar TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Calendar.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "Calendar FontSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1700,18 +1616,6 @@ test "Calendar PropagateFocus" {
     var ret = item.getPropagateFocus();
 
     try std.testing.expect(ret == true);
-}
-
-test "Calendar TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Calendar.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Calendar Floating" {
@@ -1762,18 +1666,6 @@ test "Calendar TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Calendar ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Calendar.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Calendar FontFace" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1796,18 +1688,6 @@ test "Calendar Name" {
     var ret = item.getName();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Calendar TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Calendar.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Calendar Value" {
@@ -1892,18 +1772,6 @@ test "Calendar FontStyle" {
     var ret = item.getFontStyle();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Calendar Touch" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Calendar.init().setTouch(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Calendar Font" {

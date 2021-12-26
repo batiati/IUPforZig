@@ -40,74 +40,6 @@ pub const FlatTabs = opaque {
     const Self = @This();
 
     /// 
-    /// WHEEL_CB WHEEL_CB Action generated when the mouse wheel is rotated.
-    /// If this callback is not defined the wheel will automatically scroll the
-    /// canvas in the vertical direction by some lines, the SCROLL_CB callback if
-    /// defined will be called with the IUP_SBDRAGV operation.
-    /// Callback int function(Ihandle *ih, float delta, int x, int y, char
-    /// *status); [in C] ih:wheel_cb(delta, x, y: number, status: string) -> (ret:
-    /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// delta: the amount the wheel was rotated in notches.
-    /// x, y: position in the canvas where the event has occurred, in pixels.
-    /// status: status of mouse buttons and certain keyboard keys at the moment the
-    /// event was generated.
-    /// The same macros used for BUTTON_CB can be used for this status.
-    /// Notes In Motif and GTK delta is always 1 or -1.
-    /// In Windows is some situations delta can reach the value of two.
-    /// In the future with more precise wheels this increment can be changed.
-    /// Affects IupCanvas, IupGLCanvas
-    pub const OnWheelFn = fn (self: *Self, arg0: f32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
-    /// 
-    /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
-    /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
-    /// [in Lua] ih: identifier of the element that activated the event.
-    /// Notes If the dialog is visible then it is hidden before it is destroyed.
-    /// The callback will be called right after it is hidden.
-    /// The callback will be called before all other destroy procedures.
-    /// For instance, if the element has children then it is called before the
-    /// children are destroyed.
-    /// For language binding implementations use the callback name "LDESTROY_CB" to
-    /// release memory allocated by the binding for the element.
-    /// Also the callback will be called before the language callback.
-    /// Affects All.
-    pub const OnDestroyFn = fn (self: *Self) anyerror!void;
-
-    /// 
-    /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
-    /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
-    /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// Affects All elements with user interaction, except menus.
-    /// In Windows, there are restrictions when using this callback.
-    /// From MSDN on WM_KILLFOCUS: "While processing this message, do not make any
-    /// function calls that display or activate a window.
-    /// This causes the thread to yield control and can cause the application to
-    /// stop responding to messages.
-    /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-    pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
-
-    /// 
-    /// MOTION_CB MOTION_CB Action generated when the mouse moves.
-    /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
-    /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
-    /// identifier of the element that activated the event.
-    /// x, y: position in the canvas where the event has occurred, in pixels.
-    /// status: status of mouse buttons and certain keyboard keys at the moment the
-    /// event was generated.
-    /// The same macros used for BUTTON_CB can be used for this status.
-    /// Notes Between press and release all mouse events are redirected only to
-    /// this control, even if the cursor moves outside the element.
-    /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
-    /// called with coordinates outside the element rectangle.
-    /// Affects IupCanvas, IupGLCanvas
-    pub const OnMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
-
-    pub const OnDragEndFn = fn (self: *Self, arg0: i32) anyerror!void;
-
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
-
-    /// 
     /// SCROLL_CB SCROLL_CB Called when some manipulation is made to the scrollbar.
     /// The canvas is automatically redrawn only if this callback is NOT defined.
     /// (GTK 2.8) Also the POSX and POSY values will not be correctly updated for
@@ -133,11 +65,7 @@ pub const FlatTabs = opaque {
     /// Affects IupCanvas, IupGLCanvas, SCROLLBAR
     pub const OnScrollFn = fn (self: *Self, arg0: i32, arg1: f32, arg2: f32) anyerror!void;
 
-    /// 
-    /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
-    /// (since 3.22) int function(Ihandle* ih, int button, int pressed); [in C]
-    /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua]
-    pub const OnExtraButtonFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
+    pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
     /// WOM_CB WOM_CB Action generated when an audio device receives an event.
@@ -155,9 +83,11 @@ pub const FlatTabs = opaque {
     /// Affects IupDialog, IupCanvas, IupGLCanvas
     pub const OnWomFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    pub const OnFlatKillFocusFn = fn (self: *Self) anyerror!void;
-
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    /// 
+    /// TABCHANGE_CB: Callback called when the user changes the current tab.
+    /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
+    /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
+    pub const OnTabChangeFn = fn (self: *Self, arg0: iup.Element, arg1: iup.Element) anyerror!void;
 
     /// 
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
@@ -191,24 +121,112 @@ pub const FlatTabs = opaque {
     pub const OnKAnyFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
-    /// TABCHANGE_CB: Callback called when the user changes the current tab.
-    /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
-    /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
-    pub const OnTabChangeFn = fn (self: *Self, arg0: iup.Element, arg1: iup.Element) anyerror!void;
-
-    /// 
-    /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
-    /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
+    /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
+    /// In Motif is also activated by the Help button in some workstations keyboard.
+    /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
-    /// Affects All that have a native representation.
-    pub const OnUnmapFn = fn (self: *Self) anyerror!void;
+    /// Returns: IUP_CLOSE will be processed.
+    /// Affects All elements with user interaction.
+    pub const OnHelpFn = fn (self: *Self) anyerror!void;
+
+    pub const OnDropMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
+
+    pub const OnFlatLeaveWindowFn = fn (self: *Self) anyerror!void;
 
     /// 
-    /// TABCLOSE_CB: Callback called when the user clicks on the close button.
-    /// Called only when SHOWCLOSE=Yes.
-    /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+    /// KEYPRESS_CB KEYPRESS_CB Action generated when a key is pressed or released.
+    /// If the key is pressed and held several calls will occur.
+    /// It is called after the callback K_ANY is processed.
+    /// Callback int function(Ihandle *ih, int c, int press); [in C]
+    /// ih:keypress_cb(c, press: number) -> (ret: number) [in Lua] ih: identifier
+    /// of the element that activated the event.
+    /// c: identifier of typed key.
+    /// Please refer to the Keyboard Codes table for a list of possible values.
+    /// press: 1 is the user pressed the key or 0 otherwise.
+    /// Returns: If IUP_IGNORE is returned the key is ignored by the system.
+    /// IUP_CLOSE will be processed.
+    /// Affects IupCanvas
+    pub const OnKeyPressFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
+
+    pub const OnDragEndFn = fn (self: *Self, arg0: i32) anyerror!void;
+
+    pub const OnFlatKillFocusFn = fn (self: *Self) anyerror!void;
+
+    pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
+
+    /// 
+    /// ACTION ACTION Action generated when the element is activated.
+    /// Affects each element differently.
+    /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
+    /// Lua] ih: identifier of the element that activated the event.
+    /// In some elements, this callback may receive more parameters, apart from ih.
+    /// Please refer to each element's documentation.
+    /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
+    /// IupToggle
+    pub const OnActionFn = fn (self: *Self, arg0: f32, arg1: f32) anyerror!void;
+
+    /// 
+    /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
+    /// (since 3.22) int function(Ihandle* ih, int button, int pressed); [in C]
+    /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua]
+    pub const OnExtraButtonFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
+
+    /// 
+    /// MOTION_CB MOTION_CB Action generated when the mouse moves.
+    /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
+    /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
+    /// identifier of the element that activated the event.
+    /// x, y: position in the canvas where the event has occurred, in pixels.
+    /// status: status of mouse buttons and certain keyboard keys at the moment the
+    /// event was generated.
+    /// The same macros used for BUTTON_CB can be used for this status.
+    /// Notes Between press and release all mouse events are redirected only to
+    /// this control, even if the cursor moves outside the element.
+    /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
+    /// called with coordinates outside the element rectangle.
+    /// Affects IupCanvas, IupGLCanvas
+    pub const OnMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
+
+    pub const OnFlatGetFocusFn = fn (self: *Self) anyerror!void;
+
+    /// 
+    /// WHEEL_CB WHEEL_CB Action generated when the mouse wheel is rotated.
+    /// If this callback is not defined the wheel will automatically scroll the
+    /// canvas in the vertical direction by some lines, the SCROLL_CB callback if
+    /// defined will be called with the IUP_SBDRAGV operation.
+    /// Callback int function(Ihandle *ih, float delta, int x, int y, char
+    /// *status); [in C] ih:wheel_cb(delta, x, y: number, status: string) -> (ret:
+    /// number) [in Lua] ih: identifier of the element that activated the event.
+    /// delta: the amount the wheel was rotated in notches.
+    /// x, y: position in the canvas where the event has occurred, in pixels.
+    /// status: status of mouse buttons and certain keyboard keys at the moment the
+    /// event was generated.
+    /// The same macros used for BUTTON_CB can be used for this status.
+    /// Notes In Motif and GTK delta is always 1 or -1.
+    /// In Windows is some situations delta can reach the value of two.
+    /// In the future with more precise wheels this increment can be changed.
+    /// Affects IupCanvas, IupGLCanvas
+    pub const OnWheelFn = fn (self: *Self, arg0: f32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
+
+    /// 
+    /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
+    /// right mouse button.
+    /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
     /// (ret: number) [in Lua]
-    pub const OnTabCloseFn = fn (self: *Self, arg0: i32) anyerror!void;
+    pub const OnRightClickFn = fn (self: *Self, arg0: i32) anyerror!void;
+
+    /// 
+    /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
+    /// updated in IupMap.
+    /// When the element is a dialog, it is called after the layout is updated.
+    /// For all other elements is called before the layout is updated, so the
+    /// element current size will still be 0x0 during MAP_CB (since 3.14).
+    /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
+    /// Lua] ih: identifier of the element that activated the event.
+    /// Affects All that have a native representation.
+    pub const OnMapFn = fn (self: *Self) anyerror!void;
+
+    pub const OnFlatButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
 
     /// 
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
@@ -227,111 +245,39 @@ pub const FlatTabs = opaque {
     pub const OnEnterWindowFn = fn (self: *Self) anyerror!void;
 
     /// 
-    /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
-    /// native element.
-    /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
+    /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
+    /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
+    /// [in Lua] ih: identifier of the element that activated the event.
+    /// Notes If the dialog is visible then it is hidden before it is destroyed.
+    /// The callback will be called right after it is hidden.
+    /// The callback will be called before all other destroy procedures.
+    /// For instance, if the element has children then it is called before the
+    /// children are destroyed.
+    /// For language binding implementations use the callback name "LDESTROY_CB" to
+    /// release memory allocated by the binding for the element.
+    /// Also the callback will be called before the language callback.
+    /// Affects All.
+    pub const OnDestroyFn = fn (self: *Self) anyerror!void;
+
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+
+    /// 
+    /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
+    /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
+    /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
     /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// Notes When the cursor is moved from one element to another, the call order
-    /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
-    /// control followed by the ENTERWINDOW_CB callback of the new control.
-    /// (since 3.14) If the mouse button is hold pressed and the cursor moves
-    /// outside the element the behavior is system dependent.
-    /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
-    /// GTK the callbacks are called.
-    /// Affects All controls with user interaction.
-    /// See Also ENTERWINDOW_CB
-    pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
+    /// Affects All elements with user interaction, except menus.
+    /// In Windows, there are restrictions when using this callback.
+    /// From MSDN on WM_KILLFOCUS: "While processing this message, do not make any
+    /// function calls that display or activate a window.
+    /// This causes the thread to yield control and can cause the application to
+    /// stop responding to messages.
+    /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
+    pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnFlatLeaveWindowFn = fn (self: *Self) anyerror!void;
-
-    pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
-
-    pub const OnFlatButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
-
-    pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
-
-    /// 
-    /// ACTION ACTION Action generated when the element is activated.
-    /// Affects each element differently.
-    /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
-    /// Lua] ih: identifier of the element that activated the event.
-    /// In some elements, this callback may receive more parameters, apart from ih.
-    /// Please refer to each element's documentation.
-    /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
-    /// IupToggle
-    pub const OnActionFn = fn (self: *Self, arg0: f32, arg1: f32) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
-
-    pub const OnDropMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
-
-    /// 
-    /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
-    /// Called only when TABCHANGE_CB is not defined.
-    /// int function(Ihandle* ih, int new_pos, int old_pos); [in C]
-    /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
-    pub const OnTabChangePosFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
-
-    /// 
-    /// KEYPRESS_CB KEYPRESS_CB Action generated when a key is pressed or released.
-    /// If the key is pressed and held several calls will occur.
-    /// It is called after the callback K_ANY is processed.
-    /// Callback int function(Ihandle *ih, int c, int press); [in C]
-    /// ih:keypress_cb(c, press: number) -> (ret: number) [in Lua] ih: identifier
-    /// of the element that activated the event.
-    /// c: identifier of typed key.
-    /// Please refer to the Keyboard Codes table for a list of possible values.
-    /// press: 1 is the user pressed the key or 0 otherwise.
-    /// Returns: If IUP_IGNORE is returned the key is ignored by the system.
-    /// IUP_CLOSE will be processed.
-    /// Affects IupCanvas
-    pub const OnKeyPressFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
-
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
-    /// 
-    /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
-    /// Callback int function(Ihandle *ih, int width, int height); [in C]
-    /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
-    /// identifier of the element that activated the event.
-    /// width: the width of the internal element size in pixels not considering the
-    /// decorations (client size) height: the height of the internal element size
-    /// in pixels not considering the decorations (client size) Notes For the
-    /// dialog, this action is also generated when the dialog is mapped, after the
-    /// map and before the show.
-    /// When XAUTOHIDE=Yes or YAUTOHIDE=Yes, if the canvas scrollbar is
-    /// hidden/shown after changing the DX or DY attributes from inside the
-    /// callback, the size of the drawing area will immediately change, so the
-    /// parameters with and height will be invalid.
-    /// To update the parameters consult the DRAWSIZE attribute.
-    /// Also activate the drawing toolkit only after updating the DX or DY attributes.
-    /// Affects IupCanvas, IupGLCanvas, IupDialog
-    pub const OnResizeFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
-
-    /// 
-    /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
-    /// This callback is called after the KILLFOCUS_CB of the element that loosed
-    /// the focus.
-    /// The IupGetFocus function during the callback returns the element that
-    /// loosed the focus.
-    /// Callback int function(Ihandle *ih); [in C] ih:getfocus_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that received keyboard focus.
-    /// Affects All elements with user interaction, except menus.
-    /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-    pub const OnGetFocusFn = fn (self: *Self) anyerror!void;
-
-    /// 
-    /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
-    /// In Motif is also activated by the Help button in some workstations keyboard.
-    /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
-    /// [in Lua] ih: identifier of the element that activated the event.
-    /// Returns: IUP_CLOSE will be processed.
-    /// Affects All elements with user interaction.
-    pub const OnHelpFn = fn (self: *Self) anyerror!void;
-
-    pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
     /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
@@ -354,9 +300,57 @@ pub const FlatTabs = opaque {
     /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
     pub const OnDropFilesFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: i32, arg3: i32) anyerror!void;
 
-    pub const OnFlatMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
+    /// 
+    /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
+    /// Callback int function(Ihandle *ih, int width, int height); [in C]
+    /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
+    /// identifier of the element that activated the event.
+    /// width: the width of the internal element size in pixels not considering the
+    /// decorations (client size) height: the height of the internal element size
+    /// in pixels not considering the decorations (client size) Notes For the
+    /// dialog, this action is also generated when the dialog is mapped, after the
+    /// map and before the show.
+    /// When XAUTOHIDE=Yes or YAUTOHIDE=Yes, if the canvas scrollbar is
+    /// hidden/shown after changing the DX or DY attributes from inside the
+    /// callback, the size of the drawing area will immediately change, so the
+    /// parameters with and height will be invalid.
+    /// To update the parameters consult the DRAWSIZE attribute.
+    /// Also activate the drawing toolkit only after updating the DX or DY attributes.
+    /// Affects IupCanvas, IupGLCanvas, IupDialog
+    pub const OnResizeFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    /// 
+    /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
+    /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
+    /// [in Lua] ih: identifier of the element that activated the event.
+    /// Affects All that have a native representation.
+    pub const OnUnmapFn = fn (self: *Self) anyerror!void;
+
+    /// 
+    /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
+    /// Called only when TABCHANGE_CB is not defined.
+    /// int function(Ihandle* ih, int new_pos, int old_pos); [in C]
+    /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
+    pub const OnTabChangePosFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
+
+    /// 
+    /// TABCLOSE_CB: Callback called when the user clicks on the close button.
+    /// Called only when SHOWCLOSE=Yes.
+    /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+    /// (ret: number) [in Lua]
+    pub const OnTabCloseFn = fn (self: *Self, arg0: i32) anyerror!void;
+
+    /// 
+    /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
+    /// This callback is called after the KILLFOCUS_CB of the element that loosed
+    /// the focus.
+    /// The IupGetFocus function during the callback returns the element that
+    /// loosed the focus.
+    /// Callback int function(Ihandle *ih); [in C] ih:getfocus_cb() -> (ret:
+    /// number) [in Lua] ih: identifier of the element that received keyboard focus.
+    /// Affects All elements with user interaction, except menus.
+    /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
+    pub const OnGetFocusFn = fn (self: *Self) anyerror!void;
 
     /// 
     /// BUTTON_CB BUTTON_CB Action generated when a mouse button is pressed or released.
@@ -405,65 +399,37 @@ pub const FlatTabs = opaque {
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
     pub const OnButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
 
-    /// 
-    /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
-    /// updated in IupMap.
-    /// When the element is a dialog, it is called after the layout is updated.
-    /// For all other elements is called before the layout is updated, so the
-    /// element current size will still be 0x0 during MAP_CB (since 3.14).
-    /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
-    /// Lua] ih: identifier of the element that activated the event.
-    /// Affects All that have a native representation.
-    pub const OnMapFn = fn (self: *Self) anyerror!void;
+    pub const OnFlatMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
-    pub const OnFlatGetFocusFn = fn (self: *Self) anyerror!void;
+    pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
     /// 
-    /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
-    /// right mouse button.
-    /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
-    /// (ret: number) [in Lua]
-    pub const OnRightClickFn = fn (self: *Self, arg0: i32) anyerror!void;
+    /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
+    /// native element.
+    /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
+    /// number) [in Lua] ih: identifier of the element that activated the event.
+    /// Notes When the cursor is moved from one element to another, the call order
+    /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
+    /// control followed by the ENTERWINDOW_CB callback of the new control.
+    /// (since 3.14) If the mouse button is hold pressed and the cursor moves
+    /// outside the element the behavior is system dependent.
+    /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
+    /// GTK the callbacks are called.
+    /// Affects All controls with user interaction.
+    /// See Also ENTERWINDOW_CB
+    pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    /// 
-    /// EXPAND: The default value is "YES".
-    pub const Expand = enum {
-        Yes,
-        Horizontal,
-        Vertical,
-        HorizontalFree,
-        VerticalFree,
-        No,
-    };
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
         ARight,
         ALeft,
     };
-    /// 
-    /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
-    /// "HORIZONTAL" or "VERTICAL".
-    /// Default is "HORIZONTAL".
-    /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
-    /// (since 3.25)
-    pub const TabOrientation = enum {
-        Horizontal,
-        Vertical,
-    };
 
     pub const ZOrder = enum {
         Top,
         Bottom,
-    };
-
-    pub const DrawStyle = enum {
-        Fill,
-        StrokeDash,
-        StrokeDot,
-        StrokeDashDot,
-        StrokeDashDotdot,
-        DrawStroke,
     };
     /// 
     /// TABTYPE (non inheritable): the type of tabs, which can be "TOP", "BOTTOM",
@@ -480,6 +446,16 @@ pub const FlatTabs = opaque {
         Top,
     };
     /// 
+    /// EXPAND: The default value is "YES".
+    pub const Expand = enum {
+        Yes,
+        Horizontal,
+        Vertical,
+        HorizontalFree,
+        VerticalFree,
+        No,
+    };
+    /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -488,6 +464,25 @@ pub const FlatTabs = opaque {
         Yes,
         Ignore,
         No,
+    };
+    /// 
+    /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
+    /// "HORIZONTAL" or "VERTICAL".
+    /// Default is "HORIZONTAL".
+    /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
+    /// (since 3.25)
+    pub const TabOrientation = enum {
+        Horizontal,
+        Vertical,
+    };
+
+    pub const DrawStyle = enum {
+        Fill,
+        StrokeDash,
+        StrokeDot,
+        StrokeDashDot,
+        StrokeDashDotdot,
+        DrawStroke,
     };
 
     pub const Initializer = struct {
@@ -553,434 +548,15 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
-        pub fn setDrawTextLayoutCenter(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAWTEXTLAYOUTCENTER", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setXMax(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "XMAX", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// CLOSEIMAGEHIGHLIGHT: image name to be used in the close button in highlight state.
-        pub fn setCloseImageHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "CLOSEIMAGEHIGHLIGHT", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setCloseImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "CLOSEIMAGEHIGHLIGHT", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// SIZE: The default size is the smallest size that fits its largest child.
-        /// All child elements are considered even invisible ones.
-        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "SIZE", .{}, value);
-            return self.*;
-        }
-
-        /// 
-        /// CLOSEIMAGE: image name to be used in the close button.
-        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
-        /// n starts at 0.
-        /// See also IupImage.
-        /// Default: "IMGFLATCLOSE".
-        pub fn setCloseImage(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "CLOSEIMAGE", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setCloseImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "CLOSEIMAGE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// VALUEPOS: Changes the current tab by its position, starting at 0.
-        pub fn setValuePos(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "VALUEPOS", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// VALUE: Changes the current tab by its name.
-        /// The value passed must be the name of one of the elements contained in the tabs.
-        /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
-        /// In Lua you can also use the element reference directly.
-        /// When the tabs is created, the first element inserted is set as the current tab.
-        /// When the current tab is changed is also scrolled to be visible (since 3.23).
-        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        /// 
-        /// EXPAND: The default value is "YES".
-        pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
-                .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
-                .Vertical => interop.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
-                .HorizontalFree => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
-                .VerticalFree => interop.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
-                .No => interop.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
-            } else {
-                interop.clearAttribute(self.ref, "EXPAND", .{});
-            }
-            return self.*;
-        }
-
-        pub fn setDrawTextOrientation(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "DRAWTEXTORIENTATION", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// FORECOLOR: text color for the current Tab.
-        /// Default: "50 150 255".
-        pub fn setForeColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "FORECOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setDrawTextAlignment(self: *Initializer, arg: ?DrawTextAlignment) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .ACenter => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ACENTER"),
-                .ARight => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ARIGHT"),
-                .ALeft => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ALEFT"),
-            } else {
-                interop.clearAttribute(self.ref, "DRAWTEXTALIGNMENT", .{});
-            }
-            return self.*;
-        }
-
-        pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "DRAWCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setDrawLineWidth(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "DRAWLINEWIDTH", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setXMin(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "XMIN", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawTextEllipsis(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAWTEXTELLIPSIS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
-        /// Can be Yes or No.
-        /// Default: Yes.
-        /// (since 3.27)
-        pub fn setFocusFeedback(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "FOCUSFEEDBACK", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TABTITLEn: contains the text to be shown in the respective tab title.
-        /// n starts at 0.
-        /// If this value is NULL, it will remain empty.
-        /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
-        /// each child.
-        /// Works only if set before the child is added to the tabs.
-        /// It is not updated if TABTITLEn is changed.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
-        /// the control.
-        /// Default: YES.
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
-        /// "HORIZONTAL" or "VERTICAL".
-        /// Default is "HORIZONTAL".
-        /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
-        /// (since 3.25)
-        pub fn setTabOrientation(self: *Initializer, arg: ?TabOrientation) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Horizontal => interop.setStrAttribute(self.ref, "TABORIENTATION", .{}, "HORIZONTAL"),
-                .Vertical => interop.setStrAttribute(self.ref, "TABORIENTATION", .{}, "VERTICAL"),
-            } else {
-                interop.clearAttribute(self.ref, "TABORIENTATION", .{});
-            }
-            return self.*;
-        }
-
-        pub fn setYAutoHide(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "YAUTOHIDE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawTextClip(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAWTEXTCLIP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
-                .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
-            } else {
-                interop.clearAttribute(self.ref, "ZORDER", .{});
-            }
-            return self.*;
-        }
-
-        /// 
-        /// VALUE_HANDLE: Changes the current tab by its handle.
-        /// The value passed must be the handle of a child contained in the tabs.
-        pub fn setValueHandle(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "VALUE_HANDLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setValueHandleHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "VALUE_HANDLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// BGCOLOR: background color for the current Tab and the children.
-        /// Default: "255 255 255".
-        /// It is non inheritable, but when set will internally propagate to the
-        /// children (since 3.25).
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setDrawStyle(self: *Initializer, arg: ?DrawStyle) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Fill => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "FILL"),
-                .StrokeDash => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH"),
-                .StrokeDot => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DOT"),
-                .StrokeDashDot => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH_DOT"),
-                .StrokeDashDotdot => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH_DOT_DOT"),
-                .DrawStroke => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "DRAW_STROKE"),
-            } else {
-                interop.clearAttribute(self.ref, "DRAWSTYLE", .{});
-            }
-            return self.*;
-        }
-
-        pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawMakeInactive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAWMAKEINACTIVE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// HIGHCOLOR: text color for the highlighted Tab.
-        /// The current Tab is never highlighted, so it affects only the other tabs.
-        /// If not defined FORECOLOR will be used.
-        pub fn setHighColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "HIGHCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
-            return self.*;
-        }
-
-        pub fn setDX(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "DX", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDY(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "DY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
-            return self.*;
-        }
-
-        pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setLineX(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "LINEX", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setLineY(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "LINEY", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// SHOWCLOSE: enables the close button on each tab.
-        /// Default value: "NO".
-        /// By default when closed the tab is hidden.
-        /// To change that behavior use the TABCLOSE_CB callback.
-        pub fn setShowClose(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "SHOWCLOSE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
+            interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
 
@@ -993,394 +569,23 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+        pub fn setXMin(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "XMIN", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
+            return self.*;
+        }
+
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
-            return self.*;
-        }
-
-        /// 
-        /// TABTYPE (non inheritable): the type of tabs, which can be "TOP", "BOTTOM",
-        /// "LEFT" or "RIGHT".
-        /// Default is "TOP".
-        /// It will not automatically change the TABORIENTATION.
-        /// When changed with the dialog visible the application should call IupRefresh
-        /// or IupRefresh children to updated the layout when ready.
-        /// (since 3.27)
-        pub fn setTabType(self: *Initializer, arg: ?TabType) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Bottom => interop.setStrAttribute(self.ref, "TABTYPE", .{}, "BOTTOM"),
-                .Left => interop.setStrAttribute(self.ref, "TABTYPE", .{}, "LEFT"),
-                .Right => interop.setStrAttribute(self.ref, "TABTYPE", .{}, "RIGHT"),
-                .Top => interop.setStrAttribute(self.ref, "TABTYPE", .{}, "TOP"),
-            } else {
-                interop.clearAttribute(self.ref, "TABTYPE", .{});
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHwnd(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HWND", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHwndHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HWND", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "CURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TABVISIBLEn: controls the visibility of a tab.
-        /// When a tab is hidden the tabs indices are not changed.
-        /// Can be Yes or No.
-        /// Default: Yes.
-        pub fn setTabVisible(self: *Initializer, index: i32, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TABVISIBLE", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setWheelDropFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "WHEELDROPFOCUS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHtTransparent(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "HTTRANSPARENT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawUsedIRect2d(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAWUSEDIRECT2D", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawAntialias(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "DRAWANTIALIAS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setYMax(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "YMAX", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// CLOSEIMAGEINACTIVE: image name to be used in the close button in inactive state.
-        /// If it is not defined then the CLOSEIMAGE is used and its colors will be
-        /// replaced by a modified version creating the disabled effect.
-        /// (since 3.22)
-        pub fn setCloseImageInactive(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "CLOSEIMAGEINACTIVE", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setCloseImageInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "CLOSEIMAGEINACTIVE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
-        /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setPosX(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "POSX", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setPosY(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "POSY", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
-        /// If set to NO will compute using only the current tab.
-        /// Default: Yes.
-        /// (since 3.27)
-        pub fn setChildSizeAll(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "CHILDSIZEALL", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setXAutoHide(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "XAUTOHIDE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// EXTRAIMAGEPRESSid: same as EXTRAIMAGEid when in pressed state.
-        /// If not defined EXTRAIMAGEid is used.
-        pub fn setExtraImagePress(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "EXTRAIMAGEPRESS", .{index}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setExtraImagePressHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "EXTRAIMAGEPRESS", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setDrawBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "DRAWBGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setYMin(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// EXTRAIMAGEHIGHLIGHTid: same as EXTRAIMAGEid when in highlight state.
-        /// If not defined EXTRAIMAGEid is used.
-        pub fn setExtraImageHighlight(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "EXTRAIMAGEHIGHLIGHT", .{index}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setExtraImageHighlightHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "EXTRAIMAGEHIGHLIGHT", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// CLOSEIMAGEPRESS: image name to be used in the close button in pressed state.
-        /// Default: "IMGFLATCLOSEPRESS".
-        pub fn setCloseImagePress(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "CLOSEIMAGEPRESS", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setCloseImagePressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "CLOSEIMAGEPRESS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TABSFONTSIZE: text font size.
-        /// When change will actually set TABSFONT.
-        pub fn setTabsFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TABSFONTSIZE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// CHILDOFFSET: Allow to specify a position offset for the child.
-        /// Available for native containers only.
-        /// It will not affect the natural size, and allows to position controls
-        /// outside the client area.
-        /// Format "dxxdy", where dx and dy are integer values corresponding to the
-        /// horizontal and vertical offsets, respectively, in pixels.
-        /// Default: 0x0.
-        pub fn setChildOffset(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
-            return self.*;
-        }
-
-        pub fn setDrawTextWrap(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
             return self.*;
         }
 
@@ -1405,6 +610,441 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+        pub fn setDrawTextWrap(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
+        /// Can be Yes or No.
+        /// Default: Yes.
+        /// (since 3.27)
+        pub fn setFocusFeedback(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "FOCUSFEEDBACK", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
+            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
+            return self.*;
+        }
+
+        pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDrawTextAlignment(self: *Initializer, arg: ?DrawTextAlignment) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .ACenter => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ACENTER"),
+                .ARight => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ARIGHT"),
+                .ALeft => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ALEFT"),
+            } else {
+                interop.clearAttribute(self.ref, "DRAWTEXTALIGNMENT", .{});
+            }
+            return self.*;
+        }
+
+        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIP", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDrawTextLayoutCenter(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DRAWTEXTLAYOUTCENTER", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// SHOWCLOSE: enables the close button on each tab.
+        /// Default value: "NO".
+        /// By default when closed the tab is hidden.
+        /// To change that behavior use the TABCLOSE_CB callback.
+        pub fn setShowClose(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "SHOWCLOSE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
+        /// the control.
+        /// Default: YES.
+        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setLineX(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "LINEX", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CURSOR", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setLineY(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "LINEY", .{}, arg);
+            return self.*;
+        }
+
+        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
+                .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
+            } else {
+                interop.clearAttribute(self.ref, "ZORDER", .{});
+            }
+            return self.*;
+        }
+
+        pub fn setDrawLineWidth(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "DRAWLINEWIDTH", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// HIGHCOLOR: text color for the highlighted Tab.
+        /// The current Tab is never highlighted, so it affects only the other tabs.
+        /// If not defined FORECOLOR will be used.
+        pub fn setHighColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "HIGHCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        /// 
+        /// TABSFONTSIZE: text font size.
+        /// When change will actually set TABSFONT.
+        pub fn setTabsFontSize(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "TABSFONTSIZE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// CHILDOFFSET: Allow to specify a position offset for the child.
+        /// Available for native containers only.
+        /// It will not affect the natural size, and allows to position controls
+        /// outside the client area.
+        /// Format "dxxdy", where dx and dy are integer values corresponding to the
+        /// horizontal and vertical offsets, respectively, in pixels.
+        /// Default: 0x0.
+        pub fn setChildOffset(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
+            return self.*;
+        }
+
+        /// 
+        /// TABTYPE (non inheritable): the type of tabs, which can be "TOP", "BOTTOM",
+        /// "LEFT" or "RIGHT".
+        /// Default is "TOP".
+        /// It will not automatically change the TABORIENTATION.
+        /// When changed with the dialog visible the application should call IupRefresh
+        /// or IupRefresh children to updated the layout when ready.
+        /// (since 3.27)
+        pub fn setTabType(self: *Initializer, arg: ?TabType) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .Bottom => interop.setStrAttribute(self.ref, "TABTYPE", .{}, "BOTTOM"),
+                .Left => interop.setStrAttribute(self.ref, "TABTYPE", .{}, "LEFT"),
+                .Right => interop.setStrAttribute(self.ref, "TABTYPE", .{}, "RIGHT"),
+                .Top => interop.setStrAttribute(self.ref, "TABTYPE", .{}, "TOP"),
+            } else {
+                interop.clearAttribute(self.ref, "TABTYPE", .{});
+            }
+            return self.*;
+        }
+
+        /// 
+        /// EXPAND: The default value is "YES".
+        pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
+                .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
+                .Vertical => interop.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICAL"),
+                .HorizontalFree => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTALFREE"),
+                .VerticalFree => interop.setStrAttribute(self.ref, "EXPAND", .{}, "VERTICALFREE"),
+                .No => interop.setStrAttribute(self.ref, "EXPAND", .{}, "NO"),
+            } else {
+                interop.clearAttribute(self.ref, "EXPAND", .{});
+            }
+            return self.*;
+        }
+
+        pub fn setDrawFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// SIZE: The default size is the smallest size that fits its largest child.
+        /// All child elements are considered even invisible ones.
+        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "SIZE", .{}, value);
+            return self.*;
+        }
+
+        pub fn setPosX(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "POSX", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setPosY(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "POSY", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setYMin(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDrawMakeInactive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DRAWMAKEINACTIVE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// EXTRAIMAGEPRESSid: same as EXTRAIMAGEid when in pressed state.
+        /// If not defined EXTRAIMAGEid is used.
+        pub fn setExtraImagePress(self: *Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "EXTRAIMAGEPRESS", .{index}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setExtraImagePressHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "EXTRAIMAGEPRESS", .{index}, arg);
+            return self.*;
+        }
+
+        pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
+            return self.*;
+        }
+
+        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setXAutoHide(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "XAUTOHIDE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABVISIBLEn: controls the visibility of a tab.
+        /// When a tab is hidden the tabs indices are not changed.
+        /// Can be Yes or No.
+        /// Default: Yes.
+        pub fn setTabVisible(self: *Initializer, index: i32, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "TABVISIBLE", .{index}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
+        /// the next native parent with FOCUS_CB defined.
+        /// Default: NO.
+        /// (since 3.23)
+        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setXMax(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "XMAX", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// BGCOLOR: background color for the current Tab and the children.
+        /// Default: "255 255 255".
+        /// It is non inheritable, but when set will internally propagate to the
+        /// children (since 3.25).
+        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        /// 
+        /// VALUE_HANDLE: Changes the current tab by its handle.
+        /// The value passed must be the handle of a child contained in the tabs.
+        pub fn setValueHandle(self: *Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setHandleAttribute(self.ref, "VALUE_HANDLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setValueHandleHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "VALUE_HANDLE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// CLOSEIMAGEHIGHLIGHT: image name to be used in the close button in highlight state.
+        pub fn setCloseImageHighlight(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CLOSEIMAGEHIGHLIGHT", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCloseImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CLOSEIMAGEHIGHLIGHT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
+        /// If set to NO will compute using only the current tab.
+        /// Default: Yes.
+        /// (since 3.27)
+        pub fn setChildSizeAll(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "CHILDSIZEALL", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDX(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "DX", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDY(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "DY", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDrawTextEllipsis(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DRAWTEXTELLIPSIS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDrawTextClip(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DRAWTEXTCLIP", .{}, arg);
+            return self.*;
+        }
+
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
         /// then its size and position will be ignored by the layout processing.
@@ -1419,6 +1059,161 @@ pub const FlatTabs = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
+            return self.*;
+        }
+
+        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
+            return self.*;
+        }
+
+        /// 
+        /// CLOSEIMAGEINACTIVE: image name to be used in the close button in inactive state.
+        /// If it is not defined then the CLOSEIMAGE is used and its colors will be
+        /// replaced by a modified version creating the disabled effect.
+        /// (since 3.22)
+        pub fn setCloseImageInactive(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CLOSEIMAGEINACTIVE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCloseImageInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CLOSEIMAGEINACTIVE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        /// 
+        /// CLOSEIMAGEPRESS: image name to be used in the close button in pressed state.
+        /// Default: "IMGFLATCLOSEPRESS".
+        pub fn setCloseImagePress(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CLOSEIMAGEPRESS", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCloseImagePressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CLOSEIMAGEPRESS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDrawColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "DRAWCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setDrawTextOrientation(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "DRAWTEXTORIENTATION", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDrawBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "DRAWBGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        /// 
+        /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
+        /// "HORIZONTAL" or "VERTICAL".
+        /// Default is "HORIZONTAL".
+        /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
+        /// (since 3.25)
+        pub fn setTabOrientation(self: *Initializer, arg: ?TabOrientation) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .Horizontal => interop.setStrAttribute(self.ref, "TABORIENTATION", .{}, "HORIZONTAL"),
+                .Vertical => interop.setStrAttribute(self.ref, "TABORIENTATION", .{}, "VERTICAL"),
+            } else {
+                interop.clearAttribute(self.ref, "TABORIENTATION", .{});
+            }
+            return self.*;
+        }
+
+        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// VALUEPOS: Changes the current tab by its position, starting at 0.
+        pub fn setValuePos(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "VALUEPOS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setBackingStore(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "BACKINGSTORE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setYAutoHide(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "YAUTOHIDE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setDrawStyle(self: *Initializer, arg: ?DrawStyle) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .Fill => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "FILL"),
+                .StrokeDash => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH"),
+                .StrokeDot => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DOT"),
+                .StrokeDashDot => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH_DOT"),
+                .StrokeDashDotdot => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH_DOT_DOT"),
+                .DrawStroke => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "DRAW_STROKE"),
+            } else {
+                interop.clearAttribute(self.ref, "DRAWSTYLE", .{});
+            }
+            return self.*;
+        }
+
+        /// 
+        /// VALUE: Changes the current tab by its name.
+        /// The value passed must be the name of one of the elements contained in the tabs.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
+        /// In Lua you can also use the element reference directly.
+        /// When the tabs is created, the first element inserted is set as the current tab.
+        /// When the current tab is changed is also scrolled to be visible (since 3.23).
+        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
 
@@ -1448,6 +1243,63 @@ pub const FlatTabs = opaque {
         }
 
         /// 
+        /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+        /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
+        pub fn setActive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setYMax(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "YMAX", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
+            return self.*;
+        }
+
+        /// 
+        /// CLOSEIMAGE: image name to be used in the close button.
+        /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+        /// n starts at 0.
+        /// See also IupImage.
+        /// Default: "IMGFLATCLOSE".
+        pub fn setCloseImage(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "CLOSEIMAGE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setCloseImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "CLOSEIMAGE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
         /// EXTRAIMAGEINACTIVEid: same as EXTRAIMAGEid when in inactive state.
         /// If not defined EXTRAIMAGEid is used and its colors will be replaced by a
         /// modified version creating the disabled effect.
@@ -1467,15 +1319,9 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
+        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
+            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
 
@@ -1492,19 +1338,74 @@ pub const FlatTabs = opaque {
         }
 
         /// 
-        /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
-        /// the next native parent with FOCUS_CB defined.
-        /// Default: NO.
-        /// (since 3.23)
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
+        /// FORECOLOR: text color for the current Tab.
+        /// Default: "50 150 255".
+        pub fn setForeColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
+            interop.setRgb(self.ref, "FORECOLOR", .{}, rgb);
             return self.*;
         }
 
-        pub fn setBackingStore(self: *Initializer, arg: bool) Initializer {
+        pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "BACKINGSTORE", .{}, arg);
+            interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setWheelDropFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "WHEELDROPFOCUS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABTITLEn: contains the text to be shown in the respective tab title.
+        /// n starts at 0.
+        /// If this value is NULL, it will remain empty.
+        /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+        /// each child.
+        /// Works only if set before the child is added to the tabs.
+        /// It is not updated if TABTITLEn is changed.
+        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// EXTRAIMAGEHIGHLIGHTid: same as EXTRAIMAGEid when in highlight state.
+        /// If not defined EXTRAIMAGEid is used.
+        pub fn setExtraImageHighlight(self: *Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "EXTRAIMAGEHIGHLIGHT", .{index}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setExtraImageHighlightHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "EXTRAIMAGEHIGHLIGHT", .{index}, arg);
+            return self.*;
+        }
+
+        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
 
@@ -1523,98 +1424,6 @@ pub const FlatTabs = opaque {
         pub fn setMdiMenuHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// WHEEL_CB WHEEL_CB Action generated when the mouse wheel is rotated.
-        /// If this callback is not defined the wheel will automatically scroll the
-        /// canvas in the vertical direction by some lines, the SCROLL_CB callback if
-        /// defined will be called with the IUP_SBDRAGV operation.
-        /// Callback int function(Ihandle *ih, float delta, int x, int y, char
-        /// *status); [in C] ih:wheel_cb(delta, x, y: number, status: string) -> (ret:
-        /// number) [in Lua] ih: identifier of the element that activated the event.
-        /// delta: the amount the wheel was rotated in notches.
-        /// x, y: position in the canvas where the event has occurred, in pixels.
-        /// status: status of mouse buttons and certain keyboard keys at the moment the
-        /// event was generated.
-        /// The same macros used for BUTTON_CB can be used for this status.
-        /// Notes In Motif and GTK delta is always 1 or -1.
-        /// In Windows is some situations delta can reach the value of two.
-        /// In the future with more precise wheels this increment can be changed.
-        /// Affects IupCanvas, IupGLCanvas
-        pub fn setWheelCallback(self: *Initializer, callback: ?OnWheelFn) Initializer {
-            const Handler = CallbackHandler(Self, OnWheelFn, "WHEEL_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
-        /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
-        /// [in Lua] ih: identifier of the element that activated the event.
-        /// Notes If the dialog is visible then it is hidden before it is destroyed.
-        /// The callback will be called right after it is hidden.
-        /// The callback will be called before all other destroy procedures.
-        /// For instance, if the element has children then it is called before the
-        /// children are destroyed.
-        /// For language binding implementations use the callback name "LDESTROY_CB" to
-        /// release memory allocated by the binding for the element.
-        /// Also the callback will be called before the language callback.
-        /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
-            const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
-        /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
-        /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
-        /// number) [in Lua] ih: identifier of the element that activated the event.
-        /// Affects All elements with user interaction, except menus.
-        /// In Windows, there are restrictions when using this callback.
-        /// From MSDN on WM_KILLFOCUS: "While processing this message, do not make any
-        /// function calls that display or activate a window.
-        /// This causes the thread to yield control and can cause the application to
-        /// stop responding to messages.
-        /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setKillFocusCallback(self: *Initializer, callback: ?OnKillFocusFn) Initializer {
-            const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// MOTION_CB MOTION_CB Action generated when the mouse moves.
-        /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
-        /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
-        /// identifier of the element that activated the event.
-        /// x, y: position in the canvas where the event has occurred, in pixels.
-        /// status: status of mouse buttons and certain keyboard keys at the moment the
-        /// event was generated.
-        /// The same macros used for BUTTON_CB can be used for this status.
-        /// Notes Between press and release all mouse events are redirected only to
-        /// this control, even if the cursor moves outside the element.
-        /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
-        /// called with coordinates outside the element rectangle.
-        /// Affects IupCanvas, IupGLCanvas
-        pub fn setMotionCallback(self: *Initializer, callback: ?OnMotionFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setDragEndCallback(self: *Initializer, callback: ?OnDragEndFn) Initializer {
-            const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
-            const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
-            Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
@@ -1648,12 +1457,8 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
-        /// 
-        /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
-        /// (since 3.22) int function(Ihandle* ih, int button, int pressed); [in C]
-        /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua]
-        pub fn setExtraButtonCallback(self: *Initializer, callback: ?OnExtraButtonFn) Initializer {
-            const Handler = CallbackHandler(Self, OnExtraButtonFn, "EXTRABUTTON_CB");
+        pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
+            const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1678,14 +1483,12 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
-        pub fn setFlatKillFocusCallback(self: *Initializer, callback: ?OnFlatKillFocusFn) Initializer {
-            const Handler = CallbackHandler(Self, OnFlatKillFocusFn, "FLAT_KILLFOCUS_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setDropDataCallback(self: *Initializer, callback: ?OnDropDataFn) Initializer {
-            const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
+        /// 
+        /// TABCHANGE_CB: Callback called when the user changes the current tab.
+        /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
+        /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
+        pub fn setTabChangeCallback(self: *Initializer, callback: ?OnTabChangeFn) Initializer {
+            const Handler = CallbackHandler(Self, OnTabChangeFn, "TABCHANGE_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1726,33 +1529,169 @@ pub const FlatTabs = opaque {
         }
 
         /// 
-        /// TABCHANGE_CB: Callback called when the user changes the current tab.
-        /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
-        /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
-        pub fn setTabChangeCallback(self: *Initializer, callback: ?OnTabChangeFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTabChangeFn, "TABCHANGE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
-        /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
+        /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
+        /// In Motif is also activated by the Help button in some workstations keyboard.
+        /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
-        /// Affects All that have a native representation.
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
-            const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
+        /// Returns: IUP_CLOSE will be processed.
+        /// Affects All elements with user interaction.
+        pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
+            const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setDropMotionCallback(self: *Initializer, callback: ?OnDropMotionFn) Initializer {
+            const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setFlatLeaveWindowCallback(self: *Initializer, callback: ?OnFlatLeaveWindowFn) Initializer {
+            const Handler = CallbackHandler(Self, OnFlatLeaveWindowFn, "FLAT_LEAVEWINDOW_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
         /// 
-        /// TABCLOSE_CB: Callback called when the user clicks on the close button.
-        /// Called only when SHOWCLOSE=Yes.
-        /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+        /// KEYPRESS_CB KEYPRESS_CB Action generated when a key is pressed or released.
+        /// If the key is pressed and held several calls will occur.
+        /// It is called after the callback K_ANY is processed.
+        /// Callback int function(Ihandle *ih, int c, int press); [in C]
+        /// ih:keypress_cb(c, press: number) -> (ret: number) [in Lua] ih: identifier
+        /// of the element that activated the event.
+        /// c: identifier of typed key.
+        /// Please refer to the Keyboard Codes table for a list of possible values.
+        /// press: 1 is the user pressed the key or 0 otherwise.
+        /// Returns: If IUP_IGNORE is returned the key is ignored by the system.
+        /// IUP_CLOSE will be processed.
+        /// Affects IupCanvas
+        pub fn setKeyPressCallback(self: *Initializer, callback: ?OnKeyPressFn) Initializer {
+            const Handler = CallbackHandler(Self, OnKeyPressFn, "KEYPRESS_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setDragEndCallback(self: *Initializer, callback: ?OnDragEndFn) Initializer {
+            const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setFlatKillFocusCallback(self: *Initializer, callback: ?OnFlatKillFocusFn) Initializer {
+            const Handler = CallbackHandler(Self, OnFlatKillFocusFn, "FLAT_KILLFOCUS_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setDragBeginCallback(self: *Initializer, callback: ?OnDragBeginFn) Initializer {
+            const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// ACTION ACTION Action generated when the element is activated.
+        /// Affects each element differently.
+        /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
+        /// Lua] ih: identifier of the element that activated the event.
+        /// In some elements, this callback may receive more parameters, apart from ih.
+        /// Please refer to each element's documentation.
+        /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
+        /// IupToggle
+        pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
+            const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
+        /// (since 3.22) int function(Ihandle* ih, int button, int pressed); [in C]
+        /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua]
+        pub fn setExtraButtonCallback(self: *Initializer, callback: ?OnExtraButtonFn) Initializer {
+            const Handler = CallbackHandler(Self, OnExtraButtonFn, "EXTRABUTTON_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// MOTION_CB MOTION_CB Action generated when the mouse moves.
+        /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
+        /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
+        /// identifier of the element that activated the event.
+        /// x, y: position in the canvas where the event has occurred, in pixels.
+        /// status: status of mouse buttons and certain keyboard keys at the moment the
+        /// event was generated.
+        /// The same macros used for BUTTON_CB can be used for this status.
+        /// Notes Between press and release all mouse events are redirected only to
+        /// this control, even if the cursor moves outside the element.
+        /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
+        /// called with coordinates outside the element rectangle.
+        /// Affects IupCanvas, IupGLCanvas
+        pub fn setMotionCallback(self: *Initializer, callback: ?OnMotionFn) Initializer {
+            const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setFlatGetFocusCallback(self: *Initializer, callback: ?OnFlatGetFocusFn) Initializer {
+            const Handler = CallbackHandler(Self, OnFlatGetFocusFn, "FLAT_GETFOCUS_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// WHEEL_CB WHEEL_CB Action generated when the mouse wheel is rotated.
+        /// If this callback is not defined the wheel will automatically scroll the
+        /// canvas in the vertical direction by some lines, the SCROLL_CB callback if
+        /// defined will be called with the IUP_SBDRAGV operation.
+        /// Callback int function(Ihandle *ih, float delta, int x, int y, char
+        /// *status); [in C] ih:wheel_cb(delta, x, y: number, status: string) -> (ret:
+        /// number) [in Lua] ih: identifier of the element that activated the event.
+        /// delta: the amount the wheel was rotated in notches.
+        /// x, y: position in the canvas where the event has occurred, in pixels.
+        /// status: status of mouse buttons and certain keyboard keys at the moment the
+        /// event was generated.
+        /// The same macros used for BUTTON_CB can be used for this status.
+        /// Notes In Motif and GTK delta is always 1 or -1.
+        /// In Windows is some situations delta can reach the value of two.
+        /// In the future with more precise wheels this increment can be changed.
+        /// Affects IupCanvas, IupGLCanvas
+        pub fn setWheelCallback(self: *Initializer, callback: ?OnWheelFn) Initializer {
+            const Handler = CallbackHandler(Self, OnWheelFn, "WHEEL_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
+        /// right mouse button.
+        /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
         /// (ret: number) [in Lua]
-        pub fn setTabCloseCallback(self: *Initializer, callback: ?OnTabCloseFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTabCloseFn, "TABCLOSE_CB");
+        pub fn setRightClickCallback(self: *Initializer, callback: ?OnRightClickFn) Initializer {
+            const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
+        /// updated in IupMap.
+        /// When the element is a dialog, it is called after the layout is updated.
+        /// For all other elements is called before the layout is updated, so the
+        /// element current size will still be 0x0 during MAP_CB (since 3.14).
+        /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
+        /// Lua] ih: identifier of the element that activated the event.
+        /// Affects All that have a native representation.
+        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+            const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setFlatButtonCallback(self: *Initializer, callback: ?OnFlatButtonFn) Initializer {
+            const Handler = CallbackHandler(Self, OnFlatButtonFn, "FLAT_BUTTON_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1778,172 +1717,56 @@ pub const FlatTabs = opaque {
         }
 
         /// 
-        /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
-        /// native element.
-        /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
+        /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
+        /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
+        /// [in Lua] ih: identifier of the element that activated the event.
+        /// Notes If the dialog is visible then it is hidden before it is destroyed.
+        /// The callback will be called right after it is hidden.
+        /// The callback will be called before all other destroy procedures.
+        /// For instance, if the element has children then it is called before the
+        /// children are destroyed.
+        /// For language binding implementations use the callback name "LDESTROY_CB" to
+        /// release memory allocated by the binding for the element.
+        /// Also the callback will be called before the language callback.
+        /// Affects All.
+        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+            const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setDropDataCallback(self: *Initializer, callback: ?OnDropDataFn) Initializer {
+            const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
+        /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
+        /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
         /// number) [in Lua] ih: identifier of the element that activated the event.
-        /// Notes When the cursor is moved from one element to another, the call order
-        /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
-        /// control followed by the ENTERWINDOW_CB callback of the new control.
-        /// (since 3.14) If the mouse button is hold pressed and the cursor moves
-        /// outside the element the behavior is system dependent.
-        /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
-        /// GTK the callbacks are called.
-        /// Affects All controls with user interaction.
-        /// See Also ENTERWINDOW_CB
-        pub fn setLeaveWindowCallback(self: *Initializer, callback: ?OnLeaveWindowFn) Initializer {
-            const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
+        /// Affects All elements with user interaction, except menus.
+        /// In Windows, there are restrictions when using this callback.
+        /// From MSDN on WM_KILLFOCUS: "While processing this message, do not make any
+        /// function calls that display or activate a window.
+        /// This causes the thread to yield control and can cause the application to
+        /// stop responding to messages.
+        /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
+        pub fn setKillFocusCallback(self: *Initializer, callback: ?OnKillFocusFn) Initializer {
+            const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
-        pub fn setFlatLeaveWindowCallback(self: *Initializer, callback: ?OnFlatLeaveWindowFn) Initializer {
-            const Handler = CallbackHandler(Self, OnFlatLeaveWindowFn, "FLAT_LEAVEWINDOW_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setDragBeginCallback(self: *Initializer, callback: ?OnDragBeginFn) Initializer {
-            const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setFlatButtonCallback(self: *Initializer, callback: ?OnFlatButtonFn) Initializer {
-            const Handler = CallbackHandler(Self, OnFlatButtonFn, "FLAT_BUTTON_CB");
+        pub fn setDragDataCallback(self: *Initializer, callback: ?OnDragDataFn) Initializer {
+            const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
         pub fn setDragDataSizeCallback(self: *Initializer, callback: ?OnDragDataSizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
-            const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// ACTION ACTION Action generated when the element is activated.
-        /// Affects each element differently.
-        /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
-        /// Lua] ih: identifier of the element that activated the event.
-        /// In some elements, this callback may receive more parameters, apart from ih.
-        /// Please refer to each element's documentation.
-        /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
-        /// IupToggle
-        pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
-            const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setDropMotionCallback(self: *Initializer, callback: ?OnDropMotionFn) Initializer {
-            const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
-        /// Called only when TABCHANGE_CB is not defined.
-        /// int function(Ihandle* ih, int new_pos, int old_pos); [in C]
-        /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
-        pub fn setTabChangePosCallback(self: *Initializer, callback: ?OnTabChangePosFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTabChangePosFn, "TABCHANGEPOS_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// KEYPRESS_CB KEYPRESS_CB Action generated when a key is pressed or released.
-        /// If the key is pressed and held several calls will occur.
-        /// It is called after the callback K_ANY is processed.
-        /// Callback int function(Ihandle *ih, int c, int press); [in C]
-        /// ih:keypress_cb(c, press: number) -> (ret: number) [in Lua] ih: identifier
-        /// of the element that activated the event.
-        /// c: identifier of typed key.
-        /// Please refer to the Keyboard Codes table for a list of possible values.
-        /// press: 1 is the user pressed the key or 0 otherwise.
-        /// Returns: If IUP_IGNORE is returned the key is ignored by the system.
-        /// IUP_CLOSE will be processed.
-        /// Affects IupCanvas
-        pub fn setKeyPressCallback(self: *Initializer, callback: ?OnKeyPressFn) Initializer {
-            const Handler = CallbackHandler(Self, OnKeyPressFn, "KEYPRESS_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
-        /// Callback int function(Ihandle *ih, int width, int height); [in C]
-        /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
-        /// identifier of the element that activated the event.
-        /// width: the width of the internal element size in pixels not considering the
-        /// decorations (client size) height: the height of the internal element size
-        /// in pixels not considering the decorations (client size) Notes For the
-        /// dialog, this action is also generated when the dialog is mapped, after the
-        /// map and before the show.
-        /// When XAUTOHIDE=Yes or YAUTOHIDE=Yes, if the canvas scrollbar is
-        /// hidden/shown after changing the DX or DY attributes from inside the
-        /// callback, the size of the drawing area will immediately change, so the
-        /// parameters with and height will be invalid.
-        /// To update the parameters consult the DRAWSIZE attribute.
-        /// Also activate the drawing toolkit only after updating the DX or DY attributes.
-        /// Affects IupCanvas, IupGLCanvas, IupDialog
-        pub fn setResizeCallback(self: *Initializer, callback: ?OnResizeFn) Initializer {
-            const Handler = CallbackHandler(Self, OnResizeFn, "RESIZE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
-        /// This callback is called after the KILLFOCUS_CB of the element that loosed
-        /// the focus.
-        /// The IupGetFocus function during the callback returns the element that
-        /// loosed the focus.
-        /// Callback int function(Ihandle *ih); [in C] ih:getfocus_cb() -> (ret:
-        /// number) [in Lua] ih: identifier of the element that received keyboard focus.
-        /// Affects All elements with user interaction, except menus.
-        /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setGetFocusCallback(self: *Initializer, callback: ?OnGetFocusFn) Initializer {
-            const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
-        /// In Motif is also activated by the Help button in some workstations keyboard.
-        /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
-        /// [in Lua] ih: identifier of the element that activated the event.
-        /// Returns: IUP_CLOSE will be processed.
-        /// Affects All elements with user interaction.
-        pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
-            const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
-            const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1973,14 +1796,74 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
-        pub fn setFlatMotionCallback(self: *Initializer, callback: ?OnFlatMotionFn) Initializer {
-            const Handler = CallbackHandler(Self, OnFlatMotionFn, "FLAT_MOTION_CB");
+        /// 
+        /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
+        /// Callback int function(Ihandle *ih, int width, int height); [in C]
+        /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
+        /// identifier of the element that activated the event.
+        /// width: the width of the internal element size in pixels not considering the
+        /// decorations (client size) height: the height of the internal element size
+        /// in pixels not considering the decorations (client size) Notes For the
+        /// dialog, this action is also generated when the dialog is mapped, after the
+        /// map and before the show.
+        /// When XAUTOHIDE=Yes or YAUTOHIDE=Yes, if the canvas scrollbar is
+        /// hidden/shown after changing the DX or DY attributes from inside the
+        /// callback, the size of the drawing area will immediately change, so the
+        /// parameters with and height will be invalid.
+        /// To update the parameters consult the DRAWSIZE attribute.
+        /// Also activate the drawing toolkit only after updating the DX or DY attributes.
+        /// Affects IupCanvas, IupGLCanvas, IupDialog
+        pub fn setResizeCallback(self: *Initializer, callback: ?OnResizeFn) Initializer {
+            const Handler = CallbackHandler(Self, OnResizeFn, "RESIZE_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
-        pub fn setDragDataCallback(self: *Initializer, callback: ?OnDragDataFn) Initializer {
-            const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
+        /// 
+        /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
+        /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
+        /// [in Lua] ih: identifier of the element that activated the event.
+        /// Affects All that have a native representation.
+        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+            const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
+        /// Called only when TABCHANGE_CB is not defined.
+        /// int function(Ihandle* ih, int new_pos, int old_pos); [in C]
+        /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
+        pub fn setTabChangePosCallback(self: *Initializer, callback: ?OnTabChangePosFn) Initializer {
+            const Handler = CallbackHandler(Self, OnTabChangePosFn, "TABCHANGEPOS_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// TABCLOSE_CB: Callback called when the user clicks on the close button.
+        /// Called only when SHOWCLOSE=Yes.
+        /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+        /// (ret: number) [in Lua]
+        pub fn setTabCloseCallback(self: *Initializer, callback: ?OnTabCloseFn) Initializer {
+            const Handler = CallbackHandler(Self, OnTabCloseFn, "TABCLOSE_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
+        /// This callback is called after the KILLFOCUS_CB of the element that loosed
+        /// the focus.
+        /// The IupGetFocus function during the callback returns the element that
+        /// loosed the focus.
+        /// Callback int function(Ihandle *ih); [in C] ih:getfocus_cb() -> (ret:
+        /// number) [in Lua] ih: identifier of the element that received keyboard focus.
+        /// Affects All elements with user interaction, except menus.
+        /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
+        pub fn setGetFocusCallback(self: *Initializer, callback: ?OnGetFocusFn) Initializer {
+            const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -2036,34 +1919,40 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
-        /// 
-        /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
-        /// updated in IupMap.
-        /// When the element is a dialog, it is called after the layout is updated.
-        /// For all other elements is called before the layout is updated, so the
-        /// element current size will still be 0x0 during MAP_CB (since 3.14).
-        /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
-        /// Lua] ih: identifier of the element that activated the event.
-        /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
+        pub fn setFlatMotionCallback(self: *Initializer, callback: ?OnFlatMotionFn) Initializer {
+            const Handler = CallbackHandler(Self, OnFlatMotionFn, "FLAT_MOTION_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
-        pub fn setFlatGetFocusCallback(self: *Initializer, callback: ?OnFlatGetFocusFn) Initializer {
-            const Handler = CallbackHandler(Self, OnFlatGetFocusFn, "FLAT_GETFOCUS_CB");
+        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+            const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
         /// 
-        /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
-        /// right mouse button.
-        /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
-        /// (ret: number) [in Lua]
-        pub fn setRightClickCallback(self: *Initializer, callback: ?OnRightClickFn) Initializer {
-            const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
+        /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
+        /// native element.
+        /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
+        /// number) [in Lua] ih: identifier of the element that activated the event.
+        /// Notes When the cursor is moved from one element to another, the call order
+        /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
+        /// control followed by the ENTERWINDOW_CB callback of the new control.
+        /// (since 3.14) If the mouse button is hold pressed and the cursor moves
+        /// outside the element the behavior is system dependent.
+        /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
+        /// GTK the callbacks are called.
+        /// Affects All controls with user interaction.
+        /// See Also ENTERWINDOW_CB
+        pub fn setLeaveWindowCallback(self: *Initializer, callback: ?OnLeaveWindowFn) Initializer {
+            const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+            const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -2185,82 +2074,111 @@ pub const FlatTabs = opaque {
         Impl(Self).refresh(self);
     }
 
-    pub fn getDrawTextLayoutCenter(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", .{});
+    /// 
+    /// COUNT (read-only): returns the number of tabs.
+    /// Same value returned by IupGetChildCount.
+    pub fn getCount(self: *Self) i32 {
+        return interop.getIntAttribute(self, "COUNT", .{});
     }
 
-    pub fn setDrawTextLayoutCenter(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", .{}, arg);
+    pub fn getHandleName(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
 
-    pub fn getDragTypes(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAGTYPES", .{});
+    pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
-    pub fn setDragTypes(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGTYPES", .{}, arg);
+    pub fn getTipBgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "TIPBGCOLOR", .{});
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn getXMax(self: *Self) i32 {
-        return interop.getIntAttribute(self, "XMAX", .{});
-    }
-
-    pub fn setXMax(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "XMAX", .{}, arg);
+    pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
     /// 
-    /// CLOSEIMAGEHIGHLIGHT: image name to be used in the close button in highlight state.
-    pub fn getCloseImageHighlight(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "CLOSEIMAGEHIGHLIGHT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
+    /// HASFOCUS (read-only): returns the tabs state if it has focus.
+    /// Can be Yes or No.
+    /// (since 3.25)
+    pub fn getHasFocus(self: *Self) bool {
+        return interop.getBoolAttribute(self, "HASFOCUS", .{});
     }
 
     /// 
-    /// CLOSEIMAGEHIGHLIGHT: image name to be used in the close button in highlight state.
-    pub fn setCloseImageHighlight(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "CLOSEIMAGEHIGHLIGHT", .{}, arg);
-    }
-
-    pub fn setCloseImageHighlightHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "CLOSEIMAGEHIGHLIGHT", .{}, arg);
+    /// TABFONTSIZEn: text font size.
+    /// When change will actually set TABFONTn.
+    pub fn getTabFontSize(self: *Self, index: i32) i32 {
+        return interop.getIntAttribute(self, "TABFONTSIZE", .{index});
     }
 
     /// 
-    /// SIZE: The default size is the smallest size that fits its largest child.
-    /// All child elements are considered even invisible ones.
-    pub fn getSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "SIZE", .{});
+    /// TABFONTSIZEn: text font size.
+    /// When change will actually set TABFONTn.
+    pub fn setTabFontSize(self: *Self, index: i32, arg: i32) void {
+        interop.setIntAttribute(self, "TABFONTSIZE", .{index}, arg);
+    }
+
+    pub fn getXMin(self: *Self) i32 {
+        return interop.getIntAttribute(self, "XMIN", .{});
+    }
+
+    pub fn setXMin(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "XMIN", .{}, arg);
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
+    }
+
+    pub fn getMaxSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
     }
 
-    /// 
-    /// SIZE: The default size is the smallest size that fits its largest child.
-    /// All child elements are considered even invisible ones.
-    pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
+    pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "SIZE", .{}, value);
+        interop.setStrAttribute(self, "MAXSIZE", .{}, value);
+    }
+
+    /// 
+    /// EXTRAIMAGEid: image name to be used in the respective button.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    pub fn getExtraImage(self: *Self, index: i32) ?iup.Element {
+        if (interop.getHandleAttribute(self, "EXTRAIMAGE", .{index})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// EXTRAIMAGEid: image name to be used in the respective button.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    pub fn setExtraImage(self: *Self, index: i32, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "EXTRAIMAGE", .{index}, arg);
+    }
+
+    pub fn setExtraImageHandleName(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "EXTRAIMAGE", .{index}, arg);
+    }
+
+    pub fn getDrawTextWrap(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DRAWTEXTWRAP", .{});
+    }
+
+    pub fn setDrawTextWrap(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DRAWTEXTWRAP", .{}, arg);
     }
 
     pub fn getScreenPosition(self: *Self) iup.XYPos {
@@ -2269,133 +2187,40 @@ pub const FlatTabs = opaque {
     }
 
     /// 
-    /// CLOSEIMAGE: image name to be used in the close button.
-    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
-    /// n starts at 0.
-    /// See also IupImage.
-    /// Default: "IMGFLATCLOSE".
-    pub fn getCloseImage(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "CLOSEIMAGE", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
+    /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
+    /// Can be Yes or No.
+    /// Default: Yes.
+    /// (since 3.27)
+    pub fn getFocusFeedback(self: *Self) bool {
+        return interop.getBoolAttribute(self, "FOCUSFEEDBACK", .{});
     }
 
     /// 
-    /// CLOSEIMAGE: image name to be used in the close button.
-    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
-    /// n starts at 0.
-    /// See also IupImage.
-    /// Default: "IMGFLATCLOSE".
-    pub fn setCloseImage(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "CLOSEIMAGE", .{}, arg);
+    /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
+    /// Can be Yes or No.
+    /// Default: Yes.
+    /// (since 3.27)
+    pub fn setFocusFeedback(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "FOCUSFEEDBACK", .{}, arg);
     }
 
-    pub fn setCloseImageHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "CLOSEIMAGE", .{}, arg);
+    pub fn getPosition(self: *Self) iup.XYPos {
+        var str = interop.getStrAttribute(self, "POSITION", .{});
+        return iup.XYPos.parse(str, ',');
     }
 
-    pub fn getX(self: *Self) i32 {
-        return interop.getIntAttribute(self, "X", .{});
+    pub fn setPosition(self: *Self, x: i32, y: i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
+        interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
-    pub fn getY(self: *Self) i32 {
-        return interop.getIntAttribute(self, "Y", .{});
+    pub fn getDropFilesTarget(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
 
-    /// 
-    /// VALUEPOS: Changes the current tab by its position, starting at 0.
-    pub fn getValuePos(self: *Self) i32 {
-        return interop.getIntAttribute(self, "VALUEPOS", .{});
-    }
-
-    /// 
-    /// VALUEPOS: Changes the current tab by its position, starting at 0.
-    pub fn setValuePos(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "VALUEPOS", .{}, arg);
-    }
-
-    /// 
-    /// VALUE: Changes the current tab by its name.
-    /// The value passed must be the name of one of the elements contained in the tabs.
-    /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
-    /// In Lua you can also use the element reference directly.
-    /// When the tabs is created, the first element inserted is set as the current tab.
-    /// When the current tab is changed is also scrolled to be visible (since 3.23).
-    pub fn getValue(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "VALUE", .{});
-    }
-
-    /// 
-    /// VALUE: Changes the current tab by its name.
-    /// The value passed must be the name of one of the elements contained in the tabs.
-    /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
-    /// In Lua you can also use the element reference directly.
-    /// When the tabs is created, the first element inserted is set as the current tab.
-    /// When the current tab is changed is also scrolled to be visible (since 3.23).
-    pub fn setValue(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "VALUE", .{}, arg);
-    }
-
-    pub fn getTipFgColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "TIPFGCOLOR", .{});
-    }
-
-    pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
-    }
-
-    /// 
-    /// EXPAND: The default value is "YES".
-    pub fn getExpand(self: *Self) ?Expand {
-        var ret = interop.getStrAttribute(self, "EXPAND", .{});
-
-        if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
-        if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
-        if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
-        if (std.ascii.eqlIgnoreCase("HORIZONTALFREE", ret)) return .HorizontalFree;
-        if (std.ascii.eqlIgnoreCase("VERTICALFREE", ret)) return .VerticalFree;
-        if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
-        return null;
-    }
-
-    /// 
-    /// EXPAND: The default value is "YES".
-    pub fn setExpand(self: *Self, arg: ?Expand) void {
-        if (arg) |value| switch (value) {
-            .Yes => interop.setStrAttribute(self, "EXPAND", .{}, "YES"),
-            .Horizontal => interop.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
-            .Vertical => interop.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
-            .HorizontalFree => interop.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
-            .VerticalFree => interop.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
-            .No => interop.setStrAttribute(self, "EXPAND", .{}, "NO"),
-        } else {
-            interop.clearAttribute(self, "EXPAND", .{});
-        }
-    }
-
-    pub fn getDrawTextOrientation(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "DRAWTEXTORIENTATION", .{});
-    }
-
-    pub fn setDrawTextOrientation(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "DRAWTEXTORIENTATION", .{}, arg);
-    }
-
-    /// 
-    /// FORECOLOR: text color for the current Tab.
-    /// Default: "50 150 255".
-    pub fn getForeColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "FORECOLOR", .{});
-    }
-
-    /// 
-    /// FORECOLOR: text color for the current Tab.
-    /// Default: "50 150 255".
-    pub fn setForeColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "FORECOLOR", .{}, rgb);
+    pub fn setDropFilesTarget(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
     }
 
     pub fn getDrawTextAlignment(self: *Self) ?DrawTextAlignment {
@@ -2417,380 +2242,20 @@ pub const FlatTabs = opaque {
         }
     }
 
-    pub fn getDragSource(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAGSOURCE", .{});
+    pub fn getTip(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIP", .{});
     }
 
-    pub fn setDragSource(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
+    pub fn setTip(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIP", .{}, arg);
     }
 
-    pub fn getDrawColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "DRAWCOLOR", .{});
+    pub fn getDrawTextLayoutCenter(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", .{});
     }
 
-    pub fn setDrawColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "DRAWCOLOR", .{}, rgb);
-    }
-
-    pub fn getDrawLineWidth(self: *Self) i32 {
-        return interop.getIntAttribute(self, "DRAWLINEWIDTH", .{});
-    }
-
-    pub fn setDrawLineWidth(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "DRAWLINEWIDTH", .{}, arg);
-    }
-
-    pub fn getClientOffset(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "CLIENTOFFSET", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getUserSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "USERSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "USERSIZE", .{}, value);
-    }
-
-    pub fn getXMin(self: *Self) i32 {
-        return interop.getIntAttribute(self, "XMIN", .{});
-    }
-
-    pub fn setXMin(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "XMIN", .{}, arg);
-    }
-
-    pub fn getDrawTextEllipsis(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAWTEXTELLIPSIS", .{});
-    }
-
-    pub fn setDrawTextEllipsis(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAWTEXTELLIPSIS", .{}, arg);
-    }
-
-    /// 
-    /// HASFOCUS (read-only): returns the tabs state if it has focus.
-    /// Can be Yes or No.
-    /// (since 3.25)
-    pub fn getHasFocus(self: *Self) bool {
-        return interop.getBoolAttribute(self, "HASFOCUS", .{});
-    }
-
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
-    /// 
-    /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
-    /// Can be Yes or No.
-    /// Default: Yes.
-    /// (since 3.27)
-    pub fn getFocusFeedback(self: *Self) bool {
-        return interop.getBoolAttribute(self, "FOCUSFEEDBACK", .{});
-    }
-
-    /// 
-    /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
-    /// Can be Yes or No.
-    /// Default: Yes.
-    /// (since 3.27)
-    pub fn setFocusFeedback(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "FOCUSFEEDBACK", .{}, arg);
-    }
-
-    /// 
-    /// TABTITLEn: contains the text to be shown in the respective tab title.
-    /// n starts at 0.
-    /// If this value is NULL, it will remain empty.
-    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
-    /// each child.
-    /// Works only if set before the child is added to the tabs.
-    /// It is not updated if TABTITLEn is changed.
-    pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
-        return interop.getStrAttribute(self, "TABTITLE", .{index});
-    }
-
-    /// 
-    /// TABTITLEn: contains the text to be shown in the respective tab title.
-    /// n starts at 0.
-    /// If this value is NULL, it will remain empty.
-    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
-    /// each child.
-    /// Works only if set before the child is added to the tabs.
-    /// It is not updated if TABTITLEn is changed.
-    pub fn setTabTitle(self: *Self, index: i32, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
-    }
-
-    pub fn getDrawSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "DRAWSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getBorder(self: *Self) bool {
-        return interop.getBoolAttribute(self, "BORDER", .{});
-    }
-
-    /// 
-    /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
-    /// "HORIZONTAL" or "VERTICAL".
-    /// Default is "HORIZONTAL".
-    /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
-    /// (since 3.25)
-    pub fn getTabOrientation(self: *Self) ?TabOrientation {
-        var ret = interop.getStrAttribute(self, "TABORIENTATION", .{});
-
-        if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
-        if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
-        return null;
-    }
-
-    /// 
-    /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
-    /// "HORIZONTAL" or "VERTICAL".
-    /// Default is "HORIZONTAL".
-    /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
-    /// (since 3.25)
-    pub fn setTabOrientation(self: *Self, arg: ?TabOrientation) void {
-        if (arg) |value| switch (value) {
-            .Horizontal => interop.setStrAttribute(self, "TABORIENTATION", .{}, "HORIZONTAL"),
-            .Vertical => interop.setStrAttribute(self, "TABORIENTATION", .{}, "VERTICAL"),
-        } else {
-            interop.clearAttribute(self, "TABORIENTATION", .{});
-        }
-    }
-
-    pub fn getYAutoHide(self: *Self) bool {
-        return interop.getBoolAttribute(self, "YAUTOHIDE", .{});
-    }
-
-    pub fn setYAutoHide(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "YAUTOHIDE", .{}, arg);
-    }
-
-    pub fn getDrawTextClip(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAWTEXTCLIP", .{});
-    }
-
-    pub fn setDrawTextClip(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAWTEXTCLIP", .{}, arg);
-    }
-
-    pub fn getTheme(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "THEME", .{});
-    }
-
-    pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "THEME", .{}, arg);
-    }
-
-    pub fn zOrder(self: *Self, arg: ?ZOrder) void {
-        if (arg) |value| switch (value) {
-            .Top => interop.setStrAttribute(self, "ZORDER", .{}, "TOP"),
-            .Bottom => interop.setStrAttribute(self, "ZORDER", .{}, "BOTTOM"),
-        } else {
-            interop.clearAttribute(self, "ZORDER", .{});
-        }
-    }
-
-    /// 
-    /// VALUE_HANDLE: Changes the current tab by its handle.
-    /// The value passed must be the handle of a child contained in the tabs.
-    pub fn getValueHandle(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "VALUE_HANDLE", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    /// 
-    /// VALUE_HANDLE: Changes the current tab by its handle.
-    /// The value passed must be the handle of a child contained in the tabs.
-    pub fn setValueHandle(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "VALUE_HANDLE", .{}, arg);
-    }
-
-    pub fn setValueHandleHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "VALUE_HANDLE", .{}, arg);
-    }
-
-    pub fn getVisible(self: *Self) bool {
-        return interop.getBoolAttribute(self, "VISIBLE", .{});
-    }
-
-    pub fn setVisible(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
-    }
-
-    /// 
-    /// BGCOLOR: background color for the current Tab and the children.
-    /// Default: "255 255 255".
-    /// It is non inheritable, but when set will internally propagate to the
-    /// children (since 3.25).
-    pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "BGCOLOR", .{});
-    }
-
-    /// 
-    /// BGCOLOR: background color for the current Tab and the children.
-    /// Default: "255 255 255".
-    /// It is non inheritable, but when set will internally propagate to the
-    /// children (since 3.25).
-    pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getRasterSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
-    }
-
-    pub fn getDrawStyle(self: *Self) ?DrawStyle {
-        var ret = interop.getStrAttribute(self, "DRAWSTYLE", .{});
-
-        if (std.ascii.eqlIgnoreCase("FILL", ret)) return .Fill;
-        if (std.ascii.eqlIgnoreCase("STROKE_DASH", ret)) return .StrokeDash;
-        if (std.ascii.eqlIgnoreCase("STROKE_DOT", ret)) return .StrokeDot;
-        if (std.ascii.eqlIgnoreCase("STROKE_DASH_DOT", ret)) return .StrokeDashDot;
-        if (std.ascii.eqlIgnoreCase("STROKE_DASH_DOT_DOT", ret)) return .StrokeDashDotdot;
-        if (std.ascii.eqlIgnoreCase("DRAW_STROKE", ret)) return .DrawStroke;
-        return null;
-    }
-
-    pub fn setDrawStyle(self: *Self, arg: ?DrawStyle) void {
-        if (arg) |value| switch (value) {
-            .Fill => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "FILL"),
-            .StrokeDash => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DASH"),
-            .StrokeDot => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DOT"),
-            .StrokeDashDot => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DASH_DOT"),
-            .StrokeDashDotdot => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DASH_DOT_DOT"),
-            .DrawStroke => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "DRAW_STROKE"),
-        } else {
-            interop.clearAttribute(self, "DRAWSTYLE", .{});
-        }
-    }
-
-    pub fn getDropTarget(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DROPTARGET", .{});
-    }
-
-    pub fn setDropTarget(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
-    }
-
-    pub fn getCharSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getDrawMakeInactive(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAWMAKEINACTIVE", .{});
-    }
-
-    pub fn setDrawMakeInactive(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAWMAKEINACTIVE", .{}, arg);
-    }
-
-    /// 
-    /// HIGHCOLOR: text color for the highlighted Tab.
-    /// The current Tab is never highlighted, so it affects only the other tabs.
-    /// If not defined FORECOLOR will be used.
-    pub fn getHighColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "HIGHCOLOR", .{});
-    }
-
-    /// 
-    /// HIGHCOLOR: text color for the highlighted Tab.
-    /// The current Tab is never highlighted, so it affects only the other tabs.
-    /// If not defined FORECOLOR will be used.
-    pub fn setHighColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "HIGHCOLOR", .{}, rgb);
-    }
-
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
-    }
-
-    pub fn getDX(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "DX", .{});
-    }
-
-    pub fn setDX(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "DX", .{}, arg);
-    }
-
-    pub fn getDY(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "DY", .{});
-    }
-
-    pub fn setDY(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "DY", .{}, arg);
-    }
-
-    pub fn getPosition(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "POSITION", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setPosition(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "POSITION", .{}, value);
-    }
-
-    pub fn getMinSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "MINSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "MINSIZE", .{}, value);
-    }
-
-    pub fn getLineX(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "LINEX", .{});
-    }
-
-    pub fn setLineX(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "LINEX", .{}, arg);
-    }
-
-    pub fn getNaturalSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getLineY(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "LINEY", .{});
-    }
-
-    pub fn setLineY(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "LINEY", .{}, arg);
+    pub fn setDrawTextLayoutCenter(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", .{}, arg);
     }
 
     /// 
@@ -2811,53 +2276,151 @@ pub const FlatTabs = opaque {
         interop.setBoolAttribute(self, "SHOWCLOSE", .{}, arg);
     }
 
-    pub fn getDropTypes(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DROPTYPES", .{});
+    pub fn getDragSourceMove(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DRAGSOURCEMOVE", .{});
     }
 
-    pub fn setDropTypes(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DROPTYPES", .{}, arg);
+    pub fn setDragSourceMove(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
     }
 
-    pub fn getHandleName(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "HANDLENAME", .{});
+    pub fn getVisible(self: *Self) bool {
+        return interop.getBoolAttribute(self, "VISIBLE", .{});
     }
 
-    pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
+    pub fn setVisible(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
-    pub fn getFontFace(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONTFACE", .{});
+    pub fn getLineX(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "LINEX", .{});
     }
 
-    pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
+    pub fn setLineX(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "LINEX", .{}, arg);
+    }
+
+    pub fn getCursor(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CURSOR", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    pub fn setCursor(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CURSOR", .{}, arg);
+    }
+
+    pub fn setCursorHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CURSOR", .{}, arg);
+    }
+
+    pub fn getLineY(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "LINEY", .{});
+    }
+
+    pub fn setLineY(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "LINEY", .{}, arg);
+    }
+
+    pub fn zOrder(self: *Self, arg: ?ZOrder) void {
+        if (arg) |value| switch (value) {
+            .Top => interop.setStrAttribute(self, "ZORDER", .{}, "TOP"),
+            .Bottom => interop.setStrAttribute(self, "ZORDER", .{}, "BOTTOM"),
+        } else {
+            interop.clearAttribute(self, "ZORDER", .{});
+        }
+    }
+
+    pub fn getDrawLineWidth(self: *Self) i32 {
+        return interop.getIntAttribute(self, "DRAWLINEWIDTH", .{});
+    }
+
+    pub fn setDrawLineWidth(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "DRAWLINEWIDTH", .{}, arg);
+    }
+
+    pub fn getX(self: *Self) i32 {
+        return interop.getIntAttribute(self, "X", .{});
+    }
+
+    pub fn getY(self: *Self) i32 {
+        return interop.getIntAttribute(self, "Y", .{});
+    }
+
+    pub fn getDragDrop(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DRAGDROP", .{});
+    }
+
+    pub fn setDragDrop(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DRAGDROP", .{}, arg);
     }
 
     /// 
-    /// TABFONTSIZEn: text font size.
-    /// When change will actually set TABFONTn.
-    pub fn getTabFontSize(self: *Self, index: i32) i32 {
-        return interop.getIntAttribute(self, "TABFONTSIZE", .{index});
+    /// HIGHCOLOR: text color for the highlighted Tab.
+    /// The current Tab is never highlighted, so it affects only the other tabs.
+    /// If not defined FORECOLOR will be used.
+    pub fn getHighColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "HIGHCOLOR", .{});
     }
 
     /// 
-    /// TABFONTSIZEn: text font size.
-    /// When change will actually set TABFONTn.
-    pub fn setTabFontSize(self: *Self, index: i32, arg: i32) void {
-        interop.setIntAttribute(self, "TABFONTSIZE", .{index}, arg);
+    /// HIGHCOLOR: text color for the highlighted Tab.
+    /// The current Tab is never highlighted, so it affects only the other tabs.
+    /// If not defined FORECOLOR will be used.
+    pub fn setHighColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "HIGHCOLOR", .{}, rgb);
     }
 
-    pub fn getMaxSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "MAXSIZE", .{});
+    /// 
+    /// TABSFONTSIZE: text font size.
+    /// When change will actually set TABSFONT.
+    pub fn getTabsFontSize(self: *Self) i32 {
+        return interop.getIntAttribute(self, "TABSFONTSIZE", .{});
+    }
+
+    /// 
+    /// TABSFONTSIZE: text font size.
+    /// When change will actually set TABSFONT.
+    pub fn setTabsFontSize(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "TABSFONTSIZE", .{}, arg);
+    }
+
+    pub fn getTheme(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "THEME", .{});
+    }
+
+    pub fn setTheme(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "THEME", .{}, arg);
+    }
+
+    /// 
+    /// CHILDOFFSET: Allow to specify a position offset for the child.
+    /// Available for native containers only.
+    /// It will not affect the natural size, and allows to position controls
+    /// outside the client area.
+    /// Format "dxxdy", where dx and dy are integer values corresponding to the
+    /// horizontal and vertical offsets, respectively, in pixels.
+    /// Default: 0x0.
+    pub fn getChildOffset(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CHILDOFFSET", .{});
         return Size.parse(str);
     }
 
-    pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
+    /// 
+    /// CHILDOFFSET: Allow to specify a position offset for the child.
+    /// Available for native containers only.
+    /// It will not affect the natural size, and allows to position controls
+    /// outside the client area.
+    /// Format "dxxdy", where dx and dy are integer values corresponding to the
+    /// horizontal and vertical offsets, respectively, in pixels.
+    /// Default: 0x0.
+    pub fn setChildOffset(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "MAXSIZE", .{}, value);
+        interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
 
     /// 
@@ -2897,231 +2460,58 @@ pub const FlatTabs = opaque {
         }
     }
 
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
+    /// 
+    /// EXPAND: The default value is "YES".
+    pub fn getExpand(self: *Self) ?Expand {
+        var ret = interop.getStrAttribute(self, "EXPAND", .{});
 
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONTSTYLE", .{});
-    }
-
-    pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
-    }
-
-    pub fn getFont(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONT", .{});
-    }
-
-    pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONT", .{}, arg);
-    }
-
-    pub fn getHwnd(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HWND", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHwnd(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HWND", .{}, arg);
-    }
-
-    pub fn setHwndHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HWND", .{}, arg);
-    }
-
-    pub fn getCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "CURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "CURSOR", .{}, arg);
-    }
-
-    pub fn setCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "CURSOR", .{}, arg);
+        if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
+        if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
+        if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
+        if (std.ascii.eqlIgnoreCase("HORIZONTALFREE", ret)) return .HorizontalFree;
+        if (std.ascii.eqlIgnoreCase("VERTICALFREE", ret)) return .VerticalFree;
+        if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
+        return null;
     }
 
     /// 
-    /// TABVISIBLEn: controls the visibility of a tab.
-    /// When a tab is hidden the tabs indices are not changed.
-    /// Can be Yes or No.
-    /// Default: Yes.
-    pub fn getTabVisible(self: *Self, index: i32) bool {
-        return interop.getBoolAttribute(self, "TABVISIBLE", .{index});
-    }
-
-    /// 
-    /// TABVISIBLEn: controls the visibility of a tab.
-    /// When a tab is hidden the tabs indices are not changed.
-    /// Can be Yes or No.
-    /// Default: Yes.
-    pub fn setTabVisible(self: *Self, index: i32, arg: bool) void {
-        interop.setBoolAttribute(self, "TABVISIBLE", .{index}, arg);
-    }
-
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
+    /// EXPAND: The default value is "YES".
+    pub fn setExpand(self: *Self, arg: ?Expand) void {
+        if (arg) |value| switch (value) {
+            .Yes => interop.setStrAttribute(self, "EXPAND", .{}, "YES"),
+            .Horizontal => interop.setStrAttribute(self, "EXPAND", .{}, "HORIZONTAL"),
+            .Vertical => interop.setStrAttribute(self, "EXPAND", .{}, "VERTICAL"),
+            .HorizontalFree => interop.setStrAttribute(self, "EXPAND", .{}, "HORIZONTALFREE"),
+            .VerticalFree => interop.setStrAttribute(self, "EXPAND", .{}, "VERTICALFREE"),
+            .No => interop.setStrAttribute(self, "EXPAND", .{}, "NO"),
         } else {
-            return null;
+            interop.clearAttribute(self, "EXPAND", .{});
         }
     }
 
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
+    pub fn getDrawFont(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "DRAWFONT", .{});
     }
 
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
+    pub fn setDrawFont(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "DRAWFONT", .{}, arg);
     }
 
-    pub fn getWheelDropFocus(self: *Self) bool {
-        return interop.getBoolAttribute(self, "WHEELDROPFOCUS", .{});
-    }
-
-    pub fn setWheelDropFocus(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "WHEELDROPFOCUS", .{}, arg);
-    }
-
-    pub fn getHtTransparent(self: *Self) bool {
-        return interop.getBoolAttribute(self, "HTTRANSPARENT", .{});
-    }
-
-    pub fn setHtTransparent(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "HTTRANSPARENT", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
-    }
-
-    pub fn getDrawUsedIRect2d(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAWUSEDIRECT2D", .{});
-    }
-
-    pub fn setDrawUsedIRect2d(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAWUSEDIRECT2D", .{}, arg);
-    }
-
-    pub fn getXHidden(self: *Self) bool {
-        return interop.getBoolAttribute(self, "XHIDDEN", .{});
-    }
-
-    pub fn getFontSize(self: *Self) i32 {
-        return interop.getIntAttribute(self, "FONTSIZE", .{});
-    }
-
-    pub fn setFontSize(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
-    }
-
-    pub fn getDrawAntialias(self: *Self) i32 {
-        return interop.getIntAttribute(self, "DRAWANTIALIAS", .{});
-    }
-
-    pub fn setDrawAntialias(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "DRAWANTIALIAS", .{}, arg);
-    }
-
-    pub fn getYMax(self: *Self) i32 {
-        return interop.getIntAttribute(self, "YMAX", .{});
-    }
-
-    pub fn setYMax(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "YMAX", .{}, arg);
-    }
-
-    pub fn getClientSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "CLIENTSIZE", .{});
+    /// 
+    /// SIZE: The default size is the smallest size that fits its largest child.
+    /// All child elements are considered even invisible ones.
+    pub fn getSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
 
-    pub fn getNTheme(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NTHEME", .{});
-    }
-
-    pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NTHEME", .{}, arg);
-    }
-
-    pub fn getDragSourceMove(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAGSOURCEMOVE", .{});
-    }
-
-    pub fn setDragSourceMove(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
-    }
-
     /// 
-    /// CLOSEIMAGEINACTIVE: image name to be used in the close button in inactive state.
-    /// If it is not defined then the CLOSEIMAGE is used and its colors will be
-    /// replaced by a modified version creating the disabled effect.
-    /// (since 3.22)
-    pub fn getCloseImageInactive(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "CLOSEIMAGEINACTIVE", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    /// 
-    /// CLOSEIMAGEINACTIVE: image name to be used in the close button in inactive state.
-    /// If it is not defined then the CLOSEIMAGE is used and its colors will be
-    /// replaced by a modified version creating the disabled effect.
-    /// (since 3.22)
-    pub fn setCloseImageInactive(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "CLOSEIMAGEINACTIVE", .{}, arg);
-    }
-
-    pub fn setCloseImageInactiveHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "CLOSEIMAGEINACTIVE", .{}, arg);
-    }
-
-    /// 
-    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
-    /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
-    pub fn getActive(self: *Self) bool {
-        return interop.getBoolAttribute(self, "ACTIVE", .{});
-    }
-
-    /// 
-    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
-    /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
-    pub fn setActive(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
-    }
-
-    pub fn getWId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "WID", .{});
+    /// SIZE: The default size is the smallest size that fits its largest child.
+    /// All child elements are considered even invisible ones.
+    pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
     pub fn getPosX(self: *Self) f64 {
@@ -3140,38 +2530,45 @@ pub const FlatTabs = opaque {
         interop.setDoubleAttribute(self, "POSY", .{}, arg);
     }
 
-    /// 
-    /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
-    /// If set to NO will compute using only the current tab.
-    /// Default: Yes.
-    /// (since 3.27)
-    pub fn getChildSizeAll(self: *Self) bool {
-        return interop.getBoolAttribute(self, "CHILDSIZEALL", .{});
+    pub fn getWId(self: *Self) i32 {
+        return interop.getIntAttribute(self, "WID", .{});
     }
 
-    /// 
-    /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
-    /// If set to NO will compute using only the current tab.
-    /// Default: Yes.
-    /// (since 3.27)
-    pub fn setChildSizeAll(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "CHILDSIZEALL", .{}, arg);
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
     }
 
-    pub fn getXAutoHide(self: *Self) bool {
-        return interop.getBoolAttribute(self, "XAUTOHIDE", .{});
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
-    pub fn setXAutoHide(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "XAUTOHIDE", .{}, arg);
+    pub fn getYMin(self: *Self) i32 {
+        return interop.getIntAttribute(self, "YMIN", .{});
     }
 
-    pub fn getTipVisible(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPVISIBLE", .{});
+    pub fn setYMin(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "YMIN", .{}, arg);
     }
 
-    pub fn setTipVisible(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
+    pub fn getDrawMakeInactive(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DRAWMAKEINACTIVE", .{});
+    }
+
+    pub fn setDrawMakeInactive(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DRAWMAKEINACTIVE", .{}, arg);
+    }
+
+    pub fn getFontSize(self: *Self) i32 {
+        return interop.getIntAttribute(self, "FONTSIZE", .{});
+    }
+
+    pub fn setFontSize(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
+    }
+
+    pub fn getNaturalSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
+        return Size.parse(str);
     }
 
     /// 
@@ -3197,190 +2594,23 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "EXTRAIMAGEPRESS", .{index}, arg);
     }
 
-    pub fn getDrawFont(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAWFONT", .{});
+    pub fn getDropTypes(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "DROPTYPES", .{});
     }
 
-    pub fn setDrawFont(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAWFONT", .{}, arg);
+    pub fn setDropTypes(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "DROPTYPES", .{}, arg);
     }
 
-    pub fn getExpandWeight(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
-    }
-
-    pub fn setExpandWeight(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
-    }
-
-    pub fn getTipBgColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "TIPBGCOLOR", .{});
-    }
-
-    pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
-    }
-
-    pub fn getDrawBgColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "DRAWBGCOLOR", .{});
-    }
-
-    pub fn setDrawBgColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "DRAWBGCOLOR", .{}, rgb);
-    }
-
-    pub fn getYMin(self: *Self) i32 {
-        return interop.getIntAttribute(self, "YMIN", .{});
-    }
-
-    pub fn setYMin(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "YMIN", .{}, arg);
-    }
-
-    /// 
-    /// EXTRAIMAGEHIGHLIGHTid: same as EXTRAIMAGEid when in highlight state.
-    /// If not defined EXTRAIMAGEid is used.
-    pub fn getExtraImageHighlight(self: *Self, index: i32) ?iup.Element {
-        if (interop.getHandleAttribute(self, "EXTRAIMAGEHIGHLIGHT", .{index})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    /// 
-    /// EXTRAIMAGEHIGHLIGHTid: same as EXTRAIMAGEid when in highlight state.
-    /// If not defined EXTRAIMAGEid is used.
-    pub fn setExtraImageHighlight(self: *Self, index: i32, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "EXTRAIMAGEHIGHLIGHT", .{index}, arg);
-    }
-
-    pub fn setExtraImageHighlightHandleName(self: *Self, index: i32, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "EXTRAIMAGEHIGHLIGHT", .{index}, arg);
-    }
-
-    pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
-    }
-
-    pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
-    }
-
-    pub fn getScrollBar(self: *Self) bool {
-        return interop.getBoolAttribute(self, "SCROLLBAR", .{});
-    }
-
-    pub fn getDropFilesTarget(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
-    }
-
-    pub fn setDropFilesTarget(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
-    }
-
-    /// 
-    /// CLOSEIMAGEPRESS: image name to be used in the close button in pressed state.
-    /// Default: "IMGFLATCLOSEPRESS".
-    pub fn getCloseImagePress(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "CLOSEIMAGEPRESS", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    /// 
-    /// CLOSEIMAGEPRESS: image name to be used in the close button in pressed state.
-    /// Default: "IMGFLATCLOSEPRESS".
-    pub fn setCloseImagePress(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "CLOSEIMAGEPRESS", .{}, arg);
-    }
-
-    pub fn setCloseImagePressHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "CLOSEIMAGEPRESS", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
-    }
-
-    /// 
-    /// TABSFONTSIZE: text font size.
-    /// When change will actually set TABSFONT.
-    pub fn getTabsFontSize(self: *Self) i32 {
-        return interop.getIntAttribute(self, "TABSFONTSIZE", .{});
-    }
-
-    /// 
-    /// TABSFONTSIZE: text font size.
-    /// When change will actually set TABSFONT.
-    pub fn setTabsFontSize(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TABSFONTSIZE", .{}, arg);
-    }
-
-    /// 
-    /// CHILDOFFSET: Allow to specify a position offset for the child.
-    /// Available for native containers only.
-    /// It will not affect the natural size, and allows to position controls
-    /// outside the client area.
-    /// Format "dxxdy", where dx and dy are integer values corresponding to the
-    /// horizontal and vertical offsets, respectively, in pixels.
-    /// Default: 0x0.
-    pub fn getChildOffset(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "CHILDOFFSET", .{});
+    pub fn getUserSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "USERSIZE", .{});
         return Size.parse(str);
     }
 
-    /// 
-    /// CHILDOFFSET: Allow to specify a position offset for the child.
-    /// Available for native containers only.
-    /// It will not affect the natural size, and allows to position controls
-    /// outside the client area.
-    /// Format "dxxdy", where dx and dy are integer values corresponding to the
-    /// horizontal and vertical offsets, respectively, in pixels.
-    /// Default: 0x0.
-    pub fn setChildOffset(self: *Self, width: ?i32, height: ?i32) void {
+    pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
-    }
-
-    pub fn getDrawTextWrap(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAWTEXTWRAP", .{});
-    }
-
-    pub fn setDrawTextWrap(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAWTEXTWRAP", .{}, arg);
-    }
-
-    /// 
-    /// COUNT (read-only): returns the number of tabs.
-    /// Same value returned by IupGetChildCount.
-    pub fn getCount(self: *Self) i32 {
-        return interop.getIntAttribute(self, "COUNT", .{});
-    }
-
-    pub fn getTip(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIP", .{});
-    }
-
-    pub fn setTip(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIP", .{}, arg);
-    }
-
-    pub fn getDragDrop(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAGDROP", .{});
-    }
-
-    pub fn setDragDrop(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAGDROP", .{}, arg);
+        interop.setStrAttribute(self, "USERSIZE", .{}, value);
     }
 
     pub fn getTipDelay(self: *Self) i32 {
@@ -3391,25 +2621,89 @@ pub const FlatTabs = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
+    pub fn getScrollBar(self: *Self) bool {
+        return interop.getBoolAttribute(self, "SCROLLBAR", .{});
     }
 
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
+    pub fn getXHidden(self: *Self) bool {
+        return interop.getBoolAttribute(self, "XHIDDEN", .{});
     }
 
-    pub fn getYHidden(self: *Self) bool {
-        return interop.getBoolAttribute(self, "YHIDDEN", .{});
+    pub fn getXAutoHide(self: *Self) bool {
+        return interop.getBoolAttribute(self, "XAUTOHIDE", .{});
+    }
+
+    pub fn setXAutoHide(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "XAUTOHIDE", .{}, arg);
     }
 
     /// 
-    /// EXTRAIMAGEid: image name to be used in the respective button.
-    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
-    /// n starts at 0.
-    /// See also IupImage.
-    pub fn getExtraImage(self: *Self, index: i32) ?iup.Element {
-        if (interop.getHandleAttribute(self, "EXTRAIMAGE", .{index})) |handle| {
+    /// TABVISIBLEn: controls the visibility of a tab.
+    /// When a tab is hidden the tabs indices are not changed.
+    /// Can be Yes or No.
+    /// Default: Yes.
+    pub fn getTabVisible(self: *Self, index: i32) bool {
+        return interop.getBoolAttribute(self, "TABVISIBLE", .{index});
+    }
+
+    /// 
+    /// TABVISIBLEn: controls the visibility of a tab.
+    /// When a tab is hidden the tabs indices are not changed.
+    /// Can be Yes or No.
+    /// Default: Yes.
+    pub fn setTabVisible(self: *Self, index: i32, arg: bool) void {
+        interop.setBoolAttribute(self, "TABVISIBLE", .{index}, arg);
+    }
+
+    /// 
+    /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
+    /// the next native parent with FOCUS_CB defined.
+    /// Default: NO.
+    /// (since 3.23)
+    pub fn getPropagateFocus(self: *Self) bool {
+        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
+    }
+
+    /// 
+    /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
+    /// the next native parent with FOCUS_CB defined.
+    /// Default: NO.
+    /// (since 3.23)
+    pub fn setPropagateFocus(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
+    }
+
+    pub fn getXMax(self: *Self) i32 {
+        return interop.getIntAttribute(self, "XMAX", .{});
+    }
+
+    pub fn setXMax(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "XMAX", .{}, arg);
+    }
+
+    /// 
+    /// BGCOLOR: background color for the current Tab and the children.
+    /// Default: "255 255 255".
+    /// It is non inheritable, but when set will internally propagate to the
+    /// children (since 3.25).
+    pub fn getBgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "BGCOLOR", .{});
+    }
+
+    /// 
+    /// BGCOLOR: background color for the current Tab and the children.
+    /// Default: "255 255 255".
+    /// It is non inheritable, but when set will internally propagate to the
+    /// children (since 3.25).
+    pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "BGCOLOR", .{}, rgb);
+    }
+
+    /// 
+    /// VALUE_HANDLE: Changes the current tab by its handle.
+    /// The value passed must be the handle of a child contained in the tabs.
+    pub fn getValueHandle(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "VALUE_HANDLE", .{})) |handle| {
             return iup.Element.fromHandle(handle);
         } else {
             return null;
@@ -3417,17 +2711,101 @@ pub const FlatTabs = opaque {
     }
 
     /// 
-    /// EXTRAIMAGEid: image name to be used in the respective button.
-    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
-    /// n starts at 0.
-    /// See also IupImage.
-    pub fn setExtraImage(self: *Self, index: i32, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "EXTRAIMAGE", .{index}, arg);
+    /// VALUE_HANDLE: Changes the current tab by its handle.
+    /// The value passed must be the handle of a child contained in the tabs.
+    pub fn setValueHandle(self: *Self, arg: anytype) !void {
+        interop.setHandleAttribute(self, "VALUE_HANDLE", .{}, arg);
     }
 
-    pub fn setExtraImageHandleName(self: *Self, index: i32, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "EXTRAIMAGE", .{index}, arg);
+    pub fn setValueHandleHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "VALUE_HANDLE", .{}, arg);
+    }
+
+    /// 
+    /// CLOSEIMAGEHIGHLIGHT: image name to be used in the close button in highlight state.
+    pub fn getCloseImageHighlight(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CLOSEIMAGEHIGHLIGHT", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// CLOSEIMAGEHIGHLIGHT: image name to be used in the close button in highlight state.
+    pub fn setCloseImageHighlight(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CLOSEIMAGEHIGHLIGHT", .{}, arg);
+    }
+
+    pub fn setCloseImageHighlightHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CLOSEIMAGEHIGHLIGHT", .{}, arg);
+    }
+
+    pub fn getDropTarget(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DROPTARGET", .{});
+    }
+
+    pub fn setDropTarget(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
+    }
+
+    /// 
+    /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
+    /// If set to NO will compute using only the current tab.
+    /// Default: Yes.
+    /// (since 3.27)
+    pub fn getChildSizeAll(self: *Self) bool {
+        return interop.getBoolAttribute(self, "CHILDSIZEALL", .{});
+    }
+
+    /// 
+    /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
+    /// If set to NO will compute using only the current tab.
+    /// Default: Yes.
+    /// (since 3.27)
+    pub fn setChildSizeAll(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "CHILDSIZEALL", .{}, arg);
+    }
+
+    pub fn getDX(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "DX", .{});
+    }
+
+    pub fn setDX(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "DX", .{}, arg);
+    }
+
+    pub fn getDY(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "DY", .{});
+    }
+
+    pub fn setDY(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "DY", .{}, arg);
+    }
+
+    pub fn getDrawTextEllipsis(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DRAWTEXTELLIPSIS", .{});
+    }
+
+    pub fn setDrawTextEllipsis(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DRAWTEXTELLIPSIS", .{}, arg);
+    }
+
+    pub fn getDragSource(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DRAGSOURCE", .{});
+    }
+
+    pub fn setDragSource(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
+    }
+
+    pub fn getDrawTextClip(self: *Self) bool {
+        return interop.getBoolAttribute(self, "DRAWTEXTCLIP", .{});
+    }
+
+    pub fn setDrawTextClip(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "DRAWTEXTCLIP", .{}, arg);
     }
 
     /// 
@@ -3457,6 +2835,240 @@ pub const FlatTabs = opaque {
         } else {
             interop.clearAttribute(self, "FLOATING", .{});
         }
+    }
+
+    pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
+    }
+
+    pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
+    }
+
+    pub fn getRasterSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
+    }
+
+    /// 
+    /// CLOSEIMAGEINACTIVE: image name to be used in the close button in inactive state.
+    /// If it is not defined then the CLOSEIMAGE is used and its colors will be
+    /// replaced by a modified version creating the disabled effect.
+    /// (since 3.22)
+    pub fn getCloseImageInactive(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CLOSEIMAGEINACTIVE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// CLOSEIMAGEINACTIVE: image name to be used in the close button in inactive state.
+    /// If it is not defined then the CLOSEIMAGE is used and its colors will be
+    /// replaced by a modified version creating the disabled effect.
+    /// (since 3.22)
+    pub fn setCloseImageInactive(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CLOSEIMAGEINACTIVE", .{}, arg);
+    }
+
+    pub fn setCloseImageInactiveHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CLOSEIMAGEINACTIVE", .{}, arg);
+    }
+
+    pub fn getTipFgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "TIPFGCOLOR", .{});
+    }
+
+    pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
+    }
+
+    pub fn getYHidden(self: *Self) bool {
+        return interop.getBoolAttribute(self, "YHIDDEN", .{});
+    }
+
+    pub fn getDrawSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "DRAWSIZE", .{});
+        return Size.parse(str);
+    }
+
+    /// 
+    /// CLOSEIMAGEPRESS: image name to be used in the close button in pressed state.
+    /// Default: "IMGFLATCLOSEPRESS".
+    pub fn getCloseImagePress(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CLOSEIMAGEPRESS", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// CLOSEIMAGEPRESS: image name to be used in the close button in pressed state.
+    /// Default: "IMGFLATCLOSEPRESS".
+    pub fn setCloseImagePress(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CLOSEIMAGEPRESS", .{}, arg);
+    }
+
+    pub fn setCloseImagePressHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CLOSEIMAGEPRESS", .{}, arg);
+    }
+
+    pub fn getFontFace(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONTFACE", .{});
+    }
+
+    pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
+    }
+
+    pub fn getDrawColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "DRAWCOLOR", .{});
+    }
+
+    pub fn setDrawColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "DRAWCOLOR", .{}, rgb);
+    }
+
+    pub fn getDrawTextOrientation(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "DRAWTEXTORIENTATION", .{});
+    }
+
+    pub fn setDrawTextOrientation(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "DRAWTEXTORIENTATION", .{}, arg);
+    }
+
+    pub fn getDrawBgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "DRAWBGCOLOR", .{});
+    }
+
+    pub fn setDrawBgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "DRAWBGCOLOR", .{}, rgb);
+    }
+
+    /// 
+    /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
+    /// "HORIZONTAL" or "VERTICAL".
+    /// Default is "HORIZONTAL".
+    /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
+    /// (since 3.25)
+    pub fn getTabOrientation(self: *Self) ?TabOrientation {
+        var ret = interop.getStrAttribute(self, "TABORIENTATION", .{});
+
+        if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
+        if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
+        return null;
+    }
+
+    /// 
+    /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
+    /// "HORIZONTAL" or "VERTICAL".
+    /// Default is "HORIZONTAL".
+    /// When set to vertical it will simply set TABSTEXTORIENTATION to 90.
+    /// (since 3.25)
+    pub fn setTabOrientation(self: *Self, arg: ?TabOrientation) void {
+        if (arg) |value| switch (value) {
+            .Horizontal => interop.setStrAttribute(self, "TABORIENTATION", .{}, "HORIZONTAL"),
+            .Vertical => interop.setStrAttribute(self, "TABORIENTATION", .{}, "VERTICAL"),
+        } else {
+            interop.clearAttribute(self, "TABORIENTATION", .{});
+        }
+    }
+
+    pub fn getName(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NAME", .{});
+    }
+
+    pub fn setName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NAME", .{}, arg);
+    }
+
+    /// 
+    /// VALUEPOS: Changes the current tab by its position, starting at 0.
+    pub fn getValuePos(self: *Self) i32 {
+        return interop.getIntAttribute(self, "VALUEPOS", .{});
+    }
+
+    /// 
+    /// VALUEPOS: Changes the current tab by its position, starting at 0.
+    pub fn setValuePos(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "VALUEPOS", .{}, arg);
+    }
+
+    pub fn getBackingStore(self: *Self) bool {
+        return interop.getBoolAttribute(self, "BACKINGSTORE", .{});
+    }
+
+    pub fn setBackingStore(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "BACKINGSTORE", .{}, arg);
+    }
+
+    pub fn getDrawDriver(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "DRAWDRIVER", .{});
+    }
+
+    pub fn getYAutoHide(self: *Self) bool {
+        return interop.getBoolAttribute(self, "YAUTOHIDE", .{});
+    }
+
+    pub fn setYAutoHide(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "YAUTOHIDE", .{}, arg);
+    }
+
+    pub fn getDrawStyle(self: *Self) ?DrawStyle {
+        var ret = interop.getStrAttribute(self, "DRAWSTYLE", .{});
+
+        if (std.ascii.eqlIgnoreCase("FILL", ret)) return .Fill;
+        if (std.ascii.eqlIgnoreCase("STROKE_DASH", ret)) return .StrokeDash;
+        if (std.ascii.eqlIgnoreCase("STROKE_DOT", ret)) return .StrokeDot;
+        if (std.ascii.eqlIgnoreCase("STROKE_DASH_DOT", ret)) return .StrokeDashDot;
+        if (std.ascii.eqlIgnoreCase("STROKE_DASH_DOT_DOT", ret)) return .StrokeDashDotdot;
+        if (std.ascii.eqlIgnoreCase("DRAW_STROKE", ret)) return .DrawStroke;
+        return null;
+    }
+
+    pub fn setDrawStyle(self: *Self, arg: ?DrawStyle) void {
+        if (arg) |value| switch (value) {
+            .Fill => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "FILL"),
+            .StrokeDash => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DASH"),
+            .StrokeDot => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DOT"),
+            .StrokeDashDot => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DASH_DOT"),
+            .StrokeDashDotdot => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "STROKE_DASH_DOT_DOT"),
+            .DrawStroke => interop.setStrAttribute(self, "DRAWSTYLE", .{}, "DRAW_STROKE"),
+        } else {
+            interop.clearAttribute(self, "DRAWSTYLE", .{});
+        }
+    }
+
+    /// 
+    /// VALUE: Changes the current tab by its name.
+    /// The value passed must be the name of one of the elements contained in the tabs.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
+    /// In Lua you can also use the element reference directly.
+    /// When the tabs is created, the first element inserted is set as the current tab.
+    /// When the current tab is changed is also scrolled to be visible (since 3.23).
+    pub fn getValue(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "VALUE", .{});
+    }
+
+    /// 
+    /// VALUE: Changes the current tab by its name.
+    /// The value passed must be the name of one of the elements contained in the tabs.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
+    /// In Lua you can also use the element reference directly.
+    /// When the tabs is created, the first element inserted is set as the current tab.
+    /// When the current tab is changed is also scrolled to be visible (since 3.23).
+    pub fn setValue(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
 
     /// 
@@ -3495,6 +3107,84 @@ pub const FlatTabs = opaque {
     }
 
     /// 
+    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+    /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
+    pub fn getActive(self: *Self) bool {
+        return interop.getBoolAttribute(self, "ACTIVE", .{});
+    }
+
+    /// 
+    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+    /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
+    pub fn setActive(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
+    }
+
+    pub fn getTipVisible(self: *Self) bool {
+        return interop.getBoolAttribute(self, "TIPVISIBLE", .{});
+    }
+
+    pub fn setTipVisible(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
+    }
+
+    pub fn getYMax(self: *Self) i32 {
+        return interop.getIntAttribute(self, "YMAX", .{});
+    }
+
+    pub fn setYMax(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "YMAX", .{}, arg);
+    }
+
+    pub fn getExpandWeight(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
+    }
+
+    pub fn setExpandWeight(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
+    }
+
+    pub fn getMinSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "MINSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn setMinSize(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "MINSIZE", .{}, value);
+    }
+
+    /// 
+    /// CLOSEIMAGE: image name to be used in the close button.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// Default: "IMGFLATCLOSE".
+    pub fn getCloseImage(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "CLOSEIMAGE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// CLOSEIMAGE: image name to be used in the close button.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// n starts at 0.
+    /// See also IupImage.
+    /// Default: "IMGFLATCLOSE".
+    pub fn setCloseImage(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "CLOSEIMAGE", .{}, arg);
+    }
+
+    pub fn setCloseImageHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "CLOSEIMAGE", .{}, arg);
+    }
+
+    /// 
     /// EXTRAIMAGEINACTIVEid: same as EXTRAIMAGEid when in inactive state.
     /// If not defined EXTRAIMAGEid is used and its colors will be replaced by a
     /// modified version creating the disabled effect.
@@ -3519,20 +3209,12 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "EXTRAIMAGEINACTIVE", .{index}, arg);
     }
 
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
+    pub fn getNTheme(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NTHEME", .{});
     }
 
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
-    }
-
-    pub fn getName(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NAME", .{});
-    }
-
-    pub fn setName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NAME", .{}, arg);
+    pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
     /// 
@@ -3555,34 +3237,124 @@ pub const FlatTabs = opaque {
         interop.setIntAttribute(self, "EXTRABUTTONS", .{}, arg);
     }
 
-    /// 
-    /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
-    /// the next native parent with FOCUS_CB defined.
-    /// Default: NO.
-    /// (since 3.23)
-    pub fn getPropagateFocus(self: *Self) bool {
-        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
+    pub fn getBorder(self: *Self) bool {
+        return interop.getBoolAttribute(self, "BORDER", .{});
+    }
+
+    pub fn getCharSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn getClientSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CLIENTSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn getClientOffset(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CLIENTOFFSET", .{});
+        return Size.parse(str);
     }
 
     /// 
-    /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
-    /// the next native parent with FOCUS_CB defined.
-    /// Default: NO.
-    /// (since 3.23)
-    pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
+    /// FORECOLOR: text color for the current Tab.
+    /// Default: "50 150 255".
+    pub fn getForeColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "FORECOLOR", .{});
     }
 
-    pub fn getBackingStore(self: *Self) bool {
-        return interop.getBoolAttribute(self, "BACKINGSTORE", .{});
+    /// 
+    /// FORECOLOR: text color for the current Tab.
+    /// Default: "50 150 255".
+    pub fn setForeColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "FORECOLOR", .{}, rgb);
     }
 
-    pub fn setBackingStore(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "BACKINGSTORE", .{}, arg);
+    pub fn getDragTypes(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "DRAGTYPES", .{});
     }
 
-    pub fn getDrawDriver(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "DRAWDRIVER", .{});
+    pub fn setDragTypes(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "DRAGTYPES", .{}, arg);
+    }
+
+    pub fn getWheelDropFocus(self: *Self) bool {
+        return interop.getBoolAttribute(self, "WHEELDROPFOCUS", .{});
+    }
+
+    pub fn setWheelDropFocus(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "WHEELDROPFOCUS", .{}, arg);
+    }
+
+    pub fn getFontStyle(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONTSTYLE", .{});
+    }
+
+    pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
+    }
+
+    pub fn getTouch(self: *Self) bool {
+        return interop.getBoolAttribute(self, "TOUCH", .{});
+    }
+
+    pub fn setTouch(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
+    }
+
+    /// 
+    /// TABTITLEn: contains the text to be shown in the respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    /// It is not updated if TABTITLEn is changed.
+    pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
+        return interop.getStrAttribute(self, "TABTITLE", .{index});
+    }
+
+    /// 
+    /// TABTITLEn: contains the text to be shown in the respective tab title.
+    /// n starts at 0.
+    /// If this value is NULL, it will remain empty.
+    /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
+    /// each child.
+    /// Works only if set before the child is added to the tabs.
+    /// It is not updated if TABTITLEn is changed.
+    pub fn setTabTitle(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
+    }
+
+    /// 
+    /// EXTRAIMAGEHIGHLIGHTid: same as EXTRAIMAGEid when in highlight state.
+    /// If not defined EXTRAIMAGEid is used.
+    pub fn getExtraImageHighlight(self: *Self, index: i32) ?iup.Element {
+        if (interop.getHandleAttribute(self, "EXTRAIMAGEHIGHLIGHT", .{index})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// EXTRAIMAGEHIGHLIGHTid: same as EXTRAIMAGEid when in highlight state.
+    /// If not defined EXTRAIMAGEid is used.
+    pub fn setExtraImageHighlight(self: *Self, index: i32, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "EXTRAIMAGEHIGHLIGHT", .{index}, arg);
+    }
+
+    pub fn setExtraImageHighlightHandleName(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "EXTRAIMAGEHIGHLIGHT", .{index}, arg);
+    }
+
+    pub fn getFont(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONT", .{});
+    }
+
+    pub fn setFont(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
     pub fn getMdiClient(self: *Self) bool {
@@ -3607,92 +3379,6 @@ pub const FlatTabs = opaque {
 
     pub fn setMdiMenuHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
-    }
-
-    /// 
-    /// WHEEL_CB WHEEL_CB Action generated when the mouse wheel is rotated.
-    /// If this callback is not defined the wheel will automatically scroll the
-    /// canvas in the vertical direction by some lines, the SCROLL_CB callback if
-    /// defined will be called with the IUP_SBDRAGV operation.
-    /// Callback int function(Ihandle *ih, float delta, int x, int y, char
-    /// *status); [in C] ih:wheel_cb(delta, x, y: number, status: string) -> (ret:
-    /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// delta: the amount the wheel was rotated in notches.
-    /// x, y: position in the canvas where the event has occurred, in pixels.
-    /// status: status of mouse buttons and certain keyboard keys at the moment the
-    /// event was generated.
-    /// The same macros used for BUTTON_CB can be used for this status.
-    /// Notes In Motif and GTK delta is always 1 or -1.
-    /// In Windows is some situations delta can reach the value of two.
-    /// In the future with more precise wheels this increment can be changed.
-    /// Affects IupCanvas, IupGLCanvas
-    pub fn setWheelCallback(self: *Self, callback: ?OnWheelFn) void {
-        const Handler = CallbackHandler(Self, OnWheelFn, "WHEEL_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
-    /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
-    /// [in Lua] ih: identifier of the element that activated the event.
-    /// Notes If the dialog is visible then it is hidden before it is destroyed.
-    /// The callback will be called right after it is hidden.
-    /// The callback will be called before all other destroy procedures.
-    /// For instance, if the element has children then it is called before the
-    /// children are destroyed.
-    /// For language binding implementations use the callback name "LDESTROY_CB" to
-    /// release memory allocated by the binding for the element.
-    /// Also the callback will be called before the language callback.
-    /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
-        const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
-    /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
-    /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// Affects All elements with user interaction, except menus.
-    /// In Windows, there are restrictions when using this callback.
-    /// From MSDN on WM_KILLFOCUS: "While processing this message, do not make any
-    /// function calls that display or activate a window.
-    /// This causes the thread to yield control and can cause the application to
-    /// stop responding to messages.
-    /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setKillFocusCallback(self: *Self, callback: ?OnKillFocusFn) void {
-        const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// MOTION_CB MOTION_CB Action generated when the mouse moves.
-    /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
-    /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
-    /// identifier of the element that activated the event.
-    /// x, y: position in the canvas where the event has occurred, in pixels.
-    /// status: status of mouse buttons and certain keyboard keys at the moment the
-    /// event was generated.
-    /// The same macros used for BUTTON_CB can be used for this status.
-    /// Notes Between press and release all mouse events are redirected only to
-    /// this control, even if the cursor moves outside the element.
-    /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
-    /// called with coordinates outside the element rectangle.
-    /// Affects IupCanvas, IupGLCanvas
-    pub fn setMotionCallback(self: *Self, callback: ?OnMotionFn) void {
-        const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setDragEndCallback(self: *Self, callback: ?OnDragEndFn) void {
-        const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
-        const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
-        Handler.setCallback(self, callback);
     }
 
     /// 
@@ -3724,12 +3410,8 @@ pub const FlatTabs = opaque {
         Handler.setCallback(self, callback);
     }
 
-    /// 
-    /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
-    /// (since 3.22) int function(Ihandle* ih, int button, int pressed); [in C]
-    /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua]
-    pub fn setExtraButtonCallback(self: *Self, callback: ?OnExtraButtonFn) void {
-        const Handler = CallbackHandler(Self, OnExtraButtonFn, "EXTRABUTTON_CB");
+    pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
+        const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -3752,13 +3434,12 @@ pub const FlatTabs = opaque {
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFlatKillFocusCallback(self: *Self, callback: ?OnFlatKillFocusFn) void {
-        const Handler = CallbackHandler(Self, OnFlatKillFocusFn, "FLAT_KILLFOCUS_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setDropDataCallback(self: *Self, callback: ?OnDropDataFn) void {
-        const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
+    /// 
+    /// TABCHANGE_CB: Callback called when the user changes the current tab.
+    /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
+    /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
+    pub fn setTabChangeCallback(self: *Self, callback: ?OnTabChangeFn) void {
+        const Handler = CallbackHandler(Self, OnTabChangeFn, "TABCHANGE_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -3797,31 +3478,155 @@ pub const FlatTabs = opaque {
     }
 
     /// 
-    /// TABCHANGE_CB: Callback called when the user changes the current tab.
-    /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
-    /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
-    pub fn setTabChangeCallback(self: *Self, callback: ?OnTabChangeFn) void {
-        const Handler = CallbackHandler(Self, OnTabChangeFn, "TABCHANGE_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
-    /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
+    /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
+    /// In Motif is also activated by the Help button in some workstations keyboard.
+    /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
-    /// Affects All that have a native representation.
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
-        const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
+    /// Returns: IUP_CLOSE will be processed.
+    /// Affects All elements with user interaction.
+    pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
+        const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    pub fn setDropMotionCallback(self: *Self, callback: ?OnDropMotionFn) void {
+        const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    pub fn setFlatLeaveWindowCallback(self: *Self, callback: ?OnFlatLeaveWindowFn) void {
+        const Handler = CallbackHandler(Self, OnFlatLeaveWindowFn, "FLAT_LEAVEWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
     /// 
-    /// TABCLOSE_CB: Callback called when the user clicks on the close button.
-    /// Called only when SHOWCLOSE=Yes.
-    /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+    /// KEYPRESS_CB KEYPRESS_CB Action generated when a key is pressed or released.
+    /// If the key is pressed and held several calls will occur.
+    /// It is called after the callback K_ANY is processed.
+    /// Callback int function(Ihandle *ih, int c, int press); [in C]
+    /// ih:keypress_cb(c, press: number) -> (ret: number) [in Lua] ih: identifier
+    /// of the element that activated the event.
+    /// c: identifier of typed key.
+    /// Please refer to the Keyboard Codes table for a list of possible values.
+    /// press: 1 is the user pressed the key or 0 otherwise.
+    /// Returns: If IUP_IGNORE is returned the key is ignored by the system.
+    /// IUP_CLOSE will be processed.
+    /// Affects IupCanvas
+    pub fn setKeyPressCallback(self: *Self, callback: ?OnKeyPressFn) void {
+        const Handler = CallbackHandler(Self, OnKeyPressFn, "KEYPRESS_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    pub fn setDragEndCallback(self: *Self, callback: ?OnDragEndFn) void {
+        const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    pub fn setFlatKillFocusCallback(self: *Self, callback: ?OnFlatKillFocusFn) void {
+        const Handler = CallbackHandler(Self, OnFlatKillFocusFn, "FLAT_KILLFOCUS_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    pub fn setDragBeginCallback(self: *Self, callback: ?OnDragBeginFn) void {
+        const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// ACTION ACTION Action generated when the element is activated.
+    /// Affects each element differently.
+    /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
+    /// Lua] ih: identifier of the element that activated the event.
+    /// In some elements, this callback may receive more parameters, apart from ih.
+    /// Please refer to each element's documentation.
+    /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
+    /// IupToggle
+    pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
+        const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
+    /// (since 3.22) int function(Ihandle* ih, int button, int pressed); [in C]
+    /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua]
+    pub fn setExtraButtonCallback(self: *Self, callback: ?OnExtraButtonFn) void {
+        const Handler = CallbackHandler(Self, OnExtraButtonFn, "EXTRABUTTON_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// MOTION_CB MOTION_CB Action generated when the mouse moves.
+    /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
+    /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
+    /// identifier of the element that activated the event.
+    /// x, y: position in the canvas where the event has occurred, in pixels.
+    /// status: status of mouse buttons and certain keyboard keys at the moment the
+    /// event was generated.
+    /// The same macros used for BUTTON_CB can be used for this status.
+    /// Notes Between press and release all mouse events are redirected only to
+    /// this control, even if the cursor moves outside the element.
+    /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
+    /// called with coordinates outside the element rectangle.
+    /// Affects IupCanvas, IupGLCanvas
+    pub fn setMotionCallback(self: *Self, callback: ?OnMotionFn) void {
+        const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    pub fn setFlatGetFocusCallback(self: *Self, callback: ?OnFlatGetFocusFn) void {
+        const Handler = CallbackHandler(Self, OnFlatGetFocusFn, "FLAT_GETFOCUS_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// WHEEL_CB WHEEL_CB Action generated when the mouse wheel is rotated.
+    /// If this callback is not defined the wheel will automatically scroll the
+    /// canvas in the vertical direction by some lines, the SCROLL_CB callback if
+    /// defined will be called with the IUP_SBDRAGV operation.
+    /// Callback int function(Ihandle *ih, float delta, int x, int y, char
+    /// *status); [in C] ih:wheel_cb(delta, x, y: number, status: string) -> (ret:
+    /// number) [in Lua] ih: identifier of the element that activated the event.
+    /// delta: the amount the wheel was rotated in notches.
+    /// x, y: position in the canvas where the event has occurred, in pixels.
+    /// status: status of mouse buttons and certain keyboard keys at the moment the
+    /// event was generated.
+    /// The same macros used for BUTTON_CB can be used for this status.
+    /// Notes In Motif and GTK delta is always 1 or -1.
+    /// In Windows is some situations delta can reach the value of two.
+    /// In the future with more precise wheels this increment can be changed.
+    /// Affects IupCanvas, IupGLCanvas
+    pub fn setWheelCallback(self: *Self, callback: ?OnWheelFn) void {
+        const Handler = CallbackHandler(Self, OnWheelFn, "WHEEL_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
+    /// right mouse button.
+    /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
     /// (ret: number) [in Lua]
-    pub fn setTabCloseCallback(self: *Self, callback: ?OnTabCloseFn) void {
-        const Handler = CallbackHandler(Self, OnTabCloseFn, "TABCLOSE_CB");
+    pub fn setRightClickCallback(self: *Self, callback: ?OnRightClickFn) void {
+        const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
+    /// updated in IupMap.
+    /// When the element is a dialog, it is called after the layout is updated.
+    /// For all other elements is called before the layout is updated, so the
+    /// element current size will still be 0x0 during MAP_CB (since 3.14).
+    /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
+    /// Lua] ih: identifier of the element that activated the event.
+    /// Affects All that have a native representation.
+    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+        const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    pub fn setFlatButtonCallback(self: *Self, callback: ?OnFlatButtonFn) void {
+        const Handler = CallbackHandler(Self, OnFlatButtonFn, "FLAT_BUTTON_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -3845,157 +3650,52 @@ pub const FlatTabs = opaque {
     }
 
     /// 
-    /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
-    /// native element.
-    /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
+    /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
+    /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
+    /// [in Lua] ih: identifier of the element that activated the event.
+    /// Notes If the dialog is visible then it is hidden before it is destroyed.
+    /// The callback will be called right after it is hidden.
+    /// The callback will be called before all other destroy procedures.
+    /// For instance, if the element has children then it is called before the
+    /// children are destroyed.
+    /// For language binding implementations use the callback name "LDESTROY_CB" to
+    /// release memory allocated by the binding for the element.
+    /// Also the callback will be called before the language callback.
+    /// Affects All.
+    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+        const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    pub fn setDropDataCallback(self: *Self, callback: ?OnDropDataFn) void {
+        const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
+    /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
+    /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
     /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// Notes When the cursor is moved from one element to another, the call order
-    /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
-    /// control followed by the ENTERWINDOW_CB callback of the new control.
-    /// (since 3.14) If the mouse button is hold pressed and the cursor moves
-    /// outside the element the behavior is system dependent.
-    /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
-    /// GTK the callbacks are called.
-    /// Affects All controls with user interaction.
-    /// See Also ENTERWINDOW_CB
-    pub fn setLeaveWindowCallback(self: *Self, callback: ?OnLeaveWindowFn) void {
-        const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
+    /// Affects All elements with user interaction, except menus.
+    /// In Windows, there are restrictions when using this callback.
+    /// From MSDN on WM_KILLFOCUS: "While processing this message, do not make any
+    /// function calls that display or activate a window.
+    /// This causes the thread to yield control and can cause the application to
+    /// stop responding to messages.
+    /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
+    pub fn setKillFocusCallback(self: *Self, callback: ?OnKillFocusFn) void {
+        const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFlatLeaveWindowCallback(self: *Self, callback: ?OnFlatLeaveWindowFn) void {
-        const Handler = CallbackHandler(Self, OnFlatLeaveWindowFn, "FLAT_LEAVEWINDOW_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setDragBeginCallback(self: *Self, callback: ?OnDragBeginFn) void {
-        const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setFlatButtonCallback(self: *Self, callback: ?OnFlatButtonFn) void {
-        const Handler = CallbackHandler(Self, OnFlatButtonFn, "FLAT_BUTTON_CB");
+    pub fn setDragDataCallback(self: *Self, callback: ?OnDragDataFn) void {
+        const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
         Handler.setCallback(self, callback);
     }
 
     pub fn setDragDataSizeCallback(self: *Self, callback: ?OnDragDataSizeFn) void {
         const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
-        const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// ACTION ACTION Action generated when the element is activated.
-    /// Affects each element differently.
-    /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
-    /// Lua] ih: identifier of the element that activated the event.
-    /// In some elements, this callback may receive more parameters, apart from ih.
-    /// Please refer to each element's documentation.
-    /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
-    /// IupToggle
-    pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
-        const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setDropMotionCallback(self: *Self, callback: ?OnDropMotionFn) void {
-        const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
-    /// Called only when TABCHANGE_CB is not defined.
-    /// int function(Ihandle* ih, int new_pos, int old_pos); [in C]
-    /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
-    pub fn setTabChangePosCallback(self: *Self, callback: ?OnTabChangePosFn) void {
-        const Handler = CallbackHandler(Self, OnTabChangePosFn, "TABCHANGEPOS_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// KEYPRESS_CB KEYPRESS_CB Action generated when a key is pressed or released.
-    /// If the key is pressed and held several calls will occur.
-    /// It is called after the callback K_ANY is processed.
-    /// Callback int function(Ihandle *ih, int c, int press); [in C]
-    /// ih:keypress_cb(c, press: number) -> (ret: number) [in Lua] ih: identifier
-    /// of the element that activated the event.
-    /// c: identifier of typed key.
-    /// Please refer to the Keyboard Codes table for a list of possible values.
-    /// press: 1 is the user pressed the key or 0 otherwise.
-    /// Returns: If IUP_IGNORE is returned the key is ignored by the system.
-    /// IUP_CLOSE will be processed.
-    /// Affects IupCanvas
-    pub fn setKeyPressCallback(self: *Self, callback: ?OnKeyPressFn) void {
-        const Handler = CallbackHandler(Self, OnKeyPressFn, "KEYPRESS_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
-    /// Callback int function(Ihandle *ih, int width, int height); [in C]
-    /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
-    /// identifier of the element that activated the event.
-    /// width: the width of the internal element size in pixels not considering the
-    /// decorations (client size) height: the height of the internal element size
-    /// in pixels not considering the decorations (client size) Notes For the
-    /// dialog, this action is also generated when the dialog is mapped, after the
-    /// map and before the show.
-    /// When XAUTOHIDE=Yes or YAUTOHIDE=Yes, if the canvas scrollbar is
-    /// hidden/shown after changing the DX or DY attributes from inside the
-    /// callback, the size of the drawing area will immediately change, so the
-    /// parameters with and height will be invalid.
-    /// To update the parameters consult the DRAWSIZE attribute.
-    /// Also activate the drawing toolkit only after updating the DX or DY attributes.
-    /// Affects IupCanvas, IupGLCanvas, IupDialog
-    pub fn setResizeCallback(self: *Self, callback: ?OnResizeFn) void {
-        const Handler = CallbackHandler(Self, OnResizeFn, "RESIZE_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
-    /// This callback is called after the KILLFOCUS_CB of the element that loosed
-    /// the focus.
-    /// The IupGetFocus function during the callback returns the element that
-    /// loosed the focus.
-    /// Callback int function(Ihandle *ih); [in C] ih:getfocus_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that received keyboard focus.
-    /// Affects All elements with user interaction, except menus.
-    /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setGetFocusCallback(self: *Self, callback: ?OnGetFocusFn) void {
-        const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
-    /// In Motif is also activated by the Help button in some workstations keyboard.
-    /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
-    /// [in Lua] ih: identifier of the element that activated the event.
-    /// Returns: IUP_CLOSE will be processed.
-    /// Affects All elements with user interaction.
-    pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
-        const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
-        const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -4023,13 +3723,70 @@ pub const FlatTabs = opaque {
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFlatMotionCallback(self: *Self, callback: ?OnFlatMotionFn) void {
-        const Handler = CallbackHandler(Self, OnFlatMotionFn, "FLAT_MOTION_CB");
+    /// 
+    /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
+    /// Callback int function(Ihandle *ih, int width, int height); [in C]
+    /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
+    /// identifier of the element that activated the event.
+    /// width: the width of the internal element size in pixels not considering the
+    /// decorations (client size) height: the height of the internal element size
+    /// in pixels not considering the decorations (client size) Notes For the
+    /// dialog, this action is also generated when the dialog is mapped, after the
+    /// map and before the show.
+    /// When XAUTOHIDE=Yes or YAUTOHIDE=Yes, if the canvas scrollbar is
+    /// hidden/shown after changing the DX or DY attributes from inside the
+    /// callback, the size of the drawing area will immediately change, so the
+    /// parameters with and height will be invalid.
+    /// To update the parameters consult the DRAWSIZE attribute.
+    /// Also activate the drawing toolkit only after updating the DX or DY attributes.
+    /// Affects IupCanvas, IupGLCanvas, IupDialog
+    pub fn setResizeCallback(self: *Self, callback: ?OnResizeFn) void {
+        const Handler = CallbackHandler(Self, OnResizeFn, "RESIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataCallback(self: *Self, callback: ?OnDragDataFn) void {
-        const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
+    /// 
+    /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
+    /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
+    /// [in Lua] ih: identifier of the element that activated the event.
+    /// Affects All that have a native representation.
+    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+        const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
+    /// Called only when TABCHANGE_CB is not defined.
+    /// int function(Ihandle* ih, int new_pos, int old_pos); [in C]
+    /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
+    pub fn setTabChangePosCallback(self: *Self, callback: ?OnTabChangePosFn) void {
+        const Handler = CallbackHandler(Self, OnTabChangePosFn, "TABCHANGEPOS_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// TABCLOSE_CB: Callback called when the user clicks on the close button.
+    /// Called only when SHOWCLOSE=Yes.
+    /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
+    /// (ret: number) [in Lua]
+    pub fn setTabCloseCallback(self: *Self, callback: ?OnTabCloseFn) void {
+        const Handler = CallbackHandler(Self, OnTabCloseFn, "TABCLOSE_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
+    /// This callback is called after the KILLFOCUS_CB of the element that loosed
+    /// the focus.
+    /// The IupGetFocus function during the callback returns the element that
+    /// loosed the focus.
+    /// Callback int function(Ihandle *ih); [in C] ih:getfocus_cb() -> (ret:
+    /// number) [in Lua] ih: identifier of the element that received keyboard focus.
+    /// Affects All elements with user interaction, except menus.
+    /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
+    pub fn setGetFocusCallback(self: *Self, callback: ?OnGetFocusFn) void {
+        const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -4083,214 +3840,75 @@ pub const FlatTabs = opaque {
         Handler.setCallback(self, callback);
     }
 
-    /// 
-    /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
-    /// updated in IupMap.
-    /// When the element is a dialog, it is called after the layout is updated.
-    /// For all other elements is called before the layout is updated, so the
-    /// element current size will still be 0x0 during MAP_CB (since 3.14).
-    /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
-    /// Lua] ih: identifier of the element that activated the event.
-    /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
-        const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
+    pub fn setFlatMotionCallback(self: *Self, callback: ?OnFlatMotionFn) void {
+        const Handler = CallbackHandler(Self, OnFlatMotionFn, "FLAT_MOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFlatGetFocusCallback(self: *Self, callback: ?OnFlatGetFocusFn) void {
-        const Handler = CallbackHandler(Self, OnFlatGetFocusFn, "FLAT_GETFOCUS_CB");
+    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+        const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
     /// 
-    /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
-    /// right mouse button.
-    /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
-    /// (ret: number) [in Lua]
-    pub fn setRightClickCallback(self: *Self, callback: ?OnRightClickFn) void {
-        const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
+    /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
+    /// native element.
+    /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
+    /// number) [in Lua] ih: identifier of the element that activated the event.
+    /// Notes When the cursor is moved from one element to another, the call order
+    /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
+    /// control followed by the ENTERWINDOW_CB callback of the new control.
+    /// (since 3.14) If the mouse button is hold pressed and the cursor moves
+    /// outside the element the behavior is system dependent.
+    /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
+    /// GTK the callbacks are called.
+    /// Affects All controls with user interaction.
+    /// See Also ENTERWINDOW_CB
+    pub fn setLeaveWindowCallback(self: *Self, callback: ?OnLeaveWindowFn) void {
+        const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+        const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }
 };
 
-test "FlatTabs DrawTextLayoutCenter" {
+test "FlatTabs HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setDrawTextLayoutCenter(true).unwrap());
+    var item = try (iup.FlatTabs.init().setHandleName("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getDrawTextLayoutCenter();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs DragTypes" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDragTypes("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragTypes();
+    var ret = item.getHandleName();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "FlatTabs XMax" {
+test "FlatTabs TipBgColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setXMax(42).unwrap());
+    var item = try (iup.FlatTabs.init().setTipBgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
     defer item.deinit();
 
-    var ret = item.getXMax();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "FlatTabs Size" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setSize(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getSize();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "FlatTabs ValuePos" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setValuePos(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getValuePos();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "FlatTabs Value" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setValue("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getValue();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs TipFgColor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTipFgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipFgColor();
+    var ret = item.getTipBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "FlatTabs Expand" {
+test "FlatTabs TabFontSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setExpand(.Yes).unwrap());
+    var item = try (iup.FlatTabs.init().setTabFontSize(0, 42).unwrap());
     defer item.deinit();
 
-    var ret = item.getExpand();
-
-    try std.testing.expect(ret != null and ret.? == .Yes);
-}
-
-test "FlatTabs DrawTextOrientation" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawTextOrientation(3.14).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawTextOrientation();
-
-    try std.testing.expect(ret == @as(f64, 3.14));
-}
-
-test "FlatTabs ForeColor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setForeColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
-    defer item.deinit();
-
-    var ret = item.getForeColor();
-
-    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "FlatTabs DrawTextAlignment" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawTextAlignment(.ACenter).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawTextAlignment();
-
-    try std.testing.expect(ret != null and ret.? == .ACenter);
-}
-
-test "FlatTabs DragSource" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDragSource(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragSource();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs DrawColor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawColor();
-
-    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "FlatTabs DrawLineWidth" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawLineWidth(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawLineWidth();
+    var ret = item.getTabFontSize(0);
 
     try std.testing.expect(ret == 42);
-}
-
-test "FlatTabs UserSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setUserSize(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getUserSize();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
 test "FlatTabs XMin" {
@@ -4305,28 +3923,40 @@ test "FlatTabs XMin" {
     try std.testing.expect(ret == 42);
 }
 
-test "FlatTabs DrawTextEllipsis" {
+test "FlatTabs TipIcon" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setDrawTextEllipsis(true).unwrap());
+    var item = try (iup.FlatTabs.init().setTipIcon("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getDrawTextEllipsis();
+    var ret = item.getTipIcon();
 
-    try std.testing.expect(ret == true);
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "FlatTabs ControlId" {
+test "FlatTabs MaxSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setControlId(42).unwrap());
+    var item = try (iup.FlatTabs.init().setMaxSize(9, 10).unwrap());
     defer item.deinit();
 
-    var ret = item.getControlId();
+    var ret = item.getMaxSize();
 
-    try std.testing.expect(ret == 42);
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "FlatTabs DrawTextWrap" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDrawTextWrap(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDrawTextWrap();
+
+    try std.testing.expect(ret == true);
 }
 
 test "FlatTabs FocusFeedback" {
@@ -4341,186 +3971,6 @@ test "FlatTabs FocusFeedback" {
     try std.testing.expect(ret == true);
 }
 
-test "FlatTabs TabTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTabTitle(0, "Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTabTitle(0);
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs TabOrientation" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTabOrientation(.Horizontal).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTabOrientation();
-
-    try std.testing.expect(ret != null and ret.? == .Horizontal);
-}
-
-test "FlatTabs YAutoHide" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setYAutoHide(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getYAutoHide();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs DrawTextClip" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawTextClip(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawTextClip();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs Theme" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTheme("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTheme();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs Visible" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setVisible(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getVisible();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs BgColor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setBgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
-    defer item.deinit();
-
-    var ret = item.getBgColor();
-
-    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "FlatTabs RasterSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setRasterSize(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getRasterSize();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "FlatTabs DrawStyle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawStyle(.Fill).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawStyle();
-
-    try std.testing.expect(ret != null and ret.? == .Fill);
-}
-
-test "FlatTabs DropTarget" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDropTarget(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDropTarget();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs DrawMakeInactive" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawMakeInactive(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawMakeInactive();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs HighColor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setHighColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
-    defer item.deinit();
-
-    var ret = item.getHighColor();
-
-    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "FlatTabs DragStart" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDragStart(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragStart();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
-test "FlatTabs DX" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDX(3.14).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDX();
-
-    try std.testing.expect(ret == @as(f64, 3.14));
-}
-
-test "FlatTabs DY" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDY(3.14).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDY();
-
-    try std.testing.expect(ret == @as(f64, 3.14));
-}
-
 test "FlatTabs Position" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4533,16 +3983,88 @@ test "FlatTabs Position" {
     try std.testing.expect(ret.x == 9 and ret.y == 10);
 }
 
-test "FlatTabs MinSize" {
+test "FlatTabs DropFilesTarget" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setMinSize(9, 10).unwrap());
+    var item = try (iup.FlatTabs.init().setDropFilesTarget(true).unwrap());
     defer item.deinit();
 
-    var ret = item.getMinSize();
+    var ret = item.getDropFilesTarget();
 
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs DrawTextAlignment" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDrawTextAlignment(.ACenter).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDrawTextAlignment();
+
+    try std.testing.expect(ret != null and ret.? == .ACenter);
+}
+
+test "FlatTabs Tip" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setTip("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTip();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatTabs DrawTextLayoutCenter" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDrawTextLayoutCenter(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDrawTextLayoutCenter();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs ShowClose" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setShowClose(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getShowClose();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs DragSourceMove" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDragSourceMove(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDragSourceMove();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs Visible" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setVisible(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getVisible();
+
+    try std.testing.expect(ret == true);
 }
 
 test "FlatTabs LineX" {
@@ -4569,74 +4091,74 @@ test "FlatTabs LineY" {
     try std.testing.expect(ret == @as(f64, 3.14));
 }
 
-test "FlatTabs ShowClose" {
+test "FlatTabs DrawLineWidth" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setShowClose(true).unwrap());
+    var item = try (iup.FlatTabs.init().setDrawLineWidth(42).unwrap());
     defer item.deinit();
 
-    var ret = item.getShowClose();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs DropTypes" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDropTypes("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDropTypes();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs HandleName" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setHandleName("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getHandleName();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs FontFace" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setFontFace("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getFontFace();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs TabFontSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTabFontSize(0, 42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTabFontSize(0);
+    var ret = item.getDrawLineWidth();
 
     try std.testing.expect(ret == 42);
 }
 
-test "FlatTabs MaxSize" {
+test "FlatTabs DragDrop" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setMaxSize(9, 10).unwrap());
+    var item = try (iup.FlatTabs.init().setDragDrop(true).unwrap());
     defer item.deinit();
 
-    var ret = item.getMaxSize();
+    var ret = item.getDragDrop();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs HighColor" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setHighColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
+    defer item.deinit();
+
+    var ret = item.getHighColor();
+
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "FlatTabs TabsFontSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setTabsFontSize(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getTabsFontSize();
+
+    try std.testing.expect(ret == 42);
+}
+
+test "FlatTabs Theme" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setTheme("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTheme();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatTabs ChildOffset" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setChildOffset(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getChildOffset();
 
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
@@ -4653,160 +4175,40 @@ test "FlatTabs TabType" {
     try std.testing.expect(ret != null and ret.? == .Bottom);
 }
 
-test "FlatTabs FontStyle" {
+test "FlatTabs Expand" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setFontStyle("Hello").unwrap());
+    var item = try (iup.FlatTabs.init().setExpand(.Yes).unwrap());
     defer item.deinit();
 
-    var ret = item.getFontStyle();
+    var ret = item.getExpand();
+
+    try std.testing.expect(ret != null and ret.? == .Yes);
+}
+
+test "FlatTabs DrawFont" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDrawFont("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getDrawFont();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "FlatTabs Font" {
+test "FlatTabs Size" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setFont("Hello").unwrap());
+    var item = try (iup.FlatTabs.init().setSize(9, 10).unwrap());
     defer item.deinit();
 
-    var ret = item.getFont();
+    var ret = item.getSize();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs TabVisible" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTabVisible(0, true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTabVisible(0);
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs WheelDropFocus" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setWheelDropFocus(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getWheelDropFocus();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs HtTransparent" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setHtTransparent(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getHtTransparent();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs DrawUsedIRect2d" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawUsedIRect2d(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawUsedIRect2d();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs FontSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setFontSize(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getFontSize();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "FlatTabs DrawAntialias" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawAntialias(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawAntialias();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "FlatTabs YMax" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setYMax(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getYMax();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "FlatTabs NTheme" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setNTheme("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getNTheme();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs DragSourceMove" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDragSourceMove(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragSourceMove();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs Active" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setActive(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getActive();
-
-    try std.testing.expect(ret == true);
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
 test "FlatTabs PosX" {
@@ -4833,88 +4235,16 @@ test "FlatTabs PosY" {
     try std.testing.expect(ret == @as(f64, 3.14));
 }
 
-test "FlatTabs ChildSizeAll" {
+test "FlatTabs TipMarkup" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setChildSizeAll(true).unwrap());
+    var item = try (iup.FlatTabs.init().setTipMarkup("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getChildSizeAll();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs XAutoHide" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setXAutoHide(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getXAutoHide();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs TipVisible" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTipVisible(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipVisible();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs DrawFont" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawFont("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawFont();
+    var ret = item.getTipMarkup();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs ExpandWeight" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setExpandWeight(3.14).unwrap());
-    defer item.deinit();
-
-    var ret = item.getExpandWeight();
-
-    try std.testing.expect(ret == @as(f64, 3.14));
-}
-
-test "FlatTabs TipBgColor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTipBgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBgColor();
-
-    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "FlatTabs DrawBgColor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawBgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawBgColor();
-
-    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
 test "FlatTabs YMin" {
@@ -4929,100 +4259,52 @@ test "FlatTabs YMin" {
     try std.testing.expect(ret == 42);
 }
 
-test "FlatTabs NormalizerGroup" {
+test "FlatTabs DrawMakeInactive" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setNormalizerGroup("Hello").unwrap());
+    var item = try (iup.FlatTabs.init().setDrawMakeInactive(true).unwrap());
     defer item.deinit();
 
-    var ret = item.getNormalizerGroup();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs DropFilesTarget" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDropFilesTarget(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDropFilesTarget();
+    var ret = item.getDrawMakeInactive();
 
     try std.testing.expect(ret == true);
 }
 
-test "FlatTabs TipBalloonTitle" {
+test "FlatTabs FontSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setTipBalloonTitle("Hello").unwrap());
+    var item = try (iup.FlatTabs.init().setFontSize(42).unwrap());
     defer item.deinit();
 
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatTabs TabsFontSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTabsFontSize(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTabsFontSize();
+    var ret = item.getFontSize();
 
     try std.testing.expect(ret == 42);
 }
 
-test "FlatTabs ChildOffset" {
+test "FlatTabs DropTypes" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setChildOffset(9, 10).unwrap());
+    var item = try (iup.FlatTabs.init().setDropTypes("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getChildOffset();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "FlatTabs DrawTextWrap" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setDrawTextWrap(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawTextWrap();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTabs Tip" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTabs.init().setTip("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTip();
+    var ret = item.getDropTypes();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "FlatTabs DragDrop" {
+test "FlatTabs UserSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setDragDrop(true).unwrap());
+    var item = try (iup.FlatTabs.init().setUserSize(9, 10).unwrap());
     defer item.deinit();
 
-    var ret = item.getDragDrop();
+    var ret = item.getUserSize();
 
-    try std.testing.expect(ret == true);
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
 test "FlatTabs TipDelay" {
@@ -5037,14 +4319,146 @@ test "FlatTabs TipDelay" {
     try std.testing.expect(ret == 42);
 }
 
-test "FlatTabs TipBalloon" {
+test "FlatTabs XAutoHide" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setTipBalloon(true).unwrap());
+    var item = try (iup.FlatTabs.init().setXAutoHide(true).unwrap());
     defer item.deinit();
 
-    var ret = item.getTipBalloon();
+    var ret = item.getXAutoHide();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs TabVisible" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setTabVisible(0, true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getTabVisible(0);
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs PropagateFocus" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setPropagateFocus(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getPropagateFocus();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs XMax" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setXMax(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getXMax();
+
+    try std.testing.expect(ret == 42);
+}
+
+test "FlatTabs BgColor" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setBgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
+    defer item.deinit();
+
+    var ret = item.getBgColor();
+
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "FlatTabs DropTarget" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDropTarget(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDropTarget();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs ChildSizeAll" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setChildSizeAll(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getChildSizeAll();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs DX" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDX(3.14).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDX();
+
+    try std.testing.expect(ret == @as(f64, 3.14));
+}
+
+test "FlatTabs DY" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDY(3.14).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDY();
+
+    try std.testing.expect(ret == @as(f64, 3.14));
+}
+
+test "FlatTabs DrawTextEllipsis" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDrawTextEllipsis(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDrawTextEllipsis();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs DragSource" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDragSource(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDragSource();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs DrawTextClip" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDrawTextClip(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDrawTextClip();
 
     try std.testing.expect(ret == true);
 }
@@ -5061,16 +4475,100 @@ test "FlatTabs Floating" {
     try std.testing.expect(ret != null and ret.? == .Yes);
 }
 
-test "FlatTabs Touch" {
+test "FlatTabs NormalizerGroup" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setTouch(true).unwrap());
+    var item = try (iup.FlatTabs.init().setNormalizerGroup("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getTouch();
+    var ret = item.getNormalizerGroup();
 
-    try std.testing.expect(ret == true);
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatTabs RasterSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setRasterSize(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getRasterSize();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "FlatTabs TipFgColor" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setTipFgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipFgColor();
+
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "FlatTabs FontFace" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setFontFace("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getFontFace();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatTabs DrawColor" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDrawColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDrawColor();
+
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "FlatTabs DrawTextOrientation" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDrawTextOrientation(3.14).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDrawTextOrientation();
+
+    try std.testing.expect(ret == @as(f64, 3.14));
+}
+
+test "FlatTabs DrawBgColor" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDrawBgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDrawBgColor();
+
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "FlatTabs TabOrientation" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setTabOrientation(.Horizontal).unwrap());
+    defer item.deinit();
+
+    var ret = item.getTabOrientation();
+
+    try std.testing.expect(ret != null and ret.? == .Horizontal);
 }
 
 test "FlatTabs Name" {
@@ -5081,6 +4579,138 @@ test "FlatTabs Name" {
     defer item.deinit();
 
     var ret = item.getName();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatTabs ValuePos" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setValuePos(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getValuePos();
+
+    try std.testing.expect(ret == 42);
+}
+
+test "FlatTabs BackingStore" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setBackingStore(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getBackingStore();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs YAutoHide" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setYAutoHide(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getYAutoHide();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs DrawStyle" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDrawStyle(.Fill).unwrap());
+    defer item.deinit();
+
+    var ret = item.getDrawStyle();
+
+    try std.testing.expect(ret != null and ret.? == .Fill);
+}
+
+test "FlatTabs Value" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setValue("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getValue();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatTabs Active" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setActive(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getActive();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs TipVisible" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setTipVisible(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipVisible();
+
+    try std.testing.expect(ret == true);
+}
+
+test "FlatTabs YMax" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setYMax(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getYMax();
+
+    try std.testing.expect(ret == 42);
+}
+
+test "FlatTabs ExpandWeight" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setExpandWeight(3.14).unwrap());
+    defer item.deinit();
+
+    var ret = item.getExpandWeight();
+
+    try std.testing.expect(ret == @as(f64, 3.14));
+}
+
+test "FlatTabs MinSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setMinSize(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMinSize();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "FlatTabs NTheme" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setNTheme("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getNTheme();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -5097,26 +4727,86 @@ test "FlatTabs ExtraButtons" {
     try std.testing.expect(ret == 42);
 }
 
-test "FlatTabs PropagateFocus" {
+test "FlatTabs ForeColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setPropagateFocus(true).unwrap());
+    var item = try (iup.FlatTabs.init().setForeColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
     defer item.deinit();
 
-    var ret = item.getPropagateFocus();
+    var ret = item.getForeColor();
+
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "FlatTabs DragTypes" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setDragTypes("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getDragTypes();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatTabs WheelDropFocus" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setWheelDropFocus(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getWheelDropFocus();
 
     try std.testing.expect(ret == true);
 }
 
-test "FlatTabs BackingStore" {
+test "FlatTabs FontStyle" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTabs.init().setBackingStore(true).unwrap());
+    var item = try (iup.FlatTabs.init().setFontStyle("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getBackingStore();
+    var ret = item.getFontStyle();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatTabs Touch" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setTouch(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getTouch();
 
     try std.testing.expect(ret == true);
+}
+
+test "FlatTabs TabTitle" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setTabTitle(0, "Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTabTitle(0);
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "FlatTabs Font" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTabs.init().setFont("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getFont();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }

@@ -36,8 +36,6 @@ pub const FlatToggle = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Canvas;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     /// 
     /// SCROLL_CB SCROLL_CB Called when some manipulation is made to the scrollbar.
     /// The canvas is automatically redrawn only if this callback is NOT defined.
@@ -157,8 +155,6 @@ pub const FlatToggle = opaque {
     /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
     /// IupToggle
     pub const OnActionFn = fn (self: *Self, arg0: f32, arg1: f32) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
@@ -522,12 +518,6 @@ pub const FlatToggle = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -566,6 +556,12 @@ pub const FlatToggle = opaque {
             return self.*;
         }
 
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
+            return self.*;
+        }
+
         pub fn setCheckImageNotDefHighlight(self: *Initializer, arg: anytype) Initializer {
             if (self.last_error) |_| return self.*;
             if (interop.validateHandle(.Image, arg)) {
@@ -593,12 +589,6 @@ pub const FlatToggle = opaque {
         pub fn setDrawTextWrap(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawUsedIRect2d(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAWUSEDIRECT2D", .{}, arg);
             return self.*;
         }
 
@@ -802,55 +792,15 @@ pub const FlatToggle = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
             return self.*;
         }
 
-        pub fn setDrawAntialias(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "DRAWANTIALIAS", .{}, arg);
-            return self.*;
-        }
-
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHtTransparent(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "HTTRANSPARENT", .{}, arg);
             return self.*;
         }
 
@@ -948,6 +898,12 @@ pub const FlatToggle = opaque {
         pub fn setTextHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TEXTHLCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
             return self.*;
         }
 
@@ -1067,14 +1023,6 @@ pub const FlatToggle = opaque {
             return self.*;
         }
 
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
-            return self.*;
-        }
-
         /// 
         /// TITLE (non inheritable): toggle text.
         /// The '\n' character is accepted for line change.
@@ -1115,12 +1063,6 @@ pub const FlatToggle = opaque {
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -1266,12 +1208,6 @@ pub const FlatToggle = opaque {
         pub fn setCheckImageOnHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "CHECKIMAGEONHIGHLIGHT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
             return self.*;
         }
 
@@ -1475,12 +1411,6 @@ pub const FlatToggle = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setYAutoHide(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "YAUTOHIDE", .{}, arg);
@@ -1499,18 +1429,6 @@ pub const FlatToggle = opaque {
             } else {
                 interop.clearAttribute(self.ref, "DRAWSTYLE", .{});
             }
-            return self.*;
-        }
-
-        pub fn setHwnd(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HWND", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHwndHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HWND", .{}, arg);
             return self.*;
         }
 
@@ -1828,22 +1746,6 @@ pub const FlatToggle = opaque {
             return self.*;
         }
 
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
@@ -1917,12 +1819,6 @@ pub const FlatToggle = opaque {
         pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
@@ -2090,12 +1986,6 @@ pub const FlatToggle = opaque {
         /// IupToggle
         pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -2544,14 +2434,6 @@ pub const FlatToggle = opaque {
         interop.setRgb(self, "FGCOLOR", .{}, rgb);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -2608,6 +2490,14 @@ pub const FlatToggle = opaque {
         interop.setIntAttribute(self, "XMIN", .{}, arg);
     }
 
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
+    }
+
     pub fn getCheckImageNotDefHighlight(self: *Self) ?iup.Element {
         if (interop.getHandleAttribute(self, "CHECKIMAGENOTDEFHIGHLIGHT", .{})) |handle| {
             return iup.Element.fromHandle(handle);
@@ -2642,14 +2532,6 @@ pub const FlatToggle = opaque {
 
     pub fn setDrawTextWrap(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DRAWTEXTWRAP", .{}, arg);
-    }
-
-    pub fn getDrawUsedIRect2d(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAWUSEDIRECT2D", .{});
-    }
-
-    pub fn setDrawUsedIRect2d(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAWUSEDIRECT2D", .{}, arg);
     }
 
     pub fn getCheckImageNotDefInactive(self: *Self) ?iup.Element {
@@ -2897,22 +2779,6 @@ pub const FlatToggle = opaque {
         interop.setIntAttribute(self, "DRAWLINEWIDTH", .{}, arg);
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -2929,45 +2795,12 @@ pub const FlatToggle = opaque {
         interop.setBoolAttribute(self, "DRAGDROP", .{}, arg);
     }
 
-    pub fn getDrawAntialias(self: *Self) i32 {
-        return interop.getIntAttribute(self, "DRAWANTIALIAS", .{});
-    }
-
-    pub fn setDrawAntialias(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "DRAWANTIALIAS", .{}, arg);
-    }
-
     pub fn getTheme(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "THEME", .{});
     }
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "THEME", .{}, arg);
-    }
-
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn getHtTransparent(self: *Self) bool {
-        return interop.getBoolAttribute(self, "HTTRANSPARENT", .{});
-    }
-
-    pub fn setHtTransparent(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "HTTRANSPARENT", .{}, arg);
     }
 
     /// 
@@ -3116,6 +2949,14 @@ pub const FlatToggle = opaque {
     /// (since 3.26)
     pub fn setTextHlColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "TEXTHLCOLOR", .{}, rgb);
+    }
+
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
     pub fn getYMin(self: *Self) i32 {
@@ -3277,17 +3118,6 @@ pub const FlatToggle = opaque {
         interop.setBoolAttribute(self, "SCROLLBAR", .{}, arg);
     }
 
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
-    }
-
     pub fn getXHidden(self: *Self) bool {
         return interop.getBoolAttribute(self, "XHIDDEN", .{});
     }
@@ -3363,14 +3193,6 @@ pub const FlatToggle = opaque {
     /// If not defined it will use the background color of the native parent.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     /// 
@@ -3584,14 +3406,6 @@ pub const FlatToggle = opaque {
 
     pub fn setCheckImageOnHighlightHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "CHECKIMAGEONHIGHLIGHT", .{}, arg);
-    }
-
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
     }
 
     /// 
@@ -3866,14 +3680,6 @@ pub const FlatToggle = opaque {
         return interop.getStrAttribute(self, "DRAWDRIVER", .{});
     }
 
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
-    }
-
     pub fn getYAutoHide(self: *Self) bool {
         return interop.getBoolAttribute(self, "YAUTOHIDE", .{});
     }
@@ -3905,22 +3711,6 @@ pub const FlatToggle = opaque {
         } else {
             interop.clearAttribute(self, "DRAWSTYLE", .{});
         }
-    }
-
-    pub fn getHwnd(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HWND", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHwnd(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HWND", .{}, arg);
-    }
-
-    pub fn setHwndHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HWND", .{}, arg);
     }
 
     /// 
@@ -4375,23 +4165,6 @@ pub const FlatToggle = opaque {
         interop.setStrAttribute(self, "BACKIMAGEPRESS", .{}, arg);
     }
 
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
@@ -4514,11 +4287,6 @@ pub const FlatToggle = opaque {
     /// Works only if set before the child is added to the tabs.
     pub fn setTabTitle(self: *Self, index: i32, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
-    }
-
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
     }
 
     /// 
@@ -4674,11 +4442,6 @@ pub const FlatToggle = opaque {
     /// IupToggle
     pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
         const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -5005,18 +4768,6 @@ test "FlatToggle FgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "FlatToggle TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "FlatToggle HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5053,6 +4804,18 @@ test "FlatToggle XMin" {
     try std.testing.expect(ret == 42);
 }
 
+test "FlatToggle TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatToggle.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "FlatToggle MaxSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5073,18 +4836,6 @@ test "FlatToggle DrawTextWrap" {
     defer item.deinit();
 
     var ret = item.getDrawTextWrap();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatToggle DrawUsedIRect2d" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setDrawUsedIRect2d(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawUsedIRect2d();
 
     try std.testing.expect(ret == true);
 }
@@ -5245,18 +4996,6 @@ test "FlatToggle DragDrop" {
     try std.testing.expect(ret == true);
 }
 
-test "FlatToggle DrawAntialias" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setDrawAntialias(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawAntialias();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "FlatToggle Theme" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5267,18 +5006,6 @@ test "FlatToggle Theme" {
     var ret = item.getTheme();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatToggle HtTransparent" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setHtTransparent(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getHtTransparent();
-
-    try std.testing.expect(ret == true);
 }
 
 test "FlatToggle Expand" {
@@ -5377,6 +5104,18 @@ test "FlatToggle TextHlColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
+test "FlatToggle TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatToggle.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "FlatToggle YMin" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5473,18 +5212,6 @@ test "FlatToggle ScrollBar" {
     try std.testing.expect(ret == true);
 }
 
-test "FlatToggle DragStart" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setDragStart(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragStart();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
 test "FlatToggle Title" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5543,18 +5270,6 @@ test "FlatToggle BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "FlatToggle TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "FlatToggle DropTarget" {
@@ -5725,18 +5440,6 @@ test "FlatToggle TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "FlatToggle ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "FlatToggle CSpacing" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5829,18 +5532,6 @@ test "FlatToggle BackingStore" {
     defer item.deinit();
 
     var ret = item.getBackingStore();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatToggle TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatToggle.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
 
     try std.testing.expect(ret == true);
 }

@@ -4,12 +4,37 @@ const std = @import("std");
 const iup = @import("iup.zig");
 
 var dlg_id: i32 = 0;
-var allocator: *std.mem.Allocator = undefined;
-usingnamespace iup;
+var allocator: std.mem.Allocator = undefined;
+
+const MainLoop = iup.MainLoop;
+const Dialog = iup.Dialog;
+const Button = iup.Button;
+const MessageDlg = iup.MessageDlg;
+const Multiline = iup.Multiline;
+const Label = iup.Label;
+const Text = iup.Text;
+const VBox = iup.VBox;
+const HBox = iup.HBox;
+const Menu = iup.Menu;
+const SubMenu = iup.SubMenu;
+const Separator = iup.Separator;
+const Fill = iup.Fill;
+const Item = iup.Item;
+const FileDlg = iup.FileDlg;
+const Toggle = iup.Toggle;
+const List = iup.List;
+const Frame = iup.Frame;
+const Radio = iup.Radio;
+const Canvas = iup.Canvas;
+const ScreenSize = iup.ScreenSize;
+const Image = iup.Image;
+const ImageRgb = iup.ImageRgb;
+const ImageRgba = iup.ImageRgba;
+const Rgb = iup.Rgb;
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    allocator = &gpa.allocator;
+    allocator = gpa.allocator();
 
     try MainLoop.open();
     defer MainLoop.close();
@@ -191,10 +216,10 @@ fn createDialog(parent: *Dialog, id: i32) !*Dialog {
                         .setSize(80, 60)
                         .setExpand(.Yes)
                         .setValue(
-                            \\IupMultiline Text
-                            \\Second Line
-                            \\Third Line
-                        ),
+                        \\IupMultiline Text
+                        \\Second Line
+                        \\Third Line
+                    ),
                 },
             ),
         },
@@ -281,27 +306,32 @@ fn onNewChild(item: *Item) !void {
 
 fn onTileHorizontal(item: *Item) !void {
     var dlg = item.getDialog() orelse unreachable;
-    dlg.mdiArrange(.TileHorizontal);
+    _ = dlg;
+    //dlg.mdiArrange(.TileHorizontal);
 }
 
 fn onTileVertical(item: *Item) !void {
     var dlg = item.getDialog() orelse unreachable;
-    dlg.mdiArrange(.TileVertical);
+    _ = dlg;
+    //dlg.mdiArrange(.TileVertical);
 }
 
 fn onCascade(item: *Item) !void {
     var dlg = item.getDialog() orelse unreachable;
-    dlg.mdiArrange(.Cascade);
+    _ = dlg;
+    //dlg.mdiArrange(.Cascade);
 }
 
 fn onIconArrange(item: *Item) !void {
     var dlg = item.getDialog() orelse unreachable;
-    dlg.mdiArrange(.Icon);
+    _ = dlg;
+    //dlg.mdiArrange(.Icon);
 }
 
 fn onCloseAll(item: *Item) !void {
     var dlg = item.getDialog() orelse unreachable;
-    dlg.mdiCloseAll();
+    _ = dlg;
+    //dlg.mdiCloseAll();
 }
 
 fn onNext(item: *Item) !void {

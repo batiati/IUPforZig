@@ -1,15 +1,30 @@
 const std = @import("std");
 const iup = @import("iup.zig");
 
-usingnamespace iup;
+const MainLoop = iup.MainLoop;
+const Dialog = iup.Dialog;
+const Button = iup.Button;
+const MessageDlg = iup.MessageDlg;
+const Multiline = iup.Multiline;
+const Label = iup.Label;
+const Text = iup.Text;
+const VBox = iup.VBox;
+const HBox = iup.HBox;
+const Menu = iup.Menu;
+const SubMenu = iup.SubMenu;
+const Separator = iup.Separator;
+const Fill = iup.Fill;
+const Item = iup.Item;
+const FileDlg = iup.FileDlg;
+const Toggle = iup.Toggle;
 
-var allocator: *std.mem.Allocator = undefined;
+var allocator: std.mem.Allocator = undefined;
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
 
-    allocator = &gpa.allocator;
+    allocator = gpa.allocator();
 
     try MainLoop.open();
     defer MainLoop.close();
@@ -396,7 +411,7 @@ const goto_dialog = struct {
                         Label.init()
                             .setTitle(title),
                         Text.init()
-                            .setMask(masks.u_int)
+                            .setMask(iup.masks.u_int)
                             .setName(line_textbox)
                             .setVisibleColumns(20),
                         HBox.init().setChildren(

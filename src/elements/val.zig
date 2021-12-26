@@ -33,8 +33,6 @@ pub const Val = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     pub const OnButtonReleaseFn = fn (self: *Self, arg0: f64) anyerror!void;
 
     /// 
@@ -76,8 +74,6 @@ pub const Val = opaque {
     /// Returns: IUP_CLOSE will be processed.
     /// Affects All elements with user interaction.
     pub const OnHelpFn = fn (self: *Self) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
@@ -272,12 +268,6 @@ pub const Val = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -287,6 +277,12 @@ pub const Val = opaque {
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
 
@@ -363,18 +359,6 @@ pub const Val = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
@@ -401,6 +385,12 @@ pub const Val = opaque {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
+            return self.*;
+        }
+
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
             return self.*;
         }
 
@@ -471,12 +461,6 @@ pub const Val = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
             if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
@@ -515,12 +499,6 @@ pub const Val = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
@@ -530,12 +508,6 @@ pub const Val = opaque {
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -600,12 +572,6 @@ pub const Val = opaque {
             return self.*;
         }
 
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
@@ -664,12 +630,6 @@ pub const Val = opaque {
             return self.*;
         }
 
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
         pub fn setButtonReleaseCallback(self: *Initializer, callback: ?OnButtonReleaseFn) Initializer {
             const Handler = CallbackHandler(Self, OnButtonReleaseFn, "BUTTON_RELEASE_CB");
             Handler.setCallback(self.ref, callback);
@@ -720,12 +680,6 @@ pub const Val = opaque {
         /// Affects All elements with user interaction.
         pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
             const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -996,14 +950,6 @@ pub const Val = opaque {
         Impl(Self).refresh(self);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -1018,6 +964,14 @@ pub const Val = opaque {
 
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
     /// 
@@ -1107,22 +1061,6 @@ pub const Val = opaque {
         }
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -1177,6 +1115,14 @@ pub const Val = opaque {
 
     pub fn getWId(self: *Self) i32 {
         return interop.getIntAttribute(self, "WID", .{});
+    }
+
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
     pub fn getFontSize(self: *Self) i32 {
@@ -1259,14 +1205,6 @@ pub const Val = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
-    }
-
     pub fn getFloating(self: *Self) ?Floating {
         var ret = interop.getStrAttribute(self, "FLOATING", .{});
 
@@ -1325,14 +1263,6 @@ pub const Val = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     pub fn getFontFace(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONTFACE", .{});
     }
@@ -1347,14 +1277,6 @@ pub const Val = opaque {
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "NAME", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
     /// 
@@ -1451,14 +1373,6 @@ pub const Val = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
-    }
-
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
@@ -1552,11 +1466,6 @@ pub const Val = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     pub fn setButtonReleaseCallback(self: *Self, callback: ?OnButtonReleaseFn) void {
         const Handler = CallbackHandler(Self, OnButtonReleaseFn, "BUTTON_RELEASE_CB");
         Handler.setCallback(self, callback);
@@ -1605,11 +1514,6 @@ pub const Val = opaque {
     /// Affects All elements with user interaction.
     pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
         const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -1755,18 +1659,6 @@ pub const Val = opaque {
     }
 };
 
-test "Val TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Val.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Val HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1789,6 +1681,18 @@ test "Val TipBgColor" {
     var ret = item.getTipBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "Val TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Val.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Val Step" {
@@ -1899,6 +1803,18 @@ test "Val Size" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
+test "Val TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Val.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "Val FontSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1971,18 +1887,6 @@ test "Val BgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Val TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Val.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "Val Floating" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2031,18 +1935,6 @@ test "Val TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Val ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Val.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Val FontFace" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2065,18 +1957,6 @@ test "Val Name" {
     var ret = item.getName();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Val TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Val.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Val Value" {
@@ -2173,18 +2053,6 @@ test "Val FontStyle" {
     var ret = item.getFontStyle();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Val Touch" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Val.init().setTouch(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Val Font" {

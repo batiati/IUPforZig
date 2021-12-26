@@ -33,8 +33,6 @@ pub const MessageDlg = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Dialog;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
@@ -94,10 +92,6 @@ pub const MessageDlg = opaque {
 
     pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
-
-    pub const OnMdiActivateFn = fn (self: *Self) anyerror!void;
-
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
@@ -156,13 +150,9 @@ pub const MessageDlg = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnCustomFrameActivateFn = fn (self: *Self, arg0: i32) anyerror!void;
-
     pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
-
-    pub const OnCustomFrameDrawFn = fn (self: *Self) anyerror!void;
 
     /// 
     /// SHOW_CB SHOW_CB Called right after the dialog is showed, hidden, maximized,
@@ -326,30 +316,10 @@ pub const MessageDlg = opaque {
         Button3 = 3,
     };
 
-    pub const MdiArrange = enum {
-        TileHorizontal,
-        TileVertical,
-        Cascade,
-        Icon,
-    };
-
     pub const Floating = enum {
         Yes,
         Ignore,
         No,
-    };
-
-    pub const TaskbarButton = enum {
-        Show,
-        Hide,
-    };
-
-    pub const TaskbarProgressState = enum {
-        NoProgress,
-        Indeterminate,
-        Error,
-        Paused,
-        Normal,
     };
 
     pub const Initializer = struct {
@@ -405,12 +375,6 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -432,6 +396,12 @@ pub const MessageDlg = opaque {
         pub fn setControl(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CONTROL", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
 
@@ -461,12 +431,6 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setTrayTipBalloonTitleIcon(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TRAYTIPBALLOONTITLEICON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setOpacityImage(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "OPACITYIMAGE", .{}, arg);
@@ -482,12 +446,6 @@ pub const MessageDlg = opaque {
         pub fn setShowNoFocus(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SHOWNOFOCUS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setMaximizeAtParent(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "MAXIMIZEATPARENT", .{}, arg);
             return self.*;
         }
 
@@ -547,12 +505,6 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setCustomFrameDraw(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "CUSTOMFRAMEDRAW", .{}, arg);
-            return self.*;
-        }
-
         pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
             if (self.last_error) |_| return self.*;
             if (interop.validateHandle(.Image, arg)) {
@@ -605,15 +557,9 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
+        pub fn setHideTitleBar(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
+            interop.setStrAttribute(self.ref, "HIDETITLEBAR", .{}, arg);
             return self.*;
         }
 
@@ -635,12 +581,6 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setShowMinimizeNext(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "SHOWMINIMIZENEXT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setDialogFrame(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DIALOGFRAME", .{}, arg);
@@ -650,12 +590,6 @@ pub const MessageDlg = opaque {
         pub fn setNActive(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "NACTIVE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTrayTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TRAYTIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -697,28 +631,6 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTaskbarProgress(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TASKBARPROGRESS", .{}, arg);
-            return self.*;
-        }
-
         pub fn setChildOffset(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
@@ -747,6 +659,12 @@ pub const MessageDlg = opaque {
             var buffer: [128]u8 = undefined;
             var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, str);
+            return self.*;
+        }
+
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
             return self.*;
         }
 
@@ -788,15 +706,15 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setTrayTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TRAYTIPDELAY", .{}, arg);
-            return self.*;
-        }
-
         pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTrayTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TRAYTIPMARKUP", .{}, arg);
             return self.*;
         }
 
@@ -811,22 +729,6 @@ pub const MessageDlg = opaque {
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setCustomFrameCaptionLimits(self: *Initializer, begin: i32, end: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-            interop.setStrAttribute(self.ref, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
-            return self.*;
-        }
-
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
             return self.*;
         }
 
@@ -868,12 +770,6 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setLayerAlpha(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "LAYERALPHA", .{}, arg);
-            return self.*;
-        }
-
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
@@ -886,21 +782,9 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
-            return self.*;
-        }
-
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTrayTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TRAYTIPBALLOON", .{}, arg);
             return self.*;
         }
 
@@ -929,19 +813,6 @@ pub const MessageDlg = opaque {
         pub fn setResize(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "RESIZE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn mdiArrange(self: *Initializer, arg: ?MdiArrange) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .TileHorizontal => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
-                .TileVertical => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEVERTICAL"),
-                .Cascade => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "CASCADE"),
-                .Icon => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "ICON"),
-            } else {
-                interop.clearAttribute(self.ref, "MDIARRANGE", .{});
-            }
             return self.*;
         }
 
@@ -983,44 +854,15 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setShowNoActivate(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "SHOWNOACTIVATE", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
-        pub fn setMaximizeAtDialog(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "MAXIMIZEATDIALOG", .{}, arg);
-            return self.*;
-        }
-
         pub fn topMost(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TOPMOST", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTaskbarButton(self: *Initializer, arg: ?TaskbarButton) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Show => interop.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "SHOW"),
-                .Hide => interop.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "HIDE"),
-            } else {
-                interop.clearAttribute(self.ref, "TASKBARBUTTON", .{});
-            }
             return self.*;
         }
 
@@ -1045,12 +887,6 @@ pub const MessageDlg = opaque {
         pub fn setDefaultEnterHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DEFAULTENTER", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -1085,18 +921,6 @@ pub const MessageDlg = opaque {
         pub fn setHideTaskbar(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "HIDETASKBAR", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHwnd(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HWND", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHwndHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HWND", .{}, arg);
             return self.*;
         }
 
@@ -1156,12 +980,6 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setCustomFrameCaptionHeight(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
@@ -1177,12 +995,6 @@ pub const MessageDlg = opaque {
         pub fn setCustomFramesImulate(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CUSTOMFRAMESIMULATE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn mdiCloseAll(self: *Initializer) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "MDICLOSEALL", .{}, null);
             return self.*;
         }
 
@@ -1230,35 +1042,9 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
         pub fn setMdiChild(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MDICHILD", .{}, arg);
-            return self.*;
-        }
-
-        pub fn taskbarProgressState(self: *Initializer, arg: ?TaskbarProgressState) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .NoProgress => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
-                .Indeterminate => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
-                .Error => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "ERROR"),
-                .Paused => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "PAUSED"),
-                .Normal => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NORMAL"),
-            } else {
-                interop.clearAttribute(self.ref, "TASKBARPROGRESSSTATE", .{});
-            }
-            return self.*;
-        }
-
-        pub fn taskbarProgressValue(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TASKBARPROGRESSVALUE", .{}, arg);
             return self.*;
         }
 
@@ -1277,28 +1063,6 @@ pub const MessageDlg = opaque {
         pub fn setNativeParentHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NATIVEPARENT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setMaximizedIalog(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "MAXIMIZEDIALOG", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
@@ -1363,12 +1127,6 @@ pub const MessageDlg = opaque {
         pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
@@ -1459,18 +1217,6 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMdiActivateCallback(self: *Initializer, callback: ?OnMdiActivateFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMdiActivateFn, "MDIACTIVATE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
         /// 
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
@@ -1549,12 +1295,6 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
-        pub fn setCustomFrameActivateCallback(self: *Initializer, callback: ?OnCustomFrameActivateFn) Initializer {
-            const Handler = CallbackHandler(Self, OnCustomFrameActivateFn, "CUSTOMFRAMEACTIVATE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
         pub fn setDragDataCallback(self: *Initializer, callback: ?OnDragDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
             Handler.setCallback(self.ref, callback);
@@ -1563,12 +1303,6 @@ pub const MessageDlg = opaque {
 
         pub fn setDragDataSizeCallback(self: *Initializer, callback: ?OnDragDataSizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setCustomFrameDrawCallback(self: *Initializer, callback: ?OnCustomFrameDrawFn) Initializer {
-            const Handler = CallbackHandler(Self, OnCustomFrameDrawFn, "CUSTOMFRAMEDRAW_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1828,14 +1562,6 @@ pub const MessageDlg = opaque {
         Impl(Self).refresh(self);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -1866,6 +1592,14 @@ pub const MessageDlg = opaque {
 
     pub fn setControl(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "CONTROL", .{}, arg);
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
     pub fn getMenu(self: *Self) ?*iup.Menu {
@@ -1903,14 +1637,6 @@ pub const MessageDlg = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
-    pub fn getTrayTipBalloonTitleIcon(self: *Self) i32 {
-        return interop.getIntAttribute(self, "TRAYTIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTrayTipBalloonTitleIcon(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TRAYTIPBALLOONTITLEICON", .{}, arg);
-    }
-
     pub fn getOpacityImage(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "OPACITYIMAGE", .{});
     }
@@ -1938,14 +1664,6 @@ pub const MessageDlg = opaque {
     pub fn getScreenPosition(self: *Self) iup.XYPos {
         var str = interop.getStrAttribute(self, "SCREENPOSITION", .{});
         return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn getMaximizeAtParent(self: *Self) bool {
-        return interop.getBoolAttribute(self, "MAXIMIZEATPARENT", .{});
-    }
-
-    pub fn setMaximizeAtParent(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "MAXIMIZEATPARENT", .{}, arg);
     }
 
     pub fn getOpacity(self: *Self) i32 {
@@ -2027,14 +1745,6 @@ pub const MessageDlg = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
-    pub fn getCustomFrameDraw(self: *Self) bool {
-        return interop.getBoolAttribute(self, "CUSTOMFRAMEDRAW", .{});
-    }
-
-    pub fn setCustomFrameDraw(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "CUSTOMFRAMEDRAW", .{}, arg);
-    }
-
     pub fn getCursor(self: *Self) ?iup.Element {
         if (interop.getHandleAttribute(self, "CURSOR", .{})) |handle| {
             return iup.Element.fromHandle(handle);
@@ -2102,22 +1812,6 @@ pub const MessageDlg = opaque {
         }
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -2126,8 +1820,12 @@ pub const MessageDlg = opaque {
         return interop.getIntAttribute(self, "Y", .{});
     }
 
-    pub fn getMdiActive(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "MDIACTIVE", .{});
+    pub fn getHideTitleBar(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "HIDETITLEBAR", .{});
+    }
+
+    pub fn setHideTitleBar(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HIDETITLEBAR", .{}, arg);
     }
 
     pub fn getMaxBox(self: *Self) bool {
@@ -2154,14 +1852,6 @@ pub const MessageDlg = opaque {
         interop.setBoolAttribute(self, "DIALOGHINT", .{}, arg);
     }
 
-    pub fn getShowMinimizeNext(self: *Self) bool {
-        return interop.getBoolAttribute(self, "SHOWMINIMIZENEXT", .{});
-    }
-
-    pub fn setShowMinimizeNext(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "SHOWMINIMIZENEXT", .{}, arg);
-    }
-
     pub fn getDialogFrame(self: *Self) bool {
         return interop.getBoolAttribute(self, "DIALOGFRAME", .{});
     }
@@ -2176,14 +1866,6 @@ pub const MessageDlg = opaque {
 
     pub fn setNActive(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "NACTIVE", .{}, arg);
-    }
-
-    pub fn getTrayTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TRAYTIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTrayTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TRAYTIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getTheme(self: *Self) [:0]const u8 {
@@ -2245,31 +1927,6 @@ pub const MessageDlg = opaque {
         }
     }
 
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn getTaskbarProgress(self: *Self) i32 {
-        return interop.getIntAttribute(self, "TASKBARPROGRESS", .{});
-    }
-
-    pub fn setTaskbarProgress(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TASKBARPROGRESS", .{}, arg);
-    }
-
     pub fn getChildOffset(self: *Self) Size {
         var str = interop.getStrAttribute(self, "CHILDOFFSET", .{});
         return Size.parse(str);
@@ -2321,6 +1978,14 @@ pub const MessageDlg = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
     /// 
     /// BUTTONRESPONSE: Number of the pressed button.
     /// Can be "1", "2" or "3".
@@ -2340,10 +2005,6 @@ pub const MessageDlg = opaque {
         } else {
             interop.clearAttribute(self, "BUTTONRESPONSE", .{});
         }
-    }
-
-    pub fn getAutoModal(self: *Self) bool {
-        return interop.getBoolAttribute(self, "AUTOMODAL", .{});
     }
 
     pub fn getMdiMenu(self: *Self) ?*iup.Menu {
@@ -2383,20 +2044,20 @@ pub const MessageDlg = opaque {
         return Size.parse(str);
     }
 
-    pub fn getTrayTipDelay(self: *Self) i32 {
-        return interop.getIntAttribute(self, "TRAYTIPDELAY", .{});
-    }
-
-    pub fn setTrayTipDelay(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TRAYTIPDELAY", .{}, arg);
-    }
-
     pub fn getDropTypes(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "DROPTYPES", .{});
     }
 
     pub fn setDropTypes(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DROPTYPES", .{}, arg);
+    }
+
+    pub fn getTrayTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TRAYTIPMARKUP", .{});
+    }
+
+    pub fn setTrayTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TRAYTIPMARKUP", .{}, arg);
     }
 
     pub fn getUserSize(self: *Self) Size {
@@ -2418,38 +2079,12 @@ pub const MessageDlg = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
-    pub fn getCustomFrameCaptionLimits(self: *Self) iup.Range {
-        var str = interop.getStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", .{});
-        return iup.Range.parse(str, ',');
-    }
-
-    pub fn setCustomFrameCaptionLimits(self: *Self, begin: i32, end: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-        interop.setStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
-    }
-
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
-    }
-
     pub fn getCustomFrame(self: *Self) bool {
         return interop.getBoolAttribute(self, "CUSTOMFRAME", .{});
     }
 
     pub fn setCustomFrame(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
-    }
-
-    pub fn getMdiNext(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "MDINEXT", .{});
     }
 
     /// 
@@ -2499,14 +2134,6 @@ pub const MessageDlg = opaque {
         }
     }
 
-    pub fn getLayerAlpha(self: *Self) i32 {
-        return interop.getIntAttribute(self, "LAYERALPHA", .{});
-    }
-
-    pub fn setLayerAlpha(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "LAYERALPHA", .{}, arg);
-    }
-
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
@@ -2523,28 +2150,12 @@ pub const MessageDlg = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
-    }
-
     pub fn getDropTarget(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPTARGET", .{});
     }
 
     pub fn setDropTarget(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
-    }
-
-    pub fn getTrayTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TRAYTIPBALLOON", .{});
-    }
-
-    pub fn setTrayTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TRAYTIPBALLOON", .{}, arg);
     }
 
     pub fn getDragSource(self: *Self) bool {
@@ -2586,17 +2197,6 @@ pub const MessageDlg = opaque {
 
     pub fn setResize(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "RESIZE", .{}, arg);
-    }
-
-    pub fn mdiArrange(self: *Self, arg: ?MdiArrange) void {
-        if (arg) |value| switch (value) {
-            .TileHorizontal => interop.setStrAttribute(self, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
-            .TileVertical => interop.setStrAttribute(self, "MDIARRANGE", .{}, "TILEVERTICAL"),
-            .Cascade => interop.setStrAttribute(self, "MDIARRANGE", .{}, "CASCADE"),
-            .Icon => interop.setStrAttribute(self, "MDIARRANGE", .{}, "ICON"),
-        } else {
-            interop.clearAttribute(self, "MDIARRANGE", .{});
-        }
     }
 
     pub fn getMaximized(self: *Self) bool {
@@ -2657,22 +2257,6 @@ pub const MessageDlg = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
-    pub fn getShowNoActivate(self: *Self) bool {
-        return interop.getBoolAttribute(self, "SHOWNOACTIVATE", .{});
-    }
-
-    pub fn setShowNoActivate(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "SHOWNOACTIVATE", .{}, arg);
-    }
-
     pub fn getFontFace(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONTFACE", .{});
     }
@@ -2681,33 +2265,8 @@ pub const MessageDlg = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
-    pub fn getMaximizeAtDialog(self: *Self) bool {
-        return interop.getBoolAttribute(self, "MAXIMIZEATDIALOG", .{});
-    }
-
-    pub fn setMaximizeAtDialog(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "MAXIMIZEATDIALOG", .{}, arg);
-    }
-
     pub fn topMost(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TOPMOST", .{}, arg);
-    }
-
-    pub fn getTaskbarButton(self: *Self) ?TaskbarButton {
-        var ret = interop.getStrAttribute(self, "TASKBARBUTTON", .{});
-
-        if (std.ascii.eqlIgnoreCase("SHOW", ret)) return .Show;
-        if (std.ascii.eqlIgnoreCase("HIDE", ret)) return .Hide;
-        return null;
-    }
-
-    pub fn setTaskbarButton(self: *Self, arg: ?TaskbarButton) void {
-        if (arg) |value| switch (value) {
-            .Show => interop.setStrAttribute(self, "TASKBARBUTTON", .{}, "SHOW"),
-            .Hide => interop.setStrAttribute(self, "TASKBARBUTTON", .{}, "HIDE"),
-        } else {
-            interop.clearAttribute(self, "TASKBARBUTTON", .{});
-        }
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
@@ -2744,14 +2303,6 @@ pub const MessageDlg = opaque {
 
     pub fn getModal(self: *Self) bool {
         return interop.getBoolAttribute(self, "MODAL", .{});
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
     /// 
@@ -2797,22 +2348,6 @@ pub const MessageDlg = opaque {
 
     pub fn setHideTaskbar(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
-    }
-
-    pub fn getHwnd(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HWND", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHwnd(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HWND", .{}, arg);
-    }
-
-    pub fn setHwndHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HWND", .{}, arg);
     }
 
     /// 
@@ -2891,14 +2426,6 @@ pub const MessageDlg = opaque {
         return interop.getBoolAttribute(self, "ACTIVEWINDOW", .{});
     }
 
-    pub fn getCustomFrameCaptionHeight(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", .{});
-    }
-
-    pub fn setCustomFrameCaptionHeight(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
-    }
-
     pub fn getNTheme(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "NTHEME", .{});
     }
@@ -2921,10 +2448,6 @@ pub const MessageDlg = opaque {
 
     pub fn setCustomFramesImulate(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{}, arg);
-    }
-
-    pub fn mdiCloseAll(self: *Self) void {
-        interop.setStrAttribute(self, "MDICLOSEALL", .{}, null);
     }
 
     pub fn getShrink(self: *Self) bool {
@@ -2996,36 +2519,12 @@ pub const MessageDlg = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
-    }
-
     pub fn getMdiChild(self: *Self) bool {
         return interop.getBoolAttribute(self, "MDICHILD", .{});
     }
 
     pub fn setMdiChild(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "MDICHILD", .{}, arg);
-    }
-
-    pub fn taskbarProgressState(self: *Self, arg: ?TaskbarProgressState) void {
-        if (arg) |value| switch (value) {
-            .NoProgress => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
-            .Indeterminate => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
-            .Error => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "ERROR"),
-            .Paused => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "PAUSED"),
-            .Normal => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "NORMAL"),
-        } else {
-            interop.clearAttribute(self, "TASKBARPROGRESSSTATE", .{});
-        }
-    }
-
-    pub fn taskbarProgressValue(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TASKBARPROGRESSVALUE", .{}, arg);
     }
 
     pub fn fullScreen(self: *Self, arg: bool) void {
@@ -3046,35 +2545,6 @@ pub const MessageDlg = opaque {
 
     pub fn setNativeParentHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "NATIVEPARENT", .{}, arg);
-    }
-
-    pub fn getMaximizedIalog(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "MAXIMIZEDIALOG", .{});
-    }
-
-    pub fn setMaximizedIalog(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "MAXIMIZEDIALOG", .{}, arg);
-    }
-
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn getMinimized(self: *Self) bool {
-        return interop.getBoolAttribute(self, "MINIMIZED", .{});
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
@@ -3174,11 +2644,6 @@ pub const MessageDlg = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
         const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
@@ -3259,16 +2724,6 @@ pub const MessageDlg = opaque {
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMdiActivateCallback(self: *Self, callback: ?OnMdiActivateFn) void {
-        const Handler = CallbackHandler(Self, OnMdiActivateFn, "MDIACTIVATE_CB");
-        Handler.setCallback(self, callback);
-    }
-
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
@@ -3342,11 +2797,6 @@ pub const MessageDlg = opaque {
         Handler.setCallback(self, callback);
     }
 
-    pub fn setCustomFrameActivateCallback(self: *Self, callback: ?OnCustomFrameActivateFn) void {
-        const Handler = CallbackHandler(Self, OnCustomFrameActivateFn, "CUSTOMFRAMEACTIVATE_CB");
-        Handler.setCallback(self, callback);
-    }
-
     pub fn setDragDataCallback(self: *Self, callback: ?OnDragDataFn) void {
         const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
         Handler.setCallback(self, callback);
@@ -3354,11 +2804,6 @@ pub const MessageDlg = opaque {
 
     pub fn setDragDataSizeCallback(self: *Self, callback: ?OnDragDataSizeFn) void {
         const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setCustomFrameDrawCallback(self: *Self, callback: ?OnCustomFrameDrawFn) void {
-        const Handler = CallbackHandler(Self, OnCustomFrameDrawFn, "CUSTOMFRAMEDRAW_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -3486,18 +2931,6 @@ pub const MessageDlg = opaque {
     }
 };
 
-test "MessageDlg TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "MessageDlg HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3546,6 +2979,18 @@ test "MessageDlg Control" {
     try std.testing.expect(ret == true);
 }
 
+test "MessageDlg TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MessageDlg.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "MessageDlg NoFlush" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3568,18 +3013,6 @@ test "MessageDlg MaxSize" {
     var ret = item.getMaxSize();
 
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "MessageDlg TrayTipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setTrayTipBalloonTitleIcon(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTrayTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == 42);
 }
 
 test "MessageDlg OpacityImage" {
@@ -3614,18 +3047,6 @@ test "MessageDlg ShowNoFocus" {
     defer item.deinit();
 
     var ret = item.getShowNoFocus();
-
-    try std.testing.expect(ret == true);
-}
-
-test "MessageDlg MaximizeAtParent" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setMaximizeAtParent(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMaximizeAtParent();
 
     try std.testing.expect(ret == true);
 }
@@ -3738,18 +3159,6 @@ test "MessageDlg Visible" {
     try std.testing.expect(ret == true);
 }
 
-test "MessageDlg CustomFrameDraw" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setCustomFrameDraw(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getCustomFrameDraw();
-
-    try std.testing.expect(ret == true);
-}
-
 test "MessageDlg MenuBox" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3772,6 +3181,18 @@ test "MessageDlg DialogType" {
     var ret = item.getDialogType();
 
     try std.testing.expect(ret != null and ret.? == .Error);
+}
+
+test "MessageDlg HideTitleBar" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MessageDlg.init().setHideTitleBar("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getHideTitleBar();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "MessageDlg MaxBox" {
@@ -3810,18 +3231,6 @@ test "MessageDlg DialogHint" {
     try std.testing.expect(ret == true);
 }
 
-test "MessageDlg ShowMinimizeNext" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setShowMinimizeNext(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getShowMinimizeNext();
-
-    try std.testing.expect(ret == true);
-}
-
 test "MessageDlg DialogFrame" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3844,18 +3253,6 @@ test "MessageDlg NActive" {
     var ret = item.getNActive();
 
     try std.testing.expect(ret == true);
-}
-
-test "MessageDlg TrayTipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setTrayTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTrayTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "MessageDlg Theme" {
@@ -3906,18 +3303,6 @@ test "MessageDlg Buttons" {
     try std.testing.expect(ret != null and ret.? == .OkCanCel);
 }
 
-test "MessageDlg TaskbarProgress" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setTaskbarProgress(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTaskbarProgress();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "MessageDlg ChildOffset" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3940,6 +3325,18 @@ test "MessageDlg Expand" {
     var ret = item.getExpand();
 
     try std.testing.expect(ret != null and ret.? == .Yes);
+}
+
+test "MessageDlg TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MessageDlg.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "MessageDlg ButtonResponse" {
@@ -3978,18 +3375,6 @@ test "MessageDlg FontSize" {
     try std.testing.expect(ret == 42);
 }
 
-test "MessageDlg TrayTipDelay" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setTrayTipDelay(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTrayTipDelay();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "MessageDlg DropTypes" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3998,6 +3383,18 @@ test "MessageDlg DropTypes" {
     defer item.deinit();
 
     var ret = item.getDropTypes();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "MessageDlg TrayTipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MessageDlg.init().setTrayTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTrayTipMarkup();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -4024,30 +3421,6 @@ test "MessageDlg TipDelay" {
     var ret = item.getTipDelay();
 
     try std.testing.expect(ret == 42);
-}
-
-test "MessageDlg CustomFrameCaptionLimits" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setCustomFrameCaptionLimits(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getCustomFrameCaptionLimits();
-
-    try std.testing.expect(ret.begin == 9 and ret.end == 10);
-}
-
-test "MessageDlg DragStart" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setDragStart(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragStart();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
 }
 
 test "MessageDlg CustomFrame" {
@@ -4086,18 +3459,6 @@ test "MessageDlg Placement" {
     try std.testing.expect(ret != null and ret.? == .Maximized);
 }
 
-test "MessageDlg LayerAlpha" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setLayerAlpha(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getLayerAlpha();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "MessageDlg PropagateFocus" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4122,18 +3483,6 @@ test "MessageDlg BgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "MessageDlg TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "MessageDlg DropTarget" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4142,18 +3491,6 @@ test "MessageDlg DropTarget" {
     defer item.deinit();
 
     var ret = item.getDropTarget();
-
-    try std.testing.expect(ret == true);
-}
-
-test "MessageDlg TrayTipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setTrayTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTrayTipBalloon();
 
     try std.testing.expect(ret == true);
 }
@@ -4254,30 +3591,6 @@ test "MessageDlg TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "MessageDlg ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "MessageDlg ShowNoActivate" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setShowNoActivate(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getShowNoActivate();
-
-    try std.testing.expect(ret == true);
-}
-
 test "MessageDlg FontFace" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4288,30 +3601,6 @@ test "MessageDlg FontFace" {
     var ret = item.getFontFace();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "MessageDlg MaximizeAtDialog" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setMaximizeAtDialog(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMaximizeAtDialog();
-
-    try std.testing.expect(ret == true);
-}
-
-test "MessageDlg TaskbarButton" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setTaskbarButton(.Show).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTaskbarButton();
-
-    try std.testing.expect(ret != null and ret.? == .Show);
 }
 
 test "MessageDlg Name" {
@@ -4334,18 +3623,6 @@ test "MessageDlg MinBox" {
     defer item.deinit();
 
     var ret = item.getMinBox();
-
-    try std.testing.expect(ret == true);
-}
-
-test "MessageDlg TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
 
     try std.testing.expect(ret == true);
 }
@@ -4444,18 +3721,6 @@ test "MessageDlg MinSize" {
     var ret = item.getMinSize();
 
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "MessageDlg CustomFrameCaptionHeight" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setCustomFrameCaptionHeight(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getCustomFrameCaptionHeight();
-
-    try std.testing.expect(ret == 42);
 }
 
 test "MessageDlg NTheme" {
@@ -4578,18 +3843,6 @@ test "MessageDlg FontStyle" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "MessageDlg Touch" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setTouch(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
-}
-
 test "MessageDlg MdiChild" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4600,18 +3853,6 @@ test "MessageDlg MdiChild" {
     var ret = item.getMdiChild();
 
     try std.testing.expect(ret == true);
-}
-
-test "MessageDlg MaximizedIalog" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MessageDlg.init().setMaximizedIalog("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getMaximizedIalog();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "MessageDlg Font" {

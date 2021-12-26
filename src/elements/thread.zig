@@ -40,6 +40,17 @@ pub const Thread = opaque {
     /// int function(Ihandle* ih); [in C]ih:thread_cb() -> (ret: number) [in Lua]
     pub const OnThreadFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
+    pub const Floating = enum {
+        Yes,
+        Ignore,
+        No,
+    };
+
     pub const Initializer = struct {
         last_error: ?anyerror = null,
         ref: *Self,

@@ -35,49 +35,7 @@ pub const DatePick = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
-    /// 
-    /// K_ANY K_ANY Action generated when a keyboard event occurs.
-    /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
-    /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
-    /// c: identifier of typed key.
-    /// Please refer to the Keyboard Codes table for a list of possible values.
-    /// Returns: If IUP_IGNORE is returned the key is ignored and not processed by
-    /// the control and not propagated.
-    /// If returns IUP_CONTINUE, the key will be processed and the event will be
-    /// propagated to the parent of the element receiving it, this is the default behavior.
-    /// If returns IUP_DEFAULT the key is processed but it is not propagated.
-    /// IUP_CLOSE will be processed.
-    /// Notes Keyboard callbacks depend on the keyboard usage of the control with
-    /// the focus.
-    /// So if you return IUP_IGNORE the control will usually not process the key.
-    /// But be aware that sometimes the control process the key in another event so
-    /// even returning IUP_IGNORE the key can get processed.
-    /// Although it will not be propagated.
-    /// IMPORTANT: The callbacks "K_*" of the dialog or native containers depend on
-    /// the IUP_CONTINUE return value to work while the control is in focus.
-    /// If the callback does not exists it is automatically propagated to the
-    /// parent of the element.
-    /// K_* callbacks All defined keys are also callbacks of any element, called
-    /// when the respective key is activated.
-    /// For example: "K_cC" is also a callback activated when the user press
-    /// Ctrl+C, when the focus is at the element or at a children with focus.
-    /// This is the way an application can create shortcut keys, also called hot keys.
-    /// These callbacks are not available in IupLua.
-    /// Affects All elements with keyboard interaction.
-    pub const OnKAnyFn = fn (self: *Self, arg0: i32) anyerror!void;
-
-    /// 
-    /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
-    /// In Motif is also activated by the Help button in some workstations keyboard.
-    /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
-    /// [in Lua] ih: identifier of the element that activated the event.
-    /// Returns: IUP_CLOSE will be processed.
-    /// Affects All elements with user interaction.
-    pub const OnHelpFn = fn (self: *Self) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
+    pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
@@ -91,51 +49,6 @@ pub const DatePick = opaque {
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
     /// 
-    /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
-    /// native element.
-    /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// Notes When the cursor is moved from one element to another, the call order
-    /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
-    /// control followed by the ENTERWINDOW_CB callback of the new control.
-    /// (since 3.14) If the mouse button is hold pressed and the cursor moves
-    /// outside the element the behavior is system dependent.
-    /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
-    /// GTK the callbacks are called.
-    /// Affects All controls with user interaction.
-    /// See Also LEAVEWINDOW_CB
-    pub const OnEnterWindowFn = fn (self: *Self) anyerror!void;
-
-    /// 
-    /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
-    /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
-    /// [in Lua] ih: identifier of the element that activated the event.
-    /// Notes If the dialog is visible then it is hidden before it is destroyed.
-    /// The callback will be called right after it is hidden.
-    /// The callback will be called before all other destroy procedures.
-    /// For instance, if the element has children then it is called before the
-    /// children are destroyed.
-    /// For language binding implementations use the callback name "LDESTROY_CB" to
-    /// release memory allocated by the binding for the element.
-    /// Also the callback will be called before the language callback.
-    /// Affects All.
-    pub const OnDestroyFn = fn (self: *Self) anyerror!void;
-
-    /// 
-    /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
-    /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
-    /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// Affects All elements with user interaction, except menus.
-    /// In Windows, there are restrictions when using this callback.
-    /// From MSDN on WM_KILLFOCUS: "While processing this message, do not make any
-    /// function calls that display or activate a window.
-    /// This causes the thread to yield control and can cause the application to
-    /// stop responding to messages.
-    /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-    pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
-
-    /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -143,42 +56,10 @@ pub const DatePick = opaque {
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
     /// 
-    /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
-    /// This callback is called after the KILLFOCUS_CB of the element that loosed
-    /// the focus.
-    /// The IupGetFocus function during the callback returns the element that
-    /// loosed the focus.
-    /// Callback int function(Ihandle *ih); [in C] ih:getfocus_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that received keyboard focus.
-    /// Affects All elements with user interaction, except menus.
-    /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-    pub const OnGetFocusFn = fn (self: *Self) anyerror!void;
-
-    /// 
     /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
     /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
     /// Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
-
-    pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
-
-    /// 
-    /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
-    /// native element.
-    /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// Notes When the cursor is moved from one element to another, the call order
-    /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
-    /// control followed by the ENTERWINDOW_CB callback of the new control.
-    /// (since 3.14) If the mouse button is hold pressed and the cursor moves
-    /// outside the element the behavior is system dependent.
-    /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
-    /// GTK the callbacks are called.
-    /// Affects All controls with user interaction.
-    /// See Also ENTERWINDOW_CB
-    pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
-
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
 
     pub const ZOrder = enum {
         Top,
@@ -253,9 +134,9 @@ pub const DatePick = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
+        pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
+            interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
             return self.*;
         }
 
@@ -268,6 +149,18 @@ pub const DatePick = opaque {
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setBackColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "BACKCOLOR", .{}, rgb);
             return self.*;
         }
 
@@ -326,21 +219,17 @@ pub const DatePick = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setChildOffset(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
             return self.*;
         }
 
@@ -367,6 +256,18 @@ pub const DatePick = opaque {
             return self.*;
         }
 
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setSunken(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "SUNKEN", .{}, arg);
+            return self.*;
+        }
+
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
@@ -387,15 +288,21 @@ pub const DatePick = opaque {
             return self.*;
         }
 
+        pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
+            return self.*;
+        }
+
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
+            interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
 
@@ -431,42 +338,15 @@ pub const DatePick = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
-        /// 
-        /// FORMAT [Windows Only]: Flexible format for the date in Windows.
-        /// For more information see "About Date and Time Picker Control" in the
-        /// Windows SDK.
-        /// The Windows control was configured to display date only without any time options.
-        /// Default: "d'/'M'/'yyyy".
-        /// See Noted bellow.
-        /// In Windows, FORMAT can have the following values, but other text in the
-        /// format string must be enclosed in single quotes:
-        pub fn setFormat(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FORMAT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -531,12 +411,6 @@ pub const DatePick = opaque {
             return self.*;
         }
 
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
@@ -595,62 +469,8 @@ pub const DatePick = opaque {
             return self.*;
         }
 
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// K_ANY K_ANY Action generated when a keyboard event occurs.
-        /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
-        /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
-        /// c: identifier of typed key.
-        /// Please refer to the Keyboard Codes table for a list of possible values.
-        /// Returns: If IUP_IGNORE is returned the key is ignored and not processed by
-        /// the control and not propagated.
-        /// If returns IUP_CONTINUE, the key will be processed and the event will be
-        /// propagated to the parent of the element receiving it, this is the default behavior.
-        /// If returns IUP_DEFAULT the key is processed but it is not propagated.
-        /// IUP_CLOSE will be processed.
-        /// Notes Keyboard callbacks depend on the keyboard usage of the control with
-        /// the focus.
-        /// So if you return IUP_IGNORE the control will usually not process the key.
-        /// But be aware that sometimes the control process the key in another event so
-        /// even returning IUP_IGNORE the key can get processed.
-        /// Although it will not be propagated.
-        /// IMPORTANT: The callbacks "K_*" of the dialog or native containers depend on
-        /// the IUP_CONTINUE return value to work while the control is in focus.
-        /// If the callback does not exists it is automatically propagated to the
-        /// parent of the element.
-        /// K_* callbacks All defined keys are also callbacks of any element, called
-        /// when the respective key is activated.
-        /// For example: "K_cC" is also a callback activated when the user press
-        /// Ctrl+C, when the focus is at the element or at a children with focus.
-        /// This is the way an application can create shortcut keys, also called hot keys.
-        /// These callbacks are not available in IupLua.
-        /// Affects All elements with keyboard interaction.
-        pub fn setKAnyCallback(self: *Initializer, callback: ?OnKAnyFn) Initializer {
-            const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
-        /// In Motif is also activated by the Help button in some workstations keyboard.
-        /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
-        /// [in Lua] ih: identifier of the element that activated the event.
-        /// Returns: IUP_CLOSE will be processed.
-        /// Affects All elements with user interaction.
-        pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
-            const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
+        pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
+            const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -671,63 +491,6 @@ pub const DatePick = opaque {
         }
 
         /// 
-        /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
-        /// native element.
-        /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
-        /// number) [in Lua] ih: identifier of the element that activated the event.
-        /// Notes When the cursor is moved from one element to another, the call order
-        /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
-        /// control followed by the ENTERWINDOW_CB callback of the new control.
-        /// (since 3.14) If the mouse button is hold pressed and the cursor moves
-        /// outside the element the behavior is system dependent.
-        /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
-        /// GTK the callbacks are called.
-        /// Affects All controls with user interaction.
-        /// See Also LEAVEWINDOW_CB
-        pub fn setEnterWindowCallback(self: *Initializer, callback: ?OnEnterWindowFn) Initializer {
-            const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
-        /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
-        /// [in Lua] ih: identifier of the element that activated the event.
-        /// Notes If the dialog is visible then it is hidden before it is destroyed.
-        /// The callback will be called right after it is hidden.
-        /// The callback will be called before all other destroy procedures.
-        /// For instance, if the element has children then it is called before the
-        /// children are destroyed.
-        /// For language binding implementations use the callback name "LDESTROY_CB" to
-        /// release memory allocated by the binding for the element.
-        /// Also the callback will be called before the language callback.
-        /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
-            const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
-        /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
-        /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
-        /// number) [in Lua] ih: identifier of the element that activated the event.
-        /// Affects All elements with user interaction, except menus.
-        /// In Windows, there are restrictions when using this callback.
-        /// From MSDN on WM_KILLFOCUS: "While processing this message, do not make any
-        /// function calls that display or activate a window.
-        /// This causes the thread to yield control and can cause the application to
-        /// stop responding to messages.
-        /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setKillFocusCallback(self: *Initializer, callback: ?OnKillFocusFn) Initializer {
-            const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
@@ -739,59 +502,11 @@ pub const DatePick = opaque {
         }
 
         /// 
-        /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
-        /// This callback is called after the KILLFOCUS_CB of the element that loosed
-        /// the focus.
-        /// The IupGetFocus function during the callback returns the element that
-        /// loosed the focus.
-        /// Callback int function(Ihandle *ih); [in C] ih:getfocus_cb() -> (ret:
-        /// number) [in Lua] ih: identifier of the element that received keyboard focus.
-        /// Affects All elements with user interaction, except menus.
-        /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setGetFocusCallback(self: *Initializer, callback: ?OnGetFocusFn) Initializer {
-            const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
         /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
         /// int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret: number) [in
         /// Lua]
         pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
-            const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
-        /// native element.
-        /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
-        /// number) [in Lua] ih: identifier of the element that activated the event.
-        /// Notes When the cursor is moved from one element to another, the call order
-        /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
-        /// control followed by the ENTERWINDOW_CB callback of the new control.
-        /// (since 3.14) If the mouse button is hold pressed and the cursor moves
-        /// outside the element the behavior is system dependent.
-        /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
-        /// GTK the callbacks are called.
-        /// Affects All controls with user interaction.
-        /// See Also ENTERWINDOW_CB
-        pub fn setLeaveWindowCallback(self: *Initializer, callback: ?OnLeaveWindowFn) Initializer {
-            const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
-            const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -909,12 +624,12 @@ pub const DatePick = opaque {
         Impl(Self).refresh(self);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
+    pub fn getFgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "FGCOLOR", .{});
     }
 
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
+    pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "FGCOLOR", .{}, rgb);
     }
 
     pub fn getHandleName(self: *Self) [:0]const u8 {
@@ -938,6 +653,22 @@ pub const DatePick = opaque {
     pub fn getToday(self: *Self) ?iup.Date {
         var str = interop.getStrAttribute(self, "TODAY", .{});
         return iup.Date.parse(str);
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
+    }
+
+    pub fn getBackColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "BACKCOLOR", .{});
+    }
+
+    pub fn setBackColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "BACKCOLOR", .{}, rgb);
     }
 
     pub fn getMaxSize(self: *Self) Size {
@@ -1016,22 +747,6 @@ pub const DatePick = opaque {
         }
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -1046,6 +761,17 @@ pub const DatePick = opaque {
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "THEME", .{}, arg);
+    }
+
+    pub fn getChildOffset(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CHILDOFFSET", .{});
+        return Size.parse(str);
+    }
+
+    pub fn setChildOffset(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
 
     pub fn getExpand(self: *Self) ?Expand {
@@ -1088,6 +814,22 @@ pub const DatePick = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
+    pub fn getSunken(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "SUNKEN", .{});
+    }
+
+    pub fn setSunken(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "SUNKEN", .{}, arg);
+    }
+
     pub fn getFontSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "FONTSIZE", .{});
     }
@@ -1120,6 +862,14 @@ pub const DatePick = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+    pub fn getTitle(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TITLE", .{});
+    }
+
+    pub fn setTitle(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TITLE", .{}, arg);
+    }
+
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
@@ -1128,12 +878,12 @@ pub const DatePick = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
+    pub fn getBgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "BGCOLOR", .{});
     }
 
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
+    pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
@@ -1182,14 +932,6 @@ pub const DatePick = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     pub fn getFontFace(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONTFACE", .{});
     }
@@ -1198,46 +940,12 @@ pub const DatePick = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
-    /// 
-    /// FORMAT [Windows Only]: Flexible format for the date in Windows.
-    /// For more information see "About Date and Time Picker Control" in the
-    /// Windows SDK.
-    /// The Windows control was configured to display date only without any time options.
-    /// Default: "d'/'M'/'yyyy".
-    /// See Noted bellow.
-    /// In Windows, FORMAT can have the following values, but other text in the
-    /// format string must be enclosed in single quotes:
-    pub fn getFormat(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FORMAT", .{});
-    }
-
-    /// 
-    /// FORMAT [Windows Only]: Flexible format for the date in Windows.
-    /// For more information see "About Date and Time Picker Control" in the
-    /// Windows SDK.
-    /// The Windows control was configured to display date only without any time options.
-    /// Default: "d'/'M'/'yyyy".
-    /// See Noted bellow.
-    /// In Windows, FORMAT can have the following values, but other text in the
-    /// format string must be enclosed in single quotes:
-    pub fn setFormat(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FORMAT", .{}, arg);
-    }
-
     pub fn getName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "NAME", .{});
     }
 
     pub fn setName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "NAME", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
     /// 
@@ -1316,20 +1024,22 @@ pub const DatePick = opaque {
         return Size.parse(str);
     }
 
+    pub fn getClientSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CLIENTSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn getClientOffset(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CLIENTOFFSET", .{});
+        return Size.parse(str);
+    }
+
     pub fn getFontStyle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONTSTYLE", .{});
     }
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
-    }
-
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
@@ -1425,59 +1135,8 @@ pub const DatePick = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// K_ANY K_ANY Action generated when a keyboard event occurs.
-    /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
-    /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
-    /// c: identifier of typed key.
-    /// Please refer to the Keyboard Codes table for a list of possible values.
-    /// Returns: If IUP_IGNORE is returned the key is ignored and not processed by
-    /// the control and not propagated.
-    /// If returns IUP_CONTINUE, the key will be processed and the event will be
-    /// propagated to the parent of the element receiving it, this is the default behavior.
-    /// If returns IUP_DEFAULT the key is processed but it is not propagated.
-    /// IUP_CLOSE will be processed.
-    /// Notes Keyboard callbacks depend on the keyboard usage of the control with
-    /// the focus.
-    /// So if you return IUP_IGNORE the control will usually not process the key.
-    /// But be aware that sometimes the control process the key in another event so
-    /// even returning IUP_IGNORE the key can get processed.
-    /// Although it will not be propagated.
-    /// IMPORTANT: The callbacks "K_*" of the dialog or native containers depend on
-    /// the IUP_CONTINUE return value to work while the control is in focus.
-    /// If the callback does not exists it is automatically propagated to the
-    /// parent of the element.
-    /// K_* callbacks All defined keys are also callbacks of any element, called
-    /// when the respective key is activated.
-    /// For example: "K_cC" is also a callback activated when the user press
-    /// Ctrl+C, when the focus is at the element or at a children with focus.
-    /// This is the way an application can create shortcut keys, also called hot keys.
-    /// These callbacks are not available in IupLua.
-    /// Affects All elements with keyboard interaction.
-    pub fn setKAnyCallback(self: *Self, callback: ?OnKAnyFn) void {
-        const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
-    /// In Motif is also activated by the Help button in some workstations keyboard.
-    /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
-    /// [in Lua] ih: identifier of the element that activated the event.
-    /// Returns: IUP_CLOSE will be processed.
-    /// Affects All elements with user interaction.
-    pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
-        const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
+    pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
+        const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -1496,81 +1155,12 @@ pub const DatePick = opaque {
     }
 
     /// 
-    /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
-    /// native element.
-    /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// Notes When the cursor is moved from one element to another, the call order
-    /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
-    /// control followed by the ENTERWINDOW_CB callback of the new control.
-    /// (since 3.14) If the mouse button is hold pressed and the cursor moves
-    /// outside the element the behavior is system dependent.
-    /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
-    /// GTK the callbacks are called.
-    /// Affects All controls with user interaction.
-    /// See Also LEAVEWINDOW_CB
-    pub fn setEnterWindowCallback(self: *Self, callback: ?OnEnterWindowFn) void {
-        const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
-    /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
-    /// [in Lua] ih: identifier of the element that activated the event.
-    /// Notes If the dialog is visible then it is hidden before it is destroyed.
-    /// The callback will be called right after it is hidden.
-    /// The callback will be called before all other destroy procedures.
-    /// For instance, if the element has children then it is called before the
-    /// children are destroyed.
-    /// For language binding implementations use the callback name "LDESTROY_CB" to
-    /// release memory allocated by the binding for the element.
-    /// Also the callback will be called before the language callback.
-    /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
-        const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
-    /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
-    /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// Affects All elements with user interaction, except menus.
-    /// In Windows, there are restrictions when using this callback.
-    /// From MSDN on WM_KILLFOCUS: "While processing this message, do not make any
-    /// function calls that display or activate a window.
-    /// This causes the thread to yield control and can cause the application to
-    /// stop responding to messages.
-    /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setKillFocusCallback(self: *Self, callback: ?OnKillFocusFn) void {
-        const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
-    /// This callback is called after the KILLFOCUS_CB of the element that loosed
-    /// the focus.
-    /// The IupGetFocus function during the callback returns the element that
-    /// loosed the focus.
-    /// Callback int function(Ihandle *ih); [in C] ih:getfocus_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that received keyboard focus.
-    /// Affects All elements with user interaction, except menus.
-    /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setGetFocusCallback(self: *Self, callback: ?OnGetFocusFn) void {
-        const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -1582,47 +1172,18 @@ pub const DatePick = opaque {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);
     }
-
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
-        const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
-    /// native element.
-    /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
-    /// number) [in Lua] ih: identifier of the element that activated the event.
-    /// Notes When the cursor is moved from one element to another, the call order
-    /// in all platforms will be first the LEAVEWINDOW_CB callback of the old
-    /// control followed by the ENTERWINDOW_CB callback of the new control.
-    /// (since 3.14) If the mouse button is hold pressed and the cursor moves
-    /// outside the element the behavior is system dependent.
-    /// In Windows the LEAVEWINDOW_CB/ENTERWINDOW_CB callbacks are NOT called, in
-    /// GTK the callbacks are called.
-    /// Affects All controls with user interaction.
-    /// See Also ENTERWINDOW_CB
-    pub fn setLeaveWindowCallback(self: *Self, callback: ?OnLeaveWindowFn) void {
-        const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
-        const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
-        Handler.setCallback(self, callback);
-    }
 };
 
-test "DatePick TipBalloon" {
+test "DatePick FgColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.DatePick.init().setTipBalloon(true).unwrap());
+    var item = try (iup.DatePick.init().setFgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
     defer item.deinit();
 
-    var ret = item.getTipBalloon();
+    var ret = item.getFgColor();
 
-    try std.testing.expect(ret == true);
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
 test "DatePick HandleName" {
@@ -1645,6 +1206,30 @@ test "DatePick TipBgColor" {
     defer item.deinit();
 
     var ret = item.getTipBgColor();
+
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "DatePick TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.DatePick.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "DatePick BackColor" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.DatePick.init().setBackColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
+    defer item.deinit();
+
+    var ret = item.getBackColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
@@ -1733,6 +1318,18 @@ test "DatePick Theme" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "DatePick ChildOffset" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.DatePick.init().setChildOffset(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getChildOffset();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
 test "DatePick Expand" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1755,6 +1352,30 @@ test "DatePick Size" {
     var ret = item.getSize();
 
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "DatePick TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.DatePick.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "DatePick Sunken" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.DatePick.init().setSunken("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getSunken();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "DatePick FontSize" {
@@ -1793,6 +1414,18 @@ test "DatePick TipDelay" {
     try std.testing.expect(ret == 42);
 }
 
+test "DatePick Title" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.DatePick.init().setTitle("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTitle();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "DatePick PropagateFocus" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1805,16 +1438,16 @@ test "DatePick PropagateFocus" {
     try std.testing.expect(ret == true);
 }
 
-test "DatePick TipBalloonTitle" {
+test "DatePick BgColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.DatePick.init().setTipBalloonTitle("Hello").unwrap());
+    var item = try (iup.DatePick.init().setBgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
     defer item.deinit();
 
-    var ret = item.getTipBalloonTitle();
+    var ret = item.getBgColor();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
 test "DatePick Floating" {
@@ -1865,18 +1498,6 @@ test "DatePick TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "DatePick ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.DatePick.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "DatePick FontFace" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1885,18 +1506,6 @@ test "DatePick FontFace" {
     defer item.deinit();
 
     var ret = item.getFontFace();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "DatePick Format" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.DatePick.init().setFormat("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getFormat();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -1911,18 +1520,6 @@ test "DatePick Name" {
     var ret = item.getName();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "DatePick TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.DatePick.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
 }
 
 test "DatePick Value" {
@@ -2007,18 +1604,6 @@ test "DatePick FontStyle" {
     var ret = item.getFontStyle();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "DatePick Touch" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.DatePick.init().setTouch(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
 }
 
 test "DatePick Font" {

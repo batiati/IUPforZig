@@ -32,15 +32,6 @@ pub const Canvas = opaque {
     const Self = @This();
 
     /// 
-    /// TOUCH_CB [Windows 7 Only]: Action generated when a touch event occurred.
-    /// Multiple touch events will trigger several calls.
-    /// Must set TOUCH=Yes to receive this event.
-    /// (Since 3.3) int function(Ihandle* ih, int id, int x, int y, char* state);
-    /// [in C] ih:touch_cb(id, x, y: number, state: string) -> (ret: number) [in
-    /// Lua]
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
-    /// 
     /// SCROLL_CB SCROLL_CB Called when some manipulation is made to the scrollbar.
     /// The canvas is automatically redrawn only if this callback is NOT defined.
     /// (GTK 2.8) Also the POSX and POSY values will not be correctly updated for
@@ -160,14 +151,6 @@ pub const Canvas = opaque {
     /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
     /// IupToggle
     pub const OnActionFn = fn (self: *Self, arg0: f32, arg1: f32) anyerror!void;
-
-    /// 
-    /// MULTITOUCH_CB [Windows 7 Only]: Action generated when multiple touch events occurred.
-    /// Must set TOUCH=Yes to receive this event.
-    /// (Since 3.3) int function(Ihandle *ih, int count, int* pid, int* px, int*
-    /// py, int* pstate) [in C] ih:multitouch_cb(count: number, pid, px, py,
-    /// pstate: table) -> (ret: number) [in Lua]
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
@@ -482,12 +465,6 @@ pub const Canvas = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -506,6 +483,12 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
+            return self.*;
+        }
+
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
@@ -517,12 +500,6 @@ pub const Canvas = opaque {
         pub fn setDrawTextWrap(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawUsedIRect2d(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAWUSEDIRECT2D", .{}, arg);
             return self.*;
         }
 
@@ -642,55 +619,15 @@ pub const Canvas = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
             return self.*;
         }
 
-        pub fn setDrawAntialias(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "DRAWANTIALIAS", .{}, arg);
-            return self.*;
-        }
-
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHtTransparent(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "HTTRANSPARENT", .{}, arg);
             return self.*;
         }
 
@@ -735,6 +672,12 @@ pub const Canvas = opaque {
         pub fn setPosY(self: *Initializer, arg: f64) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "POSY", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
             return self.*;
         }
 
@@ -789,14 +732,6 @@ pub const Canvas = opaque {
             return self.*;
         }
 
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
-            return self.*;
-        }
-
         pub fn setXAutoHide(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "XAUTOHIDE", .{}, arg);
@@ -831,12 +766,6 @@ pub const Canvas = opaque {
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -938,12 +867,6 @@ pub const Canvas = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
@@ -983,12 +906,6 @@ pub const Canvas = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setYAutoHide(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "YAUTOHIDE", .{}, arg);
@@ -1007,22 +924,6 @@ pub const Canvas = opaque {
             } else {
                 interop.clearAttribute(self.ref, "DRAWSTYLE", .{});
             }
-            return self.*;
-        }
-
-        /// 
-        /// HWND [Windows Only] (non inheritable, read-only): Returns the Windows
-        /// Window handle.
-        /// Available in the Windows driver or in the GTK driver in Windows.
-        pub fn setHwnd(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HWND", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHwndHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HWND", .{}, arg);
             return self.*;
         }
 
@@ -1109,22 +1010,6 @@ pub const Canvas = opaque {
             return self.*;
         }
 
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
@@ -1198,19 +1083,6 @@ pub const Canvas = opaque {
         pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TOUCH_CB [Windows 7 Only]: Action generated when a touch event occurred.
-        /// Multiple touch events will trigger several calls.
-        /// Must set TOUCH=Yes to receive this event.
-        /// (Since 3.3) int function(Ihandle* ih, int id, int x, int y, char* state);
-        /// [in C] ih:touch_cb(id, x, y: number, state: string) -> (ret: number) [in
-        /// Lua]
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
@@ -1371,18 +1243,6 @@ pub const Canvas = opaque {
         /// IupToggle
         pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// MULTITOUCH_CB [Windows 7 Only]: Action generated when multiple touch events occurred.
-        /// Must set TOUCH=Yes to receive this event.
-        /// (Since 3.3) int function(Ihandle *ih, int count, int* pid, int* px, int*
-        /// py, int* pstate) [in C] ih:multitouch_cb(count: number, pid, px, py,
-        /// pstate: table) -> (ret: number) [in Lua]
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1776,14 +1636,6 @@ pub const Canvas = opaque {
         Impl(Self).refresh(self);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -1808,6 +1660,14 @@ pub const Canvas = opaque {
         interop.setIntAttribute(self, "XMIN", .{}, arg);
     }
 
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
+    }
+
     pub fn getMaxSize(self: *Self) Size {
         var str = interop.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
@@ -1825,14 +1685,6 @@ pub const Canvas = opaque {
 
     pub fn setDrawTextWrap(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DRAWTEXTWRAP", .{}, arg);
-    }
-
-    pub fn getDrawUsedIRect2d(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAWUSEDIRECT2D", .{});
-    }
-
-    pub fn setDrawUsedIRect2d(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAWUSEDIRECT2D", .{}, arg);
     }
 
     pub fn getScreenPosition(self: *Self) iup.XYPos {
@@ -1978,22 +1830,6 @@ pub const Canvas = opaque {
         interop.setIntAttribute(self, "DRAWLINEWIDTH", .{}, arg);
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -2010,45 +1846,12 @@ pub const Canvas = opaque {
         interop.setBoolAttribute(self, "DRAGDROP", .{}, arg);
     }
 
-    pub fn getDrawAntialias(self: *Self) i32 {
-        return interop.getIntAttribute(self, "DRAWANTIALIAS", .{});
-    }
-
-    pub fn setDrawAntialias(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "DRAWANTIALIAS", .{}, arg);
-    }
-
     pub fn getTheme(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "THEME", .{});
     }
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "THEME", .{}, arg);
-    }
-
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn getHtTransparent(self: *Self) bool {
-        return interop.getBoolAttribute(self, "HTTRANSPARENT", .{});
-    }
-
-    pub fn setHtTransparent(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "HTTRANSPARENT", .{}, arg);
     }
 
     /// 
@@ -2121,6 +1924,14 @@ pub const Canvas = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
     pub fn getYMin(self: *Self) i32 {
         return interop.getIntAttribute(self, "YMIN", .{});
     }
@@ -2175,17 +1986,6 @@ pub const Canvas = opaque {
 
     pub fn setTipDelay(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
-    }
-
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
     }
 
     pub fn getXHidden(self: *Self) bool {
@@ -2248,14 +2048,6 @@ pub const Canvas = opaque {
     /// Default: "255 255 255".
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getDropTarget(self: *Self) bool {
@@ -2416,14 +2208,6 @@ pub const Canvas = opaque {
         return interop.getBoolAttribute(self, "YHIDDEN", .{});
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     /// 
     /// DRAWSIZE (non inheritable): The size of the drawing area in pixels.
     /// This size is also used in the RESIZE_CB callback.
@@ -2496,14 +2280,6 @@ pub const Canvas = opaque {
         return interop.getStrAttribute(self, "DRAWDRIVER", .{});
     }
 
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
-    }
-
     pub fn getYAutoHide(self: *Self) bool {
         return interop.getBoolAttribute(self, "YAUTOHIDE", .{});
     }
@@ -2535,30 +2311,6 @@ pub const Canvas = opaque {
         } else {
             interop.clearAttribute(self, "DRAWSTYLE", .{});
         }
-    }
-
-    /// 
-    /// HWND [Windows Only] (non inheritable, read-only): Returns the Windows
-    /// Window handle.
-    /// Available in the Windows driver or in the GTK driver in Windows.
-    pub fn getHwnd(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HWND", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    /// 
-    /// HWND [Windows Only] (non inheritable, read-only): Returns the Windows
-    /// Window handle.
-    /// Available in the Windows driver or in the GTK driver in Windows.
-    pub fn setHwnd(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HWND", .{}, arg);
-    }
-
-    pub fn setHwndHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HWND", .{}, arg);
     }
 
     /// 
@@ -2687,23 +2439,6 @@ pub const Canvas = opaque {
         interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
@@ -2819,18 +2554,6 @@ pub const Canvas = opaque {
     /// Works only if set before the child is added to the tabs.
     pub fn setTabTitle(self: *Self, index: i32, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
-    }
-
-    /// 
-    /// TOUCH_CB [Windows 7 Only]: Action generated when a touch event occurred.
-    /// Multiple touch events will trigger several calls.
-    /// Must set TOUCH=Yes to receive this event.
-    /// (Since 3.3) int function(Ihandle* ih, int id, int x, int y, char* state);
-    /// [in C] ih:touch_cb(id, x, y: number, state: string) -> (ret: number) [in
-    /// Lua]
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
     }
 
     /// 
@@ -2981,17 +2704,6 @@ pub const Canvas = opaque {
     /// IupToggle
     pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
         const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// MULTITOUCH_CB [Windows 7 Only]: Action generated when multiple touch events occurred.
-    /// Must set TOUCH=Yes to receive this event.
-    /// (Since 3.3) int function(Ihandle *ih, int count, int* pid, int* px, int*
-    /// py, int* pstate) [in C] ih:multitouch_cb(count: number, pid, px, py,
-    /// pstate: table) -> (ret: number) [in Lua]
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -3270,18 +2982,6 @@ pub const Canvas = opaque {
     }
 };
 
-test "Canvas TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Canvas.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Canvas HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3318,6 +3018,18 @@ test "Canvas XMin" {
     try std.testing.expect(ret == 42);
 }
 
+test "Canvas TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Canvas.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "Canvas MaxSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3338,18 +3050,6 @@ test "Canvas DrawTextWrap" {
     defer item.deinit();
 
     var ret = item.getDrawTextWrap();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Canvas DrawUsedIRect2d" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Canvas.init().setDrawUsedIRect2d(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawUsedIRect2d();
 
     try std.testing.expect(ret == true);
 }
@@ -3486,18 +3186,6 @@ test "Canvas DragDrop" {
     try std.testing.expect(ret == true);
 }
 
-test "Canvas DrawAntialias" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Canvas.init().setDrawAntialias(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawAntialias();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Canvas Theme" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3508,18 +3196,6 @@ test "Canvas Theme" {
     var ret = item.getTheme();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Canvas HtTransparent" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Canvas.init().setHtTransparent(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getHtTransparent();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Canvas Expand" {
@@ -3580,6 +3256,18 @@ test "Canvas PosY" {
     var ret = item.getPosY();
 
     try std.testing.expect(ret == @as(f64, 3.14));
+}
+
+test "Canvas TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Canvas.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Canvas YMin" {
@@ -3654,18 +3342,6 @@ test "Canvas TipDelay" {
     try std.testing.expect(ret == 42);
 }
 
-test "Canvas DragStart" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Canvas.init().setDragStart(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragStart();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
 test "Canvas XAutoHide" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3712,18 +3388,6 @@ test "Canvas BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "Canvas TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Canvas.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Canvas DropTarget" {
@@ -3846,18 +3510,6 @@ test "Canvas TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Canvas ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Canvas.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Canvas FontFace" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3926,18 +3578,6 @@ test "Canvas BackingStore" {
     defer item.deinit();
 
     var ret = item.getBackingStore();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Canvas TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Canvas.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
 
     try std.testing.expect(ret == true);
 }

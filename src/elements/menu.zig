@@ -84,6 +84,17 @@ pub const Menu = opaque {
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
+    pub const Floating = enum {
+        Yes,
+        Ignore,
+        No,
+    };
+
     pub const Initializer = struct {
         last_error: ?anyerror = null,
         ref: *Self,
@@ -153,6 +164,12 @@ pub const Menu = opaque {
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
 
@@ -466,6 +483,14 @@ pub const Menu = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
+    pub fn getFont(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONT", .{});
+    }
+
+    pub fn setFont(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONT", .{}, arg);
+    }
+
     pub fn getName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "NAME", .{});
     }
@@ -711,6 +736,18 @@ test "Menu BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "Menu Font" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Menu.init().setFont("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getFont();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Menu Name" {

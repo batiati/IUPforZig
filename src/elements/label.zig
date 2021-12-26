@@ -31,15 +31,11 @@ pub const Label = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     pub const OnDropMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
     pub const OnDragEndFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
@@ -274,12 +270,6 @@ pub const Label = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -305,6 +295,12 @@ pub const Label = opaque {
             return self.*;
         }
 
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
+            return self.*;
+        }
+
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
@@ -318,6 +314,28 @@ pub const Label = opaque {
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
+            return self.*;
+        }
+
+        /// 
+        /// IMINACTIVE (non inheritable) [GTK and Motif only]: Image name of the
+        /// element when inactive.
+        /// If it is not defined then the IMAGE is used and the colors will be replaced
+        /// by a modified version of the background color creating the disabled effect.
+        /// GTK will also change the inactive image to look like other inactive objects.
+        pub fn setIMinActive(self: *Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (interop.validateHandle(.Image, arg)) {
+                interop.setHandleAttribute(self.ref, "IMINACTIVE", .{}, arg);
+            } else |err| {
+                self.last_error = err;
+            }
+            return self.*;
+        }
+
+        pub fn setIMinActiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "IMINACTIVE", .{}, arg);
             return self.*;
         }
 
@@ -407,18 +425,6 @@ pub const Label = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
@@ -428,28 +434,6 @@ pub const Label = opaque {
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHtTransparent(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "HTTRANSPARENT", .{}, arg);
             return self.*;
         }
 
@@ -491,6 +475,12 @@ pub const Label = opaque {
             return self.*;
         }
 
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
+            return self.*;
+        }
+
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
@@ -514,14 +504,6 @@ pub const Label = opaque {
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
             return self.*;
         }
 
@@ -557,12 +539,6 @@ pub const Label = opaque {
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -621,12 +597,6 @@ pub const Label = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
@@ -648,12 +618,6 @@ pub const Label = opaque {
         pub fn setEllipsis(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "ELLIPSIS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -718,28 +682,6 @@ pub const Label = opaque {
             return self.*;
         }
 
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            return self.*;
-        }
-
         /// 
         /// FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
         /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
@@ -801,12 +743,6 @@ pub const Label = opaque {
             return self.*;
         }
 
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
         pub fn setDropMotionCallback(self: *Initializer, callback: ?OnDropMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
             Handler.setCallback(self.ref, callback);
@@ -821,12 +757,6 @@ pub const Label = opaque {
 
         pub fn setDragBeginCallback(self: *Initializer, callback: ?OnDragBeginFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1138,14 +1068,6 @@ pub const Label = opaque {
         interop.setRgb(self, "FGCOLOR", .{}, rgb);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -1184,6 +1106,14 @@ pub const Label = opaque {
         interop.setBoolAttribute(self, "WORDWRAP", .{}, arg);
     }
 
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
+    }
+
     pub fn getMaxSize(self: *Self) Size {
         var str = interop.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
@@ -1209,6 +1139,35 @@ pub const Label = opaque {
         var buffer: [128]u8 = undefined;
         var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
         interop.setStrAttribute(self, "POSITION", .{}, value);
+    }
+
+    /// 
+    /// IMINACTIVE (non inheritable) [GTK and Motif only]: Image name of the
+    /// element when inactive.
+    /// If it is not defined then the IMAGE is used and the colors will be replaced
+    /// by a modified version of the background color creating the disabled effect.
+    /// GTK will also change the inactive image to look like other inactive objects.
+    pub fn getIMinActive(self: *Self) ?iup.Element {
+        if (interop.getHandleAttribute(self, "IMINACTIVE", .{})) |handle| {
+            return iup.Element.fromHandle(handle);
+        } else {
+            return null;
+        }
+    }
+
+    /// 
+    /// IMINACTIVE (non inheritable) [GTK and Motif only]: Image name of the
+    /// element when inactive.
+    /// If it is not defined then the IMAGE is used and the colors will be replaced
+    /// by a modified version of the background color creating the disabled effect.
+    /// GTK will also change the inactive image to look like other inactive objects.
+    pub fn setIMinActive(self: *Self, arg: anytype) !void {
+        try interop.validateHandle(.Image, arg);
+        interop.setHandleAttribute(self, "IMINACTIVE", .{}, arg);
+    }
+
+    pub fn setIMinActiveHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "IMINACTIVE", .{}, arg);
     }
 
     /// 
@@ -1301,22 +1260,6 @@ pub const Label = opaque {
         }
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -1339,31 +1282,6 @@ pub const Label = opaque {
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "THEME", .{}, arg);
-    }
-
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn getHtTransparent(self: *Self) bool {
-        return interop.getBoolAttribute(self, "HTTRANSPARENT", .{});
-    }
-
-    pub fn setHtTransparent(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "HTTRANSPARENT", .{}, arg);
     }
 
     pub fn getExpand(self: *Self) ?Expand {
@@ -1431,6 +1349,14 @@ pub const Label = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
     pub fn getFontSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "FONTSIZE", .{});
     }
@@ -1469,17 +1395,6 @@ pub const Label = opaque {
 
     pub fn setTipDelay(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
-    }
-
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
     }
 
     /// 
@@ -1538,14 +1453,6 @@ pub const Label = opaque {
     /// Will use the background color of the native parent.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getDropTarget(self: *Self) bool {
@@ -1628,14 +1535,6 @@ pub const Label = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     pub fn getFontFace(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONTFACE", .{});
     }
@@ -1670,14 +1569,6 @@ pub const Label = opaque {
     /// (since 3.0) (GTK 2.6)
     pub fn setEllipsis(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "ELLIPSIS", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
     /// 
@@ -1771,31 +1662,6 @@ pub const Label = opaque {
 
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
-    }
-
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
-    }
-
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
 
     /// 
@@ -1897,11 +1763,6 @@ pub const Label = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     pub fn setDropMotionCallback(self: *Self, callback: ?OnDropMotionFn) void {
         const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
         Handler.setCallback(self, callback);
@@ -1914,11 +1775,6 @@ pub const Label = opaque {
 
     pub fn setDragBeginCallback(self: *Self, callback: ?OnDragBeginFn) void {
         const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -2105,18 +1961,6 @@ test "Label FgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Label TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Label.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Label HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2151,6 +1995,18 @@ test "Label WordWrap" {
     var ret = item.getWordWrap();
 
     try std.testing.expect(ret == true);
+}
+
+test "Label TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Label.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Label MaxSize" {
@@ -2261,18 +2117,6 @@ test "Label Theme" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Label HtTransparent" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Label.init().setHtTransparent(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getHtTransparent();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Label Expand" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2307,6 +2151,18 @@ test "Label Padding" {
     var ret = item.getPadding();
 
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "Label TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Label.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Label FontSize" {
@@ -2357,18 +2213,6 @@ test "Label TipDelay" {
     try std.testing.expect(ret == 42);
 }
 
-test "Label DragStart" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Label.init().setDragStart(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragStart();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
 test "Label Title" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2403,18 +2247,6 @@ test "Label BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "Label TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Label.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Label DropTarget" {
@@ -2501,18 +2333,6 @@ test "Label TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Label ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Label.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Label FontFace" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2545,18 +2365,6 @@ test "Label Ellipsis" {
     defer item.deinit();
 
     var ret = item.getEllipsis();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Label TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Label.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
 
     try std.testing.expect(ret == true);
 }
@@ -2655,18 +2463,6 @@ test "Label FontStyle" {
     var ret = item.getFontStyle();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Label Touch" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Label.init().setTouch(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Label Font" {

@@ -34,10 +34,6 @@ pub const ProgressBar = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
-
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
@@ -69,6 +65,12 @@ pub const ProgressBar = opaque {
         VerticalFree,
         No,
     };
+
+    pub const Floating = enum {
+        Yes,
+        Ignore,
+        No,
+    };
     /// 
     /// ORIENTATION (creation only): can be "VERTICAL" or "HORIZONTAL".
     /// Default: "HORIZONTAL".
@@ -76,12 +78,6 @@ pub const ProgressBar = opaque {
     pub const Orientation = enum {
         Horizontal,
         Vertical,
-    };
-
-    pub const Floating = enum {
-        Yes,
-        Ignore,
-        No,
     };
 
     pub const Initializer = struct {
@@ -137,30 +133,35 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
-        /// 
-        /// FGCOLOR [Windows Classic and Motif only]: Controls the bar color.
-        /// Default: the global attribute DLGFGCOLOR.
-        pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
-        }
-
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
+            return self.*;
+        }
+
+        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
@@ -172,29 +173,45 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
+        /// 
+        /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+        /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
+        pub fn setActive(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
+            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
 
-        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIP", .{}, arg);
+            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
 
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
+        /// 
+        /// FGCOLOR [Windows Classic and Motif only]: Controls the bar color.
+        /// Default: the global attribute DLGFGCOLOR.
+        pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
+            interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
             return self.*;
         }
 
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
 
@@ -209,21 +226,93 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
+        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
+            interop.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
 
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
+            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
 
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+        /// 
+        /// MAX (non inheritable): Contains the maximum value.
+        /// Default is "1".
+        /// The control display is not updated, must set VALUE attribute to update.
+        pub fn setMax(self: *Initializer, arg: f64) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
+            interop.setDoubleAttribute(self.ref, "MAX", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "SIZE", .{}, value);
+            return self.*;
+        }
+
+        /// 
+        /// BGCOLOR [Windows Classic and Motif only]: controls the background color.
+        /// Default: the global attribute DLGBGCOLOR.
+        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
+        /// controlling the current position.
+        pub fn setValue(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "VALUE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
             return self.*;
         }
 
@@ -242,11 +331,53 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
-        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// DASHED (creation only in Windows) [Windows and GTK only]: Changes the style
+        /// of the progress bar for a dashed pattern.
+        /// Default is "NO".
+        /// In Windows it is not supported since Windows Vista when using Visual Styles.
+        pub fn setDashed(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "DASHED", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// RASTERSIZE: The initial size is defined as "200x30".
+        /// Set to NULL to allow the use of smaller values in the layout computation.
+        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "SIZE", .{}, value);
+            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
+            return self.*;
+        }
+
+        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
+                .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
+                .No => interop.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
+            } else {
+                interop.clearAttribute(self.ref, "FLOATING", .{});
+            }
+            return self.*;
+        }
+
+        /// 
+        /// MIN (non inheritable): Contains the minimum value.
+        /// Default is "0".
+        /// The control display is not updated, must set VALUE attribute to update.
+        pub fn setMin(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "MIN", .{}, arg);
             return self.*;
         }
 
@@ -265,143 +396,9 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
+        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// MIN (non inheritable): Contains the minimum value.
-        /// Default is "0".
-        /// The control display is not updated, must set VALUE attribute to update.
-        pub fn setMin(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "MIN", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// BGCOLOR [Windows Classic and Motif only]: controls the background color.
-        /// Default: the global attribute DLGBGCOLOR.
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
-                .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
-                .No => interop.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
-            } else {
-                interop.clearAttribute(self.ref, "FLOATING", .{});
-            }
-            return self.*;
-        }
-
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// RASTERSIZE: The initial size is defined as "200x30".
-        /// Set to NULL to allow the use of smaller values in the layout computation.
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
-        /// controlling the current position.
-        pub fn setValue(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "VALUE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
-        /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
+            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
 
@@ -413,48 +410,17 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
-        /// 
-        /// MAX (non inheritable): Contains the maximum value.
-        /// Default is "1".
-        /// The control display is not updated, must set VALUE attribute to update.
-        pub fn setMax(self: *Initializer, arg: f64) Initializer {
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "MAX", .{}, arg);
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// DASHED (creation only in Windows) [Windows and GTK only]: Changes the style
-        /// of the progress bar for a dashed pattern.
-        /// Default is "NO".
-        /// In Windows it is not supported since Windows Vista when using Visual Styles.
-        pub fn setDashed(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DASHED", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
+            var buffer: [128]u8 = undefined;
+            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
+            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
             return self.*;
         }
 
@@ -507,18 +473,6 @@ pub const ProgressBar = opaque {
         pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-            Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
@@ -661,6 +615,82 @@ pub const ProgressBar = opaque {
         Impl(Self).refresh(self);
     }
 
+    pub fn getTipBgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "TIPBGCOLOR", .{});
+    }
+
+    pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
+    }
+
+    pub fn getUserSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "USERSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "USERSIZE", .{}, value);
+    }
+
+    pub fn getFontStyle(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONTSTYLE", .{});
+    }
+
+    pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
+    }
+
+    pub fn getFontSize(self: *Self) i32 {
+        return interop.getIntAttribute(self, "FONTSIZE", .{});
+    }
+
+    pub fn setFontSize(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
+    }
+
+    pub fn getExpandWeight(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
+    }
+
+    pub fn setExpandWeight(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
+    }
+
+    pub fn getMaxSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "MAXSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "MAXSIZE", .{}, value);
+    }
+
+    /// 
+    /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+    /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
+    pub fn getActive(self: *Self) bool {
+        return interop.getBoolAttribute(self, "ACTIVE", .{});
+    }
+
+    /// 
+    /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
+    /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
+    pub fn setActive(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
+    }
+
+    pub fn getNTheme(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NTHEME", .{});
+    }
+
+    pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NTHEME", .{}, arg);
+    }
+
     /// 
     /// FGCOLOR [Windows Classic and Motif only]: Controls the bar color.
     /// Default: the global attribute DLGFGCOLOR.
@@ -675,71 +705,14 @@ pub const ProgressBar = opaque {
         interop.setRgb(self, "FGCOLOR", .{}, rgb);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
-    pub fn getHandleName(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "HANDLENAME", .{});
-    }
-
-    pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
-    }
-
-    pub fn getTipBgColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "TIPBGCOLOR", .{});
-    }
-
-    pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
-    }
-
-    pub fn getMaxSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "MAXSIZE", .{});
+    pub fn getNaturalSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
         return Size.parse(str);
-    }
-
-    pub fn setMaxSize(self: *Self, width: ?i32, height: ?i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
     pub fn getScreenPosition(self: *Self) iup.XYPos {
         var str = interop.getStrAttribute(self, "SCREENPOSITION", .{});
         return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn getPosition(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "POSITION", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setPosition(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "POSITION", .{}, value);
-    }
-
-    pub fn getTip(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIP", .{});
-    }
-
-    pub fn setTip(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIP", .{}, arg);
-    }
-
-    pub fn getCanFocus(self: *Self) bool {
-        return interop.getBoolAttribute(self, "CANFOCUS", .{});
-    }
-
-    pub fn setCanFocus(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
     }
 
     pub fn getVisible(self: *Self) bool {
@@ -748,6 +721,22 @@ pub const ProgressBar = opaque {
 
     pub fn setVisible(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
+    }
+
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
+    pub fn getFontFace(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONTFACE", .{});
+    }
+
+    pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
     pub fn zOrder(self: *Self, arg: ?ZOrder) void {
@@ -759,36 +748,136 @@ pub const ProgressBar = opaque {
         }
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
+    pub fn getTip(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIP", .{});
     }
 
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
+    pub fn setTip(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIP", .{}, arg);
     }
 
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
+    pub fn getPropagateFocus(self: *Self) bool {
+        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
-    pub fn getX(self: *Self) i32 {
-        return interop.getIntAttribute(self, "X", .{});
+    pub fn setPropagateFocus(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
-    pub fn getY(self: *Self) i32 {
-        return interop.getIntAttribute(self, "Y", .{});
+    /// 
+    /// MAX (non inheritable): Contains the maximum value.
+    /// Default is "1".
+    /// The control display is not updated, must set VALUE attribute to update.
+    pub fn getMax(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "MAX", .{});
     }
 
-    pub fn getTheme(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "THEME", .{});
+    /// 
+    /// MAX (non inheritable): Contains the maximum value.
+    /// Default is "1".
+    /// The control display is not updated, must set VALUE attribute to update.
+    pub fn setMax(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "MAX", .{}, arg);
     }
 
-    pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "THEME", .{}, arg);
+    pub fn getCharSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn getHandleName(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "HANDLENAME", .{});
+    }
+
+    pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
+    }
+
+    pub fn getSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "SIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "SIZE", .{}, value);
+    }
+
+    /// 
+    /// BGCOLOR [Windows Classic and Motif only]: controls the background color.
+    /// Default: the global attribute DLGBGCOLOR.
+    pub fn getBgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "BGCOLOR", .{});
+    }
+
+    /// 
+    /// BGCOLOR [Windows Classic and Motif only]: controls the background color.
+    /// Default: the global attribute DLGBGCOLOR.
+    pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "BGCOLOR", .{}, rgb);
+    }
+
+    pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
+    }
+
+    pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
+    }
+
+    pub fn getTipFgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "TIPFGCOLOR", .{});
+    }
+
+    pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
+    }
+
+    pub fn getFont(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONT", .{});
+    }
+
+    pub fn setFont(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONT", .{}, arg);
+    }
+
+    pub fn getName(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NAME", .{});
+    }
+
+    pub fn setName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NAME", .{}, arg);
+    }
+
+    /// 
+    /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
+    /// controlling the current position.
+    pub fn getValue(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "VALUE", .{});
+    }
+
+    /// 
+    /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
+    /// controlling the current position.
+    pub fn setValue(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "VALUE", .{}, arg);
+    }
+
+    pub fn getTipVisible(self: *Self) bool {
+        return interop.getBoolAttribute(self, "TIPVISIBLE", .{});
+    }
+
+    pub fn setTipVisible(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
+    }
+
+    pub fn getTipDelay(self: *Self) i32 {
+        return interop.getIntAttribute(self, "TIPDELAY", .{});
+    }
+
+    pub fn setTipDelay(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
     pub fn getExpand(self: *Self) ?Expand {
@@ -816,97 +905,29 @@ pub const ProgressBar = opaque {
         }
     }
 
-    pub fn getSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "SIZE", .{});
+    pub fn getCanFocus(self: *Self) bool {
+        return interop.getBoolAttribute(self, "CANFOCUS", .{});
+    }
+
+    pub fn setCanFocus(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
+    }
+
+    /// 
+    /// RASTERSIZE: The initial size is defined as "200x30".
+    /// Set to NULL to allow the use of smaller values in the layout computation.
+    pub fn getRasterSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
 
-    pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
+    /// 
+    /// RASTERSIZE: The initial size is defined as "200x30".
+    /// Set to NULL to allow the use of smaller values in the layout computation.
+    pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "SIZE", .{}, value);
-    }
-
-    pub fn getWId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "WID", .{});
-    }
-
-    pub fn getFontSize(self: *Self) i32 {
-        return interop.getIntAttribute(self, "FONTSIZE", .{});
-    }
-
-    pub fn setFontSize(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
-    }
-
-    /// 
-    /// MIN (non inheritable): Contains the minimum value.
-    /// Default is "0".
-    /// The control display is not updated, must set VALUE attribute to update.
-    pub fn getMin(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "MIN", .{});
-    }
-
-    /// 
-    /// MIN (non inheritable): Contains the minimum value.
-    /// Default is "0".
-    /// The control display is not updated, must set VALUE attribute to update.
-    pub fn setMin(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "MIN", .{}, arg);
-    }
-
-    pub fn getNaturalSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getUserSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "USERSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "USERSIZE", .{}, value);
-    }
-
-    pub fn getTipDelay(self: *Self) i32 {
-        return interop.getIntAttribute(self, "TIPDELAY", .{});
-    }
-
-    pub fn setTipDelay(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
-    }
-
-    pub fn getPropagateFocus(self: *Self) bool {
-        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
-    }
-
-    pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
-    }
-
-    /// 
-    /// BGCOLOR [Windows Classic and Motif only]: controls the background color.
-    /// Default: the global attribute DLGBGCOLOR.
-    pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "BGCOLOR", .{});
-    }
-
-    /// 
-    /// BGCOLOR [Windows Classic and Motif only]: controls the background color.
-    /// Default: the global attribute DLGBGCOLOR.
-    pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
+        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
@@ -928,113 +949,40 @@ pub const ProgressBar = opaque {
         }
     }
 
-    pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
-    }
-
-    pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
+    /// 
+    /// MIN (non inheritable): Contains the minimum value.
+    /// Default is "0".
+    /// The control display is not updated, must set VALUE attribute to update.
+    pub fn getMin(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "MIN", .{});
     }
 
     /// 
-    /// RASTERSIZE: The initial size is defined as "200x30".
-    /// Set to NULL to allow the use of smaller values in the layout computation.
-    pub fn getRasterSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
-        return Size.parse(str);
+    /// MIN (non inheritable): Contains the minimum value.
+    /// Default is "0".
+    /// The control display is not updated, must set VALUE attribute to update.
+    pub fn setMin(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "MIN", .{}, arg);
     }
 
-    /// 
-    /// RASTERSIZE: The initial size is defined as "200x30".
-    /// Set to NULL to allow the use of smaller values in the layout computation.
-    pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
+    pub fn getTheme(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "THEME", .{});
     }
 
-    pub fn getTipFgColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "TIPFGCOLOR", .{});
+    pub fn setTheme(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
-    pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
+    pub fn getWId(self: *Self) i32 {
+        return interop.getIntAttribute(self, "WID", .{});
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
+    pub fn getX(self: *Self) i32 {
+        return interop.getIntAttribute(self, "X", .{});
     }
 
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
-    pub fn getFontFace(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONTFACE", .{});
-    }
-
-    pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
-    }
-
-    pub fn getName(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NAME", .{});
-    }
-
-    pub fn setName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NAME", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
-    }
-
-    /// 
-    /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
-    /// controlling the current position.
-    pub fn getValue(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "VALUE", .{});
-    }
-
-    /// 
-    /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
-    /// controlling the current position.
-    pub fn setValue(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "VALUE", .{}, arg);
-    }
-
-    /// 
-    /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
-    /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
-    pub fn getActive(self: *Self) bool {
-        return interop.getBoolAttribute(self, "ACTIVE", .{});
-    }
-
-    /// 
-    /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
-    /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
-    pub fn setActive(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
-    }
-
-    pub fn getTipVisible(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPVISIBLE", .{});
-    }
-
-    pub fn setTipVisible(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
-    }
-
-    pub fn getExpandWeight(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
-    }
-
-    pub fn setExpandWeight(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
+    pub fn getY(self: *Self) i32 {
+        return interop.getIntAttribute(self, "Y", .{});
     }
 
     pub fn getMinSize(self: *Self) Size {
@@ -1048,57 +996,23 @@ pub const ProgressBar = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
-    /// 
-    /// MAX (non inheritable): Contains the maximum value.
-    /// Default is "1".
-    /// The control display is not updated, must set VALUE attribute to update.
-    pub fn getMax(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "MAX", .{});
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
     }
 
-    /// 
-    /// MAX (non inheritable): Contains the maximum value.
-    /// Default is "1".
-    /// The control display is not updated, must set VALUE attribute to update.
-    pub fn setMax(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "MAX", .{}, arg);
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
-    pub fn getNTheme(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NTHEME", .{});
+    pub fn getPosition(self: *Self) iup.XYPos {
+        var str = interop.getStrAttribute(self, "POSITION", .{});
+        return iup.XYPos.parse(str, ',');
     }
 
-    pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NTHEME", .{}, arg);
-    }
-
-    pub fn getCharSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONTSTYLE", .{});
-    }
-
-    pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
-    }
-
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
-    }
-
-    pub fn getFont(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONT", .{});
-    }
-
-    pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONT", .{}, arg);
+    pub fn setPosition(self: *Self, x: i32, y: i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
+        interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
     /// 
@@ -1186,16 +1100,6 @@ pub const ProgressBar = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
@@ -1221,42 +1125,6 @@ pub const ProgressBar = opaque {
     }
 };
 
-test "ProgressBar FgColor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setFgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
-    defer item.deinit();
-
-    var ret = item.getFgColor();
-
-    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "ProgressBar TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
-test "ProgressBar HandleName" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setHandleName("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getHandleName();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "ProgressBar TipBgColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1267,126 +1135,6 @@ test "ProgressBar TipBgColor" {
     var ret = item.getTipBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "ProgressBar MaxSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setMaxSize(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMaxSize();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "ProgressBar Position" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setPosition(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getPosition();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
-test "ProgressBar Tip" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setTip("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTip();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "ProgressBar CanFocus" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setCanFocus(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getCanFocus();
-
-    try std.testing.expect(ret == true);
-}
-
-test "ProgressBar Visible" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setVisible(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getVisible();
-
-    try std.testing.expect(ret == true);
-}
-
-test "ProgressBar Theme" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setTheme("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTheme();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "ProgressBar Expand" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setExpand(.Yes).unwrap());
-    defer item.deinit();
-
-    var ret = item.getExpand();
-
-    try std.testing.expect(ret != null and ret.? == .Yes);
-}
-
-test "ProgressBar Size" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setSize(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getSize();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "ProgressBar FontSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setFontSize(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getFontSize();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "ProgressBar Min" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setMin(3.14).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMin();
-
-    try std.testing.expect(ret == @as(f64, 3.14));
 }
 
 test "ProgressBar UserSize" {
@@ -1401,16 +1149,136 @@ test "ProgressBar UserSize" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
-test "ProgressBar TipDelay" {
+test "ProgressBar FontStyle" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.ProgressBar.init().setTipDelay(42).unwrap());
+    var item = try (iup.ProgressBar.init().setFontStyle("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getTipDelay();
+    var ret = item.getFontStyle();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "ProgressBar FontSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setFontSize(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getFontSize();
 
     try std.testing.expect(ret == 42);
+}
+
+test "ProgressBar ExpandWeight" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setExpandWeight(3.14).unwrap());
+    defer item.deinit();
+
+    var ret = item.getExpandWeight();
+
+    try std.testing.expect(ret == @as(f64, 3.14));
+}
+
+test "ProgressBar MaxSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setMaxSize(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMaxSize();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "ProgressBar Active" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setActive(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getActive();
+
+    try std.testing.expect(ret == true);
+}
+
+test "ProgressBar NTheme" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setNTheme("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getNTheme();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "ProgressBar FgColor" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setFgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
+    defer item.deinit();
+
+    var ret = item.getFgColor();
+
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "ProgressBar Visible" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setVisible(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getVisible();
+
+    try std.testing.expect(ret == true);
+}
+
+test "ProgressBar TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "ProgressBar FontFace" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setFontFace("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getFontFace();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "ProgressBar Tip" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setTip("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTip();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "ProgressBar PropagateFocus" {
@@ -1425,6 +1293,42 @@ test "ProgressBar PropagateFocus" {
     try std.testing.expect(ret == true);
 }
 
+test "ProgressBar Max" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setMax(3.14).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMax();
+
+    try std.testing.expect(ret == @as(f64, 3.14));
+}
+
+test "ProgressBar HandleName" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setHandleName("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getHandleName();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "ProgressBar Size" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setSize(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getSize();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
 test "ProgressBar BgColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1435,30 +1339,6 @@ test "ProgressBar BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "ProgressBar TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "ProgressBar Floating" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setFloating(.Yes).unwrap());
-    defer item.deinit();
-
-    var ret = item.getFloating();
-
-    try std.testing.expect(ret != null and ret.? == .Yes);
 }
 
 test "ProgressBar NormalizerGroup" {
@@ -1473,18 +1353,6 @@ test "ProgressBar NormalizerGroup" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "ProgressBar RasterSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setRasterSize(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getRasterSize();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
 test "ProgressBar TipFgColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1497,26 +1365,14 @@ test "ProgressBar TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "ProgressBar ControlId" {
+test "ProgressBar Font" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.ProgressBar.init().setControlId(42).unwrap());
+    var item = try (iup.ProgressBar.init().setFont("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "ProgressBar FontFace" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setFontFace("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getFontFace();
+    var ret = item.getFont();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -1533,18 +1389,6 @@ test "ProgressBar Name" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "ProgressBar TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "ProgressBar Value" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1555,18 +1399,6 @@ test "ProgressBar Value" {
     var ret = item.getValue();
 
     try std.testing.expect(ret == @as(f64, 3.14));
-}
-
-test "ProgressBar Active" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setActive(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getActive();
-
-    try std.testing.expect(ret == true);
 }
 
 test "ProgressBar TipVisible" {
@@ -1581,16 +1413,88 @@ test "ProgressBar TipVisible" {
     try std.testing.expect(ret == true);
 }
 
-test "ProgressBar ExpandWeight" {
+test "ProgressBar TipDelay" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.ProgressBar.init().setExpandWeight(3.14).unwrap());
+    var item = try (iup.ProgressBar.init().setTipDelay(42).unwrap());
     defer item.deinit();
 
-    var ret = item.getExpandWeight();
+    var ret = item.getTipDelay();
+
+    try std.testing.expect(ret == 42);
+}
+
+test "ProgressBar Expand" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setExpand(.Yes).unwrap());
+    defer item.deinit();
+
+    var ret = item.getExpand();
+
+    try std.testing.expect(ret != null and ret.? == .Yes);
+}
+
+test "ProgressBar CanFocus" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setCanFocus(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getCanFocus();
+
+    try std.testing.expect(ret == true);
+}
+
+test "ProgressBar RasterSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setRasterSize(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getRasterSize();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "ProgressBar Floating" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setFloating(.Yes).unwrap());
+    defer item.deinit();
+
+    var ret = item.getFloating();
+
+    try std.testing.expect(ret != null and ret.? == .Yes);
+}
+
+test "ProgressBar Min" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setMin(3.14).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMin();
 
     try std.testing.expect(ret == @as(f64, 3.14));
+}
+
+test "ProgressBar Theme" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.ProgressBar.init().setTheme("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTheme();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "ProgressBar MinSize" {
@@ -1605,62 +1509,26 @@ test "ProgressBar MinSize" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
-test "ProgressBar Max" {
+test "ProgressBar TipIcon" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.ProgressBar.init().setMax(3.14).unwrap());
+    var item = try (iup.ProgressBar.init().setTipIcon("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getMax();
-
-    try std.testing.expect(ret == @as(f64, 3.14));
-}
-
-test "ProgressBar NTheme" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setNTheme("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getNTheme();
+    var ret = item.getTipIcon();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "ProgressBar FontStyle" {
+test "ProgressBar Position" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.ProgressBar.init().setFontStyle("Hello").unwrap());
+    var item = try (iup.ProgressBar.init().setPosition(9, 10).unwrap());
     defer item.deinit();
 
-    var ret = item.getFontStyle();
+    var ret = item.getPosition();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "ProgressBar Touch" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setTouch(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
-}
-
-test "ProgressBar Font" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.ProgressBar.init().setFont("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getFont();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret.x == 9 and ret.y == 10);
 }

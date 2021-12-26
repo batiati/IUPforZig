@@ -29,6 +29,17 @@ pub const ImageRgba = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Image;
     const Self = @This();
 
+    /// 
+    /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
+    /// then its size and position will be ignored by the layout processing.
+    /// Default: "NO".
+    /// (since 3.0)
+    pub const Floating = enum {
+        Yes,
+        Ignore,
+        No,
+    };
+
     pub const Initializer = struct {
         last_error: ?anyerror = null,
         ref: *Self,

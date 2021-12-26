@@ -278,8 +278,6 @@ pub const FlatTree = opaque {
     /// IupToggle
     pub const OnActionFn = fn (self: *Self, arg0: f32, arg1: f32) anyerror!void;
 
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
-
     pub const OnDropMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
     /// 
@@ -300,8 +298,6 @@ pub const FlatTree = opaque {
     pub const OnRenameFn = fn (self: *Self, arg0: i32, arg1: [:0]const u8) anyerror!void;
 
     pub const OnToggleValueFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
-
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
 
     /// 
     /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
@@ -579,18 +575,6 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setXMax(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "XMAX", .{}, arg);
@@ -757,12 +741,6 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFocusFeedback(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "FOCUSFEEDBACK", .{}, arg);
@@ -886,6 +864,12 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+        pub fn addLeaf(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "ADDLEAF", .{index}, arg);
+            return self.*;
+        }
+
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
             if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
@@ -894,12 +878,6 @@ pub const FlatTree = opaque {
             } else {
                 interop.clearAttribute(self.ref, "ZORDER", .{});
             }
-            return self.*;
-        }
-
-        pub fn addLeaf(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "ADDLEAF", .{index}, arg);
             return self.*;
         }
 
@@ -997,23 +975,15 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
+        pub fn setAddExpanded(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
+            interop.setBoolAttribute(self.ref, "ADDEXPANDED", .{}, arg);
             return self.*;
         }
 
         pub fn setDX(self: *Initializer, arg: f64) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setDoubleAttribute(self.ref, "DX", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setAddExpanded(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "ADDEXPANDED", .{}, arg);
             return self.*;
         }
 
@@ -1177,22 +1147,6 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            return self.*;
-        }
-
         pub fn setColor(self: *Initializer, index: i32, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "COLOR", .{index}, rgb);
@@ -1245,18 +1199,6 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
-        pub fn setHwnd(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HWND", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHwndHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HWND", .{}, arg);
-            return self.*;
-        }
-
         pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
             if (self.last_error) |_| return self.*;
             if (interop.validateHandle(.Image, arg)) {
@@ -1270,22 +1212,6 @@ pub const FlatTree = opaque {
         pub fn setCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
 
@@ -1311,33 +1237,9 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
-        pub fn setHtTransparent(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "HTTRANSPARENT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawUsedIRect2d(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAWUSEDIRECT2D", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawAntialias(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "DRAWANTIALIAS", .{}, arg);
             return self.*;
         }
 
@@ -1347,6 +1249,12 @@ pub const FlatTree = opaque {
         pub fn copyNode(self: *Initializer, index: i32, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "COPYNODE", .{index}, arg);
+            return self.*;
+        }
+
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
             return self.*;
         }
 
@@ -1469,6 +1377,12 @@ pub const FlatTree = opaque {
         pub fn setHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "HLCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
 
@@ -1647,12 +1561,6 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
-            return self.*;
-        }
-
         pub fn setBackImage(self: *Initializer, arg: anytype) Initializer {
             if (self.last_error) |_| return self.*;
             if (interop.validateHandle(.Image, arg)) {
@@ -1761,12 +1669,6 @@ pub const FlatTree = opaque {
         pub fn setPsColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "PSCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
             return self.*;
         }
 
@@ -2313,12 +2215,6 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
         pub fn setDropMotionCallback(self: *Initializer, callback: ?OnDropMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
             Handler.setCallback(self.ref, callback);
@@ -2352,12 +2248,6 @@ pub const FlatTree = opaque {
 
         pub fn setToggleValueCallback(self: *Initializer, callback: ?OnToggleValueFn) Initializer {
             const Handler = CallbackHandler(Self, OnToggleValueFn, "TOGGLEVALUE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -2661,22 +2551,6 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "DRAGTYPES", .{}, arg);
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getXMax(self: *Self) i32 {
         return interop.getIntAttribute(self, "XMAX", .{});
     }
@@ -2931,14 +2805,6 @@ pub const FlatTree = opaque {
         return interop.getBoolAttribute(self, "HASFOCUS", .{});
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     pub fn getFocusFeedback(self: *Self) bool {
         return interop.getBoolAttribute(self, "FOCUSFEEDBACK", .{});
     }
@@ -3089,6 +2955,10 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+    pub fn addLeaf(self: *Self, index: i32, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "ADDLEAF", .{index}, arg);
+    }
+
     pub fn zOrder(self: *Self, arg: ?ZOrder) void {
         if (arg) |value| switch (value) {
             .Top => interop.setStrAttribute(self, "ZORDER", .{}, "TOP"),
@@ -3096,10 +2966,6 @@ pub const FlatTree = opaque {
         } else {
             interop.clearAttribute(self, "ZORDER", .{});
         }
-    }
-
-    pub fn addLeaf(self: *Self, index: i32, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "ADDLEAF", .{index}, arg);
     }
 
     pub fn getMarkWhenToggle(self: *Self) bool {
@@ -3234,15 +3100,12 @@ pub const FlatTree = opaque {
         interop.setBoolAttribute(self, "DRAWMAKEINACTIVE", .{}, arg);
     }
 
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
+    pub fn getAddExpanded(self: *Self) bool {
+        return interop.getBoolAttribute(self, "ADDEXPANDED", .{});
     }
 
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
+    pub fn setAddExpanded(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "ADDEXPANDED", .{}, arg);
     }
 
     pub fn getDX(self: *Self) f64 {
@@ -3251,14 +3114,6 @@ pub const FlatTree = opaque {
 
     pub fn setDX(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "DX", .{}, arg);
-    }
-
-    pub fn getAddExpanded(self: *Self) bool {
-        return interop.getBoolAttribute(self, "ADDEXPANDED", .{});
-    }
-
-    pub fn setAddExpanded(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "ADDEXPANDED", .{}, arg);
     }
 
     pub fn getDY(self: *Self) f64 {
@@ -3465,23 +3320,6 @@ pub const FlatTree = opaque {
         interop.setBoolAttribute(self, "DRAGDROPTREE", .{}, arg);
     }
 
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
     pub fn getColor(self: *Self, index: i32) ?iup.Rgb {
         return interop.getRgb(self, "COLOR", .{index});
     }
@@ -3543,22 +3381,6 @@ pub const FlatTree = opaque {
         interop.setBoolAttribute(self, "SHOWTOGGLE", .{}, arg);
     }
 
-    pub fn getHwnd(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HWND", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHwnd(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HWND", .{}, arg);
-    }
-
-    pub fn setHwndHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HWND", .{}, arg);
-    }
-
     pub fn getCursor(self: *Self) ?iup.Element {
         if (interop.getHandleAttribute(self, "CURSOR", .{})) |handle| {
             return iup.Element.fromHandle(handle);
@@ -3574,23 +3396,6 @@ pub const FlatTree = opaque {
 
     pub fn setCursorHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "CURSOR", .{}, arg);
-    }
-
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
 
     pub fn getImage(self: *Self, index: i32) ?iup.Element {
@@ -3618,30 +3423,6 @@ pub const FlatTree = opaque {
         interop.setBoolAttribute(self, "WHEELDROPFOCUS", .{}, arg);
     }
 
-    pub fn getHtTransparent(self: *Self) bool {
-        return interop.getBoolAttribute(self, "HTTRANSPARENT", .{});
-    }
-
-    pub fn setHtTransparent(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "HTTRANSPARENT", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
-    }
-
-    pub fn getDrawUsedIRect2d(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAWUSEDIRECT2D", .{});
-    }
-
-    pub fn setDrawUsedIRect2d(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAWUSEDIRECT2D", .{}, arg);
-    }
-
     pub fn getXHidden(self: *Self) bool {
         return interop.getBoolAttribute(self, "XHIDDEN", .{});
     }
@@ -3662,19 +3443,19 @@ pub const FlatTree = opaque {
         interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
-    pub fn getDrawAntialias(self: *Self) i32 {
-        return interop.getIntAttribute(self, "DRAWANTIALIAS", .{});
-    }
-
-    pub fn setDrawAntialias(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "DRAWANTIALIAS", .{}, arg);
-    }
-
     /// 
     /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
     pub fn copyNode(self: *Self, index: i32, arg: i32) void {
         interop.setIntAttribute(self, "COPYNODE", .{index}, arg);
+    }
+
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
     pub fn getSbImageLeftHighlight(self: *Self) ?iup.Element {
@@ -3816,6 +3597,14 @@ pub const FlatTree = opaque {
 
     pub fn setHlColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "HLCOLOR", .{}, rgb);
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
     pub fn getWId(self: *Self) i32 {
@@ -4047,14 +3836,6 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "SB_IMAGERIGHTHIGHLIGHT", .{}, arg);
     }
 
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
-    }
-
     pub fn getBackImage(self: *Self) ?iup.Element {
         if (interop.getHandleAttribute(self, "BACKIMAGE", .{})) |handle| {
             return iup.Element.fromHandle(handle);
@@ -4208,14 +3989,6 @@ pub const FlatTree = opaque {
 
     pub fn setPsColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "PSCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
     }
 
     pub fn getSbImageRight(self: *Self) ?iup.Element {
@@ -4833,11 +4606,6 @@ pub const FlatTree = opaque {
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     pub fn setDropMotionCallback(self: *Self, callback: ?OnDropMotionFn) void {
         const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
         Handler.setCallback(self, callback);
@@ -4868,11 +4636,6 @@ pub const FlatTree = opaque {
 
     pub fn setToggleValueCallback(self: *Self, callback: ?OnToggleValueFn) void {
         const Handler = CallbackHandler(Self, OnToggleValueFn, "TOGGLEVALUE_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -5313,18 +5076,6 @@ test "FlatTree TextPsColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "FlatTree ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTree.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "FlatTree FocusFeedback" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5529,16 +5280,16 @@ test "FlatTree DrawMakeInactive" {
     try std.testing.expect(ret == true);
 }
 
-test "FlatTree DragStart" {
+test "FlatTree AddExpanded" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTree.init().setDragStart(9, 10).unwrap());
+    var item = try (iup.FlatTree.init().setAddExpanded(true).unwrap());
     defer item.deinit();
 
-    var ret = item.getDragStart();
+    var ret = item.getAddExpanded();
 
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
+    try std.testing.expect(ret == true);
 }
 
 test "FlatTree DX" {
@@ -5551,18 +5302,6 @@ test "FlatTree DX" {
     var ret = item.getDX();
 
     try std.testing.expect(ret == @as(f64, 3.14));
-}
-
-test "FlatTree AddExpanded" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTree.init().setAddExpanded(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getAddExpanded();
-
-    try std.testing.expect(ret == true);
 }
 
 test "FlatTree DY" {
@@ -5781,42 +5520,6 @@ test "FlatTree WheelDropFocus" {
     try std.testing.expect(ret == true);
 }
 
-test "FlatTree HtTransparent" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTree.init().setHtTransparent(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getHtTransparent();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTree TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTree.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatTree DrawUsedIRect2d" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTree.init().setDrawUsedIRect2d(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawUsedIRect2d();
-
-    try std.testing.expect(ret == true);
-}
-
 test "FlatTree FontSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5829,16 +5532,16 @@ test "FlatTree FontSize" {
     try std.testing.expect(ret == 42);
 }
 
-test "FlatTree DrawAntialias" {
+test "FlatTree TipMarkup" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.FlatTree.init().setDrawAntialias(42).unwrap());
+    var item = try (iup.FlatTree.init().setTipMarkup("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getDrawAntialias();
+    var ret = item.getTipMarkup();
 
-    try std.testing.expect(ret == 42);
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "FlatTree YMax" {
@@ -5923,6 +5626,18 @@ test "FlatTree HlColor" {
     var ret = item.getHlColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "FlatTree TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatTree.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "FlatTree CSpacing" {
@@ -6117,18 +5832,6 @@ test "FlatTree DropFilesTarget" {
     try std.testing.expect(ret == true);
 }
 
-test "FlatTree TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTree.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "FlatTree HlColorAlpha" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -6235,18 +5938,6 @@ test "FlatTree PsColor" {
     var ret = item.getPsColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "FlatTree TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatTree.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
 }
 
 test "FlatTree Floating" {

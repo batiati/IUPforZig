@@ -31,17 +31,6 @@ pub const Frame = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
-    /// 
-    /// FOCUS_CB: Called when a child of the container gets or looses the focus.
-    /// It is called only if PROPAGATEFOCUS is defined in the child.
-    /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
-    /// number) -> (ret: number) [in Lua]
-    pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
-
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
@@ -59,6 +48,13 @@ pub const Frame = opaque {
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
+
+    /// 
+    /// FOCUS_CB: Called when a child of the container gets or looses the focus.
+    /// It is called only if PROPAGATEFOCUS is defined in the child.
+    /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+    /// number) -> (ret: number) [in Lua]
+    pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     pub const ZOrder = enum {
         Top,
@@ -144,31 +140,35 @@ pub const Frame = opaque {
             return self.*;
         }
 
-        /// 
-        /// FGCOLOR: Text title color.
-        /// Not available in Windows when using Windows Visual Styles.
-        /// Default: the global attribute DLGFGCOLOR.
-        pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
-        }
-
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
+            return self.*;
+        }
+
+        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
@@ -177,61 +177,6 @@ pub const Frame = opaque {
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
-            return self.*;
-        }
-
-        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
-                .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
-            } else {
-                interop.clearAttribute(self.ref, "ZORDER", .{});
-            }
-            return self.*;
-        }
-
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
 
@@ -253,6 +198,149 @@ pub const Frame = opaque {
         }
 
         /// 
+        /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+        /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
+        pub fn setActive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TITLE (non inheritable): Text the user will see at the top of the frame.
+        /// If not defined during creation it can not be added lately, to be changed it
+        /// must be at least "" during creation.
+        pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// FGCOLOR: Text title color.
+        /// Not available in Windows when using Windows Visual Styles.
+        /// Default: the global attribute DLGFGCOLOR.
+        pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
+                .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
+            } else {
+                interop.clearAttribute(self.ref, "ZORDER", .{});
+            }
+            return self.*;
+        }
+
+        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIP", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setBackColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "BACKCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "SIZE", .{}, value);
+            return self.*;
+        }
+
+        /// 
+        /// BGCOLOR: ignored, transparent in all systems.
+        /// Will use the background color of the native parent.
+        /// Except if TITLE is not defined and BGCOLOR is defined before map (can be
+        /// changed later), then the frame will have a color background.
+        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
+            return self.*;
+        }
+
+        /// 
         /// EXPAND (non inheritable): The default value is "YES".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
             if (self.last_error) |_| return self.*;
@@ -269,64 +357,17 @@ pub const Frame = opaque {
             return self.*;
         }
 
-        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "SIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TITLE (non inheritable): Text the user will see at the top of the frame.
-        /// If not defined during creation it can not be added lately, to be changed it
-        /// must be at least "" during creation.
-        pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// BGCOLOR: ignored, transparent in all systems.
-        /// Will use the background color of the native parent.
-        /// Except if TITLE is not defined and BGCOLOR is defined before map (can be
-        /// changed later), then the frame will have a color background.
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
+            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
             return self.*;
         }
 
@@ -342,68 +383,9 @@ pub const Frame = opaque {
             return self.*;
         }
 
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
-        /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
+            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
 
@@ -415,27 +397,17 @@ pub const Frame = opaque {
             return self.*;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
 
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
+            var buffer: [128]u8 = undefined;
+            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
+            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
             return self.*;
         }
 
@@ -491,29 +463,6 @@ pub const Frame = opaque {
             return self.*;
         }
 
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// FOCUS_CB: Called when a child of the container gets or looses the focus.
-        /// It is called only if PROPAGATEFOCUS is defined in the child.
-        /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
-        /// number) -> (ret: number) [in Lua]
-        pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
-            const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
         /// 
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
@@ -536,6 +485,17 @@ pub const Frame = opaque {
         /// Affects All that have a native representation.
         pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// FOCUS_CB: Called when a child of the container gets or looses the focus.
+        /// It is called only if PROPAGATEFOCUS is defined in the child.
+        /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+        /// number) -> (ret: number) [in Lua]
+        pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
+            const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -672,44 +632,47 @@ pub const Frame = opaque {
         Impl(Self).refresh(self);
     }
 
-    /// 
-    /// FGCOLOR: Text title color.
-    /// Not available in Windows when using Windows Visual Styles.
-    /// Default: the global attribute DLGFGCOLOR.
-    pub fn getFgColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "FGCOLOR", .{});
-    }
-
-    /// 
-    /// FGCOLOR: Text title color.
-    /// Not available in Windows when using Windows Visual Styles.
-    /// Default: the global attribute DLGFGCOLOR.
-    pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "FGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
-    pub fn getHandleName(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "HANDLENAME", .{});
-    }
-
-    pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
-    }
-
     pub fn getTipBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "TIPBGCOLOR", .{});
     }
 
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
+    }
+
+    pub fn getUserSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "USERSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "USERSIZE", .{}, value);
+    }
+
+    pub fn getFontStyle(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONTSTYLE", .{});
+    }
+
+    pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
+    }
+
+    pub fn getFontSize(self: *Self) i32 {
+        return interop.getIntAttribute(self, "FONTSIZE", .{});
+    }
+
+    pub fn setFontSize(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
+    }
+
+    pub fn getExpandWeight(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
+    }
+
+    pub fn setExpandWeight(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
     pub fn getMaxSize(self: *Self) Size {
@@ -721,87 +684,6 @@ pub const Frame = opaque {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
-    }
-
-    pub fn getScreenPosition(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "SCREENPOSITION", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn getPosition(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "POSITION", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setPosition(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "POSITION", .{}, value);
-    }
-
-    pub fn getTip(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIP", .{});
-    }
-
-    pub fn setTip(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIP", .{}, arg);
-    }
-
-    pub fn getCanFocus(self: *Self) bool {
-        return interop.getBoolAttribute(self, "CANFOCUS", .{});
-    }
-
-    pub fn setCanFocus(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
-    }
-
-    pub fn getVisible(self: *Self) bool {
-        return interop.getBoolAttribute(self, "VISIBLE", .{});
-    }
-
-    pub fn setVisible(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
-    }
-
-    pub fn zOrder(self: *Self, arg: ?ZOrder) void {
-        if (arg) |value| switch (value) {
-            .Top => interop.setStrAttribute(self, "ZORDER", .{}, "TOP"),
-            .Bottom => interop.setStrAttribute(self, "ZORDER", .{}, "BOTTOM"),
-        } else {
-            interop.clearAttribute(self, "ZORDER", .{});
-        }
-    }
-
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn getX(self: *Self) i32 {
-        return interop.getIntAttribute(self, "X", .{});
-    }
-
-    pub fn getY(self: *Self) i32 {
-        return interop.getIntAttribute(self, "Y", .{});
-    }
-
-    pub fn getTheme(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "THEME", .{});
-    }
-
-    pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
     /// 
@@ -834,6 +716,222 @@ pub const Frame = opaque {
     }
 
     /// 
+    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+    /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
+    pub fn getActive(self: *Self) bool {
+        return interop.getBoolAttribute(self, "ACTIVE", .{});
+    }
+
+    /// 
+    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
+    /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
+    pub fn setActive(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
+    }
+
+    pub fn getNTheme(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NTHEME", .{});
+    }
+
+    pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NTHEME", .{}, arg);
+    }
+
+    /// 
+    /// TITLE (non inheritable): Text the user will see at the top of the frame.
+    /// If not defined during creation it can not be added lately, to be changed it
+    /// must be at least "" during creation.
+    pub fn getTitle(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TITLE", .{});
+    }
+
+    /// 
+    /// TITLE (non inheritable): Text the user will see at the top of the frame.
+    /// If not defined during creation it can not be added lately, to be changed it
+    /// must be at least "" during creation.
+    pub fn setTitle(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TITLE", .{}, arg);
+    }
+
+    /// 
+    /// FGCOLOR: Text title color.
+    /// Not available in Windows when using Windows Visual Styles.
+    /// Default: the global attribute DLGFGCOLOR.
+    pub fn getFgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "FGCOLOR", .{});
+    }
+
+    /// 
+    /// FGCOLOR: Text title color.
+    /// Not available in Windows when using Windows Visual Styles.
+    /// Default: the global attribute DLGFGCOLOR.
+    pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "FGCOLOR", .{}, rgb);
+    }
+
+    pub fn getNaturalSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn getScreenPosition(self: *Self) iup.XYPos {
+        var str = interop.getStrAttribute(self, "SCREENPOSITION", .{});
+        return iup.XYPos.parse(str, ',');
+    }
+
+    pub fn getVisible(self: *Self) bool {
+        return interop.getBoolAttribute(self, "VISIBLE", .{});
+    }
+
+    pub fn setVisible(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
+    }
+
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
+    pub fn getClientOffset(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CLIENTOFFSET", .{});
+        return Size.parse(str);
+    }
+
+    pub fn getFontFace(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONTFACE", .{});
+    }
+
+    pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
+    }
+
+    pub fn zOrder(self: *Self, arg: ?ZOrder) void {
+        if (arg) |value| switch (value) {
+            .Top => interop.setStrAttribute(self, "ZORDER", .{}, "TOP"),
+            .Bottom => interop.setStrAttribute(self, "ZORDER", .{}, "BOTTOM"),
+        } else {
+            interop.clearAttribute(self, "ZORDER", .{});
+        }
+    }
+
+    pub fn getTip(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIP", .{});
+    }
+
+    pub fn setTip(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIP", .{}, arg);
+    }
+
+    pub fn getPropagateFocus(self: *Self) bool {
+        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
+    }
+
+    pub fn setPropagateFocus(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
+    }
+
+    pub fn getBackColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "BACKCOLOR", .{});
+    }
+
+    pub fn setBackColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "BACKCOLOR", .{}, rgb);
+    }
+
+    pub fn getCharSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn getHandleName(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "HANDLENAME", .{});
+    }
+
+    pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
+    }
+
+    pub fn getSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "SIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "SIZE", .{}, value);
+    }
+
+    /// 
+    /// BGCOLOR: ignored, transparent in all systems.
+    /// Will use the background color of the native parent.
+    /// Except if TITLE is not defined and BGCOLOR is defined before map (can be
+    /// changed later), then the frame will have a color background.
+    pub fn getBgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "BGCOLOR", .{});
+    }
+
+    /// 
+    /// BGCOLOR: ignored, transparent in all systems.
+    /// Will use the background color of the native parent.
+    /// Except if TITLE is not defined and BGCOLOR is defined before map (can be
+    /// changed later), then the frame will have a color background.
+    pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "BGCOLOR", .{}, rgb);
+    }
+
+    pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
+    }
+
+    pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
+    }
+
+    pub fn getTipFgColor(self: *Self) ?iup.Rgb {
+        return interop.getRgb(self, "TIPFGCOLOR", .{});
+    }
+
+    pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
+        interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
+    }
+
+    pub fn getFont(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONT", .{});
+    }
+
+    pub fn setFont(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONT", .{}, arg);
+    }
+
+    pub fn getName(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NAME", .{});
+    }
+
+    pub fn setName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NAME", .{}, arg);
+    }
+
+    pub fn getTipVisible(self: *Self) bool {
+        return interop.getBoolAttribute(self, "TIPVISIBLE", .{});
+    }
+
+    pub fn setTipVisible(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
+    }
+
+    pub fn getTipDelay(self: *Self) i32 {
+        return interop.getIntAttribute(self, "TIPDELAY", .{});
+    }
+
+    pub fn setTipDelay(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
+    }
+
+    /// 
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
         var ret = interop.getStrAttribute(self, "EXPAND", .{});
@@ -862,101 +960,23 @@ pub const Frame = opaque {
         }
     }
 
-    pub fn getSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "SIZE", .{});
+    pub fn getCanFocus(self: *Self) bool {
+        return interop.getBoolAttribute(self, "CANFOCUS", .{});
+    }
+
+    pub fn setCanFocus(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
+    }
+
+    pub fn getRasterSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
 
-    pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
+    pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "SIZE", .{}, value);
-    }
-
-    pub fn getWId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "WID", .{});
-    }
-
-    pub fn getFontSize(self: *Self) i32 {
-        return interop.getIntAttribute(self, "FONTSIZE", .{});
-    }
-
-    pub fn setFontSize(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
-    }
-
-    pub fn getNaturalSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getUserSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "USERSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "USERSIZE", .{}, value);
-    }
-
-    pub fn getTipDelay(self: *Self) i32 {
-        return interop.getIntAttribute(self, "TIPDELAY", .{});
-    }
-
-    pub fn setTipDelay(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
-    }
-
-    /// 
-    /// TITLE (non inheritable): Text the user will see at the top of the frame.
-    /// If not defined during creation it can not be added lately, to be changed it
-    /// must be at least "" during creation.
-    pub fn getTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TITLE", .{});
-    }
-
-    /// 
-    /// TITLE (non inheritable): Text the user will see at the top of the frame.
-    /// If not defined during creation it can not be added lately, to be changed it
-    /// must be at least "" during creation.
-    pub fn setTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TITLE", .{}, arg);
-    }
-
-    pub fn getPropagateFocus(self: *Self) bool {
-        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
-    }
-
-    pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
-    }
-
-    /// 
-    /// BGCOLOR: ignored, transparent in all systems.
-    /// Will use the background color of the native parent.
-    /// Except if TITLE is not defined and BGCOLOR is defined before map (can be
-    /// changed later), then the frame will have a color background.
-    pub fn getBgColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "BGCOLOR", .{});
-    }
-
-    /// 
-    /// BGCOLOR: ignored, transparent in all systems.
-    /// Will use the background color of the native parent.
-    /// Except if TITLE is not defined and BGCOLOR is defined before map (can be
-    /// changed later), then the frame will have a color background.
-    pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
+        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
@@ -978,93 +998,24 @@ pub const Frame = opaque {
         }
     }
 
-    pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
+    pub fn getTheme(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "THEME", .{});
     }
 
-    pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
+    pub fn setTheme(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
-    pub fn getRasterSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
-        return Size.parse(str);
+    pub fn getWId(self: *Self) i32 {
+        return interop.getIntAttribute(self, "WID", .{});
     }
 
-    pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
+    pub fn getX(self: *Self) i32 {
+        return interop.getIntAttribute(self, "X", .{});
     }
 
-    pub fn getTipFgColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "TIPFGCOLOR", .{});
-    }
-
-    pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
-    }
-
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
-    pub fn getFontFace(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONTFACE", .{});
-    }
-
-    pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
-    }
-
-    pub fn getName(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NAME", .{});
-    }
-
-    pub fn setName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NAME", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
-    }
-
-    /// 
-    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
-    /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
-    pub fn getActive(self: *Self) bool {
-        return interop.getBoolAttribute(self, "ACTIVE", .{});
-    }
-
-    /// 
-    /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
-    /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
-    pub fn setActive(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
-    }
-
-    pub fn getTipVisible(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPVISIBLE", .{});
-    }
-
-    pub fn setTipVisible(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
-    }
-
-    pub fn getExpandWeight(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
-    }
-
-    pub fn setExpandWeight(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
+    pub fn getY(self: *Self) i32 {
+        return interop.getIntAttribute(self, "Y", .{});
     }
 
     pub fn getMinSize(self: *Self) Size {
@@ -1078,51 +1029,28 @@ pub const Frame = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
-    pub fn getNTheme(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NTHEME", .{});
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
     }
 
-    pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NTHEME", .{}, arg);
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
-    pub fn getCharSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
-        return Size.parse(str);
+    pub fn getPosition(self: *Self) iup.XYPos {
+        var str = interop.getStrAttribute(self, "POSITION", .{});
+        return iup.XYPos.parse(str, ',');
+    }
+
+    pub fn setPosition(self: *Self, x: i32, y: i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
+        interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
     pub fn getClientSize(self: *Self) Size {
         var str = interop.getStrAttribute(self, "CLIENTSIZE", .{});
         return Size.parse(str);
-    }
-
-    pub fn getClientOffset(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "CLIENTOFFSET", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONTSTYLE", .{});
-    }
-
-    pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
-    }
-
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
-    }
-
-    pub fn getFont(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONT", .{});
-    }
-
-    pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
     /// 
@@ -1210,26 +1138,6 @@ pub const Frame = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// FOCUS_CB: Called when a child of the container gets or looses the focus.
-    /// It is called only if PROPAGATEFOCUS is defined in the child.
-    /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
-    /// number) -> (ret: number) [in Lua]
-    pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
-        const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
@@ -1253,43 +1161,17 @@ pub const Frame = opaque {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }
+
+    /// 
+    /// FOCUS_CB: Called when a child of the container gets or looses the focus.
+    /// It is called only if PROPAGATEFOCUS is defined in the child.
+    /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
+    /// number) -> (ret: number) [in Lua]
+    pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
+        const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
+        Handler.setCallback(self, callback);
+    }
 };
-
-test "Frame FgColor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setFgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
-    defer item.deinit();
-
-    var ret = item.getFgColor();
-
-    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "Frame TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Frame HandleName" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setHandleName("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getHandleName();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
 
 test "Frame TipBgColor" {
     try iup.MainLoop.open();
@@ -1301,126 +1183,6 @@ test "Frame TipBgColor" {
     var ret = item.getTipBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "Frame MaxSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setMaxSize(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMaxSize();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "Frame Position" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setPosition(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getPosition();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
-test "Frame Tip" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setTip("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTip();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Frame CanFocus" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setCanFocus(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getCanFocus();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Frame Visible" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setVisible(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getVisible();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Frame Theme" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setTheme("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTheme();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Frame ChildOffset" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setChildOffset(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getChildOffset();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "Frame Expand" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setExpand(.Yes).unwrap());
-    defer item.deinit();
-
-    var ret = item.getExpand();
-
-    try std.testing.expect(ret != null and ret.? == .Yes);
-}
-
-test "Frame Size" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setSize(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getSize();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "Frame FontSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setFontSize(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getFontSize();
-
-    try std.testing.expect(ret == 42);
 }
 
 test "Frame UserSize" {
@@ -1435,16 +1197,88 @@ test "Frame UserSize" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
-test "Frame TipDelay" {
+test "Frame FontStyle" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Frame.init().setTipDelay(42).unwrap());
+    var item = try (iup.Frame.init().setFontStyle("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getTipDelay();
+    var ret = item.getFontStyle();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "Frame FontSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setFontSize(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getFontSize();
 
     try std.testing.expect(ret == 42);
+}
+
+test "Frame ExpandWeight" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setExpandWeight(3.14).unwrap());
+    defer item.deinit();
+
+    var ret = item.getExpandWeight();
+
+    try std.testing.expect(ret == @as(f64, 3.14));
+}
+
+test "Frame MaxSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setMaxSize(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMaxSize();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "Frame ChildOffset" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setChildOffset(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getChildOffset();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "Frame Active" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setActive(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getActive();
+
+    try std.testing.expect(ret == true);
+}
+
+test "Frame NTheme" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setNTheme("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getNTheme();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Frame Title" {
@@ -1455,6 +1289,66 @@ test "Frame Title" {
     defer item.deinit();
 
     var ret = item.getTitle();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "Frame FgColor" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setFgColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
+    defer item.deinit();
+
+    var ret = item.getFgColor();
+
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "Frame Visible" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setVisible(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getVisible();
+
+    try std.testing.expect(ret == true);
+}
+
+test "Frame TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "Frame FontFace" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setFontFace("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getFontFace();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "Frame Tip" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setTip("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTip();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -1471,6 +1365,42 @@ test "Frame PropagateFocus" {
     try std.testing.expect(ret == true);
 }
 
+test "Frame BackColor" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setBackColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
+    defer item.deinit();
+
+    var ret = item.getBackColor();
+
+    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "Frame HandleName" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setHandleName("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getHandleName();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "Frame Size" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setSize(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getSize();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
 test "Frame BgColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1481,30 +1411,6 @@ test "Frame BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "Frame TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Frame Floating" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setFloating(.Yes).unwrap());
-    defer item.deinit();
-
-    var ret = item.getFloating();
-
-    try std.testing.expect(ret != null and ret.? == .Yes);
 }
 
 test "Frame NormalizerGroup" {
@@ -1519,18 +1425,6 @@ test "Frame NormalizerGroup" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Frame RasterSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setRasterSize(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getRasterSize();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
 test "Frame TipFgColor" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1543,26 +1437,14 @@ test "Frame TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Frame ControlId" {
+test "Frame Font" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Frame.init().setControlId(42).unwrap());
+    var item = try (iup.Frame.init().setFont("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "Frame FontFace" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setFontFace("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getFontFace();
+    var ret = item.getFont();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -1579,30 +1461,6 @@ test "Frame Name" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Frame TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Frame Active" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setActive(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getActive();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Frame TipVisible" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1615,16 +1473,76 @@ test "Frame TipVisible" {
     try std.testing.expect(ret == true);
 }
 
-test "Frame ExpandWeight" {
+test "Frame TipDelay" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Frame.init().setExpandWeight(3.14).unwrap());
+    var item = try (iup.Frame.init().setTipDelay(42).unwrap());
     defer item.deinit();
 
-    var ret = item.getExpandWeight();
+    var ret = item.getTipDelay();
 
-    try std.testing.expect(ret == @as(f64, 3.14));
+    try std.testing.expect(ret == 42);
+}
+
+test "Frame Expand" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setExpand(.Yes).unwrap());
+    defer item.deinit();
+
+    var ret = item.getExpand();
+
+    try std.testing.expect(ret != null and ret.? == .Yes);
+}
+
+test "Frame CanFocus" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setCanFocus(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getCanFocus();
+
+    try std.testing.expect(ret == true);
+}
+
+test "Frame RasterSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setRasterSize(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getRasterSize();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "Frame Floating" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setFloating(.Yes).unwrap());
+    defer item.deinit();
+
+    var ret = item.getFloating();
+
+    try std.testing.expect(ret != null and ret.? == .Yes);
+}
+
+test "Frame Theme" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Frame.init().setTheme("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTheme();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Frame MinSize" {
@@ -1639,50 +1557,26 @@ test "Frame MinSize" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
-test "Frame NTheme" {
+test "Frame TipIcon" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Frame.init().setNTheme("Hello").unwrap());
+    var item = try (iup.Frame.init().setTipIcon("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getNTheme();
+    var ret = item.getTipIcon();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Frame FontStyle" {
+test "Frame Position" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Frame.init().setFontStyle("Hello").unwrap());
+    var item = try (iup.Frame.init().setPosition(9, 10).unwrap());
     defer item.deinit();
 
-    var ret = item.getFontStyle();
+    var ret = item.getPosition();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Frame Touch" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setTouch(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Frame Font" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Frame.init().setFont("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getFont();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret.x == 9 and ret.y == 10);
 }

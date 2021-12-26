@@ -33,8 +33,6 @@ pub const Dialog = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Dialog;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     /// 
     /// FOCUS_CB: Called when the dialog or any of its children gets the focus, or
     /// when another dialog or any control in another dialog gets the focus.
@@ -100,16 +98,6 @@ pub const Dialog = opaque {
 
     pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
-
-    /// 
-    /// MDIACTIVATE_CB [Windows Only]: Called when a MDI child window is activated.
-    /// Only the MDI child receive this message.
-    /// It is not called when the child is shown for the first time.
-    /// int function(Ihandle *ih); [in C]elem:mdiactivate_cb() -> (ret: number) [in
-    /// Lua] ih: identifier of the element that activated the event.
-    pub const OnMdiActivateFn = fn (self: *Self) anyerror!void;
-
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
@@ -168,20 +156,9 @@ pub const Dialog = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    /// 
-    /// CUSTOMFRAMEACTIVATE_CB [Windows Only]: Called when the dialog active state
-    /// is changed (for instance the user Alt+Tab to another application, or
-    /// clicked in another window).
-    /// Works only when CUSTOMFRAME or CUSTOMFRAMEEX is defined.
-    /// (since 3.23) int function(Ihandle *ih, int active); [in
-    /// C]ih:customframeactivate_cb(active: number) -> (ret: number) [in Lua]
-    pub const OnCustomFrameActivateFn = fn (self: *Self, arg0: i32) anyerror!void;
-
     pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
-
-    pub const OnCustomFrameDrawFn = fn (self: *Self) anyerror!void;
 
     /// 
     /// SHOW_CB SHOW_CB Called right after the dialog is showed, hidden, maximized,
@@ -316,45 +293,11 @@ pub const Dialog = opaque {
         Minimized,
         Full,
     };
-    /// 
-    /// MDIARRANGE [Windows Only] (write-only): Action to arrange MDI child windows.
-    /// Possible values: TILEHORIZONTAL, TILEVERTICAL, CASCADE and ICON (arrange
-    /// the minimized icons).
-    pub const MdiArrange = enum {
-        TileHorizontal,
-        TileVertical,
-        Cascade,
-        Icon,
-    };
 
     pub const Floating = enum {
         Yes,
         Ignore,
         No,
-    };
-    /// 
-    /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
-    /// to be shown on the taskbar even if the dialog does not have decorations.
-    /// If set to HIDE force the application button to be hidden from the taskbar,
-    /// but also in this case the system menu, the maximize and minimize buttons
-    /// will be hidden.
-    /// (since 3.28)
-    pub const TaskbarButton = enum {
-        Show,
-        Hide,
-    };
-    /// 
-    /// TASKBARPROGRESSSTATE [Windows Only] (write-only): sets the type and state
-    /// of the progress indicator displayed on a taskbar button.
-    /// Possible values: NORMAL (a green bar), PAUSED (a yellow bar), ERROR (a red
-    /// bar), INDETERMINATE (a green marquee) and NOPROGRESS (no bar).
-    /// Default: NORMAL (since 3.10).
-    pub const TaskbarProgressState = enum {
-        NoProgress,
-        Indeterminate,
-        Error,
-        Paused,
-        Normal,
     };
 
     pub const Initializer = struct {
@@ -420,12 +363,6 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -457,6 +394,12 @@ pub const Dialog = opaque {
         pub fn setControl(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CONTROL", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
 
@@ -498,17 +441,6 @@ pub const Dialog = opaque {
         }
 
         /// 
-        /// TRAYTIPBALLOONTITLEICON [Windows Only]: When using the balloon format, the
-        /// tip can also has a pre-defined icon in the title area.
-        /// Must be set before setting the TRAYTIP attribute.
-        /// (since 3.6)
-        pub fn setTrayTipBalloonTitleIcon(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TRAYTIPBALLOONTITLEICON", .{}, arg);
-            return self.*;
-        }
-
-        /// 
         /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
         /// it is possible to create a non rectangle window with transparency, but it
         /// can not have children.
@@ -544,16 +476,6 @@ pub const Dialog = opaque {
         pub fn setShowNoFocus(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SHOWNOFOCUS", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// MAXIMIZEATPARENT [Windows Only]: when using multiple monitors, maximize the
-        /// dialog in the same monitor that the parent dialog is.
-        /// (since 3.28)
-        pub fn setMaximizeAtParent(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "MAXIMIZEATPARENT", .{}, arg);
             return self.*;
         }
 
@@ -639,24 +561,6 @@ pub const Dialog = opaque {
         }
 
         /// 
-        /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-        /// customize the dialog frame elements (the title and its buttons) by drawing
-        /// them with the CUSTOMFRAMEDRAW_CB callback.
-        /// Can be Yes or No.
-        /// The Window client area is expanded to include the whole window.
-        /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-        /// TITLE must still be defined.
-        /// But maximize, minimize and close buttons must be manually implemented in
-        /// the BUTTON_CB callback.
-        /// One drawback is that menu bars will not work.
-        /// (since 3.18) (renamed in 3.22)
-        pub fn setCustomFrameDraw(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "CUSTOMFRAMEDRAW", .{}, arg);
-            return self.*;
-        }
-
-        /// 
         /// CURSOR (non inheritable): Defines a cursor for the dialog.
         pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
             if (self.last_error) |_| return self.*;
@@ -698,15 +602,12 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
+        /// 
+        /// HIDETITLEBAR [GTK Only] (non inheritable): hides the title bar with al its elements.
+        /// (since 3.20) (GTK 3.10)
+        pub fn setHideTitleBar(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
+            interop.setStrAttribute(self.ref, "HIDETITLEBAR", .{}, arg);
             return self.*;
         }
 
@@ -739,12 +640,6 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        pub fn setShowMinimizeNext(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "SHOWMINIMIZENEXT", .{}, arg);
-            return self.*;
-        }
-
         /// 
         /// DIALOGFRAME: Set the common decorations for modal dialogs.
         /// This means RESIZE=NO, MINBOX=NO and MAXBOX=NO.
@@ -763,17 +658,6 @@ pub const Dialog = opaque {
         pub fn setNActive(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "NACTIVE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TRAYTIPBALLOONTITLE [Windows Only]: When using the balloon format, the tip
-        /// can also has a title in a separate area.
-        /// Must be set before setting the TRAYTIP attribute.
-        /// (since 3.6)
-        pub fn setTrayTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TRAYTIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -805,33 +689,6 @@ pub const Dialog = opaque {
         pub fn setTray(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TRAY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TASKBARPROGRESS [Windows Only] (write-only): this functionality enables the
-        /// use of progress bar on a taskbar button (Windows 7 or earlier version)
-        /// (Available only for Visual C++ 10 and above).
-        /// Default: NO (since 3.10).
-        pub fn setTaskbarProgress(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TASKBARPROGRESS", .{}, arg);
             return self.*;
         }
 
@@ -923,6 +780,12 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
+            return self.*;
+        }
+
         /// 
         /// MDIMENU (creation only) [Windows Only]: Name of a IupMenu to be used as the
         /// Window list of a MDI frame.
@@ -958,15 +821,21 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        pub fn setTrayTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TRAYTIPDELAY", .{}, arg);
-            return self.*;
-        }
-
         pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TRAYTIPMARKUP [GTK Only]: allows the tip string to contains Pango markup commands.
+        /// Can be "YES" or "NO".
+        /// Default: "NO".
+        /// Must be set before setting the TRAYTIP attribute.
+        /// (GTK 2.16) (since 3.6)
+        pub fn setTrayTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TRAYTIPMARKUP", .{}, arg);
             return self.*;
         }
 
@@ -981,33 +850,6 @@ pub const Dialog = opaque {
         pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// CUSTOMFRAMECAPTIONLIMITS [Windows Only] (non inheritable): limits of the
-        /// caption area at left and at right.
-        /// The caption area is always expanded inside the limits when the dialog is resized.
-        /// Format is "left:right" or in C "%d:%d".
-        /// Default: "0:0".
-        /// This will allow the dialog to be moved by the system when the user click
-        /// and drag the caption area.
-        /// If not defined but CUSTOMFRAMECAPTION is defined, then it will use the
-        /// caption element horizontal position and size for the limits (since 3.22).
-        /// (since 3.18)
-        pub fn setCustomFrameCaptionLimits(self: *Initializer, begin: i32, end: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-            interop.setStrAttribute(self.ref, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
-            return self.*;
-        }
-
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
             return self.*;
         }
 
@@ -1085,12 +927,6 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        pub fn setLayerAlpha(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "LAYERALPHA", .{}, arg);
-            return self.*;
-        }
-
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
@@ -1103,27 +939,9 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
-            return self.*;
-        }
-
         pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TRAYTIPBALLOON [Windows Only]: The tip window will have the appearance of a
-        /// cartoon "balloon" with rounded corners and a stem pointing to the item.
-        /// Default: NO.
-        /// Must be set before setting the TRAYTIP attribute.
-        /// (since 3.6)
-        pub fn setTrayTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TRAYTIPBALLOON", .{}, arg);
             return self.*;
         }
 
@@ -1142,23 +960,6 @@ pub const Dialog = opaque {
         pub fn setResize(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "RESIZE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// MDIARRANGE [Windows Only] (write-only): Action to arrange MDI child windows.
-        /// Possible values: TILEHORIZONTAL, TILEVERTICAL, CASCADE and ICON (arrange
-        /// the minimized icons).
-        pub fn mdiArrange(self: *Initializer, arg: ?MdiArrange) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .TileHorizontal => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
-                .TileVertical => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "TILEVERTICAL"),
-                .Cascade => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "CASCADE"),
-                .Icon => interop.setStrAttribute(self.ref, "MDIARRANGE", .{}, "ICON"),
-            } else {
-                interop.clearAttribute(self.ref, "MDIARRANGE", .{});
-            }
             return self.*;
         }
 
@@ -1243,27 +1044,9 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setShowNoActivate(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "SHOWNOACTIVATE", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setMaximizeAtDialog(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "MAXIMIZEATDIALOG", .{}, arg);
             return self.*;
         }
 
@@ -1274,24 +1057,6 @@ pub const Dialog = opaque {
         pub fn topMost(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "TOPMOST", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
-        /// to be shown on the taskbar even if the dialog does not have decorations.
-        /// If set to HIDE force the application button to be hidden from the taskbar,
-        /// but also in this case the system menu, the maximize and minimize buttons
-        /// will be hidden.
-        /// (since 3.28)
-        pub fn setTaskbarButton(self: *Initializer, arg: ?TaskbarButton) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Show => interop.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "SHOW"),
-                .Hide => interop.setStrAttribute(self.ref, "TASKBARBUTTON", .{}, "HIDE"),
-            } else {
-                interop.clearAttribute(self.ref, "TASKBARBUTTON", .{});
-            }
             return self.*;
         }
 
@@ -1327,12 +1092,6 @@ pub const Dialog = opaque {
         pub fn setDefaultEnterHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "DEFAULTENTER", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -1380,22 +1139,6 @@ pub const Dialog = opaque {
         pub fn setHideTaskbar(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "HIDETASKBAR", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// HWND [Windows Only] (non inheritable, read-only): Returns the Windows
-        /// Window handle.
-        /// Available in the Windows driver or in the GTK driver in Windows.
-        pub fn setHwnd(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HWND", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHwndHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HWND", .{}, arg);
             return self.*;
         }
 
@@ -1469,17 +1212,6 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        /// 
-        /// CUSTOMFRAMECAPTIONHEIGHT [Windows Only] (non inheritable): height of the
-        /// caption area.
-        /// If not defined it will use the system size.
-        /// (since 3.18) (renamed in 3.22)
-        pub fn setCustomFrameCaptionHeight(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
@@ -1514,16 +1246,6 @@ pub const Dialog = opaque {
         pub fn setCustomFramesImulate(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "CUSTOMFRAMESIMULATE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// MDICLOSEALL [Windows Only] (write-only): Action to close and destroy all
-        /// MDI child windows.
-        /// The CLOSE_CB callback will be called for each child.
-        pub fn mdiCloseAll(self: *Initializer) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "MDICLOSEALL", .{}, null);
             return self.*;
         }
 
@@ -1588,12 +1310,6 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
         /// 
         /// MDICHILD (creation only) [Windows Only]: Configure this dialog to be a MDI child.
         /// Can be YES or NO.
@@ -1603,37 +1319,6 @@ pub const Dialog = opaque {
         pub fn setMdiChild(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MDICHILD", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// TASKBARPROGRESSSTATE [Windows Only] (write-only): sets the type and state
-        /// of the progress indicator displayed on a taskbar button.
-        /// Possible values: NORMAL (a green bar), PAUSED (a yellow bar), ERROR (a red
-        /// bar), INDETERMINATE (a green marquee) and NOPROGRESS (no bar).
-        /// Default: NORMAL (since 3.10).
-        pub fn taskbarProgressState(self: *Initializer, arg: ?TaskbarProgressState) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .NoProgress => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
-                .Indeterminate => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
-                .Error => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "ERROR"),
-                .Paused => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "PAUSED"),
-                .Normal => interop.setStrAttribute(self.ref, "TASKBARPROGRESSSTATE", .{}, "NORMAL"),
-            } else {
-                interop.clearAttribute(self.ref, "TASKBARPROGRESSSTATE", .{});
-            }
-            return self.*;
-        }
-
-        /// 
-        /// TASKBARPROGRESSVALUE [Windows Only] (write-only): updates a progress bar
-        /// hosted in a taskbar button to show the specific percentage completed of the
-        /// full operation.
-        /// The value must be between 0 and 100 (since 3.10).
-        pub fn taskbarProgressValue(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "TASKBARPROGRESSVALUE", .{}, arg);
             return self.*;
         }
 
@@ -1663,28 +1348,6 @@ pub const Dialog = opaque {
         pub fn setNativeParentHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "NATIVEPARENT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setMaximizedIalog(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "MAXIMIZEDIALOG", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
@@ -1753,12 +1416,6 @@ pub const Dialog = opaque {
         pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
@@ -1855,24 +1512,6 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// MDIACTIVATE_CB [Windows Only]: Called when a MDI child window is activated.
-        /// Only the MDI child receive this message.
-        /// It is not called when the child is shown for the first time.
-        /// int function(Ihandle *ih); [in C]elem:mdiactivate_cb() -> (ret: number) [in
-        /// Lua] ih: identifier of the element that activated the event.
-        pub fn setMdiActivateCallback(self: *Initializer, callback: ?OnMdiActivateFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMdiActivateFn, "MDIACTIVATE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
         /// 
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
@@ -1951,19 +1590,6 @@ pub const Dialog = opaque {
             return self.*;
         }
 
-        /// 
-        /// CUSTOMFRAMEACTIVATE_CB [Windows Only]: Called when the dialog active state
-        /// is changed (for instance the user Alt+Tab to another application, or
-        /// clicked in another window).
-        /// Works only when CUSTOMFRAME or CUSTOMFRAMEEX is defined.
-        /// (since 3.23) int function(Ihandle *ih, int active); [in
-        /// C]ih:customframeactivate_cb(active: number) -> (ret: number) [in Lua]
-        pub fn setCustomFrameActivateCallback(self: *Initializer, callback: ?OnCustomFrameActivateFn) Initializer {
-            const Handler = CallbackHandler(Self, OnCustomFrameActivateFn, "CUSTOMFRAMEACTIVATE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
         pub fn setDragDataCallback(self: *Initializer, callback: ?OnDragDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
             Handler.setCallback(self.ref, callback);
@@ -1972,12 +1598,6 @@ pub const Dialog = opaque {
 
         pub fn setDragDataSizeCallback(self: *Initializer, callback: ?OnDragDataSizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setCustomFrameDrawCallback(self: *Initializer, callback: ?OnCustomFrameDrawFn) Initializer {
-            const Handler = CallbackHandler(Self, OnCustomFrameDrawFn, "CUSTOMFRAMEDRAW_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -2253,14 +1873,6 @@ pub const Dialog = opaque {
         Impl(Self).refresh(self);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -2275,6 +1887,14 @@ pub const Dialog = opaque {
 
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
     /// 
@@ -2335,24 +1955,6 @@ pub const Dialog = opaque {
     }
 
     /// 
-    /// TRAYTIPBALLOONTITLEICON [Windows Only]: When using the balloon format, the
-    /// tip can also has a pre-defined icon in the title area.
-    /// Must be set before setting the TRAYTIP attribute.
-    /// (since 3.6)
-    pub fn getTrayTipBalloonTitleIcon(self: *Self) i32 {
-        return interop.getIntAttribute(self, "TRAYTIPBALLOONTITLEICON", .{});
-    }
-
-    /// 
-    /// TRAYTIPBALLOONTITLEICON [Windows Only]: When using the balloon format, the
-    /// tip can also has a pre-defined icon in the title area.
-    /// Must be set before setting the TRAYTIP attribute.
-    /// (since 3.6)
-    pub fn setTrayTipBalloonTitleIcon(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TRAYTIPBALLOONTITLEICON", .{}, arg);
-    }
-
-    /// 
     /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
     /// it is possible to create a non rectangle window with transparency, but it
     /// can not have children.
@@ -2395,22 +1997,6 @@ pub const Dialog = opaque {
     pub fn getScreenPosition(self: *Self) iup.XYPos {
         var str = interop.getStrAttribute(self, "SCREENPOSITION", .{});
         return iup.XYPos.parse(str, ',');
-    }
-
-    /// 
-    /// MAXIMIZEATPARENT [Windows Only]: when using multiple monitors, maximize the
-    /// dialog in the same monitor that the parent dialog is.
-    /// (since 3.28)
-    pub fn getMaximizeAtParent(self: *Self) bool {
-        return interop.getBoolAttribute(self, "MAXIMIZEATPARENT", .{});
-    }
-
-    /// 
-    /// MAXIMIZEATPARENT [Windows Only]: when using multiple monitors, maximize the
-    /// dialog in the same monitor that the parent dialog is.
-    /// (since 3.28)
-    pub fn setMaximizeAtParent(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "MAXIMIZEATPARENT", .{}, arg);
     }
 
     /// 
@@ -2522,38 +2108,6 @@ pub const Dialog = opaque {
     }
 
     /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn getCustomFrameDraw(self: *Self) bool {
-        return interop.getBoolAttribute(self, "CUSTOMFRAMEDRAW", .{});
-    }
-
-    /// 
-    /// CUSTOMFRAMEDRAW [Windows Only] (non inheritable): allows the application to
-    /// customize the dialog frame elements (the title and its buttons) by drawing
-    /// them with the CUSTOMFRAMEDRAW_CB callback.
-    /// Can be Yes or No.
-    /// The Window client area is expanded to include the whole window.
-    /// Notice that the dialog attributes like BORDER, RESIZE, MAXBOX, MINBOX and
-    /// TITLE must still be defined.
-    /// But maximize, minimize and close buttons must be manually implemented in
-    /// the BUTTON_CB callback.
-    /// One drawback is that menu bars will not work.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn setCustomFrameDraw(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "CUSTOMFRAMEDRAW", .{}, arg);
-    }
-
-    /// 
     /// CURSOR (non inheritable): Defines a cursor for the dialog.
     pub fn getCursor(self: *Self) ?iup.Element {
         if (interop.getHandleAttribute(self, "CURSOR", .{})) |handle| {
@@ -2583,22 +2137,6 @@ pub const Dialog = opaque {
         }
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -2608,11 +2146,17 @@ pub const Dialog = opaque {
     }
 
     /// 
-    /// MDIACTIVE [Windows Only] (read-only): Returns the name of the current
-    /// active MDI child.
-    /// Use IupGetAttributeHandle to directly retrieve the child handle.
-    pub fn getMdiActive(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "MDIACTIVE", .{});
+    /// HIDETITLEBAR [GTK Only] (non inheritable): hides the title bar with al its elements.
+    /// (since 3.20) (GTK 3.10)
+    pub fn getHideTitleBar(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "HIDETITLEBAR", .{});
+    }
+
+    /// 
+    /// HIDETITLEBAR [GTK Only] (non inheritable): hides the title bar with al its elements.
+    /// (since 3.20) (GTK 3.10)
+    pub fn setHideTitleBar(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HIDETITLEBAR", .{}, arg);
     }
 
     pub fn getDragDrop(self: *Self) bool {
@@ -2635,14 +2179,6 @@ pub const Dialog = opaque {
     /// to a dialog hint.
     pub fn setDialogHint(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DIALOGHINT", .{}, arg);
-    }
-
-    pub fn getShowMinimizeNext(self: *Self) bool {
-        return interop.getBoolAttribute(self, "SHOWMINIMIZENEXT", .{});
-    }
-
-    pub fn setShowMinimizeNext(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "SHOWMINIMIZENEXT", .{}, arg);
     }
 
     /// 
@@ -2679,24 +2215,6 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "NACTIVE", .{}, arg);
     }
 
-    /// 
-    /// TRAYTIPBALLOONTITLE [Windows Only]: When using the balloon format, the tip
-    /// can also has a title in a separate area.
-    /// Must be set before setting the TRAYTIP attribute.
-    /// (since 3.6)
-    pub fn getTrayTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TRAYTIPBALLOONTITLE", .{});
-    }
-
-    /// 
-    /// TRAYTIPBALLOONTITLE [Windows Only]: When using the balloon format, the tip
-    /// can also has a title in a separate area.
-    /// Must be set before setting the TRAYTIP attribute.
-    /// (since 3.6)
-    pub fn setTrayTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TRAYTIPBALLOONTITLE", .{}, arg);
-    }
-
     pub fn getTheme(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "THEME", .{});
     }
@@ -2719,41 +2237,6 @@ pub const Dialog = opaque {
     /// (GTK 2.10 and GTK < 3.14)
     pub fn setTray(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TRAY", .{}, arg);
-    }
-
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    /// 
-    /// TASKBARPROGRESS [Windows Only] (write-only): this functionality enables the
-    /// use of progress bar on a taskbar button (Windows 7 or earlier version)
-    /// (Available only for Visual C++ 10 and above).
-    /// Default: NO (since 3.10).
-    pub fn getTaskbarProgress(self: *Self) i32 {
-        return interop.getIntAttribute(self, "TASKBARPROGRESS", .{});
-    }
-
-    /// 
-    /// TASKBARPROGRESS [Windows Only] (write-only): this functionality enables the
-    /// use of progress bar on a taskbar button (Windows 7 or earlier version)
-    /// (Available only for Visual C++ 10 and above).
-    /// Default: NO (since 3.10).
-    pub fn setTaskbarProgress(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TASKBARPROGRESS", .{}, arg);
     }
 
     /// 
@@ -2921,6 +2404,14 @@ pub const Dialog = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
     /// 
     /// STARTFOCUS: Name of the element that must receive the focus right after the
     /// dialog is shown using IupShow or IupPopup.
@@ -2956,20 +2447,32 @@ pub const Dialog = opaque {
         return Size.parse(str);
     }
 
-    pub fn getTrayTipDelay(self: *Self) i32 {
-        return interop.getIntAttribute(self, "TRAYTIPDELAY", .{});
-    }
-
-    pub fn setTrayTipDelay(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TRAYTIPDELAY", .{}, arg);
-    }
-
     pub fn getDropTypes(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "DROPTYPES", .{});
     }
 
     pub fn setDropTypes(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DROPTYPES", .{}, arg);
+    }
+
+    /// 
+    /// TRAYTIPMARKUP [GTK Only]: allows the tip string to contains Pango markup commands.
+    /// Can be "YES" or "NO".
+    /// Default: "NO".
+    /// Must be set before setting the TRAYTIP attribute.
+    /// (GTK 2.16) (since 3.6)
+    pub fn getTrayTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TRAYTIPMARKUP", .{});
+    }
+
+    /// 
+    /// TRAYTIPMARKUP [GTK Only]: allows the tip string to contains Pango markup commands.
+    /// Can be "YES" or "NO".
+    /// Default: "NO".
+    /// Must be set before setting the TRAYTIP attribute.
+    /// (GTK 2.16) (since 3.6)
+    pub fn setTrayTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TRAYTIPMARKUP", .{}, arg);
     }
 
     pub fn getUserSize(self: *Self) Size {
@@ -2989,50 +2492,6 @@ pub const Dialog = opaque {
 
     pub fn setTipDelay(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
-    }
-
-    /// 
-    /// CUSTOMFRAMECAPTIONLIMITS [Windows Only] (non inheritable): limits of the
-    /// caption area at left and at right.
-    /// The caption area is always expanded inside the limits when the dialog is resized.
-    /// Format is "left:right" or in C "%d:%d".
-    /// Default: "0:0".
-    /// This will allow the dialog to be moved by the system when the user click
-    /// and drag the caption area.
-    /// If not defined but CUSTOMFRAMECAPTION is defined, then it will use the
-    /// caption element horizontal position and size for the limits (since 3.22).
-    /// (since 3.18)
-    pub fn getCustomFrameCaptionLimits(self: *Self) iup.Range {
-        var str = interop.getStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", .{});
-        return iup.Range.parse(str, ',');
-    }
-
-    /// 
-    /// CUSTOMFRAMECAPTIONLIMITS [Windows Only] (non inheritable): limits of the
-    /// caption area at left and at right.
-    /// The caption area is always expanded inside the limits when the dialog is resized.
-    /// Format is "left:right" or in C "%d:%d".
-    /// Default: "0:0".
-    /// This will allow the dialog to be moved by the system when the user click
-    /// and drag the caption area.
-    /// If not defined but CUSTOMFRAMECAPTION is defined, then it will use the
-    /// caption element horizontal position and size for the limits (since 3.22).
-    /// (since 3.18)
-    pub fn setCustomFrameCaptionLimits(self: *Self, begin: i32, end: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-        interop.setStrAttribute(self, "CUSTOMFRAMECAPTIONLIMITS", .{}, value);
-    }
-
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
     }
 
     /// 
@@ -3071,17 +2530,6 @@ pub const Dialog = opaque {
     /// Frame notes bellow.
     pub fn setCustomFrame(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
-    }
-
-    /// 
-    /// MDINEXT [Windows Only] (read-only): Returns the name of the next available
-    /// MDI child.
-    /// Use IupGetAttributeHandle to directly retrieve the child handle.
-    /// Must use MDIACTIVE to retrieve the first child.
-    /// If the application is going to destroy the child retrieve the next child
-    /// before destroying the current.
-    pub fn getMdiNext(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "MDINEXT", .{});
     }
 
     /// 
@@ -3173,14 +2621,6 @@ pub const Dialog = opaque {
         }
     }
 
-    pub fn getLayerAlpha(self: *Self) i32 {
-        return interop.getIntAttribute(self, "LAYERALPHA", .{});
-    }
-
-    pub fn setLayerAlpha(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "LAYERALPHA", .{}, arg);
-    }
-
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
@@ -3197,14 +2637,6 @@ pub const Dialog = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
-    }
-
     pub fn getDropTarget(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPTARGET", .{});
     }
@@ -3213,47 +2645,12 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
     }
 
-    /// 
-    /// TRAYTIPBALLOON [Windows Only]: The tip window will have the appearance of a
-    /// cartoon "balloon" with rounded corners and a stem pointing to the item.
-    /// Default: NO.
-    /// Must be set before setting the TRAYTIP attribute.
-    /// (since 3.6)
-    pub fn getTrayTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TRAYTIPBALLOON", .{});
-    }
-
-    /// 
-    /// TRAYTIPBALLOON [Windows Only]: The tip window will have the appearance of a
-    /// cartoon "balloon" with rounded corners and a stem pointing to the item.
-    /// Default: NO.
-    /// Must be set before setting the TRAYTIP attribute.
-    /// (since 3.6)
-    pub fn setTrayTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TRAYTIPBALLOON", .{}, arg);
-    }
-
     pub fn getDragSource(self: *Self) bool {
         return interop.getBoolAttribute(self, "DRAGSOURCE", .{});
     }
 
     pub fn setDragSource(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
-    }
-
-    /// 
-    /// MDIARRANGE [Windows Only] (write-only): Action to arrange MDI child windows.
-    /// Possible values: TILEHORIZONTAL, TILEVERTICAL, CASCADE and ICON (arrange
-    /// the minimized icons).
-    pub fn mdiArrange(self: *Self, arg: ?MdiArrange) void {
-        if (arg) |value| switch (value) {
-            .TileHorizontal => interop.setStrAttribute(self, "MDIARRANGE", .{}, "TILEHORIZONTAL"),
-            .TileVertical => interop.setStrAttribute(self, "MDIARRANGE", .{}, "TILEVERTICAL"),
-            .Cascade => interop.setStrAttribute(self, "MDIARRANGE", .{}, "CASCADE"),
-            .Icon => interop.setStrAttribute(self, "MDIARRANGE", .{}, "ICON"),
-        } else {
-            interop.clearAttribute(self, "MDIARRANGE", .{});
-        }
     }
 
     /// 
@@ -3404,22 +2801,6 @@ pub const Dialog = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
-    pub fn getShowNoActivate(self: *Self) bool {
-        return interop.getBoolAttribute(self, "SHOWNOACTIVATE", .{});
-    }
-
-    pub fn setShowNoActivate(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "SHOWNOACTIVATE", .{}, arg);
-    }
-
     pub fn getFontFace(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONTFACE", .{});
     }
@@ -3428,51 +2809,12 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
-    pub fn getMaximizeAtDialog(self: *Self) bool {
-        return interop.getBoolAttribute(self, "MAXIMIZEATDIALOG", .{});
-    }
-
-    pub fn setMaximizeAtDialog(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "MAXIMIZEATDIALOG", .{}, arg);
-    }
-
     /// 
     /// TOPMOST [Windows and GTK Only]: puts the dialog always in front of all
     /// other dialogs in all applications.
     /// Default: NO.
     pub fn topMost(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TOPMOST", .{}, arg);
-    }
-
-    /// 
-    /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
-    /// to be shown on the taskbar even if the dialog does not have decorations.
-    /// If set to HIDE force the application button to be hidden from the taskbar,
-    /// but also in this case the system menu, the maximize and minimize buttons
-    /// will be hidden.
-    /// (since 3.28)
-    pub fn getTaskbarButton(self: *Self) ?TaskbarButton {
-        var ret = interop.getStrAttribute(self, "TASKBARBUTTON", .{});
-
-        if (std.ascii.eqlIgnoreCase("SHOW", ret)) return .Show;
-        if (std.ascii.eqlIgnoreCase("HIDE", ret)) return .Hide;
-        return null;
-    }
-
-    /// 
-    /// TASKBARBUTTON [Windows Only]: If set to SHOW force the application button
-    /// to be shown on the taskbar even if the dialog does not have decorations.
-    /// If set to HIDE force the application button to be hidden from the taskbar,
-    /// but also in this case the system menu, the maximize and minimize buttons
-    /// will be hidden.
-    /// (since 3.28)
-    pub fn setTaskbarButton(self: *Self, arg: ?TaskbarButton) void {
-        if (arg) |value| switch (value) {
-            .Show => interop.setStrAttribute(self, "TASKBARBUTTON", .{}, "SHOW"),
-            .Hide => interop.setStrAttribute(self, "TASKBARBUTTON", .{}, "HIDE"),
-        } else {
-            interop.clearAttribute(self, "TASKBARBUTTON", .{});
-        }
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
@@ -3515,14 +2857,6 @@ pub const Dialog = opaque {
     /// (since 3.0)
     pub fn getModal(self: *Self) bool {
         return interop.getBoolAttribute(self, "MODAL", .{});
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
     /// 
@@ -3573,30 +2907,6 @@ pub const Dialog = opaque {
     /// Possible values: YES, NO.
     pub fn setHideTaskbar(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
-    }
-
-    /// 
-    /// HWND [Windows Only] (non inheritable, read-only): Returns the Windows
-    /// Window handle.
-    /// Available in the Windows driver or in the GTK driver in Windows.
-    pub fn getHwnd(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HWND", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    /// 
-    /// HWND [Windows Only] (non inheritable, read-only): Returns the Windows
-    /// Window handle.
-    /// Available in the Windows driver or in the GTK driver in Windows.
-    pub fn setHwnd(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HWND", .{}, arg);
-    }
-
-    pub fn setHwndHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HWND", .{}, arg);
     }
 
     /// 
@@ -3712,24 +3022,6 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "ACTIVEWINDOW", .{});
     }
 
-    /// 
-    /// CUSTOMFRAMECAPTIONHEIGHT [Windows Only] (non inheritable): height of the
-    /// caption area.
-    /// If not defined it will use the system size.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn getCustomFrameCaptionHeight(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", .{});
-    }
-
-    /// 
-    /// CUSTOMFRAMECAPTIONHEIGHT [Windows Only] (non inheritable): height of the
-    /// caption area.
-    /// If not defined it will use the system size.
-    /// (since 3.18) (renamed in 3.22)
-    pub fn setCustomFrameCaptionHeight(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CUSTOMFRAMECAPTIONHEIGHT", .{}, arg);
-    }
-
     pub fn getNTheme(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "NTHEME", .{});
     }
@@ -3772,14 +3064,6 @@ pub const Dialog = opaque {
     /// (since 3.28)
     pub fn setCustomFramesImulate(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{}, arg);
-    }
-
-    /// 
-    /// MDICLOSEALL [Windows Only] (write-only): Action to close and destroy all
-    /// MDI child windows.
-    /// The CLOSE_CB callback will be called for each child.
-    pub fn mdiCloseAll(self: *Self) void {
-        interop.setStrAttribute(self, "MDICLOSEALL", .{}, null);
     }
 
     /// 
@@ -3849,41 +3133,6 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
-    }
-
-    /// 
-    /// TASKBARPROGRESSSTATE [Windows Only] (write-only): sets the type and state
-    /// of the progress indicator displayed on a taskbar button.
-    /// Possible values: NORMAL (a green bar), PAUSED (a yellow bar), ERROR (a red
-    /// bar), INDETERMINATE (a green marquee) and NOPROGRESS (no bar).
-    /// Default: NORMAL (since 3.10).
-    pub fn taskbarProgressState(self: *Self, arg: ?TaskbarProgressState) void {
-        if (arg) |value| switch (value) {
-            .NoProgress => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "NOPROGRESS"),
-            .Indeterminate => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "INDETERMINATE"),
-            .Error => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "ERROR"),
-            .Paused => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "PAUSED"),
-            .Normal => interop.setStrAttribute(self, "TASKBARPROGRESSSTATE", .{}, "NORMAL"),
-        } else {
-            interop.clearAttribute(self, "TASKBARPROGRESSSTATE", .{});
-        }
-    }
-
-    /// 
-    /// TASKBARPROGRESSVALUE [Windows Only] (write-only): updates a progress bar
-    /// hosted in a taskbar button to show the specific percentage completed of the
-    /// full operation.
-    /// The value must be between 0 and 100 (since 3.10).
-    pub fn taskbarProgressValue(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "TASKBARPROGRESSVALUE", .{}, arg);
-    }
-
     /// 
     /// FULLSCREEN: Makes the dialog occupy the whole screen over any system bars
     /// in the main monitor.
@@ -3894,39 +3143,6 @@ pub const Dialog = opaque {
     /// changed after it is visible.
     pub fn fullScreen(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "FULLSCREEN", .{}, arg);
-    }
-
-    pub fn getMaximizedIalog(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "MAXIMIZEDIALOG", .{});
-    }
-
-    pub fn setMaximizedIalog(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "MAXIMIZEDIALOG", .{}, arg);
-    }
-
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    /// 
-    /// MINIMIZED [Windows and GTK Only] (read-only): indicates if the dialog is minimized.
-    /// Can be YES or NO.
-    /// (since 3.15)
-    pub fn getMinimized(self: *Self) bool {
-        return interop.getBoolAttribute(self, "MINIMIZED", .{});
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
@@ -4030,11 +3246,6 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     /// 
     /// FOCUS_CB: Called when the dialog or any of its children gets the focus, or
     /// when another dialog or any control in another dialog gets the focus.
@@ -4121,22 +3332,6 @@ pub const Dialog = opaque {
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// MDIACTIVATE_CB [Windows Only]: Called when a MDI child window is activated.
-    /// Only the MDI child receive this message.
-    /// It is not called when the child is shown for the first time.
-    /// int function(Ihandle *ih); [in C]elem:mdiactivate_cb() -> (ret: number) [in
-    /// Lua] ih: identifier of the element that activated the event.
-    pub fn setMdiActivateCallback(self: *Self, callback: ?OnMdiActivateFn) void {
-        const Handler = CallbackHandler(Self, OnMdiActivateFn, "MDIACTIVATE_CB");
-        Handler.setCallback(self, callback);
-    }
-
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
@@ -4210,18 +3405,6 @@ pub const Dialog = opaque {
         Handler.setCallback(self, callback);
     }
 
-    /// 
-    /// CUSTOMFRAMEACTIVATE_CB [Windows Only]: Called when the dialog active state
-    /// is changed (for instance the user Alt+Tab to another application, or
-    /// clicked in another window).
-    /// Works only when CUSTOMFRAME or CUSTOMFRAMEEX is defined.
-    /// (since 3.23) int function(Ihandle *ih, int active); [in
-    /// C]ih:customframeactivate_cb(active: number) -> (ret: number) [in Lua]
-    pub fn setCustomFrameActivateCallback(self: *Self, callback: ?OnCustomFrameActivateFn) void {
-        const Handler = CallbackHandler(Self, OnCustomFrameActivateFn, "CUSTOMFRAMEACTIVATE_CB");
-        Handler.setCallback(self, callback);
-    }
-
     pub fn setDragDataCallback(self: *Self, callback: ?OnDragDataFn) void {
         const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
         Handler.setCallback(self, callback);
@@ -4229,11 +3412,6 @@ pub const Dialog = opaque {
 
     pub fn setDragDataSizeCallback(self: *Self, callback: ?OnDragDataSizeFn) void {
         const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setCustomFrameDrawCallback(self: *Self, callback: ?OnCustomFrameDrawFn) void {
-        const Handler = CallbackHandler(Self, OnCustomFrameDrawFn, "CUSTOMFRAMEDRAW_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -4366,18 +3544,6 @@ pub const Dialog = opaque {
     }
 };
 
-test "Dialog TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Dialog HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4400,6 +3566,18 @@ test "Dialog TipBgColor" {
     var ret = item.getTipBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "Dialog TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Dialog.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Dialog NoFlush" {
@@ -4426,18 +3604,6 @@ test "Dialog MaxSize" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
-test "Dialog TrayTipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setTrayTipBalloonTitleIcon(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTrayTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Dialog OpacityImage" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4458,18 +3624,6 @@ test "Dialog ShowNoFocus" {
     defer item.deinit();
 
     var ret = item.getShowNoFocus();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Dialog MaximizeAtParent" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setMaximizeAtParent(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMaximizeAtParent();
 
     try std.testing.expect(ret == true);
 }
@@ -4570,16 +3724,16 @@ test "Dialog Visible" {
     try std.testing.expect(ret == true);
 }
 
-test "Dialog CustomFrameDraw" {
+test "Dialog HideTitleBar" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Dialog.init().setCustomFrameDraw(true).unwrap());
+    var item = try (iup.Dialog.init().setHideTitleBar("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getCustomFrameDraw();
+    var ret = item.getHideTitleBar();
 
-    try std.testing.expect(ret == true);
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Dialog DragDrop" {
@@ -4602,18 +3756,6 @@ test "Dialog DialogHint" {
     defer item.deinit();
 
     var ret = item.getDialogHint();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Dialog ShowMinimizeNext" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setShowMinimizeNext(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getShowMinimizeNext();
 
     try std.testing.expect(ret == true);
 }
@@ -4642,18 +3784,6 @@ test "Dialog NActive" {
     try std.testing.expect(ret == true);
 }
 
-test "Dialog TrayTipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setTrayTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTrayTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "Dialog Theme" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4676,18 +3806,6 @@ test "Dialog Tray" {
     var ret = item.getTray();
 
     try std.testing.expect(ret == true);
-}
-
-test "Dialog TaskbarProgress" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setTaskbarProgress(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTaskbarProgress();
-
-    try std.testing.expect(ret == 42);
 }
 
 test "Dialog ChildOffset" {
@@ -4714,6 +3832,18 @@ test "Dialog Expand" {
     try std.testing.expect(ret != null and ret.? == .Yes);
 }
 
+test "Dialog TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Dialog.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "Dialog StartFocus" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4738,18 +3868,6 @@ test "Dialog FontSize" {
     try std.testing.expect(ret == 42);
 }
 
-test "Dialog TrayTipDelay" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setTrayTipDelay(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTrayTipDelay();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Dialog DropTypes" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4758,6 +3876,18 @@ test "Dialog DropTypes" {
     defer item.deinit();
 
     var ret = item.getDropTypes();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "Dialog TrayTipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Dialog.init().setTrayTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTrayTipMarkup();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -4784,30 +3914,6 @@ test "Dialog TipDelay" {
     var ret = item.getTipDelay();
 
     try std.testing.expect(ret == 42);
-}
-
-test "Dialog CustomFrameCaptionLimits" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setCustomFrameCaptionLimits(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getCustomFrameCaptionLimits();
-
-    try std.testing.expect(ret.begin == 9 and ret.end == 10);
-}
-
-test "Dialog DragStart" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setDragStart(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragStart();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
 }
 
 test "Dialog CustomFrame" {
@@ -4846,18 +3952,6 @@ test "Dialog Placement" {
     try std.testing.expect(ret != null and ret.? == .Maximized);
 }
 
-test "Dialog LayerAlpha" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setLayerAlpha(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getLayerAlpha();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Dialog PropagateFocus" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4882,18 +3976,6 @@ test "Dialog BgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Dialog TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "Dialog DropTarget" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4902,18 +3984,6 @@ test "Dialog DropTarget" {
     defer item.deinit();
 
     var ret = item.getDropTarget();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Dialog TrayTipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setTrayTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTrayTipBalloon();
 
     try std.testing.expect(ret == true);
 }
@@ -4990,30 +4060,6 @@ test "Dialog TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Dialog ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "Dialog ShowNoActivate" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setShowNoActivate(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getShowNoActivate();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Dialog FontFace" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5026,30 +4072,6 @@ test "Dialog FontFace" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Dialog MaximizeAtDialog" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setMaximizeAtDialog(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMaximizeAtDialog();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Dialog TaskbarButton" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setTaskbarButton(.Show).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTaskbarButton();
-
-    try std.testing.expect(ret != null and ret.? == .Show);
-}
-
 test "Dialog Name" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5060,18 +4082,6 @@ test "Dialog Name" {
     var ret = item.getName();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Dialog TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Dialog Background" {
@@ -5158,18 +4168,6 @@ test "Dialog MinSize" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
-test "Dialog CustomFrameCaptionHeight" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setCustomFrameCaptionHeight(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getCustomFrameCaptionHeight();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Dialog NTheme" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -5250,30 +4248,6 @@ test "Dialog FontStyle" {
     defer item.deinit();
 
     var ret = item.getFontStyle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Dialog Touch" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setTouch(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Dialog MaximizedIalog" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Dialog.init().setMaximizedIalog("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getMaximizedIalog();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }

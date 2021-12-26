@@ -88,7 +88,7 @@ pub inline fn create_image(comptime T: type, width: i32, height: i32, imgdata: ?
 
     var params = [_]usize{ @intCast(usize, width), @intCast(usize, height), if (imgdata) |valid| @ptrToInt(valid.ptr) else SENTINEL, SENTINEL };
 
-    return @ptrCast(*T, c.IupCreatev(T.CLASS_NAME, @ptrCast([*c]?*c_void, &params)));
+    return @ptrCast(*T, c.IupCreatev(T.CLASS_NAME, @ptrCast([*c]?*anyopaque, &params)));
 }
 
 pub inline fn destroy(element: anytype) void {
@@ -473,7 +473,7 @@ pub fn intIntToString(buffer: []u8, x: i32, y: i32, comptime separator: u8) [:0]
 
 pub fn strToIntInt(value: []const u8, separator: u8, a: *?i32, b: *?i32) void {
     const delimiter = [_]u8{separator};
-    var iterator = std.mem.split(value, delimiter[0..]);
+    var iterator = std.mem.split(u8, value, delimiter[0..]);
 
     if (iterator.next()) |part| {
         if (std.fmt.parseInt(i32, part, 10)) |int| {

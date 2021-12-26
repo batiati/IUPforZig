@@ -41,8 +41,6 @@ pub const Tree = opaque {
 
     pub const OnBranchCloseFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     /// 
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
@@ -90,8 +88,6 @@ pub const Tree = opaque {
     pub const OnDragEndFn = fn (self: *Self, arg0: i32) anyerror!void;
 
     pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
@@ -446,12 +442,6 @@ pub const Tree = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -478,6 +468,12 @@ pub const Tree = opaque {
         pub fn setDropEqualDrag(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DROPEQUALDRAG", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
 
@@ -607,18 +603,6 @@ pub const Tree = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         /// 
         /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
         pub fn setMarked(self: *Initializer, index: i32, arg: bool) Initializer {
@@ -642,22 +626,6 @@ pub const Tree = opaque {
         pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
 
@@ -702,6 +670,12 @@ pub const Tree = opaque {
         pub fn setShowToggle(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SHOWTOGGLE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
             return self.*;
         }
 
@@ -789,14 +763,6 @@ pub const Tree = opaque {
             return self.*;
         }
 
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
-            return self.*;
-        }
-
         /// 
         /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
         /// TITLEFONTUSERDATA
@@ -834,12 +800,6 @@ pub const Tree = opaque {
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -914,12 +874,6 @@ pub const Tree = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
         pub fn setCSpacing(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "CSPACING", .{}, arg);
@@ -946,12 +900,6 @@ pub const Tree = opaque {
         pub fn insertBranch(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "INSERTBRANCH", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setRgb(self.ref, "HLCOLOR", .{}, rgb);
             return self.*;
         }
 
@@ -984,12 +932,6 @@ pub const Tree = opaque {
             } else {
                 interop.clearAttribute(self.ref, "STATE", .{index});
             }
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -1179,26 +1121,17 @@ pub const Tree = opaque {
         }
 
         /// 
-        /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
-        /// TOPITEM
-        pub fn autoRedraw(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "AUTOREDRAW", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
-        /// 
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
         /// INSERTBRANCH MOVENODE
         pub fn addBranch(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "ADDBRANCH", .{index}, arg);
+            return self.*;
+        }
+
+        pub fn setRubberband(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "RUBBERBAND", .{}, arg);
             return self.*;
         }
 
@@ -1216,22 +1149,6 @@ pub const Tree = opaque {
         pub fn setHideLines(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "HIDELINES", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
@@ -1295,12 +1212,6 @@ pub const Tree = opaque {
 
         pub fn setBranchCloseCallback(self: *Initializer, callback: ?OnBranchCloseFn) Initializer {
             const Handler = CallbackHandler(Self, OnBranchCloseFn, "BRANCHCLOSE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1373,12 +1284,6 @@ pub const Tree = opaque {
 
         pub fn setDragBeginCallback(self: *Initializer, callback: ?OnDragBeginFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1846,14 +1751,6 @@ pub const Tree = opaque {
         interop.setRgb(self, "FGCOLOR", .{}, rgb);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -1905,6 +1802,14 @@ pub const Tree = opaque {
         if (std.ascii.eqlIgnoreCase("BRANCH", ret)) return .Branch;
         if (std.ascii.eqlIgnoreCase("LEAF", ret)) return .Leaf;
         return null;
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
     /// 
@@ -2044,22 +1949,6 @@ pub const Tree = opaque {
         }
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -2102,23 +1991,6 @@ pub const Tree = opaque {
 
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "THEME", .{}, arg);
-    }
-
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
 
     pub fn getToggleVisible(self: *Self, index: i32) bool {
@@ -2193,6 +2065,14 @@ pub const Tree = opaque {
 
     pub fn setShowToggle(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "SHOWTOGGLE", .{}, arg);
+    }
+
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
     /// 
@@ -2303,17 +2183,6 @@ pub const Tree = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
-    }
-
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
@@ -2368,14 +2237,6 @@ pub const Tree = opaque {
     /// TOPITEM
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getDropTarget(self: *Self) bool {
@@ -2482,14 +2343,6 @@ pub const Tree = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     pub fn getLastAddNode(self: *Self) i32 {
         return interop.getIntAttribute(self, "LASTADDNODE", .{});
     }
@@ -2546,14 +2399,6 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "INSERTBRANCH", .{index}, arg);
     }
 
-    pub fn getHlColor(self: *Self) ?iup.Rgb {
-        return interop.getRgb(self, "HLCOLOR", .{});
-    }
-
-    pub fn setHlColor(self: *Self, rgb: iup.Rgb) void {
-        interop.setRgb(self, "HLCOLOR", .{}, rgb);
-    }
-
     pub fn getMarkWhenToggle(self: *Self) bool {
         return interop.getBoolAttribute(self, "MARKWHENTOGGLE", .{});
     }
@@ -2599,14 +2444,6 @@ pub const Tree = opaque {
         } else {
             interop.clearAttribute(self, "STATE", .{index});
         }
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
     pub fn getMarkStart(self: *Self) bool {
@@ -2889,25 +2726,18 @@ pub const Tree = opaque {
     }
 
     /// 
-    /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
-    /// TOPITEM
-    pub fn autoRedraw(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "AUTOREDRAW", .{}, arg);
-    }
-
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
-    }
-
-    /// 
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
     pub fn addBranch(self: *Self, index: i32, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "ADDBRANCH", .{index}, arg);
+    }
+
+    pub fn getRubberband(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "RUBBERBAND", .{});
+    }
+
+    pub fn setRubberband(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "RUBBERBAND", .{}, arg);
     }
 
     /// 
@@ -2927,23 +2757,6 @@ pub const Tree = opaque {
     /// HIDELINES HIDEBUTTONS
     pub fn setHideLines(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "HIDELINES", .{}, arg);
-    }
-
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
 
     pub fn getFont(self: *Self) [:0]const u8 {
@@ -3044,11 +2857,6 @@ pub const Tree = opaque {
         Handler.setCallback(self, callback);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     /// 
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
@@ -3112,11 +2920,6 @@ pub const Tree = opaque {
 
     pub fn setDragBeginCallback(self: *Self, callback: ?OnDragBeginFn) void {
         const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -3436,18 +3239,6 @@ test "Tree FgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Tree TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tree.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Tree HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3494,6 +3285,18 @@ test "Tree DropEqualDrag" {
     var ret = item.getDropEqualDrag();
 
     try std.testing.expect(ret == true);
+}
+
+test "Tree TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Tree RenameCaret" {
@@ -3712,6 +3515,18 @@ test "Tree ShowToggle" {
     try std.testing.expect(ret == true);
 }
 
+test "Tree TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tree.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "Tree FontSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3760,18 +3575,6 @@ test "Tree TipDelay" {
     try std.testing.expect(ret == 42);
 }
 
-test "Tree DragStart" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tree.init().setDragStart(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragStart();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
 test "Tree Title" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3818,18 +3621,6 @@ test "Tree BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "Tree TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tree.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Tree DropTarget" {
@@ -3940,18 +3731,6 @@ test "Tree TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Tree ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tree.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Tree CSpacing" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3986,18 +3765,6 @@ test "Tree MarkMode" {
     var ret = item.getMarkMode();
 
     try std.testing.expect(ret != null and ret.? == .SInGle);
-}
-
-test "Tree HlColor" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tree.init().setHlColor(.{ .r = 9, .g = 10, .b = 11 }).unwrap());
-    defer item.deinit();
-
-    var ret = item.getHlColor();
-
-    try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
 test "Tree MarkWhenToggle" {
@@ -4046,18 +3813,6 @@ test "Tree State" {
     var ret = item.getState(0);
 
     try std.testing.expect(ret != null and ret.? == .Expanded);
-}
-
-test "Tree TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tree.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Tree MarkStart" {
@@ -4240,16 +3995,16 @@ test "Tree FontStyle" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "Tree Touch" {
+test "Tree Rubberband" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Tree.init().setTouch(true).unwrap());
+    var item = try (iup.Tree.init().setRubberband("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getTouch();
+    var ret = item.getRubberband();
 
-    try std.testing.expect(ret == true);
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Tree HideLines" {

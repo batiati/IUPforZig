@@ -55,7 +55,18 @@ pub const MultiBox = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Void;
     const Self = @This();
 
-    pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
+    pub const OnUpDateAttribfromFontFn = fn (self: *Self) anyerror!void;
+
+    /// 
+    /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
+    /// updated in IupMap.
+    /// When the element is a dialog, it is called after the layout is updated.
+    /// For all other elements is called before the layout is updated, so the
+    /// element current size will still be 0x0 during MAP_CB (since 3.14).
+    /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
+    /// Lua] ih: identifier of the element that activated the event.
+    /// Affects All that have a native representation.
+    pub const OnMapFn = fn (self: *Self) anyerror!void;
 
     /// 
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
@@ -72,27 +83,16 @@ pub const MultiBox = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnUpDateAttribfromFontFn = fn (self: *Self) anyerror!void;
-
-    /// 
-    /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
-    /// updated in IupMap.
-    /// When the element is a dialog, it is called after the layout is updated.
-    /// For all other elements is called before the layout is updated, so the
-    /// element current size will still be 0x0 during MAP_CB (since 3.14).
-    /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
-    /// Lua] ih: identifier of the element that activated the event.
-    /// Affects All that have a native representation.
-    pub const OnMapFn = fn (self: *Self) anyerror!void;
-
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
-
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
+
+    pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
+
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
 
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
@@ -105,12 +105,6 @@ pub const MultiBox = opaque {
         VerticalFree,
         No,
     };
-
-    pub const Floating = enum {
-        Yes,
-        Ignore,
-        No,
-    };
     /// 
     /// ORIENTATION (non inheritable): controls the distribution of the children in
     /// lines or in columns.
@@ -119,6 +113,12 @@ pub const MultiBox = opaque {
     pub const Orientation = enum {
         Horizontal,
         Vertical,
+    };
+
+    pub const Floating = enum {
+        Yes,
+        Ignore,
+        No,
     };
 
     pub const Initializer = struct {
@@ -184,43 +184,9 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
-        /// of the SIZE attribute.
-        /// Its value has the format "widthxheight", where width and height are integer
-        /// values corresponding to the horizontal and vertical margins, respectively.
-        /// Default: "0x0" (no margin).
-        pub fn setMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Margin.intIntToString(&buffer, horiz, vert);
-            interop.setStrAttribute(self.ref, "MARGIN", .{}, value);
+            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
 
@@ -232,27 +198,29 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
+        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
+            var buffer: [128]u8 = undefined;
+            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
+            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
             return self.*;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
+            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
+        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
+            interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
 
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
+            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
 
@@ -267,79 +235,6 @@ pub const MultiBox = opaque {
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
             interop.setStrAttribute(self.ref, "CMARGIN", .{}, value);
-            return self.*;
-        }
-
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
-        /// MAXSIZE, THEME: also accepted.
-        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "SIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
-        pub fn setNMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Margin.intIntToString(&buffer, horiz, vert);
-            interop.setStrAttribute(self.ref, "NMARGIN", .{}, value);
-            return self.*;
-        }
-
-        /// 
-        /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
-        pub fn setNcMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = Margin.intIntToString(&buffer, horiz, vert);
-            interop.setStrAttribute(self.ref, "NCMARGIN", .{}, value);
             return self.*;
         }
 
@@ -361,29 +256,14 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+        /// 
+        /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+        /// MAXSIZE, THEME: also accepted.
+        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
-            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
-        }
-
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
-                .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
-                .No => interop.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
-            } else {
-                interop.clearAttribute(self.ref, "FLOATING", .{});
-            }
+            interop.setStrAttribute(self.ref, "SIZE", .{}, value);
             return self.*;
         }
 
@@ -403,9 +283,83 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "THEME", .{}, arg);
+            interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
+            return self.*;
+        }
+
+        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
+                .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
+                .No => interop.setStrAttribute(self.ref, "FLOATING", .{}, "NO"),
+            } else {
+                interop.clearAttribute(self.ref, "FLOATING", .{});
+            }
+            return self.*;
+        }
+
+        /// 
+        /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
+        pub fn setNMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Margin.intIntToString(&buffer, horiz, vert);
+            interop.setStrAttribute(self.ref, "NMARGIN", .{}, value);
+            return self.*;
+        }
+
+        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Size.intIntToString(&buffer, width, height);
+            interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
+            return self.*;
+        }
+
+        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NAME", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setActive(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
 
@@ -417,11 +371,45 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
+        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
+            return self.*;
+        }
+
+        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
+        pub fn setNcMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
             if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "POSITION", .{}, value);
+            var value = Margin.intIntToString(&buffer, horiz, vert);
+            interop.setStrAttribute(self.ref, "NCMARGIN", .{}, value);
+            return self.*;
+        }
+
+        /// 
+        /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
+        /// of the SIZE attribute.
+        /// Its value has the format "widthxheight", where width and height are integer
+        /// values corresponding to the horizontal and vertical margins, respectively.
+        /// Default: "0x0" (no margin).
+        pub fn setMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            var buffer: [128]u8 = undefined;
+            var value = Margin.intIntToString(&buffer, horiz, vert);
+            interop.setStrAttribute(self.ref, "MARGIN", .{}, value);
+            return self.*;
+        }
+
+        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
 
@@ -477,8 +465,23 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
-            const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
+        pub fn setUpDateAttribfromFontCallback(self: *Initializer, callback: ?OnUpDateAttribfromFontFn) Initializer {
+            const Handler = CallbackHandler(Self, OnUpDateAttribfromFontFn, "UPDATEATTRIBFROMFONT_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        /// 
+        /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
+        /// updated in IupMap.
+        /// When the element is a dialog, it is called after the layout is updated.
+        /// For all other elements is called before the layout is updated, so the
+        /// element current size will still be 0x0 during MAP_CB (since 3.14).
+        /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
+        /// Lua] ih: identifier of the element that activated the event.
+        /// Affects All that have a native representation.
+        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+            const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -502,33 +505,6 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
-        pub fn setUpDateAttribfromFontCallback(self: *Initializer, callback: ?OnUpDateAttribfromFontFn) Initializer {
-            const Handler = CallbackHandler(Self, OnUpDateAttribfromFontFn, "UPDATEATTRIBFROMFONT_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        /// 
-        /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
-        /// updated in IupMap.
-        /// When the element is a dialog, it is called after the layout is updated.
-        /// For all other elements is called before the layout is updated, so the
-        /// element current size will still be 0x0 during MAP_CB (since 3.14).
-        /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
-        /// Lua] ih: identifier of the element that activated the event.
-        /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
-            const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
         /// 
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
@@ -536,6 +512,18 @@ pub const MultiBox = opaque {
         /// Affects All that have a native representation.
         pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+            const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
+            Handler.setCallback(self.ref, callback);
+            return self.*;
+        }
+
+        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+            const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -657,62 +645,12 @@ pub const MultiBox = opaque {
         Impl(Self).refresh(self);
     }
 
-    pub fn getUserSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "USERSIZE", .{});
-        return Size.parse(str);
+    pub fn getHandleName(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
 
-    pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "USERSIZE", .{}, value);
-    }
-
-    pub fn getFontStyle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONTSTYLE", .{});
-    }
-
-    pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
-    }
-
-    pub fn getFontSize(self: *Self) i32 {
-        return interop.getIntAttribute(self, "FONTSIZE", .{});
-    }
-
-    pub fn setFontSize(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
-    }
-
-    pub fn getExpandWeight(self: *Self) f64 {
-        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
-    }
-
-    pub fn setExpandWeight(self: *Self, arg: f64) void {
-        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
-    }
-
-    /// 
-    /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
-    /// of the SIZE attribute.
-    /// Its value has the format "widthxheight", where width and height are integer
-    /// values corresponding to the horizontal and vertical margins, respectively.
-    /// Default: "0x0" (no margin).
-    pub fn getMargin(self: *Self) Margin {
-        var str = interop.getStrAttribute(self, "MARGIN", .{});
-        return Margin.parse(str);
-    }
-
-    /// 
-    /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
-    /// of the SIZE attribute.
-    /// Its value has the format "widthxheight", where width and height are integer
-    /// values corresponding to the horizontal and vertical margins, respectively.
-    /// Default: "0x0" (no margin).
-    pub fn setMargin(self: *Self, horiz: i32, vert: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Margin.intIntToString(&buffer, horiz, vert);
-        interop.setStrAttribute(self, "MARGIN", .{}, value);
+    pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
     pub fn getMaxSize(self: *Self) Size {
@@ -726,43 +664,39 @@ pub const MultiBox = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
-    pub fn getActive(self: *Self) bool {
-        return interop.getBoolAttribute(self, "ACTIVE", .{});
+    pub fn getPosition(self: *Self) iup.XYPos {
+        var str = interop.getStrAttribute(self, "POSITION", .{});
+        return iup.XYPos.parse(str, ',');
     }
 
-    pub fn setActive(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
+    pub fn setPosition(self: *Self, x: i32, y: i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
+        interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
-    pub fn getNTheme(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NTHEME", .{});
+    pub fn getCanFocus(self: *Self) bool {
+        return interop.getBoolAttribute(self, "CANFOCUS", .{});
     }
 
-    pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NTHEME", .{}, arg);
+    pub fn setCanFocus(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
     }
 
-    /// 
-    /// NUMLIN (read-only): returns the number of lines when ORIENTATION=HORIZONTAL.
-    /// Returns 0 otherwise.
-    pub fn getNumLin(self: *Self) i32 {
-        return interop.getIntAttribute(self, "NUMLIN", .{});
+    pub fn getVisible(self: *Self) bool {
+        return interop.getBoolAttribute(self, "VISIBLE", .{});
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
+    pub fn setVisible(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
+    pub fn getTheme(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "THEME", .{});
     }
 
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
+    pub fn setTheme(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
     /// 
@@ -786,131 +720,6 @@ pub const MultiBox = opaque {
         var buffer: [128]u8 = undefined;
         var value = Margin.intIntToString(&buffer, horiz, vert);
         interop.setStrAttribute(self, "CMARGIN", .{}, value);
-    }
-
-    pub fn getNaturalSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getVisible(self: *Self) bool {
-        return interop.getBoolAttribute(self, "VISIBLE", .{});
-    }
-
-    pub fn setVisible(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
-    }
-
-    pub fn getClientOffset(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "CLIENTOFFSET", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getFontFace(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONTFACE", .{});
-    }
-
-    pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
-    }
-
-    /// 
-    /// NUMCOL (read-only): returns the number of columns when ORIENTATION=VERTICAL.
-    /// Returns 0 otherwise.
-    pub fn getNumCol(self: *Self) i32 {
-        return interop.getIntAttribute(self, "NUMCOL", .{});
-    }
-
-    pub fn getPropagateFocus(self: *Self) bool {
-        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
-    }
-
-    pub fn setPropagateFocus(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
-    }
-
-    pub fn getCharSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
-        return Size.parse(str);
-    }
-
-    pub fn getHandleName(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "HANDLENAME", .{});
-    }
-
-    pub fn setHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
-    }
-
-    /// 
-    /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
-    /// MAXSIZE, THEME: also accepted.
-    pub fn getSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "SIZE", .{});
-        return Size.parse(str);
-    }
-
-    /// 
-    /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
-    /// MAXSIZE, THEME: also accepted.
-    pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "SIZE", .{}, value);
-    }
-
-    pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
-    }
-
-    pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
-    }
-
-    pub fn getFont(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "FONT", .{});
-    }
-
-    pub fn setFont(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "FONT", .{}, arg);
-    }
-
-    pub fn getName(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "NAME", .{});
-    }
-
-    pub fn setName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "NAME", .{}, arg);
-    }
-
-    /// 
-    /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
-    pub fn getNMargin(self: *Self) Margin {
-        var str = interop.getStrAttribute(self, "NMARGIN", .{});
-        return Margin.parse(str);
-    }
-
-    /// 
-    /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
-    pub fn setNMargin(self: *Self, horiz: i32, vert: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Margin.intIntToString(&buffer, horiz, vert);
-        interop.setStrAttribute(self, "NMARGIN", .{}, value);
-    }
-
-    /// 
-    /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
-    pub fn getNcMargin(self: *Self) Margin {
-        var str = interop.getStrAttribute(self, "NCMARGIN", .{});
-        return Margin.parse(str);
-    }
-
-    /// 
-    /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
-    pub fn setNcMargin(self: *Self, horiz: i32, vert: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = Margin.intIntToString(&buffer, horiz, vert);
-        interop.setStrAttribute(self, "NCMARGIN", .{}, value);
     }
 
     /// 
@@ -944,42 +753,27 @@ pub const MultiBox = opaque {
         }
     }
 
-    pub fn getCanFocus(self: *Self) bool {
-        return interop.getBoolAttribute(self, "CANFOCUS", .{});
-    }
-
-    pub fn setCanFocus(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
-    }
-
-    pub fn getRasterSize(self: *Self) Size {
-        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
+    /// 
+    /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
+    pub fn getSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
 
-    pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
+    /// 
+    /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
+    /// MAXSIZE, THEME: also accepted.
+    pub fn setSize(self: *Self, width: ?i32, height: ?i32) void {
         var buffer: [128]u8 = undefined;
         var value = Size.intIntToString(&buffer, width, height);
-        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
+        interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
-    pub fn getFloating(self: *Self) ?Floating {
-        var ret = interop.getStrAttribute(self, "FLOATING", .{});
-
-        if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
-        if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
-        if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
-        return null;
-    }
-
-    pub fn setFloating(self: *Self, arg: ?Floating) void {
-        if (arg) |value| switch (value) {
-            .Yes => interop.setStrAttribute(self, "FLOATING", .{}, "YES"),
-            .Ignore => interop.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
-            .No => interop.setStrAttribute(self, "FLOATING", .{}, "NO"),
-        } else {
-            interop.clearAttribute(self, "FLOATING", .{});
-        }
+    /// 
+    /// WID (read-only): returns -1 if mapped.
+    pub fn getWId(self: *Self) i32 {
+        return interop.getIntAttribute(self, "WID", .{});
     }
 
     /// 
@@ -1009,18 +803,128 @@ pub const MultiBox = opaque {
         }
     }
 
-    pub fn getTheme(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "THEME", .{});
+    pub fn getFontSize(self: *Self) i32 {
+        return interop.getIntAttribute(self, "FONTSIZE", .{});
     }
 
-    pub fn setTheme(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "THEME", .{}, arg);
+    pub fn setFontSize(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
+    }
+
+    pub fn getNaturalSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn getUserSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "USERSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn setUserSize(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "USERSIZE", .{}, value);
+    }
+
+    pub fn getPropagateFocus(self: *Self) bool {
+        return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
+    }
+
+    pub fn setPropagateFocus(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
+    }
+
+    pub fn getFloating(self: *Self) ?Floating {
+        var ret = interop.getStrAttribute(self, "FLOATING", .{});
+
+        if (std.ascii.eqlIgnoreCase("YES", ret)) return .Yes;
+        if (std.ascii.eqlIgnoreCase("IGNORE", ret)) return .Ignore;
+        if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
+        return null;
+    }
+
+    pub fn setFloating(self: *Self, arg: ?Floating) void {
+        if (arg) |value| switch (value) {
+            .Yes => interop.setStrAttribute(self, "FLOATING", .{}, "YES"),
+            .Ignore => interop.setStrAttribute(self, "FLOATING", .{}, "IGNORE"),
+            .No => interop.setStrAttribute(self, "FLOATING", .{}, "NO"),
+        } else {
+            interop.clearAttribute(self, "FLOATING", .{});
+        }
     }
 
     /// 
-    /// WID (read-only): returns -1 if mapped.
-    pub fn getWId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "WID", .{});
+    /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
+    pub fn getNMargin(self: *Self) Margin {
+        var str = interop.getStrAttribute(self, "NMARGIN", .{});
+        return Margin.parse(str);
+    }
+
+    /// 
+    /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
+    pub fn setNMargin(self: *Self, horiz: i32, vert: i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Margin.intIntToString(&buffer, horiz, vert);
+        interop.setStrAttribute(self, "NMARGIN", .{}, value);
+    }
+
+    pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NORMALIZERGROUP", .{});
+    }
+
+    pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
+    }
+
+    pub fn getRasterSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
+        return Size.parse(str);
+    }
+
+    pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Size.intIntToString(&buffer, width, height);
+        interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
+    }
+
+    pub fn getFontFace(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONTFACE", .{});
+    }
+
+    pub fn setFontFace(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONTFACE", .{}, arg);
+    }
+
+    pub fn getName(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NAME", .{});
+    }
+
+    pub fn setName(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NAME", .{}, arg);
+    }
+
+    /// 
+    /// NUMCOL (read-only): returns the number of columns when ORIENTATION=VERTICAL.
+    /// Returns 0 otherwise.
+    pub fn getNumCol(self: *Self) i32 {
+        return interop.getIntAttribute(self, "NUMCOL", .{});
+    }
+
+    pub fn getActive(self: *Self) bool {
+        return interop.getBoolAttribute(self, "ACTIVE", .{});
+    }
+
+    pub fn setActive(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
+    }
+
+    pub fn getExpandWeight(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
+    }
+
+    pub fn setExpandWeight(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
     pub fn getMinSize(self: *Self) Size {
@@ -1034,20 +938,88 @@ pub const MultiBox = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
-    pub fn getPosition(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "POSITION", .{});
-        return iup.XYPos.parse(str, ',');
+    /// 
+    /// NUMLIN (read-only): returns the number of lines when ORIENTATION=HORIZONTAL.
+    /// Returns 0 otherwise.
+    pub fn getNumLin(self: *Self) i32 {
+        return interop.getIntAttribute(self, "NUMLIN", .{});
     }
 
-    pub fn setPosition(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "POSITION", .{}, value);
+    pub fn getNTheme(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "NTHEME", .{});
+    }
+
+    pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "NTHEME", .{}, arg);
+    }
+
+    pub fn getCharSize(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CHARSIZE", .{});
+        return Size.parse(str);
     }
 
     pub fn getClientSize(self: *Self) Size {
         var str = interop.getStrAttribute(self, "CLIENTSIZE", .{});
         return Size.parse(str);
+    }
+
+    pub fn getClientOffset(self: *Self) Size {
+        var str = interop.getStrAttribute(self, "CLIENTOFFSET", .{});
+        return Size.parse(str);
+    }
+
+    pub fn getFontStyle(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONTSTYLE", .{});
+    }
+
+    pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
+    }
+
+    /// 
+    /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
+    pub fn getNcMargin(self: *Self) Margin {
+        var str = interop.getStrAttribute(self, "NCMARGIN", .{});
+        return Margin.parse(str);
+    }
+
+    /// 
+    /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
+    pub fn setNcMargin(self: *Self, horiz: i32, vert: i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Margin.intIntToString(&buffer, horiz, vert);
+        interop.setStrAttribute(self, "NCMARGIN", .{}, value);
+    }
+
+    /// 
+    /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
+    /// of the SIZE attribute.
+    /// Its value has the format "widthxheight", where width and height are integer
+    /// values corresponding to the horizontal and vertical margins, respectively.
+    /// Default: "0x0" (no margin).
+    pub fn getMargin(self: *Self) Margin {
+        var str = interop.getStrAttribute(self, "MARGIN", .{});
+        return Margin.parse(str);
+    }
+
+    /// 
+    /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
+    /// of the SIZE attribute.
+    /// Its value has the format "widthxheight", where width and height are integer
+    /// values corresponding to the horizontal and vertical margins, respectively.
+    /// Default: "0x0" (no margin).
+    pub fn setMargin(self: *Self, horiz: i32, vert: i32) void {
+        var buffer: [128]u8 = undefined;
+        var value = Margin.intIntToString(&buffer, horiz, vert);
+        interop.setStrAttribute(self, "MARGIN", .{}, value);
+    }
+
+    pub fn getFont(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "FONT", .{});
+    }
+
+    pub fn setFont(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
     /// 
@@ -1135,8 +1107,22 @@ pub const MultiBox = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
-        const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
+    pub fn setUpDateAttribfromFontCallback(self: *Self, callback: ?OnUpDateAttribfromFontFn) void {
+        const Handler = CallbackHandler(Self, OnUpDateAttribfromFontFn, "UPDATEATTRIBFROMFONT_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    /// 
+    /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
+    /// updated in IupMap.
+    /// When the element is a dialog, it is called after the layout is updated.
+    /// For all other elements is called before the layout is updated, so the
+    /// element current size will still be 0x0 during MAP_CB (since 3.14).
+    /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
+    /// Lua] ih: identifier of the element that activated the event.
+    /// Affects All that have a native representation.
+    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+        const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -1158,30 +1144,6 @@ pub const MultiBox = opaque {
         Handler.setCallback(self, callback);
     }
 
-    pub fn setUpDateAttribfromFontCallback(self: *Self, callback: ?OnUpDateAttribfromFontFn) void {
-        const Handler = CallbackHandler(Self, OnUpDateAttribfromFontFn, "UPDATEATTRIBFROMFONT_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    /// 
-    /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
-    /// updated in IupMap.
-    /// When the element is a dialog, it is called after the layout is updated.
-    /// For all other elements is called before the layout is updated, so the
-    /// element current size will still be 0x0 during MAP_CB (since 3.14).
-    /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
-    /// Lua] ih: identifier of the element that activated the event.
-    /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
-        const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
-        const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
-        Handler.setCallback(self, callback);
-    }
-
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
@@ -1191,66 +1153,28 @@ pub const MultiBox = opaque {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }
+
+    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+        const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
+        Handler.setCallback(self, callback);
+    }
+
+    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+        const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
+        Handler.setCallback(self, callback);
+    }
 };
 
-test "MultiBox UserSize" {
+test "MultiBox HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MultiBox.init().setUserSize(9, 10).unwrap());
+    var item = try (iup.MultiBox.init().setHandleName("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getUserSize();
-
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "MultiBox FontStyle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setFontStyle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getFontStyle();
+    var ret = item.getHandleName();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "MultiBox FontSize" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setFontSize(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getFontSize();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "MultiBox ExpandWeight" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setExpandWeight(3.14).unwrap());
-    defer item.deinit();
-
-    var ret = item.getExpandWeight();
-
-    try std.testing.expect(ret == @as(f64, 3.14));
-}
-
-test "MultiBox Margin" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setMargin(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getMargin();
-
-    try std.testing.expect(ret.horiz == 9 and ret.vert == 10);
 }
 
 test "MultiBox MaxSize" {
@@ -1265,26 +1189,50 @@ test "MultiBox MaxSize" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
-test "MultiBox Active" {
+test "MultiBox Position" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MultiBox.init().setActive(true).unwrap());
+    var item = try (iup.MultiBox.init().setPosition(9, 10).unwrap());
     defer item.deinit();
 
-    var ret = item.getActive();
+    var ret = item.getPosition();
+
+    try std.testing.expect(ret.x == 9 and ret.y == 10);
+}
+
+test "MultiBox CanFocus" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setCanFocus(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getCanFocus();
 
     try std.testing.expect(ret == true);
 }
 
-test "MultiBox NTheme" {
+test "MultiBox Visible" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MultiBox.init().setNTheme("Hello").unwrap());
+    var item = try (iup.MultiBox.init().setVisible(true).unwrap());
     defer item.deinit();
 
-    var ret = item.getNTheme();
+    var ret = item.getVisible();
+
+    try std.testing.expect(ret == true);
+}
+
+test "MultiBox Theme" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setTheme("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTheme();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -1301,52 +1249,16 @@ test "MultiBox CMargin" {
     try std.testing.expect(ret.horiz == 9 and ret.vert == 10);
 }
 
-test "MultiBox Visible" {
+test "MultiBox Expand" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MultiBox.init().setVisible(true).unwrap());
+    var item = try (iup.MultiBox.init().setExpand(.Yes).unwrap());
     defer item.deinit();
 
-    var ret = item.getVisible();
+    var ret = item.getExpand();
 
-    try std.testing.expect(ret == true);
-}
-
-test "MultiBox FontFace" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setFontFace("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getFontFace();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "MultiBox PropagateFocus" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setPropagateFocus(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getPropagateFocus();
-
-    try std.testing.expect(ret == true);
-}
-
-test "MultiBox HandleName" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setHandleName("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getHandleName();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret != null and ret.? == .Yes);
 }
 
 test "MultiBox Size" {
@@ -1361,6 +1273,78 @@ test "MultiBox Size" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
+test "MultiBox Orientation" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setOrientation(.Horizontal).unwrap());
+    defer item.deinit();
+
+    var ret = item.getOrientation();
+
+    try std.testing.expect(ret != null and ret.? == .Horizontal);
+}
+
+test "MultiBox FontSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setFontSize(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getFontSize();
+
+    try std.testing.expect(ret == 42);
+}
+
+test "MultiBox UserSize" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setUserSize(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getUserSize();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "MultiBox PropagateFocus" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setPropagateFocus(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getPropagateFocus();
+
+    try std.testing.expect(ret == true);
+}
+
+test "MultiBox Floating" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setFloating(.Yes).unwrap());
+    defer item.deinit();
+
+    var ret = item.getFloating();
+
+    try std.testing.expect(ret != null and ret.? == .Yes);
+}
+
+test "MultiBox NMargin" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setNMargin(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getNMargin();
+
+    try std.testing.expect(ret.horiz == 9 and ret.vert == 10);
+}
+
 test "MultiBox NormalizerGroup" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -1373,14 +1357,26 @@ test "MultiBox NormalizerGroup" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "MultiBox Font" {
+test "MultiBox RasterSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MultiBox.init().setFont("Hello").unwrap());
+    var item = try (iup.MultiBox.init().setRasterSize(9, 10).unwrap());
     defer item.deinit();
 
-    var ret = item.getFont();
+    var ret = item.getRasterSize();
+
+    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
+}
+
+test "MultiBox FontFace" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setFontFace("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getFontFace();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
@@ -1397,100 +1393,28 @@ test "MultiBox Name" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
-test "MultiBox NMargin" {
+test "MultiBox Active" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MultiBox.init().setNMargin(9, 10).unwrap());
+    var item = try (iup.MultiBox.init().setActive(true).unwrap());
     defer item.deinit();
 
-    var ret = item.getNMargin();
-
-    try std.testing.expect(ret.horiz == 9 and ret.vert == 10);
-}
-
-test "MultiBox NcMargin" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setNcMargin(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getNcMargin();
-
-    try std.testing.expect(ret.horiz == 9 and ret.vert == 10);
-}
-
-test "MultiBox Expand" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setExpand(.Yes).unwrap());
-    defer item.deinit();
-
-    var ret = item.getExpand();
-
-    try std.testing.expect(ret != null and ret.? == .Yes);
-}
-
-test "MultiBox CanFocus" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setCanFocus(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getCanFocus();
+    var ret = item.getActive();
 
     try std.testing.expect(ret == true);
 }
 
-test "MultiBox RasterSize" {
+test "MultiBox ExpandWeight" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MultiBox.init().setRasterSize(9, 10).unwrap());
+    var item = try (iup.MultiBox.init().setExpandWeight(3.14).unwrap());
     defer item.deinit();
 
-    var ret = item.getRasterSize();
+    var ret = item.getExpandWeight();
 
-    try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
-}
-
-test "MultiBox Floating" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setFloating(.Yes).unwrap());
-    defer item.deinit();
-
-    var ret = item.getFloating();
-
-    try std.testing.expect(ret != null and ret.? == .Yes);
-}
-
-test "MultiBox Orientation" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setOrientation(.Horizontal).unwrap());
-    defer item.deinit();
-
-    var ret = item.getOrientation();
-
-    try std.testing.expect(ret != null and ret.? == .Horizontal);
-}
-
-test "MultiBox Theme" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.MultiBox.init().setTheme("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTheme();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == @as(f64, 3.14));
 }
 
 test "MultiBox MinSize" {
@@ -1505,14 +1429,62 @@ test "MultiBox MinSize" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
-test "MultiBox Position" {
+test "MultiBox NTheme" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MultiBox.init().setPosition(9, 10).unwrap());
+    var item = try (iup.MultiBox.init().setNTheme("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getPosition();
+    var ret = item.getNTheme();
 
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "MultiBox FontStyle" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setFontStyle("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getFontStyle();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "MultiBox NcMargin" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setNcMargin(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getNcMargin();
+
+    try std.testing.expect(ret.horiz == 9 and ret.vert == 10);
+}
+
+test "MultiBox Margin" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setMargin(9, 10).unwrap());
+    defer item.deinit();
+
+    var ret = item.getMargin();
+
+    try std.testing.expect(ret.horiz == 9 and ret.vert == 10);
+}
+
+test "MultiBox Font" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.MultiBox.init().setFont("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getFont();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }

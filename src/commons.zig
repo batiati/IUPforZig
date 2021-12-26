@@ -117,7 +117,7 @@ pub const DialogSize = struct {
 
     pub fn screenSizeToString(buffer: []u8, width: ?ScreenSize, height: ?ScreenSize) [:0]const u8 {
         var fba = std.heap.FixedBufferAllocator.init(buffer);
-        var allocator = &fba.allocator;
+        var allocator = fba.allocator();
 
         var builder = std.ArrayList(u8).init(allocator);
         defer builder.deinit();

@@ -3,7 +3,27 @@
 const std = @import("std");
 const iup = @import("iup.zig");
 
-usingnamespace iup;
+const MainLoop = iup.MainLoop;
+const Dialog = iup.Dialog;
+const Button = iup.Button;
+const MessageDlg = iup.MessageDlg;
+const Multiline = iup.Multiline;
+const Label = iup.Label;
+const Text = iup.Text;
+const VBox = iup.VBox;
+const HBox = iup.HBox;
+const Menu = iup.Menu;
+const SubMenu = iup.SubMenu;
+const Separator = iup.Separator;
+const Fill = iup.Fill;
+const Item = iup.Item;
+const FileDlg = iup.FileDlg;
+const Toggle = iup.Toggle;
+const Tabs = iup.Tabs;
+const ScreenSize = iup.ScreenSize;
+const Image = iup.Image;
+const ImageRgb = iup.ImageRgb;
+const ImageRgba = iup.ImageRgba;
 
 pub fn main() !void {
     try MainLoop.open();

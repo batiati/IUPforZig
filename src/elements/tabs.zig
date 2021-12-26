@@ -36,8 +36,6 @@ pub const Tabs = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     /// 
     /// FOCUS_CB: Called when a child of the container gets or looses the focus.
     /// It is called only if PROPAGATEFOCUS is defined in the child.
@@ -91,8 +89,6 @@ pub const Tabs = opaque {
     /// Returns: IUP_CLOSE will be processed.
     /// Affects All elements with user interaction.
     pub const OnHelpFn = fn (self: *Self) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
     /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
@@ -336,12 +332,6 @@ pub const Tabs = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -351,6 +341,12 @@ pub const Tabs = opaque {
         pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
+            return self.*;
+        }
+
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
 
@@ -410,18 +406,6 @@ pub const Tabs = opaque {
             } else {
                 interop.clearAttribute(self.ref, "ZORDER", .{});
             }
-            return self.*;
-        }
-
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
             return self.*;
         }
 
@@ -499,6 +483,12 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
+            return self.*;
+        }
+
         pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
@@ -546,12 +536,6 @@ pub const Tabs = opaque {
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -620,15 +604,29 @@ pub const Tabs = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
+            return self.*;
+        }
+
+        /// 
+        /// TABORIENTATION (non inheritable): Indicates the orientation of tab text,
+        /// which can be "HORIZONTAL" or "VERTICAL".
+        /// Default is "HORIZONTAL".
+        /// VERTICAL is supported only in GTK and in Windows.
+        /// In Windows, it can NOT be set, it is dependent on the TABTYPE attribute, if
+        /// TABTYPE=LEFT or TABTYPE=RIGHT then TABORIENTATION=VERTICAL, if TABTYPE=TOP
+        /// or TABTYPE=BOTTOM then TABORIENTATION=HORIZONTAL.
+        /// (GTK 2.6)
+        pub fn setTabOrientation(self: *Initializer, arg: ?TabOrientation) Initializer {
+            if (self.last_error) |_| return self.*;
+            if (arg) |value| switch (value) {
+                .Horizontal => interop.setStrAttribute(self.ref, "TABORIENTATION", .{}, "HORIZONTAL"),
+                .Vertical => interop.setStrAttribute(self.ref, "TABORIENTATION", .{}, "VERTICAL"),
+            } else {
+                interop.clearAttribute(self.ref, "TABORIENTATION", .{});
+            }
             return self.*;
         }
 
@@ -647,12 +645,6 @@ pub const Tabs = opaque {
         pub fn setValuePos(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "VALUEPOS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -750,12 +742,6 @@ pub const Tabs = opaque {
             return self.*;
         }
 
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
@@ -782,12 +768,6 @@ pub const Tabs = opaque {
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
@@ -857,12 +837,6 @@ pub const Tabs = opaque {
         /// Affects All elements with user interaction.
         pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
             const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1186,14 +1160,6 @@ pub const Tabs = opaque {
         interop.setRgb(self, "FGCOLOR", .{}, rgb);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -1208,6 +1174,14 @@ pub const Tabs = opaque {
 
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
     pub fn getMaxSize(self: *Self) Size {
@@ -1292,22 +1266,6 @@ pub const Tabs = opaque {
         } else {
             interop.clearAttribute(self, "ZORDER", .{});
         }
-    }
-
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
     }
 
     pub fn getX(self: *Self) i32 {
@@ -1446,6 +1404,14 @@ pub const Tabs = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
     pub fn getFontSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "FONTSIZE", .{});
     }
@@ -1524,14 +1490,6 @@ pub const Tabs = opaque {
     /// Default: the global attribute DLGBGCOLOR.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     /// 
@@ -1634,14 +1592,6 @@ pub const Tabs = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     pub fn getFontFace(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONTFACE", .{});
     }
@@ -1665,6 +1615,24 @@ pub const Tabs = opaque {
         if (std.ascii.eqlIgnoreCase("HORIZONTAL", ret)) return .Horizontal;
         if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
         return null;
+    }
+
+    /// 
+    /// TABORIENTATION (non inheritable): Indicates the orientation of tab text,
+    /// which can be "HORIZONTAL" or "VERTICAL".
+    /// Default is "HORIZONTAL".
+    /// VERTICAL is supported only in GTK and in Windows.
+    /// In Windows, it can NOT be set, it is dependent on the TABTYPE attribute, if
+    /// TABTYPE=LEFT or TABTYPE=RIGHT then TABORIENTATION=VERTICAL, if TABTYPE=TOP
+    /// or TABTYPE=BOTTOM then TABORIENTATION=HORIZONTAL.
+    /// (GTK 2.6)
+    pub fn setTabOrientation(self: *Self, arg: ?TabOrientation) void {
+        if (arg) |value| switch (value) {
+            .Horizontal => interop.setStrAttribute(self, "TABORIENTATION", .{}, "HORIZONTAL"),
+            .Vertical => interop.setStrAttribute(self, "TABORIENTATION", .{}, "VERTICAL"),
+        } else {
+            interop.clearAttribute(self, "TABORIENTATION", .{});
+        }
     }
 
     pub fn getName(self: *Self) [:0]const u8 {
@@ -1693,14 +1661,6 @@ pub const Tabs = opaque {
     /// (since 3.0)
     pub fn setValuePos(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "VALUEPOS", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
     /// 
@@ -1858,14 +1818,6 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
-    }
-
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1914,11 +1866,6 @@ pub const Tabs = opaque {
 
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONT", .{}, arg);
-    }
-
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
     }
 
     /// 
@@ -1984,11 +1931,6 @@ pub const Tabs = opaque {
     /// Affects All elements with user interaction.
     pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
         const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -2158,18 +2100,6 @@ test "Tabs FgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Tabs TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tabs.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Tabs HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2192,6 +2122,18 @@ test "Tabs TipBgColor" {
     var ret = item.getTipBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
+}
+
+test "Tabs TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tabs.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Tabs MaxSize" {
@@ -2326,6 +2268,18 @@ test "Tabs Size" {
     try std.testing.expect(ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10);
 }
 
+test "Tabs TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tabs.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "Tabs FontSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2398,18 +2352,6 @@ test "Tabs BgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Tabs TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tabs.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
 test "Tabs ChildSizeAll" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2470,18 +2412,6 @@ test "Tabs TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Tabs ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tabs.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "Tabs FontFace" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -2492,6 +2422,18 @@ test "Tabs FontFace" {
     var ret = item.getFontFace();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
+test "Tabs TabOrientation" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Tabs.init().setTabOrientation(.Horizontal).unwrap());
+    defer item.deinit();
+
+    var ret = item.getTabOrientation();
+
+    try std.testing.expect(ret != null and ret.? == .Horizontal);
 }
 
 test "Tabs Name" {
@@ -2516,18 +2458,6 @@ test "Tabs ValuePos" {
     var ret = item.getValuePos();
 
     try std.testing.expect(ret == 42);
-}
-
-test "Tabs TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tabs.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Tabs Value" {
@@ -2624,18 +2554,6 @@ test "Tabs FontStyle" {
     var ret = item.getFontStyle();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Tabs Touch" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Tabs.init().setTouch(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Tabs TabTitle" {

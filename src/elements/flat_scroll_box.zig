@@ -33,8 +33,6 @@ pub const FlatScrollBox = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Canvas;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     /// 
     /// SCROLL_CB SCROLL_CB Called when some manipulation is made to the scrollbar.
     /// The canvas is automatically redrawn only if this callback is NOT defined.
@@ -150,8 +148,6 @@ pub const FlatScrollBox = opaque {
     /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
     /// IupToggle
     pub const OnActionFn = fn (self: *Self, arg0: f32, arg1: f32) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
@@ -480,12 +476,6 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -517,6 +507,12 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
+            return self.*;
+        }
+
         pub fn setSbImageBottomPress(self: *Initializer, arg: anytype) Initializer {
             if (self.last_error) |_| return self.*;
             if (interop.validateHandle(.Image, arg)) {
@@ -544,12 +540,6 @@ pub const FlatScrollBox = opaque {
         pub fn setDrawTextWrap(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawUsedIRect2d(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "DRAWUSEDIRECT2D", .{}, arg);
             return self.*;
         }
 
@@ -672,27 +662,9 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
         pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDrawAntialias(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "DRAWANTIALIAS", .{}, arg);
             return self.*;
         }
 
@@ -715,28 +687,6 @@ pub const FlatScrollBox = opaque {
         pub fn setSbImageLeftPressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "SB_IMAGELEFTPRESS", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHtTransparent(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "HTTRANSPARENT", .{}, arg);
             return self.*;
         }
 
@@ -857,6 +807,12 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
+            return self.*;
+        }
+
         pub fn setYMin(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
@@ -911,14 +867,6 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
-            return self.*;
-        }
-
         pub fn setSbImageRightInactive(self: *Initializer, arg: anytype) Initializer {
             if (self.last_error) |_| return self.*;
             if (interop.validateHandle(.Image, arg)) {
@@ -952,12 +900,6 @@ pub const FlatScrollBox = opaque {
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -1068,12 +1010,6 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
         pub fn setSbImageLeft(self: *Initializer, arg: anytype) Initializer {
             if (self.last_error) |_| return self.*;
             if (interop.validateHandle(.Image, arg)) {
@@ -1142,12 +1078,6 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setDrawStyle(self: *Initializer, arg: ?DrawStyle) Initializer {
             if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
@@ -1160,18 +1090,6 @@ pub const FlatScrollBox = opaque {
             } else {
                 interop.clearAttribute(self.ref, "DRAWSTYLE", .{});
             }
-            return self.*;
-        }
-
-        pub fn setHwnd(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HWND", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHwndHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HWND", .{}, arg);
             return self.*;
         }
 
@@ -1342,22 +1260,6 @@ pub const FlatScrollBox = opaque {
             return self.*;
         }
 
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            return self.*;
-        }
-
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
@@ -1431,12 +1333,6 @@ pub const FlatScrollBox = opaque {
         pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
@@ -1592,12 +1488,6 @@ pub const FlatScrollBox = opaque {
         /// IupToggle
         pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -2019,14 +1909,6 @@ pub const FlatScrollBox = opaque {
         Impl(Self).refresh(self);
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -2073,6 +1955,14 @@ pub const FlatScrollBox = opaque {
         interop.setIntAttribute(self, "XMIN", .{}, arg);
     }
 
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
+    }
+
     pub fn getSbImageBottomPress(self: *Self) ?iup.Element {
         if (interop.getHandleAttribute(self, "SB_IMAGEBOTTOMPRESS", .{})) |handle| {
             return iup.Element.fromHandle(handle);
@@ -2107,14 +1997,6 @@ pub const FlatScrollBox = opaque {
 
     pub fn setDrawTextWrap(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DRAWTEXTWRAP", .{}, arg);
-    }
-
-    pub fn getDrawUsedIRect2d(self: *Self) bool {
-        return interop.getBoolAttribute(self, "DRAWUSEDIRECT2D", .{});
-    }
-
-    pub fn setDrawUsedIRect2d(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "DRAWUSEDIRECT2D", .{}, arg);
     }
 
     pub fn getScreenPosition(self: *Self) iup.XYPos {
@@ -2271,22 +2153,6 @@ pub const FlatScrollBox = opaque {
         interop.setIntAttribute(self, "DRAWLINEWIDTH", .{}, arg);
     }
 
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
-    }
-
     pub fn getX(self: *Self) i32 {
         return interop.getIntAttribute(self, "X", .{});
     }
@@ -2301,14 +2167,6 @@ pub const FlatScrollBox = opaque {
 
     pub fn setDragDrop(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DRAGDROP", .{}, arg);
-    }
-
-    pub fn getDrawAntialias(self: *Self) i32 {
-        return interop.getIntAttribute(self, "DRAWANTIALIAS", .{});
-    }
-
-    pub fn setDrawAntialias(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "DRAWANTIALIAS", .{}, arg);
     }
 
     pub fn getTheme(self: *Self) [:0]const u8 {
@@ -2334,31 +2192,6 @@ pub const FlatScrollBox = opaque {
 
     pub fn setSbImageLeftPressHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "SB_IMAGELEFTPRESS", .{}, arg);
-    }
-
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn getHtTransparent(self: *Self) bool {
-        return interop.getBoolAttribute(self, "HTTRANSPARENT", .{});
-    }
-
-    pub fn setHtTransparent(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "HTTRANSPARENT", .{}, arg);
     }
 
     pub fn getSbImageRightHighlight(self: *Self) ?iup.Element {
@@ -2510,6 +2343,14 @@ pub const FlatScrollBox = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
+    }
+
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
+    }
+
     pub fn getYMin(self: *Self) i32 {
         return interop.getIntAttribute(self, "YMIN", .{});
     }
@@ -2592,17 +2433,6 @@ pub const FlatScrollBox = opaque {
         return interop.getBoolAttribute(self, "SCROLLBAR", .{});
     }
 
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
-    }
-
     pub fn getXHidden(self: *Self) bool {
         return interop.getBoolAttribute(self, "XHIDDEN", .{});
     }
@@ -2654,14 +2484,6 @@ pub const FlatScrollBox = opaque {
     /// BGCOLOR: will always use the background color of the native parent.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getDropTarget(self: *Self) bool {
@@ -2807,14 +2629,6 @@ pub const FlatScrollBox = opaque {
         return interop.getBoolAttribute(self, "YHIDDEN", .{});
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     pub fn getSbImageLeft(self: *Self) ?iup.Element {
         if (interop.getHandleAttribute(self, "SB_IMAGELEFT", .{})) |handle| {
             return iup.Element.fromHandle(handle);
@@ -2906,14 +2720,6 @@ pub const FlatScrollBox = opaque {
         return interop.getStrAttribute(self, "DRAWDRIVER", .{});
     }
 
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
-    }
-
     pub fn getYAutoHide(self: *Self) bool {
         return interop.getBoolAttribute(self, "YAUTOHIDE", .{});
     }
@@ -2941,22 +2747,6 @@ pub const FlatScrollBox = opaque {
         } else {
             interop.clearAttribute(self, "DRAWSTYLE", .{});
         }
-    }
-
-    pub fn getHwnd(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HWND", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHwnd(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HWND", .{}, arg);
-    }
-
-    pub fn setHwndHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HWND", .{}, arg);
     }
 
     pub fn getSbImageLeftHighlight(self: *Self) ?iup.Element {
@@ -3175,23 +2965,6 @@ pub const FlatScrollBox = opaque {
         interop.setStrAttribute(self, "SB_IMAGETOPPRESS", .{}, arg);
     }
 
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
@@ -3307,11 +3080,6 @@ pub const FlatScrollBox = opaque {
     /// Works only if set before the child is added to the tabs.
     pub fn setTabTitle(self: *Self, index: i32, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
-    }
-
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
     }
 
     /// 
@@ -3457,11 +3225,6 @@ pub const FlatScrollBox = opaque {
     /// IupToggle
     pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
         const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -3748,18 +3511,6 @@ pub const FlatScrollBox = opaque {
     }
 };
 
-test "FlatScrollBox TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatScrollBox.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "FlatScrollBox HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3808,6 +3559,18 @@ test "FlatScrollBox XMin" {
     try std.testing.expect(ret == 42);
 }
 
+test "FlatScrollBox TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatScrollBox.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "FlatScrollBox MaxSize" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3828,18 +3591,6 @@ test "FlatScrollBox DrawTextWrap" {
     defer item.deinit();
 
     var ret = item.getDrawTextWrap();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatScrollBox DrawUsedIRect2d" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatScrollBox.init().setDrawUsedIRect2d(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawUsedIRect2d();
 
     try std.testing.expect(ret == true);
 }
@@ -3988,18 +3739,6 @@ test "FlatScrollBox DragDrop" {
     try std.testing.expect(ret == true);
 }
 
-test "FlatScrollBox DrawAntialias" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatScrollBox.init().setDrawAntialias(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDrawAntialias();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "FlatScrollBox Theme" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4010,18 +3749,6 @@ test "FlatScrollBox Theme" {
     var ret = item.getTheme();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "FlatScrollBox HtTransparent" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatScrollBox.init().setHtTransparent(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getHtTransparent();
-
-    try std.testing.expect(ret == true);
 }
 
 test "FlatScrollBox ChildOffset" {
@@ -4096,6 +3823,18 @@ test "FlatScrollBox PosY" {
     try std.testing.expect(ret == @as(f64, 3.14));
 }
 
+test "FlatScrollBox TipMarkup" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.FlatScrollBox.init().setTipMarkup("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipMarkup();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "FlatScrollBox YMin" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4168,18 +3907,6 @@ test "FlatScrollBox TipDelay" {
     try std.testing.expect(ret == 42);
 }
 
-test "FlatScrollBox DragStart" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatScrollBox.init().setDragStart(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragStart();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
 test "FlatScrollBox PropagateFocus" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4214,18 +3941,6 @@ test "FlatScrollBox BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "FlatScrollBox TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatScrollBox.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "FlatScrollBox DropTarget" {
@@ -4360,18 +4075,6 @@ test "FlatScrollBox TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "FlatScrollBox ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatScrollBox.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
 test "FlatScrollBox FontFace" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4440,18 +4143,6 @@ test "FlatScrollBox BackingStore" {
     defer item.deinit();
 
     var ret = item.getBackingStore();
-
-    try std.testing.expect(ret == true);
-}
-
-test "FlatScrollBox TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.FlatScrollBox.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
 
     try std.testing.expect(ret == true);
 }

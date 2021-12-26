@@ -31,8 +31,6 @@ pub const Text = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    pub const OnTouchFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
-
     /// 
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
@@ -89,8 +87,6 @@ pub const Text = opaque {
     /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
     /// IupToggle
     pub const OnActionFn = fn (self: *Self, arg0: i32, arg1: [:0]const u8) anyerror!void;
-
-    pub const OnMultiTouchFn = fn (self: *Self, arg0: i32, arg1: *i32, arg2: *i32, arg3: *i32) anyerror!void;
 
     /// 
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
@@ -317,20 +313,10 @@ pub const Text = opaque {
         No,
     };
 
-    pub const LoadRtfStatus = enum {
-        Ok,
-        Failed,
-    };
-
     pub const Floating = enum {
         Yes,
         Ignore,
         No,
-    };
-
-    pub const SaveRtfStatus = enum {
-        Ok,
-        Failed,
     };
 
     pub const SpinAlign = enum {
@@ -443,12 +429,6 @@ pub const Text = opaque {
             return self.*;
         }
 
-        pub fn setTipBalloon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOON", .{}, arg);
-            return self.*;
-        }
-
         pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
@@ -500,6 +480,12 @@ pub const Text = opaque {
             return self.*;
         }
 
+        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
+            return self.*;
+        }
+
         /// 
         /// OVERWRITE [Windows and GTK Only] (non inheritable): turns the overwrite
         /// mode ON or OFF.
@@ -529,17 +515,6 @@ pub const Text = opaque {
             return self.*;
         }
 
-        /// 
-        /// NOHIDESEL [Windows Only]: do not hide the selection when the control loses
-        /// its focus.
-        /// Default: Yes.
-        /// (since 3.16)
-        pub fn setNoHideSel(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "NOHIDESEL", .{}, arg);
-            return self.*;
-        }
-
         pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
             var buffer: [128]u8 = undefined;
@@ -559,17 +534,6 @@ pub const Text = opaque {
         pub fn setAppendNewLine(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "APPENDNEWLINE", .{}, arg);
-            return self.*;
-        }
-
-        /// 
-        /// LOADRTF (write-only) [Windows Only]: loads formatted text from a Rich Text
-        /// Format file given its filename.
-        /// The attribute LOADRTFSTATUS is set to OK or FAILED after the file is loaded.
-        /// (since 3.28)
-        pub fn loadRtf(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "LOADRTF", .{}, arg);
             return self.*;
         }
 
@@ -633,17 +597,6 @@ pub const Text = opaque {
             return self.*;
         }
 
-        /// 
-        /// SAVERTF (write-only) [Windows Only]: saves formatted text to a Rich Text
-        /// Format file given its filename.
-        /// The attribute SAVERTFSTATUS is set to OK or FAILED after the file is saved.
-        /// (since 3.28)
-        pub fn saveRtf(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "SAVERTF", .{}, arg);
-            return self.*;
-        }
-
         pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
             if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
@@ -652,18 +605,6 @@ pub const Text = opaque {
             } else {
                 interop.clearAttribute(self.ref, "ZORDER", .{});
             }
-            return self.*;
-        }
-
-        pub fn setHFont(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setHandleAttribute(self.ref, "HFONT", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setHFontHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HFONT", .{}, arg);
             return self.*;
         }
 
@@ -687,22 +628,6 @@ pub const Text = opaque {
             } else {
                 interop.clearAttribute(self.ref, "MASKREAL", .{});
             }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopy(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorCopyHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSORCOPY", .{}, arg);
             return self.*;
         }
 
@@ -766,14 +691,9 @@ pub const Text = opaque {
             return self.*;
         }
 
-        pub fn setLoadRtfStatus(self: *Initializer, arg: ?LoadRtfStatus) Initializer {
+        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Ok => interop.setStrAttribute(self.ref, "LOADRTFSTATUS", .{}, "OK"),
-                .Failed => interop.setStrAttribute(self.ref, "LOADRTFSTATUS", .{}, "FAILED"),
-            } else {
-                interop.clearAttribute(self.ref, "LOADRTFSTATUS", .{});
-            }
+            interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
             return self.*;
         }
 
@@ -820,14 +740,6 @@ pub const Text = opaque {
             return self.*;
         }
 
-        pub fn setDragStart(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            var buffer: [128]u8 = undefined;
-            var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-            interop.setStrAttribute(self.ref, "DRAGSTART", .{}, value);
-            return self.*;
-        }
-
         /// 
         /// TABSIZE [Windows and GTK Only]: Valid only when MULTILINE=YES.
         /// Controls the number of characters for a tab stop.
@@ -856,12 +768,6 @@ pub const Text = opaque {
         pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "TIPBALLOONTITLE", .{}, arg);
             return self.*;
         }
 
@@ -957,23 +863,6 @@ pub const Text = opaque {
             return self.*;
         }
 
-        pub fn setControlId(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CONTROLID", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setSaveRtfStatus(self: *Initializer, arg: ?SaveRtfStatus) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (arg) |value| switch (value) {
-                .Ok => interop.setStrAttribute(self.ref, "SAVERTFSTATUS", .{}, "OK"),
-                .Failed => interop.setStrAttribute(self.ref, "SAVERTFSTATUS", .{}, "FAILED"),
-            } else {
-                interop.clearAttribute(self.ref, "SAVERTFSTATUS", .{});
-            }
-            return self.*;
-        }
-
         pub fn setSpinWrap(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "SPINWRAP", .{}, arg);
@@ -1053,12 +942,6 @@ pub const Text = opaque {
         pub fn setMaskCasei(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setBoolAttribute(self.ref, "MASKCASEI", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTipBalloonTitleIcon(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TIPBALLOONTITLEICON", .{}, arg);
             return self.*;
         }
 
@@ -1280,18 +1163,6 @@ pub const Text = opaque {
             return self.*;
         }
 
-        pub fn autoRedraw(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "AUTOREDRAW", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
-        }
-
         /// 
         /// CLIPBOARD (write-only): clear, cut, copy or paste the selection to or from
         /// the clipboard.
@@ -1345,22 +1216,6 @@ pub const Text = opaque {
         pub fn append(self: *Initializer, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "APPEND", .{}, arg);
-            return self.*;
-        }
-
-        pub fn setDragCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
-            if (interop.validateHandle(.Image, arg)) {
-                interop.setHandleAttribute(self.ref, "DRAGCURSOR", .{}, arg);
-            } else |err| {
-                self.last_error = err;
-            }
-            return self.*;
-        }
-
-        pub fn setDragCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "DRAGCURSOR", .{}, arg);
             return self.*;
         }
 
@@ -1425,12 +1280,6 @@ pub const Text = opaque {
         pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
             if (self.last_error) |_| return self.*;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
-        }
-
-        pub fn setTouchCallback(self: *Initializer, callback: ?OnTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-            Handler.setCallback(self.ref, callback);
             return self.*;
         }
 
@@ -1511,12 +1360,6 @@ pub const Text = opaque {
         /// IupToggle
         pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-            Handler.setCallback(self.ref, callback);
-            return self.*;
-        }
-
-        pub fn setMultiTouchCallback(self: *Initializer, callback: ?OnMultiTouchFn) Initializer {
-            const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -1946,14 +1789,6 @@ pub const Text = opaque {
         return interop.getIntAttribute(self, "COUNT", .{});
     }
 
-    pub fn getTipBalloon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOON", .{});
-    }
-
-    pub fn setTipBalloon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOON", .{}, arg);
-    }
-
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }
@@ -1995,6 +1830,14 @@ pub const Text = opaque {
 
     pub fn setMaskDecimalSymbol(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "MASKDECIMALSYMBOL", .{}, arg);
+    }
+
+    pub fn getTipIcon(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPICON", .{});
+    }
+
+    pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
     /// 
@@ -2039,24 +1882,6 @@ pub const Text = opaque {
         interop.setIntAttribute(self, "SPININC", .{}, arg);
     }
 
-    /// 
-    /// NOHIDESEL [Windows Only]: do not hide the selection when the control loses
-    /// its focus.
-    /// Default: Yes.
-    /// (since 3.16)
-    pub fn getNoHideSel(self: *Self) bool {
-        return interop.getBoolAttribute(self, "NOHIDESEL", .{});
-    }
-
-    /// 
-    /// NOHIDESEL [Windows Only]: do not hide the selection when the control loses
-    /// its focus.
-    /// Default: Yes.
-    /// (since 3.16)
-    pub fn setNoHideSel(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "NOHIDESEL", .{}, arg);
-    }
-
     pub fn getMaxSize(self: *Self) Size {
         var str = interop.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
@@ -2090,15 +1915,6 @@ pub const Text = opaque {
 
     pub fn setAppendNewLine(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "APPENDNEWLINE", .{}, arg);
-    }
-
-    /// 
-    /// LOADRTF (write-only) [Windows Only]: loads formatted text from a Rich Text
-    /// Format file given its filename.
-    /// The attribute LOADRTFSTATUS is set to OK or FAILED after the file is loaded.
-    /// (since 3.28)
-    pub fn loadRtf(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "LOADRTF", .{}, arg);
     }
 
     /// 
@@ -2173,15 +1989,6 @@ pub const Text = opaque {
         interop.setIntAttribute(self, "NC", .{}, arg);
     }
 
-    /// 
-    /// SAVERTF (write-only) [Windows Only]: saves formatted text to a Rich Text
-    /// Format file given its filename.
-    /// The attribute SAVERTFSTATUS is set to OK or FAILED after the file is saved.
-    /// (since 3.28)
-    pub fn saveRtf(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "SAVERTF", .{}, arg);
-    }
-
     pub fn zOrder(self: *Self, arg: ?ZOrder) void {
         if (arg) |value| switch (value) {
             .Top => interop.setStrAttribute(self, "ZORDER", .{}, "TOP"),
@@ -2189,22 +1996,6 @@ pub const Text = opaque {
         } else {
             interop.clearAttribute(self, "ZORDER", .{});
         }
-    }
-
-    pub fn getHFont(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "HFONT", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setHFont(self: *Self, arg: anytype) !void {
-        interop.setHandleAttribute(self, "HFONT", .{}, arg);
-    }
-
-    pub fn setHFontHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HFONT", .{}, arg);
     }
 
     pub fn getX(self: *Self) i32 {
@@ -2246,23 +2037,6 @@ pub const Text = opaque {
         } else {
             interop.clearAttribute(self, "MASKREAL", .{});
         }
-    }
-
-    pub fn getDragCursorCopy(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSORCOPY", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursorCopy(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSORCOPY", .{}, arg);
-    }
-
-    pub fn setDragCursorCopyHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSORCOPY", .{}, arg);
     }
 
     /// 
@@ -2375,21 +2149,12 @@ pub const Text = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
-    pub fn getLoadRtfStatus(self: *Self) ?LoadRtfStatus {
-        var ret = interop.getStrAttribute(self, "LOADRTFSTATUS", .{});
-
-        if (std.ascii.eqlIgnoreCase("OK", ret)) return .Ok;
-        if (std.ascii.eqlIgnoreCase("FAILED", ret)) return .Failed;
-        return null;
+    pub fn getTipMarkup(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "TIPMARKUP", .{});
     }
 
-    pub fn setLoadRtfStatus(self: *Self, arg: ?LoadRtfStatus) void {
-        if (arg) |value| switch (value) {
-            .Ok => interop.setStrAttribute(self, "LOADRTFSTATUS", .{}, "OK"),
-            .Failed => interop.setStrAttribute(self, "LOADRTFSTATUS", .{}, "FAILED"),
-        } else {
-            interop.clearAttribute(self, "LOADRTFSTATUS", .{});
-        }
+    pub fn setTipMarkup(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
     pub fn getFontSize(self: *Self) i32 {
@@ -2430,17 +2195,6 @@ pub const Text = opaque {
 
     pub fn setTipDelay(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
-    }
-
-    pub fn getDragStart(self: *Self) iup.XYPos {
-        var str = interop.getStrAttribute(self, "DRAGSTART", .{});
-        return iup.XYPos.parse(str, ',');
-    }
-
-    pub fn setDragStart(self: *Self, x: i32, y: i32) void {
-        var buffer: [128]u8 = undefined;
-        var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-        interop.setStrAttribute(self, "DRAGSTART", .{}, value);
     }
 
     /// 
@@ -2491,14 +2245,6 @@ pub const Text = opaque {
     /// Ignored in GTK when MULTILINE=NO.
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
-    }
-
-    pub fn getTipBalloonTitle(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "TIPBALLOONTITLE", .{});
-    }
-
-    pub fn setTipBalloonTitle(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "TIPBALLOONTITLE", .{}, arg);
     }
 
     pub fn getDropTarget(self: *Self) bool {
@@ -2613,37 +2359,12 @@ pub const Text = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-    pub fn getControlId(self: *Self) i32 {
-        return interop.getIntAttribute(self, "CONTROLID", .{});
-    }
-
-    pub fn setControlId(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CONTROLID", .{}, arg);
-    }
-
     /// 
     /// LINECOUNT (read-only): returns the number of lines in the text.
     /// When MULTILINE=NO returns always "1".
     /// (since 3.5)
     pub fn getLineCount(self: *Self) i32 {
         return interop.getIntAttribute(self, "LINECOUNT", .{});
-    }
-
-    pub fn getSaveRtfStatus(self: *Self) ?SaveRtfStatus {
-        var ret = interop.getStrAttribute(self, "SAVERTFSTATUS", .{});
-
-        if (std.ascii.eqlIgnoreCase("OK", ret)) return .Ok;
-        if (std.ascii.eqlIgnoreCase("FAILED", ret)) return .Failed;
-        return null;
-    }
-
-    pub fn setSaveRtfStatus(self: *Self, arg: ?SaveRtfStatus) void {
-        if (arg) |value| switch (value) {
-            .Ok => interop.setStrAttribute(self, "SAVERTFSTATUS", .{}, "OK"),
-            .Failed => interop.setStrAttribute(self, "SAVERTFSTATUS", .{}, "FAILED"),
-        } else {
-            interop.clearAttribute(self, "SAVERTFSTATUS", .{});
-        }
     }
 
     pub fn getSpinWrap(self: *Self) bool {
@@ -2726,14 +2447,6 @@ pub const Text = opaque {
 
     pub fn setMaskCasei(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "MASKCASEI", .{}, arg);
-    }
-
-    pub fn getTipBalloonTitleIcon(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TIPBALLOONTITLEICON", .{});
-    }
-
-    pub fn setTipBalloonTitleIcon(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TIPBALLOONTITLEICON", .{}, arg);
     }
 
     /// 
@@ -3029,18 +2742,6 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-    pub fn autoRedraw(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "AUTOREDRAW", .{}, arg);
-    }
-
-    pub fn getTouch(self: *Self) bool {
-        return interop.getBoolAttribute(self, "TOUCH", .{});
-    }
-
-    pub fn setTouch(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "TOUCH", .{}, arg);
-    }
-
     /// 
     /// CLIPBOARD (write-only): clear, cut, copy or paste the selection to or from
     /// the clipboard.
@@ -3115,23 +2816,6 @@ pub const Text = opaque {
     /// Ignored if set before map.
     pub fn append(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "APPEND", .{}, arg);
-    }
-
-    pub fn getDragCursor(self: *Self) ?iup.Element {
-        if (interop.getHandleAttribute(self, "DRAGCURSOR", .{})) |handle| {
-            return iup.Element.fromHandle(handle);
-        } else {
-            return null;
-        }
-    }
-
-    pub fn setDragCursor(self: *Self, arg: anytype) !void {
-        try interop.validateHandle(.Image, arg);
-        interop.setHandleAttribute(self, "DRAGCURSOR", .{}, arg);
-    }
-
-    pub fn setDragCursorHandleName(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "DRAGCURSOR", .{}, arg);
     }
 
     pub fn getMaskNoEmpty(self: *Self) bool {
@@ -3235,11 +2919,6 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setTouchCallback(self: *Self, callback: ?OnTouchFn) void {
-        const Handler = CallbackHandler(Self, OnTouchFn, "TOUCH_CB");
-        Handler.setCallback(self, callback);
-    }
-
     /// 
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
@@ -3312,11 +2991,6 @@ pub const Text = opaque {
     /// IupToggle
     pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
         const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
-        Handler.setCallback(self, callback);
-    }
-
-    pub fn setMultiTouchCallback(self: *Self, callback: ?OnMultiTouchFn) void {
-        const Handler = CallbackHandler(Self, OnMultiTouchFn, "MULTITOUCH_CB");
         Handler.setCallback(self, callback);
     }
 
@@ -3593,18 +3267,6 @@ test "Text FgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Text TipBalloon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Text.init().setTipBalloon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloon();
-
-    try std.testing.expect(ret == true);
-}
-
 test "Text HandleName" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3653,6 +3315,18 @@ test "Text MaskDecimalSymbol" {
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
+test "Text TipIcon" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Text.init().setTipIcon("Hello").unwrap());
+    defer item.deinit();
+
+    var ret = item.getTipIcon();
+
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+}
+
 test "Text Overwrite" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3675,18 +3349,6 @@ test "Text SpinInc" {
     var ret = item.getSpinInc();
 
     try std.testing.expect(ret == 42);
-}
-
-test "Text NoHideSel" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Text.init().setNoHideSel(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getNoHideSel();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Text MaxSize" {
@@ -3893,16 +3555,16 @@ test "Text SpinMin" {
     try std.testing.expect(ret == 42);
 }
 
-test "Text LoadRtfStatus" {
+test "Text TipMarkup" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Text.init().setLoadRtfStatus(.Ok).unwrap());
+    var item = try (iup.Text.init().setTipMarkup("Hello").unwrap());
     defer item.deinit();
 
-    var ret = item.getLoadRtfStatus();
+    var ret = item.getTipMarkup();
 
-    try std.testing.expect(ret != null and ret.? == .Ok);
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Text FontSize" {
@@ -3953,18 +3615,6 @@ test "Text TipDelay" {
     try std.testing.expect(ret == 42);
 }
 
-test "Text DragStart" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Text.init().setDragStart(9, 10).unwrap());
-    defer item.deinit();
-
-    var ret = item.getDragStart();
-
-    try std.testing.expect(ret.x == 9 and ret.y == 10);
-}
-
 test "Text TabsIZe" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -3999,18 +3649,6 @@ test "Text BgColor" {
     var ret = item.getBgColor();
 
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
-}
-
-test "Text TipBalloonTitle" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Text.init().setTipBalloonTitle("Hello").unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitle();
-
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "Text DropTarget" {
@@ -4097,30 +3735,6 @@ test "Text TipFgColor" {
     try std.testing.expect(ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11);
 }
 
-test "Text ControlId" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Text.init().setControlId(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getControlId();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "Text SaveRtfStatus" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Text.init().setSaveRtfStatus(.Ok).unwrap());
-    defer item.deinit();
-
-    var ret = item.getSaveRtfStatus();
-
-    try std.testing.expect(ret != null and ret.? == .Ok);
-}
-
 test "Text SpinWrap" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
@@ -4201,18 +3815,6 @@ test "Text MaskCasei" {
     defer item.deinit();
 
     var ret = item.getMaskCasei();
-
-    try std.testing.expect(ret == true);
-}
-
-test "Text TipBalloonTitleIcon" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Text.init().setTipBalloonTitleIcon(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTipBalloonTitleIcon();
 
     try std.testing.expect(ret == true);
 }
@@ -4443,18 +4045,6 @@ test "Text FontStyle" {
     var ret = item.getFontStyle();
 
     try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
-}
-
-test "Text Touch" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.Text.init().setTouch(true).unwrap());
-    defer item.deinit();
-
-    var ret = item.getTouch();
-
-    try std.testing.expect(ret == true);
 }
 
 test "Text Clipboard" {
