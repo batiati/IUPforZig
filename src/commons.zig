@@ -93,7 +93,7 @@ pub const DialogSize = struct {
     height: ?ScreenSize,
 
     pub fn parse(value: []const u8) DialogSize {
-        var iterator = std.mem.split(value, "x");
+        var iterator = std.mem.split(u8, value, "x");
 
         var ret = DialogSize{
             .width = null,
@@ -479,7 +479,7 @@ pub const Date = struct {
         var month: ?u16 = null;
         var day: ?u16 = null;
 
-        var iterator = std.mem.split(value, "/");
+        var iterator = std.mem.split(u8, value, "/");
 
         for ([3]*?u16{ &year, &month, &day }) |ref| {
             if (iterator.next()) |part| {
