@@ -1,3 +1,6 @@
+/// Counter
+/// Challenge: Understanding the basic ideas of a language/toolkit.
+/// https://eugenkiss.github.io/7guis/tasks
 const std = @import("std");
 const iup = @import("iup");
 const Allocator = std.mem.Allocator;
@@ -50,6 +53,7 @@ const Counter = struct {
 
     fn createDialog(self: *Self) !void {
         self.dialog = try iup.Dialog.init()
+            .setPtrAttribute(Self, "parent", self)
             .setTitle("Counter")
             .setSize(iup.ScreenSize{ .Size = 120 }, iup.ScreenSize{ .Size = 40 })
             .setChildren(
@@ -63,7 +67,6 @@ const Counter = struct {
                             .capture(&self.counter_text)
                             .setReadonly(true),
                         iup.Button.init()
-                            .setPtrAttribute(Self, "parent", self)
                             .setTitle("Count")
                             .setActionCallback(onCount),
                     },
@@ -73,7 +76,8 @@ const Counter = struct {
     }
 
     fn onCount(button: *iup.Button) !void {
-        var self = button.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
+        var dialog = button.getDialog() orelse unreachable;
+        var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
         self.counter += 1;
 
         try self.refreshCounter();

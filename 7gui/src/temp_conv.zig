@@ -51,6 +51,7 @@ const TempConv = struct {
 
     fn createDialog(self: *Self) !void {
         self.dialog = try iup.Dialog.init()
+            .setPtrAttribute(Self, "parent", self)
             .setTitle("TempConv")
             .setSize(iup.ScreenSize{ .Size = 220 }, iup.ScreenSize{ .Size = 40 })
             .setChildren(
@@ -63,14 +64,12 @@ const TempConv = struct {
                         iup.Text.init()
                             .setActionCallback(onCelsiusChanged)
                             .setMask(iup.masks.float)
-                            .setPtrAttribute(Self, "parent", self)
                             .capture(&self.celsius_text),
                         iup.Label.init()
                             .setTitle("Celsius = "),
                         iup.Text.init()
                             .setActionCallback(onFahrenheitChanged)
                             .setMask(iup.masks.float)
-                            .setPtrAttribute(Self, "parent", self)
                             .capture(&self.fahrenheit_text),
                         iup.Label.init()
                             .setTitle("Fahrenheit"),
@@ -81,7 +80,7 @@ const TempConv = struct {
     }
 
     fn convertToFahrenheit(self: *Self, celsius_str: [:0]const u8) !void {
-        std.debug.print("refreshing from celsius {s}", .{celsius_str});
+        std.log.debug("refreshing from celsius {s}", .{celsius_str});
 
         const celsius_value = std.fmt.parseFloat(f32, celsius_str) catch {
             self.fahrenheit_text.setValue("");
@@ -96,7 +95,7 @@ const TempConv = struct {
     }
 
     fn convertToCelsius(self: *Self, fahrenheit_str: [:0]const u8) !void {
-        std.debug.print("refreshing from fahrenheit {s}", .{fahrenheit_str});
+        std.log.debug("refreshing from fahrenheit {s}", .{fahrenheit_str});
 
         const fahrenheit_value = std.fmt.parseFloat(f32, fahrenheit_str) catch {
             self.celsius_text.setValue("");
@@ -112,13 +111,15 @@ const TempConv = struct {
 
     fn onFahrenheitChanged(text: *iup.Text, index: i32, value: [:0]const u8) !void {
         _ = index;
-        var self = text.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
+        var dialog = text.getDialog() orelse unreachable;
+        var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
         try self.convertToCelsius(value);
     }
 
     fn onCelsiusChanged(text: *iup.Text, index: i32, value: [:0]const u8) !void {
         _ = index;
-        var self = text.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
+        var dialog = text.getDialog() orelse unreachable;
+        var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
         try self.convertToFahrenheit(value);
     }
 };
