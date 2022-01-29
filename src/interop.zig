@@ -306,7 +306,7 @@ pub inline fn getPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]
     };
     if (ret == null) return null;
 
-    return @ptrCast(*T, ret);
+    return @ptrCast(*T, @alignCast(@alignOf(T),ret));
 }
 
 pub inline fn setPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: ?*T) void {
