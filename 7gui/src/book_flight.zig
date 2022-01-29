@@ -13,7 +13,7 @@ pub fn main() anyerror!void {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var book_flight = try BookFlight.init(gpa.allocator(), 0);
+    var book_flight = try BookFlight.init(gpa.allocator());
     defer book_flight.deinit();
 
     try book_flight.show();
@@ -28,7 +28,6 @@ const BookFlight = struct {
         ReturnFlight = 2,
     };
 
-    counter: usize,
     allocator: Allocator,
     dialog: *iup.Dialog = undefined,
     list: *iup.List = undefined,
@@ -36,11 +35,10 @@ const BookFlight = struct {
     final_date: *iup.DatePick = undefined,
     book_button: *iup.Button = undefined,
 
-    pub fn init(allocator: Allocator, counter: usize) !*Self {
+    pub fn init(allocator: Allocator) !*Self {
         var self = try allocator.create(Self);
 
         self.* = .{
-            .counter = counter,
             .allocator = allocator,
         };
 
