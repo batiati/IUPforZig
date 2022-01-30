@@ -62,7 +62,7 @@ pub const SBox = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -184,6 +184,7 @@ pub const SBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// BARSIZE (non inheritable): controls the size of the bar handler.
         /// Default: 5.
@@ -258,6 +259,7 @@ pub const SBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// LAYOUTDRAG (non inheritable): When the bar is moved automatically update
         /// the children layout.
@@ -269,6 +271,7 @@ pub const SBox = opaque {
             interop.setBoolAttribute(self.ref, "LAYOUTDRAG", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
@@ -284,6 +287,7 @@ pub const SBox = opaque {
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable): It will expand automatically only in the
@@ -317,6 +321,7 @@ pub const SBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// COLOR: Changes the color of the bar handler.
         /// Default: "160 160 160".
@@ -339,6 +344,7 @@ pub const SBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHOWGRIP (non inheritable): Shows the bar grip affordance.
         /// Default: NO.
@@ -357,6 +363,7 @@ pub const SBox = opaque {
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DIRECTION (creation only): Indicates the direction of the resize and the
@@ -393,6 +400,7 @@ pub const SBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -421,6 +429,7 @@ pub const SBox = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -543,6 +552,10 @@ pub const SBox = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -646,6 +659,7 @@ pub const SBox = opaque {
         interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
+
     /// 
     /// BARSIZE (non inheritable): controls the size of the bar handler.
     /// Default: 5.
@@ -653,6 +667,7 @@ pub const SBox = opaque {
     pub fn getBarSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "BARSIZE", .{});
     }
+
 
     /// 
     /// BARSIZE (non inheritable): controls the size of the bar handler.
@@ -763,6 +778,7 @@ pub const SBox = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// LAYOUTDRAG (non inheritable): When the bar is moved automatically update
     /// the children layout.
@@ -772,6 +788,7 @@ pub const SBox = opaque {
     pub fn getLayoutDrag(self: *Self) bool {
         return interop.getBoolAttribute(self, "LAYOUTDRAG", .{});
     }
+
 
     /// 
     /// LAYOUTDRAG (non inheritable): When the bar is moved automatically update
@@ -783,12 +800,14 @@ pub const SBox = opaque {
         interop.setBoolAttribute(self, "LAYOUTDRAG", .{}, arg);
     }
 
+
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
+
 
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
@@ -805,6 +824,7 @@ pub const SBox = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// EXPAND (non inheritable): It will expand automatically only in the
     /// direction opposite to the handler.
@@ -819,6 +839,7 @@ pub const SBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): It will expand automatically only in the
@@ -855,6 +876,7 @@ pub const SBox = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// COLOR: Changes the color of the bar handler.
     /// Default: "160 160 160".
@@ -862,6 +884,7 @@ pub const SBox = opaque {
     pub fn getColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "COLOR", .{});
     }
+
 
     /// 
     /// COLOR: Changes the color of the bar handler.
@@ -890,6 +913,7 @@ pub const SBox = opaque {
         }
     }
 
+
     /// 
     /// SHOWGRIP (non inheritable): Shows the bar grip affordance.
     /// Default: NO.
@@ -900,6 +924,7 @@ pub const SBox = opaque {
     pub fn getShowGrip(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOWGRIP", .{});
     }
+
 
     /// 
     /// SHOWGRIP (non inheritable): Shows the bar grip affordance.
@@ -919,6 +944,7 @@ pub const SBox = opaque {
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
+
 
     /// 
     /// WID (read-only): returns -1 if mapped.
@@ -953,6 +979,7 @@ pub const SBox = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -973,6 +1000,7 @@ pub const SBox = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -996,6 +1024,7 @@ pub const SBox = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1016,6 +1045,7 @@ pub const SBox = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
