@@ -67,7 +67,7 @@ pub const SubMenu = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -150,6 +150,7 @@ pub const SubMenu = opaque {
             return self.*;
         }
 
+
         /// 
         /// ACTIVE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
@@ -157,6 +158,7 @@ pub const SubMenu = opaque {
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TITLE (non inheritable): Submenu Text.
@@ -168,6 +170,7 @@ pub const SubMenu = opaque {
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the submenu image.
@@ -204,6 +207,7 @@ pub const SubMenu = opaque {
             return self.*;
         }
 
+
         /// 
         /// KEY (non inheritable): Underlines a key character in the submenu title.
         /// It is updated only when TITLE is updated.
@@ -226,6 +230,7 @@ pub const SubMenu = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
@@ -235,6 +240,7 @@ pub const SubMenu = opaque {
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -252,6 +258,7 @@ pub const SubMenu = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -281,6 +288,7 @@ pub const SubMenu = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -415,6 +423,10 @@ pub const SubMenu = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -491,17 +503,20 @@ pub const SubMenu = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// ACTIVE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
 
+
     /// 
     /// ACTIVE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
     }
+
 
     /// 
     /// TITLE (non inheritable): Submenu Text.
@@ -512,6 +527,7 @@ pub const SubMenu = opaque {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
 
+
     /// 
     /// TITLE (non inheritable): Submenu Text.
     /// The "&" character can be used to define a mnemonic, the next character will
@@ -520,6 +536,7 @@ pub const SubMenu = opaque {
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
+
 
     /// 
     /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the submenu image.
@@ -535,6 +552,7 @@ pub const SubMenu = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the submenu image.
@@ -568,6 +586,7 @@ pub const SubMenu = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// KEY (non inheritable): Underlines a key character in the submenu title.
     /// It is updated only when TITLE is updated.
@@ -575,6 +594,7 @@ pub const SubMenu = opaque {
     pub fn getKey(self: *Self) i32 {
         return interop.getIntAttribute(self, "KEY", .{});
     }
+
 
     /// 
     /// KEY (non inheritable): Underlines a key character in the submenu title.
@@ -600,12 +620,14 @@ pub const SubMenu = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// WID (non inheritable): In Windows, returns the HMENU of the parent menu and
     /// it is actually created only when its child menu is mapped.
     pub fn getWId(self: *Self) i32 {
         return interop.getIntAttribute(self, "WID", .{});
     }
+
 
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
@@ -615,6 +637,7 @@ pub const SubMenu = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -622,6 +645,7 @@ pub const SubMenu = opaque {
     pub fn setExpandWeight(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -637,6 +661,7 @@ pub const SubMenu = opaque {
         return null;
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -651,6 +676,7 @@ pub const SubMenu = opaque {
             interop.clearAttribute(self, "FLOATING", .{});
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -672,6 +698,7 @@ pub const SubMenu = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -695,6 +722,7 @@ pub const SubMenu = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -715,6 +743,7 @@ pub const SubMenu = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

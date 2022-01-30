@@ -140,7 +140,7 @@ pub const Dialog = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -156,7 +156,7 @@ pub const Dialog = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -259,7 +259,7 @@ pub const Dialog = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const ZOrder = enum {
         Top,
@@ -375,6 +375,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// MDICLIENT (creation only) [Windows Only] (non inheritable): Configure the
         /// canvas as a MDI client.
@@ -389,6 +390,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// CONTROL [Windows Only] (creation only): Embeds the dialog inside another window.
         pub fn setControl(self: *Initializer, arg: bool) Initializer {
@@ -402,6 +404,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MENU: Name of a menu.
@@ -427,6 +430,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
         /// The windowing system will not be able to change the size beyond this limit.
@@ -439,6 +443,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
@@ -455,6 +460,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// HELPBUTTON [Windows Only] (creation only): Inserts a help button in the
         /// same place of the maximize button.
@@ -470,6 +476,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHOWNOFOCUS: do not set focus after show.
         /// (since 3.30)
@@ -478,6 +485,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "SHOWNOFOCUS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
@@ -499,6 +507,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// COMPOSITED [Windows Only] (creation only): controls if the window will have
         /// an automatic double buffer for all children.
@@ -512,6 +521,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "COMPOSITED", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
@@ -542,6 +552,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// ICON: Dialogs icon.
         /// The Windows SDK recommends that cursors and icons should be implemented as
@@ -552,6 +563,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// VISIBLE: Simply call IupShow or IupHide for the dialog.
         pub fn setVisible(self: *Initializer, arg: bool) Initializer {
@@ -559,6 +571,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CURSOR (non inheritable): Defines a cursor for the dialog.
@@ -577,6 +590,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MENUBOX (creation only): Requires a system menu box from the window manager.
@@ -602,6 +616,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// HIDETITLEBAR [GTK Only] (non inheritable): hides the title bar with al its elements.
         /// (since 3.20) (GTK 3.10)
@@ -610,6 +625,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "HIDETITLEBAR", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MAXBOX (creation only): Requires a maximize button from the window manager.
@@ -631,6 +647,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
         /// to a dialog hint.
@@ -639,6 +656,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "DIALOGHINT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DIALOGFRAME: Set the common decorations for modal dialogs.
@@ -650,6 +668,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "DIALOGFRAME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// NACTIVE (non inheritable): same as ACTIVE but does not affects the controls
@@ -667,6 +686,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// SAVEUNDER [Windows and Motif Only] (creation only): When this attribute is
         /// true (YES), the dialog stores the original image of the desktop region it
@@ -682,6 +702,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
         /// system tray.
@@ -691,6 +712,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "TRAY", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CHILDOFFSET: Allow to specify a position offset for the child.
@@ -709,6 +731,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPAND (non inheritable): The default value is "YES".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
@@ -725,6 +748,7 @@ pub const Dialog = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// SIZE (non inheritable): Dialogs size.
@@ -786,6 +810,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// MDIMENU (creation only) [Windows Only]: Name of a IupMenu to be used as the
         /// Window list of a MDI frame.
@@ -801,6 +826,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// STARTFOCUS: Name of the element that must receive the focus right after the
@@ -826,6 +852,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TRAYTIPMARKUP [GTK Only]: allows the tip string to contains Pango markup commands.
@@ -853,6 +880,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
         /// application to customize the dialog frame elements (the title and its
@@ -874,6 +902,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE (non inheritable): Dialogs title.
         /// Default: NULL.
@@ -885,6 +914,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DEFAULTESC: Name of the button activated when the user press Esc when focus
@@ -901,6 +931,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "DEFAULTESC", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// PLACEMENT: Changes how the dialog will be shown.
@@ -951,6 +982,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// RESIZE (creation only): Allows interactively changing the dialogs size.
         /// Default: YES.
@@ -980,6 +1012,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
@@ -1026,6 +1059,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
         /// it is possible to create a non rectangle window with children.
@@ -1050,6 +1084,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// TOPMOST [Windows and GTK Only]: puts the dialog always in front of all
         /// other dialogs in all applications.
@@ -1066,6 +1101,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// MINBOX (creation only): Requires a minimize button from the window manager.
         /// Default: YES.
@@ -1078,6 +1114,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "MINBOX", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DEFAULTENTER: Name of the button activated when the user press Enter when
@@ -1094,6 +1131,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "DEFAULTENTER", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
@@ -1113,6 +1151,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// BACKGROUND (non inheritable): Dialog background color or image.
         /// Can be a non inheritable alternative to BGCOLOR or can be the name of an
@@ -1126,6 +1165,7 @@ pub const Dialog = opaque {
             interop.setRgb(self.ref, "BACKGROUND", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
@@ -1142,6 +1182,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
         /// Use "YES" to activate it.
@@ -1151,6 +1192,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "BRINGFRONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
@@ -1173,6 +1215,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "TRAYIMAGE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, BGCOLOR, FONT, EXPAND, SCREENPOSITION, WID, TIP, CLIENTOFFSET,
@@ -1197,6 +1240,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// MINSIZE: Minimum size for the dialog in raster units (pixels).
         /// The windowing system will not be able to change the size beyond this limit.
@@ -1218,6 +1262,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// BORDER (non inheritable) (creation only): Shows a resize border around the dialog.
         /// Default: "YES".
@@ -1228,6 +1273,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "BORDER", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
@@ -1249,6 +1295,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHRINK: Allows changing the elements distribution when the dialog is
         /// smaller than the minimum size.
@@ -1267,6 +1314,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
         /// (GTK 2.10 and GTK < 3.14)
@@ -1282,6 +1330,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// TOOLBOX [Windows Only] (creation only): makes the dialog look like a
         /// toolbox with a smaller title bar.
@@ -1292,6 +1341,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "TOOLBOX", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MDIFRAME (creation only) [Windows Only] (non inheritable): Configure this
@@ -1310,6 +1360,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// MDICHILD (creation only) [Windows Only]: Configure this dialog to be a MDI child.
         /// Can be YES or NO.
@@ -1321,6 +1372,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "MDICHILD", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FULLSCREEN: Makes the dialog occupy the whole screen over any system bars
@@ -1335,6 +1387,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "FULLSCREEN", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// NATIVEPARENT (creation only): Native handle of a dialog to be used as parent.
@@ -1357,6 +1410,7 @@ pub const Dialog = opaque {
             return self.*;
         }
 
+
         /// 
         /// SIMULATEMODAL (write-only): disable all other visible dialogs, just like
         /// when the dialog is made modal.
@@ -1366,6 +1420,7 @@ pub const Dialog = opaque {
             interop.setBoolAttribute(self.ref, "SIMULATEMODAL", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1395,6 +1450,7 @@ pub const Dialog = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1780,6 +1836,10 @@ pub const Dialog = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1897,6 +1957,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
+
     /// 
     /// MENU: Name of a menu.
     /// Associates a menu to the dialog as a menu bar.
@@ -1910,6 +1971,7 @@ pub const Dialog = opaque {
             return null;
         }
     }
+
 
     /// 
     /// MENU: Name of a menu.
@@ -1933,6 +1995,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "NOFLUSH", .{}, arg);
     }
 
+
     /// 
     /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
     /// The windowing system will not be able to change the size beyond this limit.
@@ -1942,6 +2005,7 @@ pub const Dialog = opaque {
         var str = interop.getStrAttribute(self, "MAXSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
@@ -1953,6 +2017,7 @@ pub const Dialog = opaque {
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
+
 
     /// 
     /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
@@ -1967,6 +2032,7 @@ pub const Dialog = opaque {
         return interop.getStrAttribute(self, "OPACITYIMAGE", .{});
     }
 
+
     /// 
     /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
     /// it is possible to create a non rectangle window with transparency, but it
@@ -1980,12 +2046,14 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "OPACITYIMAGE", .{}, arg);
     }
 
+
     /// 
     /// SHOWNOFOCUS: do not set focus after show.
     /// (since 3.30)
     pub fn getShowNoFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOWNOFOCUS", .{});
     }
+
 
     /// 
     /// SHOWNOFOCUS: do not set focus after show.
@@ -1999,6 +2067,7 @@ pub const Dialog = opaque {
         return iup.XYPos.parse(str, ',');
     }
 
+
     /// 
     /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
     /// Valid values range from 0 (completely transparent) to 255 (opaque).
@@ -2008,6 +2077,7 @@ pub const Dialog = opaque {
     pub fn getOpacity(self: *Self) i32 {
         return interop.getIntAttribute(self, "OPACITY", .{});
     }
+
 
     /// 
     /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
@@ -2030,6 +2100,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
+
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
     /// the drop of files.
@@ -2039,6 +2110,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
 
+
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
     /// the drop of files.
@@ -2047,6 +2119,7 @@ pub const Dialog = opaque {
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
     }
+
 
     /// 
     /// BORDERSIZE (non inheritable) (read only): returns the border size.
@@ -2079,6 +2152,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
     }
 
+
     /// 
     /// ICON: Dialogs icon.
     /// The Windows SDK recommends that cursors and icons should be implemented as
@@ -2086,6 +2160,7 @@ pub const Dialog = opaque {
     pub fn getIcon(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "ICON", .{});
     }
+
 
     /// 
     /// ICON: Dialogs icon.
@@ -2095,17 +2170,20 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "ICON", .{}, arg);
     }
 
+
     /// 
     /// VISIBLE: Simply call IupShow or IupHide for the dialog.
     pub fn getVisible(self: *Self) bool {
         return interop.getBoolAttribute(self, "VISIBLE", .{});
     }
 
+
     /// 
     /// VISIBLE: Simply call IupShow or IupHide for the dialog.
     pub fn setVisible(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
+
 
     /// 
     /// CURSOR (non inheritable): Defines a cursor for the dialog.
@@ -2116,6 +2194,7 @@ pub const Dialog = opaque {
             return null;
         }
     }
+
 
     /// 
     /// CURSOR (non inheritable): Defines a cursor for the dialog.
@@ -2145,12 +2224,14 @@ pub const Dialog = opaque {
         return interop.getIntAttribute(self, "Y", .{});
     }
 
+
     /// 
     /// HIDETITLEBAR [GTK Only] (non inheritable): hides the title bar with al its elements.
     /// (since 3.20) (GTK 3.10)
     pub fn getHideTitleBar(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HIDETITLEBAR", .{});
     }
+
 
     /// 
     /// HIDETITLEBAR [GTK Only] (non inheritable): hides the title bar with al its elements.
@@ -2167,6 +2248,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "DRAGDROP", .{}, arg);
     }
 
+
     /// 
     /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
     /// to a dialog hint.
@@ -2174,12 +2256,14 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "DIALOGHINT", .{});
     }
 
+
     /// 
     /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
     /// to a dialog hint.
     pub fn setDialogHint(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DIALOGHINT", .{}, arg);
     }
+
 
     /// 
     /// DIALOGFRAME: Set the common decorations for modal dialogs.
@@ -2190,6 +2274,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "DIALOGFRAME", .{});
     }
 
+
     /// 
     /// DIALOGFRAME: Set the common decorations for modal dialogs.
     /// This means RESIZE=NO, MINBOX=NO and MAXBOX=NO.
@@ -2199,6 +2284,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "DIALOGFRAME", .{}, arg);
     }
 
+
     /// 
     /// NACTIVE (non inheritable): same as ACTIVE but does not affects the controls
     /// inside the dialog.
@@ -2206,6 +2292,7 @@ pub const Dialog = opaque {
     pub fn getNActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "NACTIVE", .{});
     }
+
 
     /// 
     /// NACTIVE (non inheritable): same as ACTIVE but does not affects the controls
@@ -2223,6 +2310,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
     /// system tray.
@@ -2231,6 +2319,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "TRAY", .{});
     }
 
+
     /// 
     /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
     /// system tray.
@@ -2238,6 +2327,7 @@ pub const Dialog = opaque {
     pub fn setTray(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TRAY", .{}, arg);
     }
+
 
     /// 
     /// CHILDOFFSET: Allow to specify a position offset for the child.
@@ -2252,6 +2342,7 @@ pub const Dialog = opaque {
         var str = interop.getStrAttribute(self, "CHILDOFFSET", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CHILDOFFSET: Allow to specify a position offset for the child.
@@ -2268,6 +2359,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
 
+
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
@@ -2281,6 +2373,7 @@ pub const Dialog = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
@@ -2296,6 +2389,7 @@ pub const Dialog = opaque {
             interop.clearAttribute(self, "EXPAND", .{});
         }
     }
+
 
     /// 
     /// SIZE (non inheritable): Dialogs size.
@@ -2347,6 +2441,7 @@ pub const Dialog = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return iup.DialogSize.parse(str);
     }
+
 
     /// 
     /// SIZE (non inheritable): Dialogs size.
@@ -2412,6 +2507,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
+
     /// 
     /// STARTFOCUS: Name of the element that must receive the focus right after the
     /// dialog is shown using IupShow or IupPopup.
@@ -2422,6 +2518,7 @@ pub const Dialog = opaque {
     pub fn getStartFocus(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "STARTFOCUS", .{});
     }
+
 
     /// 
     /// STARTFOCUS: Name of the element that must receive the focus right after the
@@ -2455,6 +2552,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "DROPTYPES", .{}, arg);
     }
 
+
     /// 
     /// TRAYTIPMARKUP [GTK Only]: allows the tip string to contains Pango markup commands.
     /// Can be "YES" or "NO".
@@ -2464,6 +2562,7 @@ pub const Dialog = opaque {
     pub fn getTrayTipMarkup(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TRAYTIPMARKUP", .{});
     }
+
 
     /// 
     /// TRAYTIPMARKUP [GTK Only]: allows the tip string to contains Pango markup commands.
@@ -2494,6 +2593,7 @@ pub const Dialog = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+
     /// 
     /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
     /// application to customize the dialog frame elements (the title and its
@@ -2512,6 +2612,7 @@ pub const Dialog = opaque {
     pub fn getCustomFrame(self: *Self) bool {
         return interop.getBoolAttribute(self, "CUSTOMFRAME", .{});
     }
+
 
     /// 
     /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
@@ -2532,6 +2633,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
     }
 
+
     /// 
     /// TITLE (non inheritable): Dialogs title.
     /// Default: NULL.
@@ -2542,6 +2644,7 @@ pub const Dialog = opaque {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
 
+
     /// 
     /// TITLE (non inheritable): Dialogs title.
     /// Default: NULL.
@@ -2551,6 +2654,7 @@ pub const Dialog = opaque {
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
+
 
     /// 
     /// DEFAULTESC: Name of the button activated when the user press Esc when focus
@@ -2564,6 +2668,7 @@ pub const Dialog = opaque {
         }
     }
 
+
     /// 
     /// DEFAULTESC: Name of the button activated when the user press Esc when focus
     /// is in another control of the dialog.
@@ -2575,6 +2680,7 @@ pub const Dialog = opaque {
     pub fn setDefaultEscHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "DEFAULTESC", .{}, arg);
     }
+
 
     /// 
     /// PLACEMENT: Changes how the dialog will be shown.
@@ -2597,6 +2703,7 @@ pub const Dialog = opaque {
         if (std.ascii.eqlIgnoreCase("FULL", ret)) return .Full;
         return null;
     }
+
 
     /// 
     /// PLACEMENT: Changes how the dialog will be shown.
@@ -2653,6 +2760,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
     }
 
+
     /// 
     /// MAXIMIZED [Windows and GTK Only] (read-only): indicates if the dialog is maximized.
     /// Can be YES or NO.
@@ -2687,6 +2795,7 @@ pub const Dialog = opaque {
     pub fn setNormalizerGroup(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
+
 
     /// 
     /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
@@ -2729,6 +2838,7 @@ pub const Dialog = opaque {
         var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
@@ -2773,6 +2883,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
     /// it is possible to create a non rectangle window with children.
@@ -2782,6 +2893,7 @@ pub const Dialog = opaque {
     pub fn getShapeImage(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "SHAPEIMAGE", .{});
     }
+
 
     /// 
     /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
@@ -2809,6 +2921,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
+
     /// 
     /// TOPMOST [Windows and GTK Only]: puts the dialog always in front of all
     /// other dialogs in all applications.
@@ -2825,6 +2938,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// DEFAULTENTER: Name of the button activated when the user press Enter when
     /// focus is in another control of the dialog.
@@ -2836,6 +2950,7 @@ pub const Dialog = opaque {
             return null;
         }
     }
+
 
     /// 
     /// DEFAULTENTER: Name of the button activated when the user press Enter when
@@ -2849,6 +2964,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "DEFAULTENTER", .{}, arg);
     }
 
+
     /// 
     /// MODAL (read-only): Returns the popup state.
     /// It is "YES" if the dialog was shown using IupPopup.
@@ -2858,6 +2974,7 @@ pub const Dialog = opaque {
     pub fn getModal(self: *Self) bool {
         return interop.getBoolAttribute(self, "MODAL", .{});
     }
+
 
     /// 
     /// BACKGROUND (non inheritable): Dialog background color or image.
@@ -2871,6 +2988,7 @@ pub const Dialog = opaque {
         return interop.getRgb(self, "BACKGROUND", .{});
     }
 
+
     /// 
     /// BACKGROUND (non inheritable): Dialog background color or image.
     /// Can be a non inheritable alternative to BGCOLOR or can be the name of an
@@ -2882,6 +3000,7 @@ pub const Dialog = opaque {
     pub fn setBackground(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BACKGROUND", .{}, rgb);
     }
+
 
     /// 
     /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
@@ -2896,6 +3015,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "HIDETASKBAR", .{});
     }
 
+
     /// 
     /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
     /// set to "YES", hides the dialog, but does not decrement the visible dialog
@@ -2909,6 +3029,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
     }
 
+
     /// 
     /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
     /// Use "YES" to activate it.
@@ -2917,6 +3038,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "BRINGFRONT", .{});
     }
 
+
     /// 
     /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
     /// Use "YES" to activate it.
@@ -2924,6 +3046,7 @@ pub const Dialog = opaque {
     pub fn setBringFront(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "BRINGFRONT", .{}, arg);
     }
+
 
     /// 
     /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
@@ -2938,6 +3061,7 @@ pub const Dialog = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
@@ -2954,6 +3078,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TRAYIMAGE", .{}, arg);
     }
 
+
     /// 
     /// ACTIVE, BGCOLOR, FONT, EXPAND, SCREENPOSITION, WID, TIP, CLIENTOFFSET,
     /// CLIENTSIZE, RASTERSIZE, ZORDER: also accepted.
@@ -2962,6 +3087,7 @@ pub const Dialog = opaque {
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, BGCOLOR, FONT, EXPAND, SCREENPOSITION, WID, TIP, CLIENTOFFSET,
@@ -2988,6 +3114,7 @@ pub const Dialog = opaque {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
+
     /// 
     /// MINSIZE: Minimum size for the dialog in raster units (pixels).
     /// The windowing system will not be able to change the size beyond this limit.
@@ -2999,6 +3126,7 @@ pub const Dialog = opaque {
         var str = interop.getStrAttribute(self, "MINSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// MINSIZE: Minimum size for the dialog in raster units (pixels).
@@ -3012,6 +3140,7 @@ pub const Dialog = opaque {
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
+
 
     /// 
     /// ACTIVEWINDOW [Windows and GTK Only] (read-only): informs if the dialog is
@@ -3029,6 +3158,7 @@ pub const Dialog = opaque {
     pub fn setNTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
+
 
     /// 
     /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
@@ -3048,6 +3178,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{});
     }
 
+
     /// 
     /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
     /// elements (the title and its buttons) by using IUP controls for its elements
@@ -3066,6 +3197,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{}, arg);
     }
 
+
     /// 
     /// SHRINK: Allows changing the elements distribution when the dialog is
     /// smaller than the minimum size.
@@ -3073,6 +3205,7 @@ pub const Dialog = opaque {
     pub fn getShrink(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHRINK", .{});
     }
+
 
     /// 
     /// SHRINK: Allows changing the elements distribution when the dialog is
@@ -3103,12 +3236,14 @@ pub const Dialog = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn getTrayTip(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TRAYTIP", .{});
     }
+
 
     /// 
     /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
@@ -3133,6 +3268,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// FULLSCREEN: Makes the dialog occupy the whole screen over any system bars
     /// in the main monitor.
@@ -3153,6 +3289,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
+
     /// 
     /// SIMULATEMODAL (write-only): disable all other visible dialogs, just like
     /// when the dialog is made modal.
@@ -3160,6 +3297,7 @@ pub const Dialog = opaque {
     pub fn simulateModal(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "SIMULATEMODAL", .{}, arg);
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -3181,6 +3319,7 @@ pub const Dialog = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -3204,6 +3343,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -3224,6 +3364,7 @@ pub const Dialog = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

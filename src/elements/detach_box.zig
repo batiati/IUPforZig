@@ -70,7 +70,7 @@ pub const DetachBox = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -196,6 +196,7 @@ pub const DetachBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// BARSIZE (non inheritable): controls the size of the bar handler.
         /// To completely hide the bar set BARSIZE to 0 (since 3.16).
@@ -270,6 +271,7 @@ pub const DetachBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
         /// MAXSIZE, THEME: also accepted.
@@ -284,6 +286,7 @@ pub const DetachBox = opaque {
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable): The default value is "YES".
@@ -316,6 +319,7 @@ pub const DetachBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// COLOR: Changes the color of the bar grip affordance.
         /// The value should be given in "R G B" color style.
@@ -339,6 +343,7 @@ pub const DetachBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// ORIENTATION (creation only) (non inheritable): Indicates the orientation of
         /// the bar handler.
@@ -355,6 +360,7 @@ pub const DetachBox = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// SHOWGRIP (non inheritable): Shows the bar grip affordance.
@@ -389,6 +395,7 @@ pub const DetachBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -417,6 +424,7 @@ pub const DetachBox = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -560,6 +568,10 @@ pub const DetachBox = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -663,6 +675,7 @@ pub const DetachBox = opaque {
         interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
+
     /// 
     /// OLDBROTHER_HANDLE (read only): returns the previous reference child of the
     /// detached element.
@@ -676,6 +689,7 @@ pub const DetachBox = opaque {
         }
     }
 
+
     /// 
     /// BARSIZE (non inheritable): controls the size of the bar handler.
     /// To completely hide the bar set BARSIZE to 0 (since 3.16).
@@ -683,6 +697,7 @@ pub const DetachBox = opaque {
     pub fn getBarSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "BARSIZE", .{});
     }
+
 
     /// 
     /// BARSIZE (non inheritable): controls the size of the bar handler.
@@ -731,6 +746,7 @@ pub const DetachBox = opaque {
         var str = interop.getStrAttribute(self, "NATURALSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// OLDPARENT_HANDLE (read only): returns the previous parent of the detached element.
@@ -804,12 +820,14 @@ pub const DetachBox = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
+
 
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
@@ -826,6 +844,7 @@ pub const DetachBox = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
@@ -839,6 +858,7 @@ pub const DetachBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
@@ -874,6 +894,7 @@ pub const DetachBox = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// COLOR: Changes the color of the bar grip affordance.
     /// The value should be given in "R G B" color style.
@@ -882,6 +903,7 @@ pub const DetachBox = opaque {
     pub fn getColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "COLOR", .{});
     }
+
 
     /// 
     /// COLOR: Changes the color of the bar grip affordance.
@@ -911,6 +933,7 @@ pub const DetachBox = opaque {
         }
     }
 
+
     /// 
     /// SHOWGRIP (non inheritable): Shows the bar grip affordance.
     /// Default: YES.
@@ -919,6 +942,7 @@ pub const DetachBox = opaque {
     pub fn getShowGrip(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOWGRIP", .{});
     }
+
 
     /// 
     /// SHOWGRIP (non inheritable): Shows the bar grip affordance.
@@ -936,6 +960,7 @@ pub const DetachBox = opaque {
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
+
 
     /// 
     /// WID (read-only): returns -1 if mapped.
@@ -970,6 +995,7 @@ pub const DetachBox = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -990,6 +1016,7 @@ pub const DetachBox = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1013,6 +1040,7 @@ pub const DetachBox = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1033,6 +1061,7 @@ pub const DetachBox = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

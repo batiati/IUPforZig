@@ -248,7 +248,7 @@ pub const ColorBar = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -264,7 +264,7 @@ pub const ColorBar = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -405,7 +405,7 @@ pub const ColorBar = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
@@ -535,6 +535,7 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHOW_PREVIEW: Controls the display of the preview area.
         /// Default: "YES".
@@ -663,6 +664,7 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+
         /// 
         /// FLATCOLOR: color of the border when FLAT=Yes and the preview area borders.
         /// Default: "0 0 0".
@@ -693,6 +695,7 @@ pub const ColorBar = opaque {
             interop.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// SIZE: there is no initial size.
@@ -728,6 +731,7 @@ pub const ColorBar = opaque {
             interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ORIENTATION: Controls the orientation.
@@ -931,6 +935,7 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+
         /// 
         /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
         /// TIP, EXPAND, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
@@ -965,6 +970,7 @@ pub const ColorBar = opaque {
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// FLAT: use a 1 pixel flat border instead of the default 3 pixels sunken border.
@@ -1032,6 +1038,7 @@ pub const ColorBar = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1060,6 +1067,7 @@ pub const ColorBar = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1617,6 +1625,10 @@ pub const ColorBar = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1674,6 +1686,7 @@ pub const ColorBar = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// COUNT (read-only) (non inheritable): same as NUM_CELLS but it is read-only.
     /// (since 3.3)
@@ -1724,12 +1737,14 @@ pub const ColorBar = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
+
     /// 
     /// SHOW_PREVIEW: Controls the display of the preview area.
     /// Default: "YES".
     pub fn getShowPreview(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOW_PREVIEW", .{});
     }
+
 
     /// 
     /// SHOW_PREVIEW: Controls the display of the preview area.
@@ -1903,6 +1918,7 @@ pub const ColorBar = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// FLATCOLOR: color of the border when FLAT=Yes and the preview area borders.
     /// Default: "0 0 0".
@@ -1910,6 +1926,7 @@ pub const ColorBar = opaque {
     pub fn getFlatColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FLATCOLOR", .{});
     }
+
 
     /// 
     /// FLATCOLOR: color of the border when FLAT=Yes and the preview area borders.
@@ -1952,6 +1969,7 @@ pub const ColorBar = opaque {
         interop.setStrAttribute(self, "DRAWFONT", .{}, arg);
     }
 
+
     /// 
     /// SIZE: there is no initial size.
     /// You must define SIZE or RASTERSIZE.
@@ -1959,6 +1977,7 @@ pub const ColorBar = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE: there is no initial size.
@@ -2005,6 +2024,7 @@ pub const ColorBar = opaque {
         interop.setIntAttribute(self, "YMIN", .{}, arg);
     }
 
+
     /// 
     /// ORIENTATION: Controls the orientation.
     /// It can be "VERTICAL" or "HORIZONTAL".
@@ -2016,6 +2036,7 @@ pub const ColorBar = opaque {
         if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
         return null;
     }
+
 
     /// 
     /// ORIENTATION: Controls the orientation.
@@ -2310,12 +2331,14 @@ pub const ColorBar = opaque {
         }
     }
 
+
     /// 
     /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
     /// TIP, EXPAND, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
@@ -2359,6 +2382,7 @@ pub const ColorBar = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
+
     /// 
     /// FLAT: use a 1 pixel flat border instead of the default 3 pixels sunken border.
     /// When enabled is the same as setting SHADOWED=NO.
@@ -2368,6 +2392,7 @@ pub const ColorBar = opaque {
     pub fn getFlat(self: *Self) bool {
         return interop.getBoolAttribute(self, "FLAT", .{});
     }
+
 
     /// 
     /// FLAT: use a 1 pixel flat border instead of the default 3 pixels sunken border.
@@ -2460,6 +2485,7 @@ pub const ColorBar = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2480,6 +2506,7 @@ pub const ColorBar = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2503,6 +2530,7 @@ pub const ColorBar = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2523,6 +2551,7 @@ pub const ColorBar = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

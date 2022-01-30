@@ -229,7 +229,7 @@ pub const Canvas = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -245,7 +245,7 @@ pub const Canvas = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -373,7 +373,7 @@ pub const Canvas = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
@@ -511,6 +511,7 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+
         /// 
         /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
         /// the drop of files.
@@ -546,6 +547,7 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+
         /// 
         /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
         /// the control.
@@ -575,6 +577,7 @@ pub const Canvas = opaque {
             interop.setDoubleAttribute(self.ref, "LINEX", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CURSOR (non inheritable): Defines a cursor for the canvas.
@@ -630,6 +633,7 @@ pub const Canvas = opaque {
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable): The default value is "YES".
@@ -719,6 +723,7 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+
         /// 
         /// Notice that the drawing area size is not the same as RASTERSIZE.
         /// The SCROLLBAR and BORDER attributes affect the size of the drawing area.
@@ -738,6 +743,7 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+
         /// 
         /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
         /// the next native parent with FOCUS_CB defined.
@@ -754,6 +760,7 @@ pub const Canvas = opaque {
             interop.setIntAttribute(self.ref, "XMAX", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BGCOLOR: Background color.
@@ -774,6 +781,7 @@ pub const Canvas = opaque {
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DX: Size of the thumb in the horizontal scrollbar.
@@ -897,6 +905,7 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+
         /// 
         /// BACKINGSTORE [Motif Only]: Controls the canvas backing store flag.
         /// The default value is "YES".
@@ -926,6 +935,7 @@ pub const Canvas = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
@@ -968,6 +978,7 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+
         /// 
         /// BORDER (creation only): Shows a border around the canvas.
         /// Default: "YES".
@@ -985,6 +996,7 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+
         /// 
         /// WHEELDROPFOCUS (non inheritable): when the wheel is used the focus control
         /// receives a SHOWDROPDOWN=No.
@@ -1000,6 +1012,7 @@ pub const Canvas = opaque {
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TOUCH [Windows 7 Only]: enable the multi-touch events processing.
@@ -1034,6 +1047,7 @@ pub const Canvas = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1062,6 +1076,7 @@ pub const Canvas = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1579,6 +1594,10 @@ pub const Canvas = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1703,6 +1722,7 @@ pub const Canvas = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
+
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
     /// the drop of files.
@@ -1711,6 +1731,7 @@ pub const Canvas = opaque {
     pub fn getDropFilesTarget(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
+
 
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
@@ -1780,6 +1801,7 @@ pub const Canvas = opaque {
         interop.setDoubleAttribute(self, "LINEX", .{}, arg);
     }
 
+
     /// 
     /// CURSOR (non inheritable): Defines a cursor for the canvas.
     /// The Windows SDK recommends that cursors and icons should be implemented as
@@ -1791,6 +1813,7 @@ pub const Canvas = opaque {
             return null;
         }
     }
+
 
     /// 
     /// CURSOR (non inheritable): Defines a cursor for the canvas.
@@ -1854,6 +1877,7 @@ pub const Canvas = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
     /// The natural size is the size of 1 character.
@@ -1868,6 +1892,7 @@ pub const Canvas = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
@@ -2000,6 +2025,7 @@ pub const Canvas = opaque {
         interop.setBoolAttribute(self, "XAUTOHIDE", .{}, arg);
     }
 
+
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -2008,6 +2034,7 @@ pub const Canvas = opaque {
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
+
 
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
@@ -2026,6 +2053,7 @@ pub const Canvas = opaque {
         interop.setIntAttribute(self, "XMAX", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: Background color.
     /// The background is painted only if the ACTION callback is not defined.
@@ -2037,6 +2065,7 @@ pub const Canvas = opaque {
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR: Background color.
@@ -2057,6 +2086,7 @@ pub const Canvas = opaque {
     pub fn setDropTarget(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
     }
+
 
     /// 
     /// DX: Size of the thumb in the horizontal scrollbar.
@@ -2091,6 +2121,7 @@ pub const Canvas = opaque {
     pub fn getDX(self: *Self) f64 {
         return interop.getDoubleAttribute(self, "DX", .{});
     }
+
 
     /// 
     /// DX: Size of the thumb in the horizontal scrollbar.
@@ -2208,6 +2239,7 @@ pub const Canvas = opaque {
         return interop.getBoolAttribute(self, "YHIDDEN", .{});
     }
 
+
     /// 
     /// DRAWSIZE (non inheritable): The size of the drawing area in pixels.
     /// This size is also used in the RESIZE_CB callback.
@@ -2256,6 +2288,7 @@ pub const Canvas = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// BACKINGSTORE [Motif Only]: Controls the canvas backing store flag.
     /// The default value is "YES".
@@ -2263,12 +2296,14 @@ pub const Canvas = opaque {
         return interop.getBoolAttribute(self, "BACKINGSTORE", .{});
     }
 
+
     /// 
     /// BACKINGSTORE [Motif Only]: Controls the canvas backing store flag.
     /// The default value is "YES".
     pub fn setBackingStore(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "BACKINGSTORE", .{}, arg);
     }
+
 
     /// 
     /// DRAWDRIVER (read-only): returns the name of the draw driver in use by the
@@ -2313,12 +2348,14 @@ pub const Canvas = opaque {
         }
     }
 
+
     /// 
     /// ACTIVE, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
     /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
@@ -2370,6 +2407,7 @@ pub const Canvas = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
+
     /// 
     /// BORDER (creation only): Shows a border around the canvas.
     /// Default: "YES".
@@ -2378,6 +2416,7 @@ pub const Canvas = opaque {
     pub fn getBorder(self: *Self) bool {
         return interop.getBoolAttribute(self, "BORDER", .{});
     }
+
 
     /// 
     /// BORDER (creation only): Shows a border around the canvas.
@@ -2401,6 +2440,7 @@ pub const Canvas = opaque {
         interop.setStrAttribute(self, "DRAGTYPES", .{}, arg);
     }
 
+
     /// 
     /// WHEELDROPFOCUS (non inheritable): when the wheel is used the focus control
     /// receives a SHOWDROPDOWN=No.
@@ -2408,6 +2448,7 @@ pub const Canvas = opaque {
     pub fn getWheelDropFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "WHEELDROPFOCUS", .{});
     }
+
 
     /// 
     /// WHEELDROPFOCUS (non inheritable): when the wheel is used the focus control
@@ -2425,12 +2466,14 @@ pub const Canvas = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// TOUCH [Windows 7 Only]: enable the multi-touch events processing.
     /// (since 3.3)
     pub fn getTouch(self: *Self) bool {
         return interop.getBoolAttribute(self, "TOUCH", .{});
     }
+
 
     /// 
     /// TOUCH [Windows 7 Only]: enable the multi-touch events processing.
@@ -2471,6 +2514,7 @@ pub const Canvas = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2491,6 +2535,7 @@ pub const Canvas = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2514,6 +2559,7 @@ pub const Canvas = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2534,6 +2580,7 @@ pub const Canvas = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

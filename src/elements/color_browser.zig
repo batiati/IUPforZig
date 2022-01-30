@@ -247,7 +247,7 @@ pub const ColorBrowser = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -263,7 +263,7 @@ pub const ColorBrowser = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -407,7 +407,7 @@ pub const ColorBrowser = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
@@ -649,6 +649,7 @@ pub const ColorBrowser = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPAND: The default is "NO".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
@@ -820,6 +821,7 @@ pub const ColorBrowser = opaque {
             return self.*;
         }
 
+
         /// 
         /// RASTERSIZE (non inheritable): the initial size is "181x181".
         /// Set to NULL to allow the automatic layout use smaller values.
@@ -893,6 +895,7 @@ pub const ColorBrowser = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, BGCOLOR, FONT, X, Y, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
@@ -983,6 +986,7 @@ pub const ColorBrowser = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1011,6 +1015,7 @@ pub const ColorBrowser = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1559,6 +1564,10 @@ pub const ColorBrowser = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1824,6 +1833,7 @@ pub const ColorBrowser = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// EXPAND: The default is "NO".
     pub fn getExpand(self: *Self) ?Expand {
@@ -1837,6 +1847,7 @@ pub const ColorBrowser = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND: The default is "NO".
@@ -2075,6 +2086,7 @@ pub const ColorBrowser = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// RASTERSIZE (non inheritable): the initial size is "181x181".
     /// Set to NULL to allow the automatic layout use smaller values.
@@ -2082,6 +2094,7 @@ pub const ColorBrowser = opaque {
         var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// RASTERSIZE (non inheritable): the initial size is "181x181".
@@ -2194,12 +2207,14 @@ pub const ColorBrowser = opaque {
         }
     }
 
+
     /// 
     /// ACTIVE, BGCOLOR, FONT, X, Y, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
     /// ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, BGCOLOR, FONT, X, Y, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
@@ -2324,6 +2339,7 @@ pub const ColorBrowser = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2344,6 +2360,7 @@ pub const ColorBrowser = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2367,6 +2384,7 @@ pub const ColorBrowser = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2387,6 +2405,7 @@ pub const ColorBrowser = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

@@ -104,6 +104,7 @@ pub const Thread = opaque {
             return self.*;
         }
 
+
         /// 
         /// START (write-only, non inheritable): starts the thread and calls the callback.
         /// Can be YES only.
@@ -114,6 +115,7 @@ pub const Thread = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
@@ -123,6 +125,7 @@ pub const Thread = opaque {
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -140,6 +143,7 @@ pub const Thread = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -169,6 +173,7 @@ pub const Thread = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -244,6 +249,10 @@ pub const Thread = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -301,6 +310,7 @@ pub const Thread = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// START (write-only, non inheritable): starts the thread and calls the callback.
     /// Can be YES only.
@@ -308,6 +318,7 @@ pub const Thread = opaque {
     pub fn start(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "START", .{}, arg);
     }
+
 
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
@@ -317,6 +328,7 @@ pub const Thread = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -324,6 +336,7 @@ pub const Thread = opaque {
     pub fn setExpandWeight(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -339,6 +352,7 @@ pub const Thread = opaque {
         return null;
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -353,6 +367,7 @@ pub const Thread = opaque {
             interop.clearAttribute(self, "FLOATING", .{});
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -374,6 +389,7 @@ pub const Thread = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -397,6 +413,7 @@ pub const Thread = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -417,6 +434,7 @@ pub const Thread = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

@@ -235,7 +235,7 @@ pub const Dial = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -259,7 +259,7 @@ pub const Dial = opaque {
     /// number) -> (ret: number) [in Lua]
     pub const OnMouseMoveFn = fn (self: *Self, arg0: f64) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     /// 
     /// BUTTON_PRESS_CB: Called when the user presses the left mouse button over
@@ -404,7 +404,7 @@ pub const Dial = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
@@ -506,6 +506,7 @@ pub const Dial = opaque {
             interop.setHandle(self.ref, arg);
             return self.*;
         }
+
 
         /// 
         /// FGCOLOR: foreground color.
@@ -674,6 +675,7 @@ pub const Dial = opaque {
             return self.*;
         }
 
+
         /// 
         /// FLATCOLOR: color of the border when FLAT=Yes.
         /// Default: "160 160 160".
@@ -683,6 +685,7 @@ pub const Dial = opaque {
             interop.setRgb(self.ref, "FLATCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// EXPAND: the default is "NO".
@@ -706,6 +709,7 @@ pub const Dial = opaque {
             interop.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// SIZE (non inheritable): the initial size is "16x80", "80x16" or "40x35"
@@ -742,6 +746,7 @@ pub const Dial = opaque {
             interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ORIENTATION (creation only) (non inheritable): dial layout configuration
@@ -949,6 +954,7 @@ pub const Dial = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE (non inheritable): The dial angular value in radians always.
         /// The value is reset to zero when the interaction is started, except for ORIENTATION=CIRCULAR.
@@ -960,6 +966,7 @@ pub const Dial = opaque {
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
@@ -995,6 +1002,7 @@ pub const Dial = opaque {
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// FLAT: use a 1 pixel flat border instead of the default 3 pixels sunken border.
@@ -1061,6 +1069,7 @@ pub const Dial = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1089,6 +1098,7 @@ pub const Dial = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1650,6 +1660,10 @@ pub const Dial = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1707,6 +1721,7 @@ pub const Dial = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// FGCOLOR: foreground color.
     /// The default value is "64 64 64".
@@ -1714,6 +1729,7 @@ pub const Dial = opaque {
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR: foreground color.
@@ -1939,6 +1955,7 @@ pub const Dial = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// FLATCOLOR: color of the border when FLAT=Yes.
     /// Default: "160 160 160".
@@ -1947,6 +1964,7 @@ pub const Dial = opaque {
         return interop.getRgb(self, "FLATCOLOR", .{});
     }
 
+
     /// 
     /// FLATCOLOR: color of the border when FLAT=Yes.
     /// Default: "160 160 160".
@@ -1954,6 +1972,7 @@ pub const Dial = opaque {
     pub fn setFlatColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "FLATCOLOR", .{}, rgb);
     }
+
 
     /// 
     /// EXPAND: the default is "NO".
@@ -1968,6 +1987,7 @@ pub const Dial = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND: the default is "NO".
@@ -1992,6 +2012,7 @@ pub const Dial = opaque {
         interop.setStrAttribute(self, "DRAWFONT", .{}, arg);
     }
 
+
     /// 
     /// SIZE (non inheritable): the initial size is "16x80", "80x16" or "40x35"
     /// according to the dial orientation.
@@ -2000,6 +2021,7 @@ pub const Dial = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE (non inheritable): the initial size is "16x80", "80x16" or "40x35"
@@ -2327,6 +2349,7 @@ pub const Dial = opaque {
         }
     }
 
+
     /// 
     /// VALUE (non inheritable): The dial angular value in radians always.
     /// The value is reset to zero when the interaction is started, except for ORIENTATION=CIRCULAR.
@@ -2336,6 +2359,7 @@ pub const Dial = opaque {
     pub fn getValue(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
+
 
     /// 
     /// VALUE (non inheritable): The dial angular value in radians always.
@@ -2347,12 +2371,14 @@ pub const Dial = opaque {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
 
+
     /// 
     /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
     /// TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, BGCOLOR, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID,
@@ -2396,6 +2422,7 @@ pub const Dial = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
+
     /// 
     /// FLAT: use a 1 pixel flat border instead of the default 3 pixels sunken border.
     /// Can be Yes or No.
@@ -2404,6 +2431,7 @@ pub const Dial = opaque {
     pub fn getFlat(self: *Self) bool {
         return interop.getBoolAttribute(self, "FLAT", .{});
     }
+
 
     /// 
     /// FLAT: use a 1 pixel flat border instead of the default 3 pixels sunken border.
@@ -2495,6 +2523,7 @@ pub const Dial = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2515,6 +2544,7 @@ pub const Dial = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2538,6 +2568,7 @@ pub const Dial = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2558,6 +2589,7 @@ pub const Dial = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

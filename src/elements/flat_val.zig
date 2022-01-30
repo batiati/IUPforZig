@@ -238,7 +238,7 @@ pub const FlatVal = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -261,7 +261,7 @@ pub const FlatVal = opaque {
     /// number) -> (ret: number) [in Lua]
     pub const OnValueChangIngFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -399,7 +399,7 @@ pub const FlatVal = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
@@ -499,6 +499,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// FGCOLOR: Controls the handler color.
         /// Default: "0 120 220".
@@ -531,6 +532,7 @@ pub const FlatVal = opaque {
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// STEP (non inheritable): Controls the increment for keyboard control and the
@@ -602,6 +604,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
         /// the control.
@@ -619,6 +622,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// PSCOLOR: color used to indicate a press state.
         /// Pre-defined to "0 60 190".
@@ -635,6 +639,7 @@ pub const FlatVal = opaque {
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGE (non inheritable): Image name for the handler.
@@ -735,6 +740,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// SIZE (non inheritable): The natural size is the height of one character in
         /// one direction and the width of 15 characters in the other.
@@ -758,6 +764,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// BORDERHLCOLOR: color used for borders when highlighted.
         /// Pre-defined to "0 120 220".
@@ -780,6 +787,7 @@ pub const FlatVal = opaque {
             interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ORIENTATION (creation only) (non inheritable): Informs whether the valuator
@@ -809,6 +817,7 @@ pub const FlatVal = opaque {
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MIN: Contains the minimum valuator value.
@@ -852,6 +861,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
         /// the next native parent with FOCUS_CB defined.
@@ -867,6 +877,7 @@ pub const FlatVal = opaque {
             interop.setIntAttribute(self.ref, "XMAX", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BGCOLOR: ignored.
@@ -931,6 +942,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// BORDERPSCOLOR: color used for borders when pressed or selected.
         /// Default use BORDERCOLOR.
@@ -948,6 +960,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// BORDERCOLOR: color used for borders.
         /// Default: "50 150 255".
@@ -963,6 +976,7 @@ pub const FlatVal = opaque {
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// HLCOLOR: color used to indicate a highlight state.
@@ -998,6 +1012,7 @@ pub const FlatVal = opaque {
             interop.setRgb(self.ref, "DRAWBGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// IMAGEPRESS (non inheritable): Image name of the element in pressed state.
@@ -1051,6 +1066,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE (non inheritable): Contains a number between MIN and MAX, indicating
         /// the valuator position.
@@ -1060,6 +1076,7 @@ pub const FlatVal = opaque {
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
@@ -1073,6 +1090,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
         /// from the BACKIMAGE.
@@ -1084,6 +1102,7 @@ pub const FlatVal = opaque {
             interop.setBoolAttribute(self.ref, "FITTOBACKIMAGE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -1099,6 +1118,7 @@ pub const FlatVal = opaque {
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGEHIGHLIGHT (non inheritable): Image name of the element in highlight state.
@@ -1125,6 +1145,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// BACKIMAGE (non inheritable): image name to be used as background.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1144,6 +1165,7 @@ pub const FlatVal = opaque {
             interop.setStrAttribute(self.ref, "BACKIMAGE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
@@ -1179,6 +1201,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// MAX: Contains the maximum valuator value.
         /// Default is "1".
@@ -1206,6 +1229,7 @@ pub const FlatVal = opaque {
             interop.setBoolAttribute(self.ref, "WHEELDROPFOCUS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BORDERWIDTH: line width used for borders.
@@ -1254,6 +1278,7 @@ pub const FlatVal = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1282,6 +1307,7 @@ pub const FlatVal = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1851,6 +1877,10 @@ pub const FlatVal = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1908,12 +1938,14 @@ pub const FlatVal = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// FGCOLOR: Controls the handler color.
     /// Default: "0 120 220".
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR: Controls the handler color.
@@ -1958,6 +1990,7 @@ pub const FlatVal = opaque {
         interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
+
     /// 
     /// STEP (non inheritable): Controls the increment for keyboard control and the
     /// mouse wheel.
@@ -1967,6 +2000,7 @@ pub const FlatVal = opaque {
     pub fn getStep(self: *Self) f64 {
         return interop.getDoubleAttribute(self, "STEP", .{});
     }
+
 
     /// 
     /// STEP (non inheritable): Controls the increment for keyboard control and the
@@ -2072,6 +2106,7 @@ pub const FlatVal = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
     }
 
+
     /// 
     /// PSCOLOR: color used to indicate a press state.
     /// Pre-defined to "0 60 190".
@@ -2080,6 +2115,7 @@ pub const FlatVal = opaque {
     pub fn getPsColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "PSCOLOR", .{});
     }
+
 
     /// 
     /// PSCOLOR: color used to indicate a press state.
@@ -2098,6 +2134,7 @@ pub const FlatVal = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// IMAGE (non inheritable): Image name for the handler.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2110,6 +2147,7 @@ pub const FlatVal = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGE (non inheritable): Image name for the handler.
@@ -2232,6 +2270,7 @@ pub const FlatVal = opaque {
         interop.setStrAttribute(self, "DRAWFONT", .{}, arg);
     }
 
+
     /// 
     /// SIZE (non inheritable): The natural size is the height of one character in
     /// one direction and the width of 15 characters in the other.
@@ -2239,6 +2278,7 @@ pub const FlatVal = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE (non inheritable): The natural size is the height of one character in
@@ -2269,6 +2309,7 @@ pub const FlatVal = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+
     /// 
     /// BORDERHLCOLOR: color used for borders when highlighted.
     /// Pre-defined to "0 120 220".
@@ -2277,6 +2318,7 @@ pub const FlatVal = opaque {
     pub fn getBorderHlColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BORDERHLCOLOR", .{});
     }
+
 
     /// 
     /// BORDERHLCOLOR: color used for borders when highlighted.
@@ -2319,6 +2361,7 @@ pub const FlatVal = opaque {
         interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
+
     /// 
     /// MIN: Contains the minimum valuator value.
     /// Default is "0".
@@ -2326,6 +2369,7 @@ pub const FlatVal = opaque {
     pub fn getMin(self: *Self) f64 {
         return interop.getDoubleAttribute(self, "MIN", .{});
     }
+
 
     /// 
     /// MIN: Contains the minimum valuator value.
@@ -2387,6 +2431,7 @@ pub const FlatVal = opaque {
         interop.setBoolAttribute(self, "XAUTOHIDE", .{}, arg);
     }
 
+
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -2394,6 +2439,7 @@ pub const FlatVal = opaque {
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
+
 
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
@@ -2411,12 +2457,14 @@ pub const FlatVal = opaque {
         interop.setIntAttribute(self, "XMAX", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: ignored.
     /// It will use the background color of the native parent.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR: ignored.
@@ -2500,12 +2548,14 @@ pub const FlatVal = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// BORDERPSCOLOR: color used for borders when pressed or selected.
     /// Default use BORDERCOLOR.
     pub fn getBorderPsColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BORDERPSCOLOR", .{});
     }
+
 
     /// 
     /// BORDERPSCOLOR: color used for borders when pressed or selected.
@@ -2525,6 +2575,7 @@ pub const FlatVal = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// BORDERCOLOR: color used for borders.
     /// Default: "50 150 255".
@@ -2532,6 +2583,7 @@ pub const FlatVal = opaque {
     pub fn getBorderColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BORDERCOLOR", .{});
     }
+
 
     /// 
     /// BORDERCOLOR: color used for borders.
@@ -2558,6 +2610,7 @@ pub const FlatVal = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// HLCOLOR: color used to indicate a highlight state.
     /// Pre-defined to "30 150 250".
@@ -2566,6 +2619,7 @@ pub const FlatVal = opaque {
     pub fn getHlColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "HLCOLOR", .{});
     }
+
 
     /// 
     /// HLCOLOR: color used to indicate a highlight state.
@@ -2608,6 +2662,7 @@ pub const FlatVal = opaque {
         interop.setRgb(self, "DRAWBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// IMAGEPRESS (non inheritable): Image name of the element in pressed state.
     /// If it is not defined then the IMAGE is used.
@@ -2618,6 +2673,7 @@ pub const FlatVal = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGEPRESS (non inheritable): Image name of the element in pressed state.
@@ -2684,6 +2740,7 @@ pub const FlatVal = opaque {
         }
     }
 
+
     /// 
     /// VALUE (non inheritable): Contains a number between MIN and MAX, indicating
     /// the valuator position.
@@ -2692,6 +2749,7 @@ pub const FlatVal = opaque {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
 
+
     /// 
     /// VALUE (non inheritable): Contains a number between MIN and MAX, indicating
     /// the valuator position.
@@ -2699,6 +2757,7 @@ pub const FlatVal = opaque {
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
+
 
     /// 
     /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
@@ -2710,6 +2769,7 @@ pub const FlatVal = opaque {
         return interop.getBoolAttribute(self, "BACKIMAGEZOOM", .{});
     }
 
+
     /// 
     /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
     /// occupy the full background.
@@ -2719,6 +2779,7 @@ pub const FlatVal = opaque {
     pub fn setBackImageZoom(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "BACKIMAGEZOOM", .{}, arg);
     }
+
 
     /// 
     /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
@@ -2730,6 +2791,7 @@ pub const FlatVal = opaque {
         return interop.getBoolAttribute(self, "FITTOBACKIMAGE", .{});
     }
 
+
     /// 
     /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
     /// from the BACKIMAGE.
@@ -2740,12 +2802,14 @@ pub const FlatVal = opaque {
         interop.setBoolAttribute(self, "FITTOBACKIMAGE", .{}, arg);
     }
 
+
     /// 
     /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -2762,6 +2826,7 @@ pub const FlatVal = opaque {
         interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
+
     /// 
     /// IMAGEHIGHLIGHT (non inheritable): Image name of the element in highlight state.
     /// If it is not defined then the IMAGE is used.
@@ -2772,6 +2837,7 @@ pub const FlatVal = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGEHIGHLIGHT (non inheritable): Image name of the element in highlight state.
@@ -2793,6 +2859,7 @@ pub const FlatVal = opaque {
         interop.setIntAttribute(self, "YMAX", .{}, arg);
     }
 
+
     /// 
     /// BACKIMAGE (non inheritable): image name to be used as background.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2804,6 +2871,7 @@ pub const FlatVal = opaque {
             return null;
         }
     }
+
 
     /// 
     /// BACKIMAGE (non inheritable): image name to be used as background.
@@ -2818,6 +2886,7 @@ pub const FlatVal = opaque {
         interop.setStrAttribute(self, "BACKIMAGE", .{}, arg);
     }
 
+
     /// 
     /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
     /// If it is not defined then the IMAGE is used and its colors will be replaced
@@ -2829,6 +2898,7 @@ pub const FlatVal = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
@@ -2862,6 +2932,7 @@ pub const FlatVal = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
+
     /// 
     /// MAX: Contains the maximum valuator value.
     /// Default is "1".
@@ -2869,6 +2940,7 @@ pub const FlatVal = opaque {
     pub fn getMax(self: *Self) f64 {
         return interop.getDoubleAttribute(self, "MAX", .{});
     }
+
 
     /// 
     /// MAX: Contains the maximum valuator value.
@@ -2907,6 +2979,7 @@ pub const FlatVal = opaque {
         interop.setBoolAttribute(self, "WHEELDROPFOCUS", .{}, arg);
     }
 
+
     /// 
     /// BORDERWIDTH: line width used for borders.
     /// Default: "1".
@@ -2915,6 +2988,7 @@ pub const FlatVal = opaque {
     pub fn getBorderWidth(self: *Self) i32 {
         return interop.getIntAttribute(self, "BORDERWIDTH", .{});
     }
+
 
     /// 
     /// BORDERWIDTH: line width used for borders.
@@ -2973,6 +3047,7 @@ pub const FlatVal = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2993,6 +3068,7 @@ pub const FlatVal = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -3016,6 +3092,7 @@ pub const FlatVal = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -3036,6 +3113,7 @@ pub const FlatVal = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

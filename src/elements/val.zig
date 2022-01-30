@@ -178,7 +178,7 @@ pub const Val = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const Type = enum {
         Horizontal,
@@ -286,6 +286,7 @@ pub const Val = opaque {
             return self.*;
         }
 
+
         /// 
         /// STEP: Controls the increment for keyboard control and the mouse wheel.
         /// It is not the size of the increment.
@@ -329,6 +330,7 @@ pub const Val = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
@@ -394,6 +396,7 @@ pub const Val = opaque {
             return self.*;
         }
 
+
         /// 
         /// ORIENTATION (creation only) (non inheritable): Informs whether the valuator
         /// is "VERTICAL" or "HORIZONTAL".
@@ -416,6 +419,7 @@ pub const Val = opaque {
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MIN: Contains the minimum valuator value.
@@ -441,6 +445,7 @@ pub const Val = opaque {
             return self.*;
         }
 
+
         /// 
         /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
         /// the next native parent with FOCUS_CB defined.
@@ -451,6 +456,7 @@ pub const Val = opaque {
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BGCOLOR: transparent in all systems except in Motif.
@@ -478,6 +484,7 @@ pub const Val = opaque {
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// RASTERSIZE (non inheritable): The initial size is 100 pixels along the
@@ -511,15 +518,17 @@ pub const Val = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE (non inheritable): Contains a number between MIN and MAX, indicating
         /// the valuator position.
         /// Default: "0.0".
-        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setValue(self: *Initializer, arg: f64) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
+            interop.setDoubleAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -550,6 +559,7 @@ pub const Val = opaque {
             return self.*;
         }
 
+
         /// 
         /// MAX: Contains the maximum valuator value.
         /// Default is "1".
@@ -577,6 +587,7 @@ pub const Val = opaque {
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -606,6 +617,7 @@ pub const Val = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -878,6 +890,10 @@ pub const Val = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -974,6 +990,7 @@ pub const Val = opaque {
         interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
+
     /// 
     /// STEP: Controls the increment for keyboard control and the mouse wheel.
     /// It is not the size of the increment.
@@ -982,6 +999,7 @@ pub const Val = opaque {
     pub fn getStep(self: *Self) f64 {
         return interop.getDoubleAttribute(self, "STEP", .{});
     }
+
 
     /// 
     /// STEP: Controls the increment for keyboard control and the mouse wheel.
@@ -1133,6 +1151,7 @@ pub const Val = opaque {
         interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
+
     /// 
     /// MIN: Contains the minimum valuator value.
     /// Default is "0".
@@ -1140,6 +1159,7 @@ pub const Val = opaque {
     pub fn getMin(self: *Self) f64 {
         return interop.getDoubleAttribute(self, "MIN", .{});
     }
+
 
     /// 
     /// MIN: Contains the minimum valuator value.
@@ -1173,6 +1193,7 @@ pub const Val = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -1181,6 +1202,7 @@ pub const Val = opaque {
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
+
 
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
@@ -1191,12 +1213,14 @@ pub const Val = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: transparent in all systems except in Motif.
     /// It will use the background color of the native parent.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR: transparent in all systems except in Motif.
@@ -1232,6 +1256,7 @@ pub const Val = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// RASTERSIZE (non inheritable): The initial size is 100 pixels along the
     /// major axis, and the handler normal size on the minor axis.
@@ -1242,6 +1267,7 @@ pub const Val = opaque {
         var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// RASTERSIZE (non inheritable): The initial size is 100 pixels along the
@@ -1279,21 +1305,24 @@ pub const Val = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
-    /// 
-    /// VALUE (non inheritable): Contains a number between MIN and MAX, indicating
-    /// the valuator position.
-    /// Default: "0.0".
-    pub fn getValue(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "VALUE", .{});
-    }
 
     /// 
     /// VALUE (non inheritable): Contains a number between MIN and MAX, indicating
     /// the valuator position.
     /// Default: "0.0".
-    pub fn setValue(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "VALUE", .{}, arg);
+    pub fn getValue(self: *Self) f64 {
+        return interop.getDoubleAttribute(self, "VALUE", .{});
     }
+
+
+    /// 
+    /// VALUE (non inheritable): Contains a number between MIN and MAX, indicating
+    /// the valuator position.
+    /// Default: "0.0".
+    pub fn setValue(self: *Self, arg: f64) void {
+        interop.setDoubleAttribute(self, "VALUE", .{}, arg);
+    }
+
 
     /// 
     /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -1301,6 +1330,7 @@ pub const Val = opaque {
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -1336,6 +1366,7 @@ pub const Val = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
+
     /// 
     /// MAX: Contains the maximum valuator value.
     /// Default is "1".
@@ -1343,6 +1374,7 @@ pub const Val = opaque {
     pub fn getMax(self: *Self) f64 {
         return interop.getDoubleAttribute(self, "MAX", .{});
     }
+
 
     /// 
     /// MAX: Contains the maximum valuator value.
@@ -1381,6 +1413,7 @@ pub const Val = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1401,6 +1434,7 @@ pub const Val = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1424,6 +1458,7 @@ pub const Val = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1444,6 +1479,7 @@ pub const Val = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1963,12 +1999,12 @@ test "Val Value" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Val.init().setValue("Hello").unwrap());
+    var item = try (iup.Val.init().setValue(3.14).unwrap());
     defer item.deinit();
 
     var ret = item.getValue();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == @as(f64, 3.14));
 }
 
 test "Val Active" {

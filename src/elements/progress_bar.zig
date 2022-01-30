@@ -173,6 +173,7 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
+
         /// 
         /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
         /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
@@ -187,6 +188,7 @@ pub const ProgressBar = opaque {
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FGCOLOR [Windows Classic and Motif only]: Controls the bar color.
@@ -238,6 +240,7 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
+
         /// 
         /// MAX (non inheritable): Contains the maximum value.
         /// Default is "1".
@@ -261,6 +264,7 @@ pub const ProgressBar = opaque {
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// BGCOLOR [Windows Classic and Motif only]: controls the background color.
@@ -294,6 +298,7 @@ pub const ProgressBar = opaque {
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
@@ -337,6 +342,7 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
+
         /// 
         /// DASHED (creation only in Windows) [Windows and GTK only]: Changes the style
         /// of the progress bar for a dashed pattern.
@@ -347,6 +353,7 @@ pub const ProgressBar = opaque {
             interop.setBoolAttribute(self.ref, "DASHED", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// RASTERSIZE: The initial size is defined as "200x30".
@@ -371,6 +378,7 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
+
         /// 
         /// MIN (non inheritable): Contains the minimum value.
         /// Default is "0".
@@ -380,6 +388,7 @@ pub const ProgressBar = opaque {
             interop.setDoubleAttribute(self.ref, "MIN", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ORIENTATION (creation only): can be "VERTICAL" or "HORIZONTAL".
@@ -424,6 +433,7 @@ pub const ProgressBar = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -452,6 +462,7 @@ pub const ProgressBar = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -541,6 +552,10 @@ pub const ProgressBar = opaque {
 
     pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
         return interop.fromHandleName(Self, handle_name);
+    }
+
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
     }
 
     ///
@@ -669,12 +684,14 @@ pub const ProgressBar = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
+
     /// 
     /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// SIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, EXPAND, FONT, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -691,12 +708,14 @@ pub const ProgressBar = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
+
     /// 
     /// FGCOLOR [Windows Classic and Motif only]: Controls the bar color.
     /// Default: the global attribute DLGFGCOLOR.
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR [Windows Classic and Motif only]: Controls the bar color.
@@ -764,6 +783,7 @@ pub const ProgressBar = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
+
     /// 
     /// MAX (non inheritable): Contains the maximum value.
     /// Default is "1".
@@ -771,6 +791,7 @@ pub const ProgressBar = opaque {
     pub fn getMax(self: *Self) f64 {
         return interop.getDoubleAttribute(self, "MAX", .{});
     }
+
 
     /// 
     /// MAX (non inheritable): Contains the maximum value.
@@ -804,12 +825,14 @@ pub const ProgressBar = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
+
     /// 
     /// BGCOLOR [Windows Classic and Motif only]: controls the background color.
     /// Default: the global attribute DLGBGCOLOR.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR [Windows Classic and Motif only]: controls the background color.
@@ -850,12 +873,14 @@ pub const ProgressBar = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
     /// controlling the current position.
     pub fn getValue(self: *Self) f64 {
         return interop.getDoubleAttribute(self, "VALUE", .{});
     }
+
 
     /// 
     /// VALUE (non inheritable): Contains a number between "MIN" and "MAX",
@@ -913,6 +938,7 @@ pub const ProgressBar = opaque {
         interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
     }
 
+
     /// 
     /// RASTERSIZE: The initial size is defined as "200x30".
     /// Set to NULL to allow the use of smaller values in the layout computation.
@@ -920,6 +946,7 @@ pub const ProgressBar = opaque {
         var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// RASTERSIZE: The initial size is defined as "200x30".
@@ -949,6 +976,7 @@ pub const ProgressBar = opaque {
         }
     }
 
+
     /// 
     /// MIN (non inheritable): Contains the minimum value.
     /// Default is "0".
@@ -956,6 +984,7 @@ pub const ProgressBar = opaque {
     pub fn getMin(self: *Self) f64 {
         return interop.getDoubleAttribute(self, "MIN", .{});
     }
+
 
     /// 
     /// MIN (non inheritable): Contains the minimum value.
@@ -1015,6 +1044,7 @@ pub const ProgressBar = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1035,6 +1065,7 @@ pub const ProgressBar = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1058,6 +1089,7 @@ pub const ProgressBar = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1078,6 +1110,7 @@ pub const ProgressBar = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

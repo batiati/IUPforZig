@@ -63,7 +63,7 @@ pub const HBox = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -208,6 +208,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
@@ -217,6 +218,7 @@ pub const HBox = opaque {
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -241,6 +243,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
         /// the biggest natural size among them.
@@ -263,6 +266,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
         /// (since 3.0)
@@ -284,6 +288,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPANDCHILDREN (non inheritable): forces all children to expand vertically
         /// and to fully occupy its space available inside the box.
@@ -296,6 +301,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// GAP, CGAP: Defines an horizontal space in pixels between the children, CGAP
         /// is in the same units of the SIZE attribute for the width.
@@ -306,6 +312,7 @@ pub const HBox = opaque {
             interop.setIntAttribute(self.ref, "GAP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -327,6 +334,7 @@ pub const HBox = opaque {
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// HOMOGENEOUS (non inheritable): forces all children to get equal horizontal space.
@@ -359,6 +367,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// SIZE / RASTERSIZE (non inheritable): Defines the width of the box.
         /// When consulted behaves as the standard SIZE/RASTERSIZE attributes.
@@ -376,6 +385,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// GAP, CGAP: Defines an horizontal space in pixels between the children, CGAP
         /// is in the same units of the SIZE attribute for the width.
@@ -386,6 +396,7 @@ pub const HBox = opaque {
             interop.setIntAttribute(self.ref, "CGAP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
@@ -401,6 +412,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
         /// (since 3.0)
@@ -412,6 +424,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
         /// (since 3.0)
@@ -422,6 +435,7 @@ pub const HBox = opaque {
             interop.setStrAttribute(self.ref, "NCMARGIN", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable*): The default value is "YES".
@@ -455,6 +469,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
         /// then its size and position will be ignored by the layout processing.
@@ -477,6 +492,7 @@ pub const HBox = opaque {
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
@@ -503,6 +519,7 @@ pub const HBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// ALIGNMENT (non inheritable): Vertically aligns the elements.
         /// Possible values: "ATOP", "ACENTER", "ABOTTOM".
@@ -518,6 +535,7 @@ pub const HBox = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -547,6 +565,7 @@ pub const HBox = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -675,6 +694,10 @@ pub const HBox = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -778,6 +801,7 @@ pub const HBox = opaque {
         interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -786,6 +810,7 @@ pub const HBox = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -793,6 +818,7 @@ pub const HBox = opaque {
     pub fn setExpandWeight(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
+
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -805,6 +831,7 @@ pub const HBox = opaque {
         var str = interop.getStrAttribute(self, "MARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -830,6 +857,7 @@ pub const HBox = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
+
     /// 
     /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
     /// the biggest natural size among them.
@@ -848,6 +876,7 @@ pub const HBox = opaque {
         if (std.ascii.eqlIgnoreCase("NONE", ret)) return .None;
         return null;
     }
+
 
     /// 
     /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
@@ -869,12 +898,14 @@ pub const HBox = opaque {
         }
     }
 
+
     /// 
     /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
     /// (since 3.0)
     pub fn getNGap(self: *Self) i32 {
         return interop.getIntAttribute(self, "NGAP", .{});
     }
+
 
     /// 
     /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
@@ -899,6 +930,7 @@ pub const HBox = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
+
     /// 
     /// EXPANDCHILDREN (non inheritable): forces all children to expand vertically
     /// and to fully occupy its space available inside the box.
@@ -908,6 +940,7 @@ pub const HBox = opaque {
     pub fn getExpandChildren(self: *Self) bool {
         return interop.getBoolAttribute(self, "EXPANDCHILDREN", .{});
     }
+
 
     /// 
     /// EXPANDCHILDREN (non inheritable): forces all children to expand vertically
@@ -919,6 +952,7 @@ pub const HBox = opaque {
         interop.setBoolAttribute(self, "EXPANDCHILDREN", .{}, arg);
     }
 
+
     /// 
     /// GAP, CGAP: Defines an horizontal space in pixels between the children, CGAP
     /// is in the same units of the SIZE attribute for the width.
@@ -928,6 +962,7 @@ pub const HBox = opaque {
         return interop.getIntAttribute(self, "GAP", .{});
     }
 
+
     /// 
     /// GAP, CGAP: Defines an horizontal space in pixels between the children, CGAP
     /// is in the same units of the SIZE attribute for the width.
@@ -936,6 +971,7 @@ pub const HBox = opaque {
     pub fn setGap(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "GAP", .{}, arg);
     }
+
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -948,6 +984,7 @@ pub const HBox = opaque {
         var str = interop.getStrAttribute(self, "CMARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -975,6 +1012,7 @@ pub const HBox = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// HOMOGENEOUS (non inheritable): forces all children to get equal horizontal space.
     /// The space width will be based on the largest child.
@@ -985,6 +1023,7 @@ pub const HBox = opaque {
     pub fn getHomogeneous(self: *Self) bool {
         return interop.getBoolAttribute(self, "HOMOGENEOUS", .{});
     }
+
 
     /// 
     /// HOMOGENEOUS (non inheritable): forces all children to get equal horizontal space.
@@ -1031,6 +1070,7 @@ pub const HBox = opaque {
         interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
+
     /// 
     /// SIZE / RASTERSIZE (non inheritable): Defines the width of the box.
     /// When consulted behaves as the standard SIZE/RASTERSIZE attributes.
@@ -1039,6 +1079,7 @@ pub const HBox = opaque {
     pub fn getSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "SIZE", .{});
     }
+
 
     /// 
     /// SIZE / RASTERSIZE (non inheritable): Defines the width of the box.
@@ -1057,6 +1098,7 @@ pub const HBox = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// GAP, CGAP: Defines an horizontal space in pixels between the children, CGAP
     /// is in the same units of the SIZE attribute for the width.
@@ -1065,6 +1107,7 @@ pub const HBox = opaque {
     pub fn getCGap(self: *Self) i32 {
         return interop.getIntAttribute(self, "CGAP", .{});
     }
+
 
     /// 
     /// GAP, CGAP: Defines an horizontal space in pixels between the children, CGAP
@@ -1075,11 +1118,13 @@ pub const HBox = opaque {
         interop.setIntAttribute(self, "CGAP", .{}, arg);
     }
 
+
     /// 
     /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
+
 
     /// 
     /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
@@ -1095,6 +1140,7 @@ pub const HBox = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     /// (since 3.0)
@@ -1102,6 +1148,7 @@ pub const HBox = opaque {
         var str = interop.getStrAttribute(self, "NMARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
@@ -1112,6 +1159,7 @@ pub const HBox = opaque {
         interop.setStrAttribute(self, "NMARGIN", .{}, value);
     }
 
+
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     /// (since 3.0)
@@ -1119,6 +1167,7 @@ pub const HBox = opaque {
         var str = interop.getStrAttribute(self, "NCMARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
@@ -1128,6 +1177,7 @@ pub const HBox = opaque {
         var value = Margin.intIntToString(&buffer, horiz, vert);
         interop.setStrAttribute(self, "NCMARGIN", .{}, value);
     }
+
 
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
@@ -1143,6 +1193,7 @@ pub const HBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
@@ -1179,6 +1230,7 @@ pub const HBox = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -1192,6 +1244,7 @@ pub const HBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -1207,6 +1260,7 @@ pub const HBox = opaque {
             interop.clearAttribute(self, "FLOATING", .{});
         }
     }
+
 
     /// 
     /// ORIENTATION (read-only) (non inheritable): Returns "HORIZONTAL".
@@ -1227,11 +1281,13 @@ pub const HBox = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// WID (read-only): returns -1 if mapped.
     pub fn getWId(self: *Self) i32 {
         return interop.getIntAttribute(self, "WID", .{});
     }
+
 
     /// 
     /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
@@ -1239,6 +1295,7 @@ pub const HBox = opaque {
     pub fn getNcGap(self: *Self) i32 {
         return interop.getIntAttribute(self, "NCGAP", .{});
     }
+
 
     /// 
     /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
@@ -1274,6 +1331,7 @@ pub const HBox = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// ALIGNMENT (non inheritable): Vertically aligns the elements.
     /// Possible values: "ATOP", "ACENTER", "ABOTTOM".
@@ -1286,6 +1344,7 @@ pub const HBox = opaque {
         if (std.ascii.eqlIgnoreCase("ATOP", ret)) return .ATop;
         return null;
     }
+
 
     /// 
     /// ALIGNMENT (non inheritable): Vertically aligns the elements.
@@ -1300,6 +1359,7 @@ pub const HBox = opaque {
             interop.clearAttribute(self, "ALIGNMENT", .{});
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1321,6 +1381,7 @@ pub const HBox = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1344,6 +1405,7 @@ pub const HBox = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1364,6 +1426,7 @@ pub const HBox = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

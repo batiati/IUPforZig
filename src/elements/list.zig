@@ -158,7 +158,7 @@ pub const List = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -181,7 +181,7 @@ pub const List = opaque {
     /// C]ih:dblclick_cb(item: number, text: string) -> (ret: number) [in Lua]
     pub const OnDblClickFn = fn (self: *Self, arg0: i32, arg1: [:0]const u8) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -316,7 +316,7 @@ pub const List = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// EDIT_CB: Action generated when the text in the text box is manually changed
@@ -413,6 +413,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// FGCOLOR: Text color.
         /// Default: the global attribute TXTFGCOLOR.
@@ -435,6 +436,7 @@ pub const List = opaque {
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
@@ -477,6 +479,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
         /// the drop of files.
@@ -494,6 +497,7 @@ pub const List = opaque {
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
@@ -552,6 +556,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHOWIMAGE (creation only) [Windows and GTK Only]: enables the use of an
         /// image for each item.
@@ -602,6 +607,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// VISIBLELINES: When DROPDOWN=NO defines the number of visible lines for the
         /// Natural Size, this means that will act also as minimum number of visible lines.
@@ -611,6 +617,7 @@ pub const List = opaque {
             interop.setIntAttribute(self.ref, "VISIBLELINES", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// SIZE: Size of the list.
@@ -635,6 +642,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUESTRING (non inheritable): changes or retrieves the value attribute
         /// using a string of an item.
@@ -646,6 +654,7 @@ pub const List = opaque {
             interop.setStrAttribute(self.ref, "VALUESTRING", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DROPEXPAND [Windows Only]: When DROPDOWN=Yes the size of the dropped list
@@ -664,6 +673,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
         /// support drag and drop of items between lists (IupList or IupFlatList), in
@@ -679,6 +689,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// REMOVEITEM (write-only): removes the given value.
         /// value starts at 1.
@@ -690,6 +701,7 @@ pub const List = opaque {
             interop.setIntAttribute(self.ref, "REMOVEITEM", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TOPITEM (write-only): position the given item at the top of the list or
@@ -728,6 +740,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// VISIBLEITEMS [Windows and Motif Only]: Number of items that are visible
         /// when DROPDOWN=YES is used for the dropdown list.
@@ -737,6 +750,7 @@ pub const List = opaque {
             interop.setIntAttribute(self.ref, "VISIBLEITEMS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// SCROLLBAR (creation only): Associates automatic scrollbars to the list when DROPDOWN=NO.
@@ -759,6 +773,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHOWDRAGDROP (creation only) (non inheritable): enables the internal drag
         /// and drop of items in the same list, and enables the DRAGDROP_CB callback.
@@ -772,6 +787,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
         /// the next native parent with FOCUS_CB defined.
@@ -782,6 +798,7 @@ pub const List = opaque {
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BGCOLOR: Background color of the text.
@@ -801,6 +818,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// EDITBOX (creation only): Adds an edit box to the list.
         /// Can be "YES" or "NO".
@@ -810,6 +828,7 @@ pub const List = opaque {
             interop.setBoolAttribute(self.ref, "EDITBOX", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VALUEMASKED (non inheritable) (write-only): sets VALUE but first checks if
@@ -846,6 +865,7 @@ pub const List = opaque {
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// SPACING: internal padding for each item.
@@ -893,6 +913,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// CSPACING: same as SPACING but using the units of the vertical part of the
         /// SIZE attribute.
@@ -909,6 +930,7 @@ pub const List = opaque {
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
@@ -930,6 +952,7 @@ pub const List = opaque {
             interop.setStrAttribute(self.ref, "MASKINT", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// APPENDITEM (write-only): inserts an item after the last item.
@@ -953,6 +976,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// MULTIPLE (creation only): Allows selecting several items simultaneously
         /// (multiple list).
@@ -971,6 +995,7 @@ pub const List = opaque {
             interop.setStrAttribute(self.ref, "SELECTIONPOS", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
@@ -1016,6 +1041,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
         /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
@@ -1030,6 +1056,7 @@ pub const List = opaque {
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// SHOWDROPDOWN (write-only): opens or closes the dropdown list.
@@ -1068,6 +1095,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
         /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
@@ -1091,6 +1119,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// AUTOHIDE: scrollbars are shown only if they are necessary.
         /// Default: "YES".
@@ -1111,6 +1140,7 @@ pub const List = opaque {
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// AUTOREDRAW [Windows] (non inheritable): automatically redraws the list when
@@ -1139,6 +1169,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// DROPDOWN (creation only): Changes the appearance of the list for the user:
         /// only the selected item is shown beside a button with the image of an arrow
@@ -1159,6 +1190,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
         /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
@@ -1176,6 +1208,7 @@ pub const List = opaque {
             return self.*;
         }
 
+
         /// 
         /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
         /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
@@ -1184,6 +1217,7 @@ pub const List = opaque {
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1213,6 +1247,7 @@ pub const List = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1681,6 +1716,10 @@ pub const List = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1753,6 +1792,7 @@ pub const List = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// COUNT (read-only) (non inheritable): returns the number of items.
     /// Before mapping it counts the number of non NULL items before the first NULL item.
@@ -1760,6 +1800,7 @@ pub const List = opaque {
     pub fn getCount(self: *Self) i32 {
         return interop.getIntAttribute(self, "COUNT", .{});
     }
+
 
     /// 
     /// FGCOLOR: Text color.
@@ -1769,6 +1810,7 @@ pub const List = opaque {
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR: Text color.
@@ -1795,6 +1837,7 @@ pub const List = opaque {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
     /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
@@ -1804,6 +1847,7 @@ pub const List = opaque {
         var str = interop.getStrAttribute(self, "CARET", .{});
         return iup.LinColPos.parse(str, ',');
     }
+
 
     /// 
     /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
@@ -1859,6 +1903,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
+
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
     /// the drop of files.
@@ -1868,6 +1913,7 @@ pub const List = opaque {
     pub fn getDropFilesTarget(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
+
 
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
@@ -1995,6 +2041,7 @@ pub const List = opaque {
         }
     }
 
+
     /// 
     /// VISIBLELINES: When DROPDOWN=NO defines the number of visible lines for the
     /// Natural Size, this means that will act also as minimum number of visible lines.
@@ -2003,6 +2050,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "VISIBLELINES", .{});
     }
 
+
     /// 
     /// VISIBLELINES: When DROPDOWN=NO defines the number of visible lines for the
     /// Natural Size, this means that will act also as minimum number of visible lines.
@@ -2010,6 +2058,7 @@ pub const List = opaque {
     pub fn setVisibleLines(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "VISIBLELINES", .{}, arg);
     }
+
 
     /// 
     /// SIZE: Size of the list.
@@ -2022,6 +2071,7 @@ pub const List = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE: Size of the list.
@@ -2047,6 +2097,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "PADDING", .{}, value);
     }
 
+
     /// 
     /// VALUESTRING (non inheritable): changes or retrieves the value attribute
     /// using a string of an item.
@@ -2056,6 +2107,7 @@ pub const List = opaque {
     pub fn getValueString(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "VALUESTRING", .{});
     }
+
 
     /// 
     /// VALUESTRING (non inheritable): changes or retrieves the value attribute
@@ -2071,6 +2123,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+
     /// 
     /// DROPEXPAND [Windows Only]: When DROPDOWN=Yes the size of the dropped list
     /// will expand to include the largest text.
@@ -2079,6 +2132,7 @@ pub const List = opaque {
     pub fn getDropExpand(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPEXPAND", .{});
     }
+
 
     /// 
     /// DROPEXPAND [Windows Only]: When DROPDOWN=Yes the size of the dropped list
@@ -2097,6 +2151,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
+
     /// 
     /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
     /// support drag and drop of items between lists (IupList or IupFlatList), in
@@ -2109,6 +2164,7 @@ pub const List = opaque {
     pub fn getDragDropList(self: *Self) bool {
         return interop.getBoolAttribute(self, "DRAGDROPLIST", .{});
     }
+
 
     /// 
     /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
@@ -2123,6 +2179,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "DRAGDROPLIST", .{}, arg);
     }
 
+
     /// 
     /// REMOVEITEM (write-only): removes the given value.
     /// value starts at 1.
@@ -2133,6 +2190,7 @@ pub const List = opaque {
         interop.setIntAttribute(self, "REMOVEITEM", .{}, arg);
     }
 
+
     /// 
     /// TOPITEM (write-only): position the given item at the top of the list or
     /// near to make it visible.
@@ -2141,6 +2199,7 @@ pub const List = opaque {
     pub fn getTopItem(self: *Self) i32 {
         return interop.getIntAttribute(self, "TOPITEM", .{});
     }
+
 
     /// 
     /// TOPITEM (write-only): position the given item at the top of the list or
@@ -2191,6 +2250,7 @@ pub const List = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+
     /// 
     /// VISIBLEITEMS [Windows and Motif Only]: Number of items that are visible
     /// when DROPDOWN=YES is used for the dropdown list.
@@ -2199,6 +2259,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "VISIBLEITEMS", .{});
     }
 
+
     /// 
     /// VISIBLEITEMS [Windows and Motif Only]: Number of items that are visible
     /// when DROPDOWN=YES is used for the dropdown list.
@@ -2206,6 +2267,7 @@ pub const List = opaque {
     pub fn setVisibleItems(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "VISIBLEITEMS", .{}, arg);
     }
+
 
     /// 
     /// SCROLLBAR (creation only): Associates automatic scrollbars to the list when DROPDOWN=NO.
@@ -2226,6 +2288,7 @@ pub const List = opaque {
         return interop.getBoolAttribute(self, "SCROLLBAR", .{});
     }
 
+
     /// 
     /// SCROLLBAR (creation only): Associates automatic scrollbars to the list when DROPDOWN=NO.
     /// Can be: "YES" or "NO" (none).
@@ -2245,6 +2308,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "SCROLLBAR", .{}, arg);
     }
 
+
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -2253,6 +2317,7 @@ pub const List = opaque {
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
+
 
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
@@ -2263,6 +2328,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: Background color of the text.
     /// Default: the global attribute TXTBGCOLOR.
@@ -2272,6 +2338,7 @@ pub const List = opaque {
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR: Background color of the text.
@@ -2290,6 +2357,7 @@ pub const List = opaque {
     pub fn setDropTarget(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
     }
+
 
     /// 
     /// VALUEMASKED (non inheritable) (write-only): sets VALUE but first checks if
@@ -2336,6 +2404,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// SPACING: internal padding for each item.
     /// Notice that vertically the distance between each item will be actually 2x
@@ -2347,6 +2416,7 @@ pub const List = opaque {
     pub fn getSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "SPACING", .{});
     }
+
 
     /// 
     /// SPACING: internal padding for each item.
@@ -2399,6 +2469,7 @@ pub const List = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// CSPACING: same as SPACING but using the units of the vertical part of the
     /// SIZE attribute.
@@ -2407,6 +2478,7 @@ pub const List = opaque {
     pub fn getCSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "CSPACING", .{});
     }
+
 
     /// 
     /// CSPACING: same as SPACING but using the units of the vertical part of the
@@ -2425,6 +2497,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
+
     /// 
     /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
     /// this means that will act also as minimum number of visible columns.
@@ -2435,6 +2508,7 @@ pub const List = opaque {
     pub fn getVisibleColumns(self: *Self) i32 {
         return interop.getIntAttribute(self, "VISIBLECOLUMNS", .{});
     }
+
 
     /// 
     /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
@@ -2457,6 +2531,7 @@ pub const List = opaque {
         var value = iup.Range.intIntToString(&buffer, begin, end, ',');
         interop.setStrAttribute(self, "MASKINT", .{}, value);
     }
+
 
     /// 
     /// APPENDITEM (write-only): inserts an item after the last item.
@@ -2493,6 +2568,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "SELECTIONPOS", .{}, value);
     }
 
+
     /// 
     /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
     /// EDITBOX=YES: Text entered by the user.
@@ -2520,6 +2596,7 @@ pub const List = opaque {
     pub fn getValue(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
+
 
     /// 
     /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
@@ -2568,12 +2645,14 @@ pub const List = opaque {
         interop.setStrAttribute(self, "CPADDING", .{}, value);
     }
 
+
     /// 
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -2589,6 +2668,7 @@ pub const List = opaque {
     pub fn setTipVisible(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
+
 
     /// 
     /// SHOWDROPDOWN (write-only): opens or closes the dropdown list.
@@ -2639,6 +2719,7 @@ pub const List = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
     /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
@@ -2647,6 +2728,7 @@ pub const List = opaque {
     pub fn getCaretPos(self: *Self) i32 {
         return interop.getIntAttribute(self, "CARETPOS", .{});
     }
+
 
     /// 
     /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
@@ -2673,6 +2755,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "DRAGTYPES", .{}, arg);
     }
 
+
     /// 
     /// AUTOHIDE: scrollbars are shown only if they are necessary.
     /// Default: "YES".
@@ -2685,6 +2768,7 @@ pub const List = opaque {
     pub fn getAutoHide(self: *Self) bool {
         return interop.getBoolAttribute(self, "AUTOHIDE", .{});
     }
+
 
     /// 
     /// AUTOHIDE: scrollbars are shown only if they are necessary.
@@ -2707,6 +2791,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// AUTOREDRAW [Windows] (non inheritable): automatically redraws the list when
     /// something has change.
@@ -2716,6 +2801,7 @@ pub const List = opaque {
     pub fn getAutoRedraw(self: *Self) bool {
         return interop.getBoolAttribute(self, "AUTOREDRAW", .{});
     }
+
 
     /// 
     /// AUTOREDRAW [Windows] (non inheritable): automatically redraws the list when
@@ -2760,6 +2846,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "READONLY", .{}, arg);
     }
 
+
     /// 
     /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
     /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
@@ -2777,6 +2864,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "MASKNOEMPTY", .{}, arg);
     }
 
+
     /// 
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
@@ -2784,12 +2872,14 @@ pub const List = opaque {
         return interop.getStrAttribute(self, "FONT", .{});
     }
 
+
     /// 
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2811,6 +2901,7 @@ pub const List = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2834,6 +2925,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2854,6 +2946,7 @@ pub const List = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

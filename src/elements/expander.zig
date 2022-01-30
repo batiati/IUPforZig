@@ -96,7 +96,7 @@ pub const Expander = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// EXPAND (non inheritable): the default value is "YES".
@@ -278,6 +278,7 @@ pub const Expander = opaque {
             return self.*;
         }
 
+
         /// 
         /// BACKCOLOR (non inheritable): background color of the bar handler.
         /// If not defined it will use the background color of the native parent.
@@ -295,6 +296,7 @@ pub const Expander = opaque {
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// TITLEIMAGE (non inheritable): title image, shown in the bar handler near
@@ -386,6 +388,7 @@ pub const Expander = opaque {
             return self.*;
         }
 
+
         /// 
         /// IMAGE (non inheritable): image name to replace the arrow image by a custom
         /// image when STATE=CLOSE.
@@ -409,6 +412,7 @@ pub const Expander = opaque {
             return self.*;
         }
 
+
         /// 
         /// HIGHCOLOR (non inheritable): title text color when highlighted.
         /// Works only when TITLEEXPAND=Yes.
@@ -425,6 +429,7 @@ pub const Expander = opaque {
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable): the default value is "YES".
@@ -480,6 +485,7 @@ pub const Expander = opaque {
             interop.setStrAttribute(self.ref, "TITLEIMAGEOPENHIGHLIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TITLE (non inheritable): title text, shown in the bar handler near the
@@ -575,6 +581,7 @@ pub const Expander = opaque {
             return self.*;
         }
 
+
         /// 
         /// BARSIZE (non inheritable): controls the size of the bar handler.
         /// Default: the height or width that fits all its internal elements according
@@ -584,6 +591,7 @@ pub const Expander = opaque {
             interop.setIntAttribute(self.ref, "BARSIZE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FRAMECOLOR (non inheritable): frame line color.
@@ -600,6 +608,7 @@ pub const Expander = opaque {
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TITLEIMAGEOPEN: image name used when STATE=OPEN.
@@ -627,6 +636,7 @@ pub const Expander = opaque {
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// STATE (non inheritable): Show or hide the container elements.
@@ -703,6 +713,7 @@ pub const Expander = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXTRABUTTONS (non inheritable) (creation only): sets the number of extra
         /// image buttons at right when BARPOSITION=TOP.
@@ -715,6 +726,7 @@ pub const Expander = opaque {
             interop.setIntAttribute(self.ref, "EXTRABUTTONS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ANIMATION (non inheritable): enable animation during open/close.
@@ -737,6 +749,7 @@ pub const Expander = opaque {
             return self.*;
         }
 
+
         /// 
         /// FORECOLOR (non inheritable): title text color.
         /// Default: the global attribute DLGFGCOLOR.
@@ -752,6 +765,7 @@ pub const Expander = opaque {
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGEOPEN: image name used when STATE=OPEN.
@@ -774,6 +788,7 @@ pub const Expander = opaque {
             return self.*;
         }
 
+
         /// 
         /// FRAMEWIDTH (non inheritable): frame line width.
         /// Default: 1.
@@ -783,6 +798,7 @@ pub const Expander = opaque {
             interop.setIntAttribute(self.ref, "FRAMEWIDTH", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FRAME (non inheritable): enables the frame line around the bar area.
@@ -794,6 +810,7 @@ pub const Expander = opaque {
             return self.*;
         }
 
+
         /// 
         /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
         /// MAXSIZE, THEME: also accepted.
@@ -802,6 +819,7 @@ pub const Expander = opaque {
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -831,6 +849,7 @@ pub const Expander = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -993,6 +1012,10 @@ pub const Expander = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1153,6 +1176,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "IMAGEEXTRAPRESS3", .{}, arg);
     }
 
+
     /// 
     /// BACKCOLOR (non inheritable): background color of the bar handler.
     /// If not defined it will use the background color of the native parent.
@@ -1160,6 +1184,7 @@ pub const Expander = opaque {
     pub fn getBackColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BACKCOLOR", .{});
     }
+
 
     /// 
     /// BACKCOLOR (non inheritable): background color of the bar handler.
@@ -1180,6 +1205,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
+
     /// 
     /// TITLEIMAGE (non inheritable): title image, shown in the bar handler near
     /// the expand/collapse button.
@@ -1193,6 +1219,7 @@ pub const Expander = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TITLEIMAGE (non inheritable): title image, shown in the bar handler near
@@ -1287,6 +1314,7 @@ pub const Expander = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// IMAGE (non inheritable): image name to replace the arrow image by a custom
     /// image when STATE=CLOSE.
@@ -1301,6 +1329,7 @@ pub const Expander = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGE (non inheritable): image name to replace the arrow image by a custom
@@ -1318,6 +1347,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "IMAGE", .{}, arg);
     }
 
+
     /// 
     /// HIGHCOLOR (non inheritable): title text color when highlighted.
     /// Works only when TITLEEXPAND=Yes.
@@ -1326,6 +1356,7 @@ pub const Expander = opaque {
     pub fn getHighColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "HIGHCOLOR", .{});
     }
+
 
     /// 
     /// HIGHCOLOR (non inheritable): title text color when highlighted.
@@ -1344,6 +1375,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// EXPAND (non inheritable): the default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
@@ -1357,6 +1389,7 @@ pub const Expander = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): the default value is "YES".
@@ -1383,6 +1416,7 @@ pub const Expander = opaque {
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
+
 
     /// 
     /// WID (read-only): returns -1 if mapped.
@@ -1431,6 +1465,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "TITLEIMAGEOPENHIGHLIGHT", .{}, arg);
     }
 
+
     /// 
     /// TITLE (non inheritable): title text, shown in the bar handler near the
     /// expand/collapse button.
@@ -1442,6 +1477,7 @@ pub const Expander = opaque {
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE (non inheritable): title text, shown in the bar handler near the
@@ -1552,6 +1588,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "IMAGEEXTRAHIGHLIGHT3", .{}, arg);
     }
 
+
     /// 
     /// BARSIZE (non inheritable): controls the size of the bar handler.
     /// Default: the height or width that fits all its internal elements according
@@ -1559,6 +1596,7 @@ pub const Expander = opaque {
     pub fn getBarSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "BARSIZE", .{});
     }
+
 
     /// 
     /// BARSIZE (non inheritable): controls the size of the bar handler.
@@ -1568,6 +1606,7 @@ pub const Expander = opaque {
         interop.setIntAttribute(self, "BARSIZE", .{}, arg);
     }
 
+
     /// 
     /// FRAMECOLOR (non inheritable): frame line color.
     /// Default: the global attribute DLGFGCOLOR.
@@ -1575,6 +1614,7 @@ pub const Expander = opaque {
     pub fn getFrameColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FRAMECOLOR", .{});
     }
+
 
     /// 
     /// FRAMECOLOR (non inheritable): frame line color.
@@ -1592,6 +1632,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
+
     /// 
     /// TITLEIMAGEOPEN: image name used when STATE=OPEN.
     /// TITLEIMAGEHIGHLIGHT: image name used when mouse is over the title image and
@@ -1604,6 +1645,7 @@ pub const Expander = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TITLEIMAGEOPEN: image name used when STATE=OPEN.
@@ -1627,6 +1669,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// STATE (non inheritable): Show or hide the container elements.
     /// Possible values: "OPEN" (expanded) or "CLOSE" (collapsed).
@@ -1640,6 +1683,7 @@ pub const Expander = opaque {
         if (std.ascii.eqlIgnoreCase("CLOSED", ret)) return .Closed;
         return null;
     }
+
 
     /// 
     /// STATE (non inheritable): Show or hide the container elements.
@@ -1725,6 +1769,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
+
     /// 
     /// ANIMATION (non inheritable): enable animation during open/close.
     /// Works only for BARPOSITION=TOP and does not works for AUTOSHOW.
@@ -1742,6 +1787,7 @@ pub const Expander = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// ANIMATION (non inheritable): enable animation during open/close.
@@ -1777,6 +1823,7 @@ pub const Expander = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// FORECOLOR (non inheritable): title text color.
     /// Default: the global attribute DLGFGCOLOR.
@@ -1784,6 +1831,7 @@ pub const Expander = opaque {
     pub fn getForeColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FORECOLOR", .{});
     }
+
 
     /// 
     /// FORECOLOR (non inheritable): title text color.
@@ -1801,6 +1849,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// IMAGEOPEN: image name used when STATE=OPEN.
     /// IMAGEHIGHLIGHT: image name used when mouse is over the bar handler and
@@ -1813,6 +1862,7 @@ pub const Expander = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGEOPEN: image name used when STATE=OPEN.
@@ -1828,6 +1878,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "IMAGEOPEN", .{}, arg);
     }
 
+
     /// 
     /// FRAMEWIDTH (non inheritable): frame line width.
     /// Default: 1.
@@ -1835,6 +1886,7 @@ pub const Expander = opaque {
     pub fn getFrameWidth(self: *Self) i32 {
         return interop.getIntAttribute(self, "FRAMEWIDTH", .{});
     }
+
 
     /// 
     /// FRAMEWIDTH (non inheritable): frame line width.
@@ -1844,6 +1896,7 @@ pub const Expander = opaque {
         interop.setIntAttribute(self, "FRAMEWIDTH", .{}, arg);
     }
 
+
     /// 
     /// FRAME (non inheritable): enables the frame line around the bar area.
     /// Default: No.
@@ -1851,6 +1904,7 @@ pub const Expander = opaque {
     pub fn getFrame(self: *Self) bool {
         return interop.getBoolAttribute(self, "FRAME", .{});
     }
+
 
     /// 
     /// FRAME (non inheritable): enables the frame line around the bar area.
@@ -1860,6 +1914,7 @@ pub const Expander = opaque {
         interop.setBoolAttribute(self, "FRAME", .{}, arg);
     }
 
+
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
@@ -1867,12 +1922,14 @@ pub const Expander = opaque {
         return interop.getStrAttribute(self, "FONT", .{});
     }
 
+
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1894,6 +1951,7 @@ pub const Expander = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1917,6 +1975,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1937,6 +1996,7 @@ pub const Expander = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

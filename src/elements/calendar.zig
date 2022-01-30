@@ -172,7 +172,7 @@ pub const Calendar = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const ZOrder = enum {
         Top,
@@ -415,6 +415,7 @@ pub const Calendar = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE: the current date always in the format "year/month/day" ("%d/%d/%d"
         /// in C).
@@ -470,6 +471,7 @@ pub const Calendar = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -498,6 +500,7 @@ pub const Calendar = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -752,6 +755,10 @@ pub const Calendar = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -839,6 +846,7 @@ pub const Calendar = opaque {
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
+
 
     /// 
     /// TODAY (read-only): Returns the date corresponding to today in VALUE format.
@@ -1081,6 +1089,7 @@ pub const Calendar = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// VALUE: the current date always in the format "year/month/day" ("%d/%d/%d"
     /// in C).
@@ -1089,6 +1098,7 @@ pub const Calendar = opaque {
     pub fn getValue(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
+
 
     /// 
     /// VALUE: the current date always in the format "year/month/day" ("%d/%d/%d"
@@ -1163,6 +1173,7 @@ pub const Calendar = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1183,6 +1194,7 @@ pub const Calendar = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1206,6 +1218,7 @@ pub const Calendar = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1226,6 +1239,7 @@ pub const Calendar = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

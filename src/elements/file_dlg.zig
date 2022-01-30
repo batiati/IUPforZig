@@ -134,7 +134,7 @@ pub const FileDlg = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -150,7 +150,7 @@ pub const FileDlg = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -259,7 +259,7 @@ pub const FileDlg = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// DIALOGTYPE: Type of dialog (Open, Save or Directory).
@@ -396,6 +396,7 @@ pub const FileDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHOWPREVIEW: A preview area is shown inside the file dialog.
         /// Can have values "YES" or "NO".
@@ -454,6 +455,7 @@ pub const FileDlg = opaque {
             interop.setStrAttribute(self.ref, "OPACITYIMAGE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// NOCHANGEDIR: Indicates if the current working directory must be restored
@@ -555,6 +557,7 @@ pub const FileDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// DIALOGTYPE: Type of dialog (Open, Save or Directory).
         /// Can have values "OPEN", "SAVE" or "DIR".
@@ -612,6 +615,7 @@ pub const FileDlg = opaque {
             interop.setBoolAttribute(self.ref, "DIALOGHINT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ALLOWNEW: Indicates if non-existent file names are accepted.
@@ -693,6 +697,7 @@ pub const FileDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXTDEFAULT: default extension to be used if selected file does not have an extension.
         /// The inspected extension will consider to have the same number of characters
@@ -761,6 +766,7 @@ pub const FileDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE: Dialog's title.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
@@ -792,6 +798,7 @@ pub const FileDlg = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// EXTFILTER [Windows and GTK Only]: Defines several file filters.
@@ -912,6 +919,7 @@ pub const FileDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// PARENTDIALOG: Makes the dialog be treated as a child of the specified dialog.
         pub fn setParentDialog(self: *Initializer, arg: anytype) Initializer {
@@ -941,6 +949,7 @@ pub const FileDlg = opaque {
             interop.setBoolAttribute(self.ref, "HIDETASKBAR", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FILTER: String containing a list of file filters separated by ';' without spaces.
@@ -1056,6 +1065,7 @@ pub const FileDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// NOOVERWRITEPROMPT: do not prompt to overwrite an existent file when in
         /// "SAVE" dialog.
@@ -1073,6 +1083,7 @@ pub const FileDlg = opaque {
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DIRECTORY: Initial directory.
@@ -1135,6 +1146,7 @@ pub const FileDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1163,6 +1175,7 @@ pub const FileDlg = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1552,6 +1565,10 @@ pub const FileDlg = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1666,6 +1683,7 @@ pub const FileDlg = opaque {
         interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
+
     /// 
     /// SHOWPREVIEW: A preview area is shown inside the file dialog.
     /// Can have values "YES" or "NO".
@@ -1690,6 +1708,7 @@ pub const FileDlg = opaque {
     pub fn getShowPreview(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "SHOWPREVIEW", .{});
     }
+
 
     /// 
     /// SHOWPREVIEW: A preview area is shown inside the file dialog.
@@ -1759,6 +1778,7 @@ pub const FileDlg = opaque {
         interop.setStrAttribute(self, "OPACITYIMAGE", .{}, arg);
     }
 
+
     /// 
     /// NOCHANGEDIR: Indicates if the current working directory must be restored
     /// after the user navigation.
@@ -1766,6 +1786,7 @@ pub const FileDlg = opaque {
     pub fn getNoChangeDir(self: *Self) bool {
         return interop.getBoolAttribute(self, "NOCHANGEDIR", .{});
     }
+
 
     /// 
     /// NOCHANGEDIR: Indicates if the current working directory must be restored
@@ -1900,6 +1921,7 @@ pub const FileDlg = opaque {
         interop.setBoolAttribute(self, "MENUBOX", .{}, arg);
     }
 
+
     /// 
     /// DIALOGTYPE: Type of dialog (Open, Save or Directory).
     /// Can have values "OPEN", "SAVE" or "DIR".
@@ -1919,6 +1941,7 @@ pub const FileDlg = opaque {
         if (std.ascii.eqlIgnoreCase("OPEN", ret)) return .Open;
         return null;
     }
+
 
     /// 
     /// DIALOGTYPE: Type of dialog (Open, Save or Directory).
@@ -1990,6 +2013,7 @@ pub const FileDlg = opaque {
         interop.setBoolAttribute(self, "DIALOGHINT", .{}, arg);
     }
 
+
     /// 
     /// ALLOWNEW: Indicates if non-existent file names are accepted.
     /// If equals "NO" and the user specifies a non-existing file, an alert dialog
@@ -2000,6 +2024,7 @@ pub const FileDlg = opaque {
     pub fn getAllowNew(self: *Self) bool {
         return interop.getBoolAttribute(self, "ALLOWNEW", .{});
     }
+
 
     /// 
     /// ALLOWNEW: Indicates if non-existent file names are accepted.
@@ -2103,6 +2128,7 @@ pub const FileDlg = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+
     /// 
     /// STATUS (read-only): Indicates the status of the selection made: "1": New file.
     /// "0": Normal, existing file or directory.
@@ -2120,6 +2146,7 @@ pub const FileDlg = opaque {
         interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
+
     /// 
     /// EXTDEFAULT: default extension to be used if selected file does not have an extension.
     /// The inspected extension will consider to have the same number of characters
@@ -2129,6 +2156,7 @@ pub const FileDlg = opaque {
     pub fn getExtDefault(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "EXTDEFAULT", .{});
     }
+
 
     /// 
     /// EXTDEFAULT: default extension to be used if selected file does not have an extension.
@@ -2220,11 +2248,13 @@ pub const FileDlg = opaque {
         interop.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
     }
 
+
     /// 
     /// TITLE: Dialog's title.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE: Dialog's title.
@@ -2267,6 +2297,7 @@ pub const FileDlg = opaque {
         }
     }
 
+
     /// 
     /// EXTFILTER [Windows and GTK Only]: Defines several file filters.
     /// It has priority over FILTERINFO and FILTER.
@@ -2279,6 +2310,7 @@ pub const FileDlg = opaque {
     pub fn getExtFilter(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "EXTFILTER", .{});
     }
+
 
     /// 
     /// EXTFILTER [Windows and GTK Only]: Defines several file filters.
@@ -2439,6 +2471,7 @@ pub const FileDlg = opaque {
         return interop.getBoolAttribute(self, "MODAL", .{});
     }
 
+
     /// 
     /// PARENTDIALOG: Makes the dialog be treated as a child of the specified dialog.
     pub fn getParentDialog(self: *Self) ?iup.Element {
@@ -2448,6 +2481,7 @@ pub const FileDlg = opaque {
             return null;
         }
     }
+
 
     /// 
     /// PARENTDIALOG: Makes the dialog be treated as a child of the specified dialog.
@@ -2476,6 +2510,7 @@ pub const FileDlg = opaque {
         interop.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
     }
 
+
     /// 
     /// FILTER: String containing a list of file filters separated by ';' without spaces.
     /// Example: "*.C;*.LED;test.*".
@@ -2484,6 +2519,7 @@ pub const FileDlg = opaque {
         return interop.getStrAttribute(self, "FILTER", .{});
     }
 
+
     /// 
     /// FILTER: String containing a list of file filters separated by ';' without spaces.
     /// Example: "*.C;*.LED;test.*".
@@ -2491,6 +2527,7 @@ pub const FileDlg = opaque {
     pub fn setFilter(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FILTER", .{}, arg);
     }
+
 
     /// 
     /// VALUE (read-only): Name of the selected file(s), or NULL if no file was selected.
@@ -2659,6 +2696,7 @@ pub const FileDlg = opaque {
         interop.setBoolAttribute(self, "MDIFRAME", .{}, arg);
     }
 
+
     /// 
     /// NOOVERWRITEPROMPT: do not prompt to overwrite an existent file when in
     /// "SAVE" dialog.
@@ -2668,6 +2706,7 @@ pub const FileDlg = opaque {
     pub fn getNoOverwritePrompt(self: *Self) bool {
         return interop.getBoolAttribute(self, "NOOVERWRITEPROMPT", .{});
     }
+
 
     /// 
     /// NOOVERWRITEPROMPT: do not prompt to overwrite an existent file when in
@@ -2686,6 +2725,7 @@ pub const FileDlg = opaque {
     pub fn setFontStyle(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
+
 
     /// 
     /// DIRECTORY: Initial directory.
@@ -2709,6 +2749,7 @@ pub const FileDlg = opaque {
     pub fn getDirectory(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "DIRECTORY", .{});
     }
+
 
     /// 
     /// DIRECTORY: Initial directory.
@@ -2773,6 +2814,7 @@ pub const FileDlg = opaque {
         interop.setBoolAttribute(self, "SIMULATEMODAL", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2793,6 +2835,7 @@ pub const FileDlg = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2816,6 +2859,7 @@ pub const FileDlg = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2836,6 +2880,7 @@ pub const FileDlg = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

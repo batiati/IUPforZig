@@ -92,7 +92,7 @@ pub const MultiBox = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
@@ -224,6 +224,7 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
         /// of the SIZE attribute.
@@ -237,6 +238,7 @@ pub const MultiBox = opaque {
             interop.setStrAttribute(self.ref, "CMARGIN", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable*): The default value is "YES".
@@ -256,6 +258,7 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
         /// MAXSIZE, THEME: also accepted.
@@ -266,6 +269,7 @@ pub const MultiBox = opaque {
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// ORIENTATION (non inheritable): controls the distribution of the children in
@@ -314,6 +318,7 @@ pub const MultiBox = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
@@ -383,6 +388,7 @@ pub const MultiBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
         pub fn setNcMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
@@ -392,6 +398,7 @@ pub const MultiBox = opaque {
             interop.setStrAttribute(self.ref, "NCMARGIN", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -412,6 +419,7 @@ pub const MultiBox = opaque {
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -441,6 +449,7 @@ pub const MultiBox = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -567,6 +576,10 @@ pub const MultiBox = opaque {
 
     pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
         return interop.fromHandleName(Self, handle_name);
+    }
+
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
     }
 
     ///
@@ -699,6 +712,7 @@ pub const MultiBox = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
     /// of the SIZE attribute.
@@ -709,6 +723,7 @@ pub const MultiBox = opaque {
         var str = interop.getStrAttribute(self, "CMARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -721,6 +736,7 @@ pub const MultiBox = opaque {
         var value = Margin.intIntToString(&buffer, horiz, vert);
         interop.setStrAttribute(self, "CMARGIN", .{}, value);
     }
+
 
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
@@ -736,6 +752,7 @@ pub const MultiBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
@@ -753,6 +770,7 @@ pub const MultiBox = opaque {
         }
     }
 
+
     /// 
     /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
@@ -760,6 +778,7 @@ pub const MultiBox = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
@@ -770,11 +789,13 @@ pub const MultiBox = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
+
     /// 
     /// WID (read-only): returns -1 if mapped.
     pub fn getWId(self: *Self) i32 {
         return interop.getIntAttribute(self, "WID", .{});
     }
+
 
     /// 
     /// ORIENTATION (non inheritable): controls the distribution of the children in
@@ -788,6 +809,7 @@ pub const MultiBox = opaque {
         if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
         return null;
     }
+
 
     /// 
     /// ORIENTATION (non inheritable): controls the distribution of the children in
@@ -854,12 +876,14 @@ pub const MultiBox = opaque {
         }
     }
 
+
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     pub fn getNMargin(self: *Self) Margin {
         var str = interop.getStrAttribute(self, "NMARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
@@ -904,6 +928,7 @@ pub const MultiBox = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// NUMCOL (read-only): returns the number of columns when ORIENTATION=VERTICAL.
     /// Returns 0 otherwise.
@@ -937,6 +962,7 @@ pub const MultiBox = opaque {
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
+
 
     /// 
     /// NUMLIN (read-only): returns the number of lines when ORIENTATION=HORIZONTAL.
@@ -976,12 +1002,14 @@ pub const MultiBox = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     pub fn getNcMargin(self: *Self) Margin {
         var str = interop.getStrAttribute(self, "NCMARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
@@ -990,6 +1018,7 @@ pub const MultiBox = opaque {
         var value = Margin.intIntToString(&buffer, horiz, vert);
         interop.setStrAttribute(self, "NCMARGIN", .{}, value);
     }
+
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -1001,6 +1030,7 @@ pub const MultiBox = opaque {
         var str = interop.getStrAttribute(self, "MARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -1022,6 +1052,7 @@ pub const MultiBox = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1042,6 +1073,7 @@ pub const MultiBox = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1065,6 +1097,7 @@ pub const MultiBox = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1085,6 +1118,7 @@ pub const MultiBox = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

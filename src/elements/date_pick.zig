@@ -198,6 +198,7 @@ pub const DatePick = opaque {
             return self.*;
         }
 
+
         /// 
         /// SEPARATOR: Separator between day, month and year.
         /// Must be set before ORDER in Windows.
@@ -350,6 +351,7 @@ pub const DatePick = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE: the current date always in the format "year/month/day" ("%d/%d/%d"
         /// in C).
@@ -372,6 +374,7 @@ pub const DatePick = opaque {
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// SHOWDROPDOWN (write-only): opens or closes the dropdown calendar.
@@ -417,6 +420,7 @@ pub const DatePick = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -445,6 +449,7 @@ pub const DatePick = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -552,6 +557,10 @@ pub const DatePick = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -648,6 +657,7 @@ pub const DatePick = opaque {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// TODAY (read-only): Returns the date corresponding to today in VALUE format.
     pub fn getToday(self: *Self) ?iup.Date {
@@ -722,6 +732,7 @@ pub const DatePick = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// SEPARATOR: Separator between day, month and year.
     /// Must be set before ORDER in Windows.
@@ -729,6 +740,7 @@ pub const DatePick = opaque {
     pub fn getSeparator(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "SEPARATOR", .{});
     }
+
 
     /// 
     /// SEPARATOR: Separator between day, month and year.
@@ -948,6 +960,7 @@ pub const DatePick = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// VALUE: the current date always in the format "year/month/day" ("%d/%d/%d"
     /// in C).
@@ -956,6 +969,7 @@ pub const DatePick = opaque {
     pub fn getValue(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
+
 
     /// 
     /// VALUE: the current date always in the format "year/month/day" ("%d/%d/%d"
@@ -981,6 +995,7 @@ pub const DatePick = opaque {
     pub fn setTipVisible(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
+
 
     /// 
     /// SHOWDROPDOWN (write-only): opens or closes the dropdown calendar.
@@ -1050,6 +1065,7 @@ pub const DatePick = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1070,6 +1086,7 @@ pub const DatePick = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1093,6 +1110,7 @@ pub const DatePick = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1113,6 +1131,7 @@ pub const DatePick = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

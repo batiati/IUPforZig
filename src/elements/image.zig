@@ -96,6 +96,7 @@ pub const Image = opaque {
             return self.*;
         }
 
+
         /// 
         /// RESIZE (write-only): given a new size if format "widthxheight", changes
         /// WIDTH and HEIGHT attributes, and resizes the image contents using bilinear
@@ -115,6 +116,7 @@ pub const Image = opaque {
             return self.*;
         }
 
+
         /// 
         /// RESHAPE (write-only): given a new size if format "widthxheight", allocates
         /// enough memory for the new size and changes WIDTH and HEIGHT attributes.
@@ -127,6 +129,7 @@ pub const Image = opaque {
             interop.setStrAttribute(self.ref, "RESHAPE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
@@ -142,6 +145,7 @@ pub const Image = opaque {
             interop.setStrAttribute(self.ref, "HOTSPOT", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// AUTOSCALE: automatically scale the image by a given real factor.
@@ -163,6 +167,7 @@ pub const Image = opaque {
             return self.*;
         }
 
+
         /// 
         /// CLEARCACHE (write-only): clears the internal native image cache, so WID can
         /// be dynamically changed.
@@ -172,6 +177,7 @@ pub const Image = opaque {
             interop.setStrAttribute(self.ref, "CLEARCACHE", .{}, null);
             return self.*;
         }
+
 
         /// 
         /// BGCOLOR: The color used for transparency.
@@ -190,6 +196,7 @@ pub const Image = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
@@ -199,6 +206,7 @@ pub const Image = opaque {
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -216,6 +224,7 @@ pub const Image = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -245,6 +254,7 @@ pub const Image = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -310,6 +320,10 @@ pub const Image = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an image to be shown on a label, button, toggle, or as a cursor.
     /// width: Image width in pixels.
@@ -373,6 +387,7 @@ pub const Image = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// RESIZE (write-only): given a new size if format "widthxheight", changes
     /// WIDTH and HEIGHT attributes, and resizes the image contents using bilinear
@@ -392,12 +407,14 @@ pub const Image = opaque {
         interop.setRgb(self, "IDVALUE", .{index}, rgb);
     }
 
+
     /// 
     /// SCALED (read-only): returns Yes if the image has been resized.
     /// (since 3.25)
     pub fn getScaled(self: *Self) bool {
         return interop.getBoolAttribute(self, "SCALED", .{});
     }
+
 
     /// 
     /// BPP (read-only): returns the number of bits per pixel in the image.
@@ -407,6 +424,7 @@ pub const Image = opaque {
     pub fn getBpp(self: *Self) i32 {
         return interop.getIntAttribute(self, "BPP", .{});
     }
+
 
     /// 
     /// RESHAPE (write-only): given a new size if format "widthxheight", allocates
@@ -419,6 +437,7 @@ pub const Image = opaque {
         interop.setStrAttribute(self, "RESHAPE", .{}, value);
     }
 
+
     /// 
     /// CHANNELS (read-only): returns the number of channels in the image.
     /// Images created with IupImage returns 1, with IupImageRGB returns 3 and with
@@ -427,6 +446,7 @@ pub const Image = opaque {
     pub fn getChannels(self: *Self) i32 {
         return interop.getIntAttribute(self, "CHANNELS", .{});
     }
+
 
     /// 
     /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
@@ -439,6 +459,7 @@ pub const Image = opaque {
         var str = interop.getStrAttribute(self, "HOTSPOT", .{});
         return iup.XYPos.parse(str, ':');
     }
+
 
     /// 
     /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
@@ -453,6 +474,7 @@ pub const Image = opaque {
         interop.setStrAttribute(self, "HOTSPOT", .{}, value);
     }
 
+
     /// 
     /// AUTOSCALE: automatically scale the image by a given real factor.
     /// Can be "DPI" or a scale factor.
@@ -464,6 +486,7 @@ pub const Image = opaque {
     pub fn getAutoScale(self: *Self) bool {
         return interop.getBoolAttribute(self, "AUTOSCALE", .{});
     }
+
 
     /// 
     /// AUTOSCALE: automatically scale the image by a given real factor.
@@ -485,11 +508,13 @@ pub const Image = opaque {
         interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
+
     /// 
     /// HEIGHT (read-only): Image height in pixels.
     pub fn getHeight(self: *Self) i32 {
         return interop.getIntAttribute(self, "HEIGHT", .{});
     }
+
 
     /// 
     /// CLEARCACHE (write-only): clears the internal native image cache, so WID can
@@ -498,6 +523,7 @@ pub const Image = opaque {
     pub fn clearCache(self: *Self) void {
         interop.setStrAttribute(self, "CLEARCACHE", .{}, null);
     }
+
 
     /// 
     /// BGCOLOR: The color used for transparency.
@@ -514,6 +540,7 @@ pub const Image = opaque {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
+
     /// 
     /// BGCOLOR: The color used for transparency.
     /// If not defined uses the BGCOLOR of the control that contains the image.
@@ -529,6 +556,7 @@ pub const Image = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// ORIGINALSCALE (read-only): returns the width and height before the image
     /// was scaled.
@@ -538,11 +566,13 @@ pub const Image = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// WIDTH (read-only): Image width in pixels.
     pub fn getWidth(self: *Self) i32 {
         return interop.getIntAttribute(self, "WIDTH", .{});
     }
+
 
     /// 
     /// RASTERSIZE (read-only): returns the image size in pixels.
@@ -551,6 +581,7 @@ pub const Image = opaque {
         var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// WID (read-only): returns the internal pixels data pointer.
@@ -561,6 +592,7 @@ pub const Image = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -569,6 +601,7 @@ pub const Image = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -576,6 +609,7 @@ pub const Image = opaque {
     pub fn setExpandWeight(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -591,6 +625,7 @@ pub const Image = opaque {
         return null;
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -605,6 +640,7 @@ pub const Image = opaque {
             interop.clearAttribute(self, "FLOATING", .{});
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -626,6 +662,7 @@ pub const Image = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -649,6 +686,7 @@ pub const Image = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -669,6 +707,7 @@ pub const Image = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

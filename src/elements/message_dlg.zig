@@ -134,7 +134,7 @@ pub const MessageDlg = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -150,7 +150,7 @@ pub const MessageDlg = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -248,7 +248,7 @@ pub const MessageDlg = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// DIALOGTYPE: Type of dialog defines which icon will be displayed besides the
@@ -527,6 +527,7 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// DIALOGTYPE: Type of dialog defines which icon will be displayed besides the
         /// message text.
@@ -611,6 +612,7 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// BUTTONS: Buttons configuration.
         /// Can have values: "OK", "OKCANCEL", "RETRYCANCEL", "YESNO", or "YESNOCANCEL".
@@ -667,6 +669,7 @@ pub const MessageDlg = opaque {
             interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BUTTONRESPONSE: Number of the pressed button.
@@ -738,6 +741,7 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE: Dialog title.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
@@ -793,6 +797,7 @@ pub const MessageDlg = opaque {
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BUTTONDEFAULT: Number of the default button.
@@ -890,6 +895,7 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
         /// This dialog will be always in front of the parent dialog.
@@ -923,6 +929,7 @@ pub const MessageDlg = opaque {
             interop.setBoolAttribute(self.ref, "HIDETASKBAR", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VALUE: Message text.
@@ -1078,6 +1085,7 @@ pub const MessageDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1106,6 +1114,7 @@ pub const MessageDlg = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1480,6 +1489,10 @@ pub const MessageDlg = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1770,6 +1783,7 @@ pub const MessageDlg = opaque {
         interop.setBoolAttribute(self, "MENUBOX", .{}, arg);
     }
 
+
     /// 
     /// DIALOGTYPE: Type of dialog defines which icon will be displayed besides the
     /// message text.
@@ -1785,6 +1799,7 @@ pub const MessageDlg = opaque {
         if (std.ascii.eqlIgnoreCase("QUESTION", ret)) return .Question;
         return null;
     }
+
 
     /// 
     /// DIALOGTYPE: Type of dialog defines which icon will be displayed besides the
@@ -1892,6 +1907,7 @@ pub const MessageDlg = opaque {
         interop.setBoolAttribute(self, "TRAY", .{}, arg);
     }
 
+
     /// 
     /// BUTTONS: Buttons configuration.
     /// Can have values: "OK", "OKCANCEL", "RETRYCANCEL", "YESNO", or "YESNOCANCEL".
@@ -1908,6 +1924,7 @@ pub const MessageDlg = opaque {
         if (std.ascii.eqlIgnoreCase("OK", ret)) return .Ok;
         return null;
     }
+
 
     /// 
     /// BUTTONS: Buttons configuration.
@@ -1986,6 +2003,7 @@ pub const MessageDlg = opaque {
         interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
+
     /// 
     /// BUTTONRESPONSE: Number of the pressed button.
     /// Can be "1", "2" or "3".
@@ -1994,6 +2012,7 @@ pub const MessageDlg = opaque {
         var ret = interop.getIntAttribute(self, "BUTTONRESPONSE", .{});
         return @intToEnum(ButtonResponse, ret);
     }
+
 
     /// 
     /// BUTTONRESPONSE: Number of the pressed button.
@@ -2087,11 +2106,13 @@ pub const MessageDlg = opaque {
         interop.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
     }
 
+
     /// 
     /// TITLE: Dialog title.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE: Dialog title.
@@ -2166,6 +2187,7 @@ pub const MessageDlg = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
     }
 
+
     /// 
     /// BUTTONDEFAULT: Number of the default button.
     /// Can be "1", "2" or "3".
@@ -2176,6 +2198,7 @@ pub const MessageDlg = opaque {
         var ret = interop.getIntAttribute(self, "BUTTONDEFAULT", .{});
         return @intToEnum(ButtonDefault, ret);
     }
+
 
     /// 
     /// BUTTONDEFAULT: Number of the default button.
@@ -2305,6 +2328,7 @@ pub const MessageDlg = opaque {
         return interop.getBoolAttribute(self, "MODAL", .{});
     }
 
+
     /// 
     /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
     /// This dialog will be always in front of the parent dialog.
@@ -2318,6 +2342,7 @@ pub const MessageDlg = opaque {
             return null;
         }
     }
+
 
     /// 
     /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
@@ -2350,11 +2375,13 @@ pub const MessageDlg = opaque {
         interop.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
     }
 
+
     /// 
     /// VALUE: Message text.
     pub fn getValue(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
+
 
     /// 
     /// VALUE: Message text.
@@ -2559,6 +2586,7 @@ pub const MessageDlg = opaque {
         interop.setBoolAttribute(self, "SIMULATEMODAL", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2579,6 +2607,7 @@ pub const MessageDlg = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2602,6 +2631,7 @@ pub const MessageDlg = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2622,6 +2652,7 @@ pub const MessageDlg = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

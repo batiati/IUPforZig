@@ -106,6 +106,29 @@ pub const Timer = opaque {
             return self.*;
         }
 
+
+        /// 
+        /// RUN: Starts and stops the timer.
+        /// Possible values: "YES" or "NO".
+        /// Returns the current timer state.
+        /// If you have multiple threads start the timer in the main thread.
+        pub fn setRun(self: *Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setBoolAttribute(self.ref, "RUN", .{}, arg);
+            return self.*;
+        }
+
+
+        /// 
+        /// TIME: The time interval in milliseconds.
+        /// In Windows the minimum value is 10ms.
+        pub fn setTime(self: *Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self.*;
+            interop.setIntAttribute(self.ref, "TIME", .{}, arg);
+            return self.*;
+        }
+
+
         /// 
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
@@ -115,6 +138,7 @@ pub const Timer = opaque {
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -132,6 +156,7 @@ pub const Timer = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -161,6 +186,7 @@ pub const Timer = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -240,6 +266,10 @@ pub const Timer = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -297,6 +327,43 @@ pub const Timer = opaque {
         Impl(Self).refresh(self);
     }
 
+
+    /// 
+    /// RUN: Starts and stops the timer.
+    /// Possible values: "YES" or "NO".
+    /// Returns the current timer state.
+    /// If you have multiple threads start the timer in the main thread.
+    pub fn getRun(self: *Self) bool {
+        return interop.getBoolAttribute(self, "RUN", .{});
+    }
+
+
+    /// 
+    /// RUN: Starts and stops the timer.
+    /// Possible values: "YES" or "NO".
+    /// Returns the current timer state.
+    /// If you have multiple threads start the timer in the main thread.
+    pub fn setRun(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "RUN", .{}, arg);
+    }
+
+
+    /// 
+    /// TIME: The time interval in milliseconds.
+    /// In Windows the minimum value is 10ms.
+    pub fn getTime(self: *Self) i32 {
+        return interop.getIntAttribute(self, "TIME", .{});
+    }
+
+
+    /// 
+    /// TIME: The time interval in milliseconds.
+    /// In Windows the minimum value is 10ms.
+    pub fn setTime(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "TIME", .{}, arg);
+    }
+
+
     /// 
     /// WID (read-only): Returns the native serial number of the timer.
     /// Returns -1 if not running.
@@ -304,6 +371,7 @@ pub const Timer = opaque {
     pub fn getWId(self: *Self) i32 {
         return interop.getIntAttribute(self, "WID", .{});
     }
+
 
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
@@ -313,6 +381,7 @@ pub const Timer = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -320,6 +389,7 @@ pub const Timer = opaque {
     pub fn setExpandWeight(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -335,6 +405,7 @@ pub const Timer = opaque {
         return null;
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -349,6 +420,7 @@ pub const Timer = opaque {
             interop.clearAttribute(self, "FLOATING", .{});
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -370,6 +442,7 @@ pub const Timer = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -393,6 +466,7 @@ pub const Timer = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -413,6 +487,7 @@ pub const Timer = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -448,3 +523,27 @@ pub const Timer = opaque {
         Handler.setCallback(self, callback);
     }
 };
+
+test "Timer Run" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Timer.init().setRun(true).unwrap());
+    defer item.deinit();
+
+    var ret = item.getRun();
+
+    try std.testing.expect(ret == true);
+}
+
+test "Timer Time" {
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
+
+    var item = try (iup.Timer.init().setTime(42).unwrap());
+    defer item.deinit();
+
+    var ret = item.getTime();
+
+    try std.testing.expect(ret == 42);
+}

@@ -226,7 +226,7 @@ pub const BackgroundBox = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -242,7 +242,7 @@ pub const BackgroundBox = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -370,7 +370,7 @@ pub const BackgroundBox = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
@@ -478,6 +478,7 @@ pub const BackgroundBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// CANVASBOX (non inheritable): enable the behavior of a canvas box instead of
         /// a regular container.
@@ -497,6 +498,7 @@ pub const BackgroundBox = opaque {
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// DECORATION (non inheritable): Enable a decoration area around the child.
@@ -520,6 +522,7 @@ pub const BackgroundBox = opaque {
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BACKCOLOR (non inheritable): if defined used to fill the background color
@@ -583,6 +586,7 @@ pub const BackgroundBox = opaque {
             interop.setBoolAttribute(self.ref, "DRAWTEXTLAYOUTCENTER", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CANFOCUS> (non inheritable): the default is changed to NO.
@@ -662,6 +666,7 @@ pub const BackgroundBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// CHILDOFFSET (non inheritable): Allow to specify a position offset for the child.
         /// Available for native containers only.
@@ -678,6 +683,7 @@ pub const BackgroundBox = opaque {
             interop.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable): behaves as a container.
@@ -791,6 +797,7 @@ pub const BackgroundBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// BGCOLOR: by default will use the background color of the native parent, but
         /// can be set to a custom value (since 3.11).
@@ -853,6 +860,7 @@ pub const BackgroundBox = opaque {
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DECOROFFSET (non inheritable): decoration offset from left border and top
@@ -938,6 +946,7 @@ pub const BackgroundBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
         /// occupy the full background.
@@ -969,6 +978,7 @@ pub const BackgroundBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// DECORSIZE (non inheritable): total size of the decoration in the format
         /// "WidthxHeight" (in C "%dx%d).
@@ -981,6 +991,7 @@ pub const BackgroundBox = opaque {
             interop.setStrAttribute(self.ref, "DECORSIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// BACKIMAGE (non inheritable): image name to be used as background.
@@ -1023,6 +1034,7 @@ pub const BackgroundBox = opaque {
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BORDER (creation only): the default value is "NO".
@@ -1080,6 +1092,7 @@ pub const BackgroundBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1108,6 +1121,7 @@ pub const BackgroundBox = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1620,6 +1634,10 @@ pub const BackgroundBox = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1704,6 +1722,7 @@ pub const BackgroundBox = opaque {
         interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
+
     /// 
     /// CANVASBOX (non inheritable): enable the behavior of a canvas box instead of
     /// a regular container.
@@ -1715,6 +1734,7 @@ pub const BackgroundBox = opaque {
     pub fn getCanvasBox(self: *Self) bool {
         return interop.getBoolAttribute(self, "CANVASBOX", .{});
     }
+
 
     /// 
     /// CANVASBOX (non inheritable): enable the behavior of a canvas box instead of
@@ -1736,6 +1756,7 @@ pub const BackgroundBox = opaque {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// DECORATION (non inheritable): Enable a decoration area around the child.
     /// Can be Yes or No.
@@ -1744,6 +1765,7 @@ pub const BackgroundBox = opaque {
     pub fn getDecoration(self: *Self) bool {
         return interop.getBoolAttribute(self, "DECORATION", .{});
     }
+
 
     /// 
     /// DECORATION (non inheritable): Enable a decoration area around the child.
@@ -1770,6 +1792,7 @@ pub const BackgroundBox = opaque {
         interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
+
     /// 
     /// BACKCOLOR (non inheritable): if defined used to fill the background color
     /// when BACKIMAGE is defined.
@@ -1778,6 +1801,7 @@ pub const BackgroundBox = opaque {
     pub fn getBackColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BACKCOLOR", .{});
     }
+
 
     /// 
     /// BACKCOLOR (non inheritable): if defined used to fill the background color
@@ -1866,12 +1890,14 @@ pub const BackgroundBox = opaque {
         interop.setBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", .{}, arg);
     }
 
+
     /// 
     /// CANFOCUS> (non inheritable): the default is changed to NO.
     /// But it can receive the focus (since 3.19).
     pub fn getCanFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "CANFOCUS", .{});
     }
+
 
     /// 
     /// CANFOCUS> (non inheritable): the default is changed to NO.
@@ -1970,6 +1996,7 @@ pub const BackgroundBox = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// CHILDOFFSET (non inheritable): Allow to specify a position offset for the child.
     /// Available for native containers only.
@@ -1983,6 +2010,7 @@ pub const BackgroundBox = opaque {
         var str = interop.getStrAttribute(self, "CHILDOFFSET", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CHILDOFFSET (non inheritable): Allow to specify a position offset for the child.
@@ -1999,6 +2027,7 @@ pub const BackgroundBox = opaque {
         interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
 
+
     /// 
     /// EXPAND (non inheritable): behaves as a container.
     /// See CANVASBOX attribute.
@@ -2013,6 +2042,7 @@ pub const BackgroundBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): behaves as a container.
@@ -2169,12 +2199,14 @@ pub const BackgroundBox = opaque {
         interop.setIntAttribute(self, "XMAX", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: by default will use the background color of the native parent, but
     /// can be set to a custom value (since 3.11).
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR: by default will use the background color of the native parent, but
@@ -2258,6 +2290,7 @@ pub const BackgroundBox = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// DECOROFFSET (non inheritable): decoration offset from left border and top
     /// border in the format "XxY" (in C "%dx%d).
@@ -2267,6 +2300,7 @@ pub const BackgroundBox = opaque {
         var str = interop.getStrAttribute(self, "DECOROFFSET", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// DECOROFFSET (non inheritable): decoration offset from left border and top
@@ -2392,6 +2426,7 @@ pub const BackgroundBox = opaque {
         }
     }
 
+
     /// 
     /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
     /// occupy the full background.
@@ -2402,6 +2437,7 @@ pub const BackgroundBox = opaque {
     pub fn getBackImageZoom(self: *Self) bool {
         return interop.getBoolAttribute(self, "BACKIMAGEZOOM", .{});
     }
+
 
     /// 
     /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
@@ -2438,6 +2474,7 @@ pub const BackgroundBox = opaque {
         interop.setIntAttribute(self, "YMAX", .{}, arg);
     }
 
+
     /// 
     /// DECORSIZE (non inheritable): total size of the decoration in the format
     /// "WidthxHeight" (in C "%dx%d).
@@ -2447,6 +2484,7 @@ pub const BackgroundBox = opaque {
         var str = interop.getStrAttribute(self, "DECORSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// DECORSIZE (non inheritable): total size of the decoration in the format
@@ -2458,6 +2496,7 @@ pub const BackgroundBox = opaque {
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "DECORSIZE", .{}, value);
     }
+
 
     /// 
     /// BACKIMAGE (non inheritable): image name to be used as background.
@@ -2472,6 +2511,7 @@ pub const BackgroundBox = opaque {
             return null;
         }
     }
+
 
     /// 
     /// BACKIMAGE (non inheritable): image name to be used as background.
@@ -2519,6 +2559,7 @@ pub const BackgroundBox = opaque {
         var str = interop.getStrAttribute(self, "CHARSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CLIENTSIZE, CLIENTOFFSET, THEME: also accepted.
@@ -2596,6 +2637,7 @@ pub const BackgroundBox = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2616,6 +2658,7 @@ pub const BackgroundBox = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2639,6 +2682,7 @@ pub const BackgroundBox = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2659,6 +2703,7 @@ pub const BackgroundBox = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

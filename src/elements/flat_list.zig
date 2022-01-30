@@ -241,7 +241,7 @@ pub const FlatList = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -263,7 +263,7 @@ pub const FlatList = opaque {
     /// C]ih:dblclick_cb(item: number, text: string) -> (ret: number) [in Lua]
     pub const OnDblClickFn = fn (self: *Self, arg0: i32, arg1: [:0]const u8) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -414,7 +414,7 @@ pub const FlatList = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
@@ -524,6 +524,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// FGCOLOR: Text color.
         /// Default: the global attribute TXTFGCOLOR.
@@ -573,6 +574,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// ITEMTIPid: tip of the item at the given id.
         /// If defined will be shown instead of the TIP attribute.
@@ -597,6 +599,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
         /// Can be Yes or No.
@@ -614,6 +617,7 @@ pub const FlatList = opaque {
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// DROPFILESTARGET (non inheritable): Enable or disable the drop of files.
@@ -676,6 +680,7 @@ pub const FlatList = opaque {
             interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// PSCOLOR: background color of a selected item.
@@ -813,6 +818,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// VISIBLELINES: Defines the number of visible lines for the Natural Size,
         /// this means that will act also as minimum number of visible lines.
@@ -844,6 +850,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// SIZE: Size of the list.
         /// The Natural Size is defined by the number of elements in the list and the
@@ -858,6 +865,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// PADDING: internal margin of each item.
         /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
@@ -871,6 +879,7 @@ pub const FlatList = opaque {
             interop.setStrAttribute(self.ref, "PADDING", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// VALUESTRING (non inheritable): changes or retrieves the value attribute
@@ -895,6 +904,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// HLCOLORALPHA: the transparency used to draw the selection.
         /// Default: 128.
@@ -917,6 +927,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// TEXTELLIPSIS (non inheritable): If the text is larger that its box, an
         /// ellipsis ("...") will be placed near the last visible part of the text and
@@ -927,6 +938,7 @@ pub const FlatList = opaque {
             interop.setBoolAttribute(self.ref, "TEXTELLIPSIS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
@@ -941,6 +953,7 @@ pub const FlatList = opaque {
             interop.setBoolAttribute(self.ref, "DRAGDROPLIST", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// REMOVEITEM (write-only): removes the given value.
@@ -958,6 +971,7 @@ pub const FlatList = opaque {
             interop.setBoolAttribute(self.ref, "DRAWMAKEINACTIVE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TOPITEM (write-only): position the given item at the top of the list or
@@ -1010,6 +1024,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// SCROLLBAR (read-only): is always "NO".
         /// So the IupCanvas native scrollbars are hidden.
@@ -1037,6 +1052,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHOWDRAGDROP (creation only) (non inheritable): enables the internal drag
         /// and drop of items in the same list, and enables the DRAGDROP_CB callback.
@@ -1048,6 +1064,7 @@ pub const FlatList = opaque {
             interop.setBoolAttribute(self.ref, "SHOWDRAGDROP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
@@ -1065,6 +1082,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// BGCOLOR: Background color of the text.
         /// Default: the global attribute TXTBGCOLOR.
@@ -1073,6 +1091,7 @@ pub const FlatList = opaque {
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// ITEMFONTSIZEid: text font size.
@@ -1137,6 +1156,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// SPACING: internal space between each item.
         /// Different from IupList, it does not affects the internal margin.
@@ -1178,6 +1198,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// TEXTPSCOLOR: foreground color of a selected item.
         /// If not defined FORECOLORid will be used.
@@ -1187,6 +1208,7 @@ pub const FlatList = opaque {
             interop.setRgb(self.ref, "TEXTPSCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// BORDERCOLOR: color used for the internal border.
@@ -1220,6 +1242,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// CSPACING: same as SPACING but using the units of the vertical part of the
         /// SIZE attribute.
@@ -1230,6 +1253,7 @@ pub const FlatList = opaque {
             interop.setIntAttribute(self.ref, "CSPACING", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// HLCOLOR: color of a filled box drawn over the selected item.
@@ -1264,6 +1288,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
         /// this means that will act also as minimum number of visible columns.
@@ -1291,6 +1316,7 @@ pub const FlatList = opaque {
             interop.setStrAttribute(self.ref, "SB_IMAGETOPHIGHLIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// APPENDITEM (write-only): inserts an item after the last item.
@@ -1328,6 +1354,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// MULTIPLE (creation only): Allows selecting several items simultaneously
         /// (multiple list).
@@ -1337,6 +1364,7 @@ pub const FlatList = opaque {
             interop.setBoolAttribute(self.ref, "MULTIPLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VALUE (non inheritable): Depends on the selection mode: MULTIPLE=YES:
@@ -1359,6 +1387,7 @@ pub const FlatList = opaque {
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
@@ -1388,6 +1417,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// CPADDING: same as PADDING but using the units of the SIZE attribute.
         /// It will actually set the PADDING attribute.
@@ -1399,6 +1429,7 @@ pub const FlatList = opaque {
             interop.setStrAttribute(self.ref, "CPADDING", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
@@ -1424,6 +1455,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// ICONSPACING (non inheritable): spacing between the image and the text.
         /// Default: "2".
@@ -1438,6 +1470,7 @@ pub const FlatList = opaque {
             interop.setIntAttribute(self.ref, "YMAX", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BACKIMAGE (non inheritable): image name to be used as background.
@@ -1523,6 +1556,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// BORDER (creation only): the default value is "NO".
         /// This is the IupCanvas border.
@@ -1532,6 +1566,7 @@ pub const FlatList = opaque {
             interop.setBoolAttribute(self.ref, "BORDER", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
@@ -1563,6 +1598,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// BORDERWIDTH: line width used for the internal border.
         /// Default: "0".
@@ -1579,6 +1615,7 @@ pub const FlatList = opaque {
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TEXTALIGNMENT (non inheritable): Horizontal text alignment for multiple lines.
@@ -1634,6 +1671,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// TEXTWRAP (non inheritable): For single line texts if the text is larger
         /// than its box the line will be automatically broken in multiple lines.
@@ -1687,6 +1725,7 @@ pub const FlatList = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1715,6 +1754,7 @@ pub const FlatList = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -2306,6 +2346,10 @@ pub const FlatList = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -2363,11 +2407,13 @@ pub const FlatList = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// COUNT (read-only) (non inheritable): returns the number of items.
     pub fn getCount(self: *Self) i32 {
         return interop.getIntAttribute(self, "COUNT", .{});
     }
+
 
     /// 
     /// FGCOLOR: Text color.
@@ -2375,6 +2421,7 @@ pub const FlatList = opaque {
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR: Text color.
@@ -2398,6 +2445,7 @@ pub const FlatList = opaque {
     pub fn setTipBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
+
 
     /// 
     /// HASFOCUS (read-only): returns the button state if has focus.
@@ -2439,6 +2487,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "SB_IMAGEBOTTOMPRESS", .{}, arg);
     }
 
+
     /// 
     /// ITEMTIPid: tip of the item at the given id.
     /// If defined will be shown instead of the TIP attribute.
@@ -2446,6 +2495,7 @@ pub const FlatList = opaque {
     pub fn getItemTip(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "ITEMTIP", .{index});
     }
+
 
     /// 
     /// ITEMTIPid: tip of the item at the given id.
@@ -2479,6 +2529,7 @@ pub const FlatList = opaque {
         return iup.XYPos.parse(str, ',');
     }
 
+
     /// 
     /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
     /// Can be Yes or No.
@@ -2486,6 +2537,7 @@ pub const FlatList = opaque {
     pub fn getFocusFeedback(self: *Self) bool {
         return interop.getBoolAttribute(self, "FOCUSFEEDBACK", .{});
     }
+
 
     /// 
     /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
@@ -2506,6 +2558,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
+
     /// 
     /// DROPFILESTARGET (non inheritable): Enable or disable the drop of files.
     /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
@@ -2513,6 +2566,7 @@ pub const FlatList = opaque {
     pub fn getDropFilesTarget(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
+
 
     /// 
     /// DROPFILESTARGET (non inheritable): Enable or disable the drop of files.
@@ -2590,6 +2644,7 @@ pub const FlatList = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
     }
 
+
     /// 
     /// PSCOLOR: background color of a selected item.
     /// If not defined BACKCOLORid will be used.
@@ -2597,6 +2652,7 @@ pub const FlatList = opaque {
     pub fn getPsColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "PSCOLOR", .{});
     }
+
 
     /// 
     /// PSCOLOR: background color of a selected item.
@@ -2764,12 +2820,14 @@ pub const FlatList = opaque {
         }
     }
 
+
     /// 
     /// VISIBLELINES: Defines the number of visible lines for the Natural Size,
     /// this means that will act also as minimum number of visible lines.
     pub fn getVisibleLines(self: *Self) i32 {
         return interop.getIntAttribute(self, "VISIBLELINES", .{});
     }
+
 
     /// 
     /// VISIBLELINES: Defines the number of visible lines for the Natural Size,
@@ -2803,6 +2861,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "SB_IMAGETOP", .{}, arg);
     }
 
+
     /// 
     /// SIZE: Size of the list.
     /// The Natural Size is defined by the number of elements in the list and the
@@ -2813,6 +2872,7 @@ pub const FlatList = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE: Size of the list.
@@ -2826,6 +2886,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
+
     /// 
     /// PADDING: internal margin of each item.
     /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
@@ -2836,6 +2897,7 @@ pub const FlatList = opaque {
         var str = interop.getStrAttribute(self, "PADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// PADDING: internal margin of each item.
@@ -2849,6 +2911,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "PADDING", .{}, value);
     }
 
+
     /// 
     /// VALUESTRING (non inheritable): changes or retrieves the value attribute
     /// using a string of an item.
@@ -2857,6 +2920,7 @@ pub const FlatList = opaque {
     pub fn getValueString(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "VALUESTRING", .{});
     }
+
 
     /// 
     /// VALUESTRING (non inheritable): changes or retrieves the value attribute
@@ -2887,6 +2951,7 @@ pub const FlatList = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+
     /// 
     /// HLCOLORALPHA: the transparency used to draw the selection.
     /// Default: 128.
@@ -2894,6 +2959,7 @@ pub const FlatList = opaque {
     pub fn getHlColorAlpha(self: *Self) i32 {
         return interop.getIntAttribute(self, "HLCOLORALPHA", .{});
     }
+
 
     /// 
     /// HLCOLORALPHA: the transparency used to draw the selection.
@@ -2919,6 +2985,7 @@ pub const FlatList = opaque {
         interop.setIntAttribute(self, "YMIN", .{}, arg);
     }
 
+
     /// 
     /// TEXTELLIPSIS (non inheritable): If the text is larger that its box, an
     /// ellipsis ("...") will be placed near the last visible part of the text and
@@ -2928,6 +2995,7 @@ pub const FlatList = opaque {
         return interop.getBoolAttribute(self, "TEXTELLIPSIS", .{});
     }
 
+
     /// 
     /// TEXTELLIPSIS (non inheritable): If the text is larger that its box, an
     /// ellipsis ("...") will be placed near the last visible part of the text and
@@ -2936,6 +3004,7 @@ pub const FlatList = opaque {
     pub fn setTextEllipsis(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TEXTELLIPSIS", .{}, arg);
     }
+
 
     /// 
     /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
@@ -2949,6 +3018,7 @@ pub const FlatList = opaque {
         return interop.getBoolAttribute(self, "DRAGDROPLIST", .{});
     }
 
+
     /// 
     /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
     /// support drag and drop of items between lists (IupList or IupFlatList), in
@@ -2960,6 +3030,7 @@ pub const FlatList = opaque {
     pub fn setDragDropList(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DRAGDROPLIST", .{}, arg);
     }
+
 
     /// 
     /// REMOVEITEM (write-only): removes the given value.
@@ -2977,6 +3048,7 @@ pub const FlatList = opaque {
     pub fn setDrawMakeInactive(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DRAWMAKEINACTIVE", .{}, arg);
     }
+
 
     /// 
     /// TOPITEM (write-only): position the given item at the top of the list or
@@ -3042,6 +3114,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "SB_IMAGELEFTINACTIVE", .{}, arg);
     }
 
+
     /// 
     /// SCROLLBAR (read-only): is always "NO".
     /// So the IupCanvas native scrollbars are hidden.
@@ -3050,6 +3123,7 @@ pub const FlatList = opaque {
     pub fn getScrollBar(self: *Self) bool {
         return interop.getBoolAttribute(self, "SCROLLBAR", .{});
     }
+
 
     /// 
     /// SCROLLBAR (read-only): is always "NO".
@@ -3085,6 +3159,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "SB_IMAGERIGHTINACTIVE", .{}, arg);
     }
 
+
     /// 
     /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -3092,6 +3167,7 @@ pub const FlatList = opaque {
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
+
 
     /// 
     /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
@@ -3109,12 +3185,14 @@ pub const FlatList = opaque {
         interop.setIntAttribute(self, "XMAX", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: Background color of the text.
     /// Default: the global attribute TXTBGCOLOR.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR: Background color of the text.
@@ -3123,12 +3201,14 @@ pub const FlatList = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// ITEMFONTSIZEid: text font size.
     /// When changed will actually set ITEMFONTid.
     pub fn getItemFontSize(self: *Self, index: i32) i32 {
         return interop.getIntAttribute(self, "ITEMFONTSIZE", .{index});
     }
+
 
     /// 
     /// ITEMFONTSIZEid: text font size.
@@ -3212,6 +3292,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// SPACING: internal space between each item.
     /// Different from IupList, it does not affects the internal margin.
@@ -3220,6 +3301,7 @@ pub const FlatList = opaque {
     pub fn getSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "SPACING", .{});
     }
+
 
     /// 
     /// SPACING: internal space between each item.
@@ -3262,6 +3344,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// TEXTPSCOLOR: foreground color of a selected item.
     /// If not defined FORECOLORid will be used.
@@ -3269,6 +3352,7 @@ pub const FlatList = opaque {
     pub fn getTextPsColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "TEXTPSCOLOR", .{});
     }
+
 
     /// 
     /// TEXTPSCOLOR: foreground color of a selected item.
@@ -3278,6 +3362,7 @@ pub const FlatList = opaque {
         interop.setRgb(self, "TEXTPSCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// BORDERCOLOR: color used for the internal border.
     /// Default: "50 150 255".
@@ -3285,6 +3370,7 @@ pub const FlatList = opaque {
     pub fn getBorderColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BORDERCOLOR", .{});
     }
+
 
     /// 
     /// BORDERCOLOR: color used for the internal border.
@@ -3331,6 +3417,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "SB_IMAGELEFT", .{}, arg);
     }
 
+
     /// 
     /// CSPACING: same as SPACING but using the units of the vertical part of the
     /// SIZE attribute.
@@ -3339,6 +3426,7 @@ pub const FlatList = opaque {
     pub fn getCSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "CSPACING", .{});
     }
+
 
     /// 
     /// CSPACING: same as SPACING but using the units of the vertical part of the
@@ -3354,12 +3442,14 @@ pub const FlatList = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// HLCOLOR: color of a filled box drawn over the selected item.
     /// Default: "TXTHLCOLOR".
     pub fn getHlColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "HLCOLOR", .{});
     }
+
 
     /// 
     /// HLCOLOR: color of a filled box drawn over the selected item.
@@ -3400,6 +3490,7 @@ pub const FlatList = opaque {
         interop.setRgb(self, "DRAWBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
     /// this means that will act also as minimum number of visible columns.
@@ -3409,6 +3500,7 @@ pub const FlatList = opaque {
     pub fn getVisibleColumns(self: *Self) i32 {
         return interop.getIntAttribute(self, "VISIBLECOLUMNS", .{});
     }
+
 
     /// 
     /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
@@ -3436,6 +3528,7 @@ pub const FlatList = opaque {
     pub fn setSbImageTopHighlightHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "SB_IMAGETOPHIGHLIGHT", .{}, arg);
     }
+
 
     /// 
     /// APPENDITEM (write-only): inserts an item after the last item.
@@ -3493,6 +3586,7 @@ pub const FlatList = opaque {
         }
     }
 
+
     /// 
     /// VALUE (non inheritable): Depends on the selection mode: MULTIPLE=YES:
     /// Sequence of '+' and '-' symbols indicating the state of each item.
@@ -3512,6 +3606,7 @@ pub const FlatList = opaque {
     pub fn getValue(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
+
 
     /// 
     /// VALUE (non inheritable): Depends on the selection mode: MULTIPLE=YES:
@@ -3533,6 +3628,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
 
+
     /// 
     /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
     /// occupy the full background.
@@ -3542,6 +3638,7 @@ pub const FlatList = opaque {
     pub fn getBackImageZoom(self: *Self) bool {
         return interop.getBoolAttribute(self, "BACKIMAGEZOOM", .{});
     }
+
 
     /// 
     /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
@@ -3570,6 +3667,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "SB_IMAGELEFTHIGHLIGHT", .{}, arg);
     }
 
+
     /// 
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
     /// It will actually set the PADDING attribute.
@@ -3578,6 +3676,7 @@ pub const FlatList = opaque {
         var str = interop.getStrAttribute(self, "CPADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
@@ -3589,6 +3688,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "CPADDING", .{}, value);
     }
 
+
     /// 
     /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
     /// from the BACKIMAGE.
@@ -3598,6 +3698,7 @@ pub const FlatList = opaque {
     pub fn getFitToBackImage(self: *Self) bool {
         return interop.getBoolAttribute(self, "FITTOBACKIMAGE", .{});
     }
+
 
     /// 
     /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
@@ -3625,12 +3726,14 @@ pub const FlatList = opaque {
         interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
+
     /// 
     /// ICONSPACING (non inheritable): spacing between the image and the text.
     /// Default: "2".
     pub fn getIconSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "ICONSPACING", .{});
     }
+
 
     /// 
     /// ICONSPACING (non inheritable): spacing between the image and the text.
@@ -3647,6 +3750,7 @@ pub const FlatList = opaque {
         interop.setIntAttribute(self, "YMAX", .{}, arg);
     }
 
+
     /// 
     /// BACKIMAGE (non inheritable): image name to be used as background.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -3658,6 +3762,7 @@ pub const FlatList = opaque {
             return null;
         }
     }
+
 
     /// 
     /// BACKIMAGE (non inheritable): image name to be used as background.
@@ -3754,6 +3859,7 @@ pub const FlatList = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
     /// when both are displayed.
@@ -3768,6 +3874,7 @@ pub const FlatList = opaque {
         if (std.ascii.eqlIgnoreCase("TOP", ret)) return .Top;
         return null;
     }
+
 
     /// 
     /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
@@ -3801,6 +3908,7 @@ pub const FlatList = opaque {
         interop.setBoolAttribute(self, "WHEELDROPFOCUS", .{}, arg);
     }
 
+
     /// 
     /// BORDERWIDTH: line width used for the internal border.
     /// Default: "0".
@@ -3809,6 +3917,7 @@ pub const FlatList = opaque {
     pub fn getBorderWidth(self: *Self) i32 {
         return interop.getIntAttribute(self, "BORDERWIDTH", .{});
     }
+
 
     /// 
     /// BORDERWIDTH: line width used for the internal border.
@@ -3827,6 +3936,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// TEXTALIGNMENT (non inheritable): Horizontal text alignment for multiple lines.
     /// Can be: ALEFT, ARIGHT or ACENTER.
@@ -3839,6 +3949,7 @@ pub const FlatList = opaque {
         if (std.ascii.eqlIgnoreCase("ACENTER", ret)) return .ACenter;
         return null;
     }
+
 
     /// 
     /// TEXTALIGNMENT (non inheritable): Horizontal text alignment for multiple lines.
@@ -3896,6 +4007,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "SB_IMAGERIGHT", .{}, arg);
     }
 
+
     /// 
     /// TEXTWRAP (non inheritable): For single line texts if the text is larger
     /// than its box the line will be automatically broken in multiple lines.
@@ -3906,6 +4018,7 @@ pub const FlatList = opaque {
     pub fn getTextWrap(self: *Self) bool {
         return interop.getBoolAttribute(self, "TEXTWRAP", .{});
     }
+
 
     /// 
     /// TEXTWRAP (non inheritable): For single line texts if the text is larger
@@ -3967,6 +4080,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -3987,6 +4101,7 @@ pub const FlatList = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -4010,6 +4125,7 @@ pub const FlatList = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -4030,6 +4146,7 @@ pub const FlatList = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

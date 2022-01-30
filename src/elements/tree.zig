@@ -153,7 +153,7 @@ pub const Tree = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -171,7 +171,7 @@ pub const Tree = opaque {
 
     pub const OnShowRenameFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     /// 
     /// SELECTION_CB: Action generated when an node is selected or deselected.
@@ -308,7 +308,7 @@ pub const Tree = opaque {
 
     pub const OnExecuteLeafFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const OnRenameFn = fn (self: *Self, arg0: i32, arg1: [:0]const u8) anyerror!void;
 
@@ -433,6 +433,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
         /// TOPITEM
@@ -447,6 +448,7 @@ pub const Tree = opaque {
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
@@ -463,6 +465,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setDropEqualDrag(self: *Initializer, arg: bool) Initializer {
@@ -476,6 +479,7 @@ pub const Tree = opaque {
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
@@ -530,6 +534,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
@@ -537,6 +542,7 @@ pub const Tree = opaque {
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
@@ -603,6 +609,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
         pub fn setMarked(self: *Initializer, index: i32, arg: bool) Initializer {
@@ -634,6 +641,7 @@ pub const Tree = opaque {
             interop.setBoolAttribute(self.ref, "TOGGLEVISIBLE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -679,6 +687,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
         /// have the same size.
@@ -706,6 +715,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
         /// INSERTBRANCH MOVENODE
@@ -721,6 +731,7 @@ pub const Tree = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -763,6 +774,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
         /// TITLEFONTUSERDATA
@@ -771,6 +783,7 @@ pub const Tree = opaque {
             interop.setStrAttribute(self.ref, "TITLE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
@@ -786,6 +799,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUECANFOCUS PROPAGATEFOCUS
         pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
@@ -793,6 +807,7 @@ pub const Tree = opaque {
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -827,6 +842,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
         /// TITLEFONTUSERDATA
@@ -842,6 +858,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
         /// TOPITEM
@@ -850,6 +867,7 @@ pub const Tree = opaque {
             interop.setIntAttribute(self.ref, "SPACING", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -921,6 +939,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
         /// TITLEFONTUSERDATA
@@ -946,6 +965,7 @@ pub const Tree = opaque {
             interop.setIntAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -975,6 +995,7 @@ pub const Tree = opaque {
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
@@ -1018,6 +1039,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
         pub fn mark(self: *Initializer, arg: ?Mark) Initializer {
@@ -1052,6 +1074,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// HIDELINES HIDEBUTTONS
         pub fn setHideButtons(self: *Initializer, arg: bool) Initializer {
@@ -1065,6 +1088,7 @@ pub const Tree = opaque {
             interop.setBoolAttribute(self.ref, "SHOWRENAME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
@@ -1100,6 +1124,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
         pub fn rename(self: *Initializer) Initializer {
@@ -1120,6 +1145,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
         /// INSERTBRANCH MOVENODE
@@ -1135,6 +1161,7 @@ pub const Tree = opaque {
             return self.*;
         }
 
+
         /// 
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
         /// INSERTBRANCH MOVENODE
@@ -1143,6 +1170,7 @@ pub const Tree = opaque {
             interop.setIntAttribute(self.ref, "COPYNODE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// HIDELINES HIDEBUTTONS
@@ -1157,6 +1185,7 @@ pub const Tree = opaque {
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1186,6 +1215,7 @@ pub const Tree = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1658,6 +1688,10 @@ pub const Tree = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1730,6 +1764,7 @@ pub const Tree = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
@@ -1737,12 +1772,14 @@ pub const Tree = opaque {
         return interop.getIntAttribute(self, "COUNT", .{});
     }
 
+
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -1759,12 +1796,14 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
+
     /// 
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
     pub fn getAddExpanded(self: *Self) bool {
         return interop.getBoolAttribute(self, "ADDEXPANDED", .{});
     }
+
 
     /// 
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
@@ -1781,17 +1820,20 @@ pub const Tree = opaque {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDropEqualDrag(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPEQUALDRAG", .{});
     }
 
+
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setDropEqualDrag(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DROPEQUALDRAG", .{}, arg);
     }
+
 
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
@@ -1811,6 +1853,7 @@ pub const Tree = opaque {
     pub fn setTipIcon(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
+
 
     /// 
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
@@ -1871,11 +1914,13 @@ pub const Tree = opaque {
         return interop.getIntAttribute(self, "NEXT", .{index});
     }
 
+
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDropFilesTarget(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
+
 
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
@@ -1883,11 +1928,13 @@ pub const Tree = opaque {
         interop.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
     }
 
+
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDragDropTree(self: *Self) bool {
         return interop.getBoolAttribute(self, "DRAGDROPTREE", .{});
     }
+
 
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
@@ -1957,11 +2004,13 @@ pub const Tree = opaque {
         return interop.getIntAttribute(self, "Y", .{});
     }
 
+
     /// 
     /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
     pub fn getMarked(self: *Self, index: i32) bool {
         return interop.getBoolAttribute(self, "MARKED", .{index});
     }
+
 
     /// 
     /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
@@ -2005,6 +2054,7 @@ pub const Tree = opaque {
         return interop.getIntAttribute(self, "PREVIOUS", .{index});
     }
 
+
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
@@ -2019,6 +2069,7 @@ pub const Tree = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -2075,6 +2126,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
+
     /// 
     /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
     /// have the same size.
@@ -2093,6 +2145,7 @@ pub const Tree = opaque {
             return null;
         }
     }
+
 
     /// 
     /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
@@ -2114,6 +2167,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "IMAGELEAF", .{}, arg);
     }
 
+
     /// 
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
@@ -2127,6 +2181,7 @@ pub const Tree = opaque {
             interop.clearAttribute(self, "DELNODE", .{index});
         }
     }
+
 
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -2183,12 +2238,14 @@ pub const Tree = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{index});
     }
+
 
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
@@ -2197,11 +2254,13 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "TITLE", .{index}, arg);
     }
 
+
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getShowDragDrop(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOWDRAGDROP", .{});
     }
+
 
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
@@ -2213,11 +2272,13 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "EXPANDALL", .{}, null);
     }
 
+
     /// 
     /// VALUECANFOCUS PROPAGATEFOCUS
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
+
 
     /// 
     /// VALUECANFOCUS PROPAGATEFOCUS
@@ -2225,12 +2286,14 @@ pub const Tree = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
+
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -2274,12 +2337,14 @@ pub const Tree = opaque {
         }
     }
 
+
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getColor(self: *Self, index: i32) ?iup.Rgb {
         return interop.getRgb(self, "COLOR", .{index});
     }
+
 
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
@@ -2296,12 +2361,14 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "SPACING", .{});
     }
+
 
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -2310,6 +2377,7 @@ pub const Tree = opaque {
         interop.setIntAttribute(self, "SPACING", .{}, arg);
     }
 
+
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
@@ -2317,6 +2385,7 @@ pub const Tree = opaque {
         var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -2350,6 +2419,7 @@ pub const Tree = opaque {
     pub fn getLast(self: *Self, index: i32) i32 {
         return interop.getIntAttribute(self, "LAST", .{index});
     }
+
 
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
@@ -2423,6 +2493,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
@@ -2433,6 +2504,7 @@ pub const Tree = opaque {
         if (std.ascii.eqlIgnoreCase("COLLAPSED", ret)) return .Collapsed;
         return null;
     }
+
 
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
@@ -2462,12 +2534,14 @@ pub const Tree = opaque {
         interop.setIntAttribute(self, "VALUE", .{}, arg);
     }
 
+
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getIndentation(self: *Self) i32 {
         return interop.getIntAttribute(self, "INDENTATION", .{});
     }
+
 
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
@@ -2503,6 +2577,7 @@ pub const Tree = opaque {
         interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
+
     /// 
     /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
     /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
@@ -2522,6 +2597,7 @@ pub const Tree = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
@@ -2563,12 +2639,14 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
+
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getParent(self: *Self, index: i32) i32 {
         return interop.getIntAttribute(self, "PARENT", .{index});
     }
+
 
     /// 
     /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
@@ -2615,17 +2693,20 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
+
     /// 
     /// HIDELINES HIDEBUTTONS
     pub fn getHideButtons(self: *Self) bool {
         return interop.getBoolAttribute(self, "HIDEBUTTONS", .{});
     }
 
+
     /// 
     /// HIDELINES HIDEBUTTONS
     pub fn setHideButtons(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "HIDEBUTTONS", .{}, arg);
     }
+
 
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
@@ -2647,6 +2728,7 @@ pub const Tree = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
     /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
@@ -2666,6 +2748,7 @@ pub const Tree = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
@@ -2696,12 +2779,14 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "DRAGTYPES", .{}, arg);
     }
 
+
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getChildCount(self: *Self, index: i32) i32 {
         return interop.getIntAttribute(self, "CHILDCOUNT", .{index});
     }
+
 
     /// 
     /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
@@ -2725,6 +2810,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
@@ -2740,6 +2826,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "RUBBERBAND", .{}, arg);
     }
 
+
     /// 
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
@@ -2747,11 +2834,13 @@ pub const Tree = opaque {
         interop.setIntAttribute(self, "COPYNODE", .{index}, arg);
     }
 
+
     /// 
     /// HIDELINES HIDEBUTTONS
     pub fn getHideLines(self: *Self) bool {
         return interop.getBoolAttribute(self, "HIDELINES", .{});
     }
+
 
     /// 
     /// HIDELINES HIDEBUTTONS
@@ -2766,6 +2855,7 @@ pub const Tree = opaque {
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2787,6 +2877,7 @@ pub const Tree = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2810,6 +2901,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2830,6 +2922,7 @@ pub const Tree = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

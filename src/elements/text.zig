@@ -146,7 +146,7 @@ pub const Text = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -162,7 +162,7 @@ pub const Text = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -292,7 +292,7 @@ pub const Text = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const ZOrder = enum {
         Top,
@@ -420,6 +420,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// FGCOLOR: Text color.
         /// Default: the global attribute TXTFGCOLOR.
@@ -441,6 +442,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// WORDWRAP (creation only): Valid only when MULTILINE=YES.
         /// If enabled will force a word wrap of lines that are greater than the with
@@ -452,6 +454,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// PASSWORD (creation only) [Windows and GTK Only] (non inheritable): Hide the
         /// typed character using an "*".
@@ -461,6 +464,7 @@ pub const Text = opaque {
             interop.setBoolAttribute(self.ref, "PASSWORD", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CARET (non inheritable): Character position of the insertion point.
@@ -485,6 +489,7 @@ pub const Text = opaque {
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// OVERWRITE [Windows and GTK Only] (non inheritable): turns the overwrite
@@ -537,6 +542,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
         /// the drop of files.
@@ -554,6 +560,7 @@ pub const Text = opaque {
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
@@ -584,6 +591,7 @@ pub const Text = opaque {
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// NC: Maximum number of characters allowed for keyboard input, larger text
@@ -646,6 +654,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// VISIBLELINES: When MULTILINE=YES defines the number of visible lines for
         /// the Natural Size, this means that will act also as minimum number of
@@ -658,6 +667,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// SIZE (non inheritable): Since the contents can be changed by the user, the
         /// Natural Size is not affected by the text contents (since 3.0).
@@ -669,6 +679,7 @@ pub const Text = opaque {
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// PADDING: internal margin.
@@ -723,6 +734,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// SCROLLBAR (creation only): Valid only when MULTILINE=YES.
         /// Associates an automatic horizontal and/or vertical scrollbar to the multiline.
@@ -740,6 +752,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABSIZE [Windows and GTK Only]: Valid only when MULTILINE=YES.
         /// Controls the number of characters for a tab stop.
@@ -749,6 +762,7 @@ pub const Text = opaque {
             interop.setIntAttribute(self.ref, "TABSIZE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
@@ -760,6 +774,7 @@ pub const Text = opaque {
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BGCOLOR: Background color of the text.
@@ -776,6 +791,7 @@ pub const Text = opaque {
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VALUEMASKED (non inheritable) (write-only): sets VALUE but first checks if
@@ -820,6 +836,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// SCROLLTOPOS (non inheritable, write only): Scroll the text to make the
         /// given character position visible.
@@ -832,6 +849,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// FORMATTING [Windows and GTK Only] (non inheritable): When enabled allow the
         /// use of text formatting attributes.
@@ -843,6 +861,7 @@ pub const Text = opaque {
             interop.setBoolAttribute(self.ref, "FORMATTING", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// SCROLLTO (non inheritable, write only): Scroll the text to make the given
@@ -875,6 +894,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
         /// this means that will act also as minimum number of visible columns.
@@ -895,6 +915,7 @@ pub const Text = opaque {
             interop.setStrAttribute(self.ref, "MASKINT", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// SPINVALUE (non inheritable): the current value of the spin.
@@ -945,6 +966,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// SELECTIONPOS (non inheritable): Same as SELECTION but using a zero based
         /// character index "pos1:pos2".
@@ -960,6 +982,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE (non inheritable): Text entered by the user.
         /// The '\n' character indicates a new line, valid only when MULTILINE=YES.
@@ -970,6 +993,7 @@ pub const Text = opaque {
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FILTER [Windows Only] (non inheritable): allows a custom filter to process
@@ -993,6 +1017,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// MULTILINE (creation only) (non inheritable): allows the edition of multiple lines.
         /// In single line mode some characters are invalid, like "\t", "\r" and "\n".
@@ -1005,6 +1030,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// SELECTEDTEXT (non inheritable): Selection text.
         /// Returns NULL if there is no selection.
@@ -1015,6 +1041,7 @@ pub const Text = opaque {
             interop.setStrAttribute(self.ref, "SELECTEDTEXT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CPADDING: same as PADDING but using the units of the SIZE attribute.
@@ -1027,6 +1054,7 @@ pub const Text = opaque {
             interop.setStrAttribute(self.ref, "CPADDING", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -1042,6 +1070,7 @@ pub const Text = opaque {
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CHANGECASE (non inheritable): Change case according to given conversion.
@@ -1064,6 +1093,7 @@ pub const Text = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// CUEBANNER [Windows and GTK Only] (non inheritable): a text that is
@@ -1091,6 +1121,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// SPIN (non inheritable, creation only): enables a spin control attached to
         /// the element.
@@ -1110,6 +1141,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// BORDER (creation only): Shows a border around the text.
         /// Default: "YES".
@@ -1118,6 +1150,7 @@ pub const Text = opaque {
             interop.setBoolAttribute(self.ref, "BORDER", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CARETPOS (non inheritable): Also the character position of the insertion
@@ -1136,6 +1169,7 @@ pub const Text = opaque {
             interop.setBoolAttribute(self.ref, "SPINAUTO", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MASK (non inheritable): Defines a mask that will filter interactive text input.
@@ -1162,6 +1196,7 @@ pub const Text = opaque {
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CLIPBOARD (write-only): clear, cut, copy or paste the selection to or from
@@ -1195,6 +1230,7 @@ pub const Text = opaque {
             return self.*;
         }
 
+
         /// 
         /// READONLY: Allows the user only to read the contents, without changing it.
         /// Restricts keyboard input only, text value can still be changed using attributes.
@@ -1206,6 +1242,7 @@ pub const Text = opaque {
             interop.setBoolAttribute(self.ref, "READONLY", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// APPEND (write-only): Inserts a text at the end of the current text.
@@ -1230,6 +1267,7 @@ pub const Text = opaque {
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1259,6 +1297,7 @@ pub const Text = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1683,6 +1722,10 @@ pub const Text = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1767,6 +1810,7 @@ pub const Text = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// FGCOLOR: Text color.
     /// Default: the global attribute TXTFGCOLOR.
@@ -1774,12 +1818,14 @@ pub const Text = opaque {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
 
+
     /// 
     /// FGCOLOR: Text color.
     /// Default: the global attribute TXTFGCOLOR.
     pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "FGCOLOR", .{}, rgb);
     }
+
 
     /// 
     /// COUNT (read-only): returns the number of characters in the text, including
@@ -1805,6 +1851,7 @@ pub const Text = opaque {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// CARET (non inheritable): Character position of the insertion point.
     /// Its format depends in MULTILINE=YES.
@@ -1813,6 +1860,7 @@ pub const Text = opaque {
         var str = interop.getStrAttribute(self, "CARET", .{});
         return iup.LinColPos.parse(str, ',');
     }
+
 
     /// 
     /// CARET (non inheritable): Character position of the insertion point.
@@ -1840,6 +1888,7 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
+
     /// 
     /// OVERWRITE [Windows and GTK Only] (non inheritable): turns the overwrite
     /// mode ON or OFF.
@@ -1848,6 +1897,7 @@ pub const Text = opaque {
     pub fn getOverwrite(self: *Self) bool {
         return interop.getBoolAttribute(self, "OVERWRITE", .{});
     }
+
 
     /// 
     /// OVERWRITE [Windows and GTK Only] (non inheritable): turns the overwrite
@@ -1917,6 +1967,7 @@ pub const Text = opaque {
         interop.setBoolAttribute(self, "APPENDNEWLINE", .{}, arg);
     }
 
+
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
     /// the drop of files.
@@ -1926,6 +1977,7 @@ pub const Text = opaque {
     pub fn getDropFilesTarget(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
+
 
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
@@ -1969,6 +2021,7 @@ pub const Text = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// NC: Maximum number of characters allowed for keyboard input, larger text
     /// can still be set using attributes.
@@ -1978,6 +2031,7 @@ pub const Text = opaque {
     pub fn getNc(self: *Self) i32 {
         return interop.getIntAttribute(self, "NC", .{});
     }
+
 
     /// 
     /// NC: Maximum number of characters allowed for keyboard input, larger text
@@ -2039,6 +2093,7 @@ pub const Text = opaque {
         }
     }
 
+
     /// 
     /// LINEVALUE (read-only): returns the text of the line where the caret is.
     /// It does not include the "\n" character.
@@ -2073,6 +2128,7 @@ pub const Text = opaque {
         }
     }
 
+
     /// 
     /// VISIBLELINES: When MULTILINE=YES defines the number of visible lines for
     /// the Natural Size, this means that will act also as minimum number of
@@ -2082,6 +2138,7 @@ pub const Text = opaque {
     pub fn getVisibleLines(self: *Self) i32 {
         return interop.getIntAttribute(self, "VISIBLELINES", .{});
     }
+
 
     /// 
     /// VISIBLELINES: When MULTILINE=YES defines the number of visible lines for
@@ -2093,6 +2150,7 @@ pub const Text = opaque {
         interop.setIntAttribute(self, "VISIBLELINES", .{}, arg);
     }
 
+
     /// 
     /// SIZE (non inheritable): Since the contents can be changed by the user, the
     /// Natural Size is not affected by the text contents (since 3.0).
@@ -2101,6 +2159,7 @@ pub const Text = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE (non inheritable): Since the contents can be changed by the user, the
@@ -2111,6 +2170,7 @@ pub const Text = opaque {
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
+
 
     /// 
     /// PADDING: internal margin.
@@ -2123,6 +2183,7 @@ pub const Text = opaque {
         var str = interop.getStrAttribute(self, "PADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// PADDING: internal margin.
@@ -2197,6 +2258,7 @@ pub const Text = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+
     /// 
     /// TABSIZE [Windows and GTK Only]: Valid only when MULTILINE=YES.
     /// Controls the number of characters for a tab stop.
@@ -2205,6 +2267,7 @@ pub const Text = opaque {
         return interop.getIntAttribute(self, "TABSIZE", .{});
     }
 
+
     /// 
     /// TABSIZE [Windows and GTK Only]: Valid only when MULTILINE=YES.
     /// Controls the number of characters for a tab stop.
@@ -2212,6 +2275,7 @@ pub const Text = opaque {
     pub fn setTabsIZe(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "TABSIZE", .{}, arg);
     }
+
 
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
@@ -2222,6 +2286,7 @@ pub const Text = opaque {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
+
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -2231,6 +2296,7 @@ pub const Text = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: Background color of the text.
     /// Default: the global attribute TXTBGCOLOR.
@@ -2238,6 +2304,7 @@ pub const Text = opaque {
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR: Background color of the text.
@@ -2254,6 +2321,7 @@ pub const Text = opaque {
     pub fn setDropTarget(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
     }
+
 
     /// 
     /// VALUEMASKED (non inheritable) (write-only): sets VALUE but first checks if
@@ -2310,6 +2378,7 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// SCROLLTOPOS (non inheritable, write only): Scroll the text to make the
     /// given character position visible.
@@ -2319,6 +2388,7 @@ pub const Text = opaque {
     pub fn scrollTopOs(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "SCROLLTOPOS", .{}, arg);
     }
+
 
     /// 
     /// FORMATTING [Windows and GTK Only] (non inheritable): When enabled allow the
@@ -2330,6 +2400,7 @@ pub const Text = opaque {
         return interop.getBoolAttribute(self, "FORMATTING", .{});
     }
 
+
     /// 
     /// FORMATTING [Windows and GTK Only] (non inheritable): When enabled allow the
     /// use of text formatting attributes.
@@ -2339,6 +2410,7 @@ pub const Text = opaque {
     pub fn setFormatting(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "FORMATTING", .{}, arg);
     }
+
 
     /// 
     /// SCROLLTO (non inheritable, write only): Scroll the text to make the given
@@ -2358,6 +2430,7 @@ pub const Text = opaque {
     pub fn setTipFgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
+
 
     /// 
     /// LINECOUNT (read-only): returns the number of lines in the text.
@@ -2383,6 +2456,7 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
+
     /// 
     /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
     /// this means that will act also as minimum number of visible columns.
@@ -2393,6 +2467,7 @@ pub const Text = opaque {
     pub fn getVisibleColumns(self: *Self) i32 {
         return interop.getIntAttribute(self, "VISIBLECOLUMNS", .{});
     }
+
 
     /// 
     /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
@@ -2449,6 +2524,7 @@ pub const Text = opaque {
         interop.setBoolAttribute(self, "MASKCASEI", .{}, arg);
     }
 
+
     /// 
     /// SELECTIONPOS (non inheritable): Same as SELECTION but using a zero based
     /// character index "pos1:pos2".
@@ -2460,6 +2536,7 @@ pub const Text = opaque {
         var str = interop.getStrAttribute(self, "SELECTIONPOS", .{});
         return iup.Range.parse(str, ',');
     }
+
 
     /// 
     /// SELECTIONPOS (non inheritable): Same as SELECTION but using a zero based
@@ -2474,6 +2551,7 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "SELECTIONPOS", .{}, value);
     }
 
+
     /// 
     /// VALUE (non inheritable): Text entered by the user.
     /// The '\n' character indicates a new line, valid only when MULTILINE=YES.
@@ -2483,6 +2561,7 @@ pub const Text = opaque {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
 
+
     /// 
     /// VALUE (non inheritable): Text entered by the user.
     /// The '\n' character indicates a new line, valid only when MULTILINE=YES.
@@ -2491,6 +2570,7 @@ pub const Text = opaque {
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
+
 
     /// 
     /// FILTER [Windows Only] (non inheritable): allows a custom filter to process
@@ -2504,6 +2584,7 @@ pub const Text = opaque {
         if (std.ascii.eqlIgnoreCase("UPPERCASE", ret)) return .UpperCase;
         return null;
     }
+
 
     /// 
     /// FILTER [Windows Only] (non inheritable): allows a custom filter to process
@@ -2527,6 +2608,7 @@ pub const Text = opaque {
         interop.setIntAttribute(self, "SPINMAX", .{}, arg);
     }
 
+
     /// 
     /// MULTILINE (creation only) (non inheritable): allows the edition of multiple lines.
     /// In single line mode some characters are invalid, like "\t", "\r" and "\n".
@@ -2536,6 +2618,7 @@ pub const Text = opaque {
     pub fn getMultiline(self: *Self) bool {
         return interop.getBoolAttribute(self, "MULTILINE", .{});
     }
+
 
     /// 
     /// MULTILINE (creation only) (non inheritable): allows the edition of multiple lines.
@@ -2547,6 +2630,7 @@ pub const Text = opaque {
         interop.setBoolAttribute(self, "MULTILINE", .{}, arg);
     }
 
+
     /// 
     /// SELECTEDTEXT (non inheritable): Selection text.
     /// Returns NULL if there is no selection.
@@ -2555,6 +2639,7 @@ pub const Text = opaque {
     pub fn getSelectedText(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "SELECTEDTEXT", .{});
     }
+
 
     /// 
     /// SELECTEDTEXT (non inheritable): Selection text.
@@ -2565,6 +2650,7 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "SELECTEDTEXT", .{}, arg);
     }
 
+
     /// 
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
     /// It will actually set the PADDING attribute.
@@ -2573,6 +2659,7 @@ pub const Text = opaque {
         var str = interop.getStrAttribute(self, "CPADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
@@ -2584,12 +2671,14 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "CPADDING", .{}, value);
     }
 
+
     /// 
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -2605,6 +2694,7 @@ pub const Text = opaque {
     pub fn setTipVisible(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
+
 
     /// 
     /// CHANGECASE (non inheritable): Change case according to given conversion.
@@ -2626,6 +2716,7 @@ pub const Text = opaque {
         }
     }
 
+
     /// 
     /// CUEBANNER [Windows and GTK Only] (non inheritable): a text that is
     /// displayed when there is no text at the control.
@@ -2635,6 +2726,7 @@ pub const Text = opaque {
     pub fn getCueBanner(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "CUEBANNER", .{});
     }
+
 
     /// 
     /// CUEBANNER [Windows and GTK Only] (non inheritable): a text that is
@@ -2678,6 +2770,7 @@ pub const Text = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// CARETPOS (non inheritable): Also the character position of the insertion
     /// point, but using a zero based character unique index "pos".
@@ -2687,6 +2780,7 @@ pub const Text = opaque {
     pub fn getCaretPos(self: *Self) i32 {
         return interop.getIntAttribute(self, "CARETPOS", .{});
     }
+
 
     /// 
     /// CARETPOS (non inheritable): Also the character position of the insertion
@@ -2706,11 +2800,13 @@ pub const Text = opaque {
         interop.setBoolAttribute(self, "SPINAUTO", .{}, arg);
     }
 
+
     /// 
     /// MASK (non inheritable): Defines a mask that will filter interactive text input.
     pub fn getMask(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "MASK", .{});
     }
+
 
     /// 
     /// MASK (non inheritable): Defines a mask that will filter interactive text input.
@@ -2742,6 +2838,7 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// CLIPBOARD (write-only): clear, cut, copy or paste the selection to or from
     /// the clipboard.
@@ -2759,6 +2856,7 @@ pub const Text = opaque {
         if (std.ascii.eqlIgnoreCase("REDO", ret)) return .Redo;
         return null;
     }
+
 
     /// 
     /// CLIPBOARD (write-only): clear, cut, copy or paste the selection to or from
@@ -2788,6 +2886,7 @@ pub const Text = opaque {
         }
     }
 
+
     /// 
     /// READONLY: Allows the user only to read the contents, without changing it.
     /// Restricts keyboard input only, text value can still be changed using attributes.
@@ -2798,6 +2897,7 @@ pub const Text = opaque {
         return interop.getBoolAttribute(self, "READONLY", .{});
     }
 
+
     /// 
     /// READONLY: Allows the user only to read the contents, without changing it.
     /// Restricts keyboard input only, text value can still be changed using attributes.
@@ -2807,6 +2907,7 @@ pub const Text = opaque {
     pub fn setReadonly(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "READONLY", .{}, arg);
     }
+
 
     /// 
     /// APPEND (write-only): Inserts a text at the end of the current text.
@@ -2834,6 +2935,7 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2854,6 +2956,7 @@ pub const Text = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2877,6 +2980,7 @@ pub const Text = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2897,6 +3001,7 @@ pub const Text = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

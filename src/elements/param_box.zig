@@ -52,7 +52,7 @@ pub const ParamBox = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnParamFn = fn (self: *Self, arg0: i32, arg1: *iup.Unknow) anyerror!void;
+    pub const OnParamFn = fn (self: *Self, arg0: i32, arg1: ?*anyopaque) anyerror!void;
 
     /// 
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
@@ -65,7 +65,7 @@ pub const ParamBox = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -239,6 +239,7 @@ pub const ParamBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// USERDATA: will hold the user data passed to the callback.
         pub fn setUserData(self: *Initializer, comptime T: type, arg: ?*T) Initializer {
@@ -246,6 +247,7 @@ pub const ParamBox = opaque {
             interop.setPtrAttribute(T, self.ref, "USERDATA", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BUTTON1, BUTTON2, BUTTON3 [read-only]: returns an IUP Ihandle* of the
@@ -268,6 +270,7 @@ pub const ParamBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
@@ -281,6 +284,7 @@ pub const ParamBox = opaque {
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable*): The default value is "YES".
@@ -348,6 +352,7 @@ pub const ParamBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -376,6 +381,7 @@ pub const ParamBox = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -502,6 +508,10 @@ pub const ParamBox = opaque {
 
     pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
         return interop.fromHandleName(Self, handle_name);
+    }
+
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
     }
 
     ///
@@ -676,6 +686,7 @@ pub const ParamBox = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
+
     /// 
     /// STATUS [read-only]: set to 1 when button1 is activated, and set to 0 when
     /// button2 is activated or the IupGetParam dialog close button is clicked.
@@ -715,11 +726,13 @@ pub const ParamBox = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// USERDATA: will hold the user data passed to the callback.
     pub fn getUserData(self: *Self, comptime T: type) ?*T {
         return interop.getPtrAttribute(T, self, "USERDATA", .{});
     }
+
 
     /// 
     /// USERDATA: will hold the user data passed to the callback.
@@ -727,12 +740,14 @@ pub const ParamBox = opaque {
         interop.setPtrAttribute(T, self, "USERDATA", .{}, arg);
     }
 
+
     /// 
     /// BUTTON1, BUTTON2, BUTTON3 [read-only]: returns an IUP Ihandle* of the
     /// respective button in the button box.
     pub fn getButton1(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "BUTTON1", .{});
     }
+
 
     /// 
     /// BUTTON1, BUTTON2, BUTTON3 [read-only]: returns an IUP Ihandle* of the
@@ -757,11 +772,13 @@ pub const ParamBox = opaque {
         interop.setStrAttribute(self, "BUTTON3", .{}, arg);
     }
 
+
     /// 
     /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
+
 
     /// 
     /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
@@ -777,6 +794,7 @@ pub const ParamBox = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
     /// See the documentation of the attribute for EXPAND inheritance.
@@ -791,6 +809,7 @@ pub const ParamBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
@@ -854,6 +873,7 @@ pub const ParamBox = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// WID (read-only): returns -1 if mapped.
     pub fn getWId(self: *Self) i32 {
@@ -887,6 +907,7 @@ pub const ParamBox = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -907,6 +928,7 @@ pub const ParamBox = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -930,6 +952,7 @@ pub const ParamBox = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -950,6 +973,7 @@ pub const ParamBox = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

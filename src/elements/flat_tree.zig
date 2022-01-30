@@ -111,7 +111,7 @@ pub const FlatTree = opaque {
 
     pub const OnDragEndFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// SCROLL_CB SCROLL_CB Called when some manipulation is made to the scrollbar.
@@ -179,7 +179,7 @@ pub const FlatTree = opaque {
     /// Affects IupDialog, IupCanvas, IupGLCanvas
     pub const OnWomFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
@@ -364,7 +364,7 @@ pub const FlatTree = opaque {
 
     pub const OnFlatMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnExecuteLeafFn = fn (self: *Self, arg0: i32) anyerror!void;
 
@@ -587,6 +587,7 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
         /// 
         /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
         /// BUTTONBRDCOLOR(*)BUTTONSIZE(*) BUTTONPLUSIMAGE(*)BUTTONMINUSIMAGE(*)
@@ -692,6 +693,7 @@ pub const FlatTree = opaque {
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
@@ -835,6 +837,7 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
         /// 
         /// AUTOREDRAW BGCOLOR BORDERCOLOR(*)BORDERWIDTH(*)COUNT
         /// EXPANDEXTRATEXTWIDTH(*) FGCOLORHLCOLOR(*)
@@ -893,6 +896,7 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
         /// 
         /// AUTOREDRAW BGCOLOR BORDERCOLOR(*)BORDERWIDTH(*)COUNT
         /// EXPANDEXTRATEXTWIDTH(*) FGCOLORHLCOLOR(*)
@@ -903,6 +907,7 @@ pub const FlatTree = opaque {
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
@@ -1071,6 +1076,7 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
         /// 
         /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
         pub fn mark(self: *Initializer, arg: ?Mark) Initializer {
@@ -1086,6 +1092,7 @@ pub const FlatTree = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
@@ -1103,6 +1110,7 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
         /// 
         /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
         pub fn rename(self: *Initializer) Initializer {
@@ -1116,6 +1124,7 @@ pub const FlatTree = opaque {
             interop.setStrAttribute(self.ref, "MARKEDNODES", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
@@ -1138,6 +1147,7 @@ pub const FlatTree = opaque {
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
@@ -1242,6 +1252,7 @@ pub const FlatTree = opaque {
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
@@ -1457,6 +1468,7 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
         /// 
         /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
         /// INSERTBRANCH MOVENODE
@@ -1512,6 +1524,7 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
         /// 
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
@@ -1519,6 +1532,7 @@ pub const FlatTree = opaque {
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED
@@ -1604,6 +1618,7 @@ pub const FlatTree = opaque {
             interop.setStrAttribute(self.ref, "RENAMECARET", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
@@ -1716,6 +1731,7 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
         /// 
         /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
         /// BUTTONBRDCOLOR(*)BUTTONSIZE(*) BUTTONPLUSIMAGE(*)BUTTONMINUSIMAGE(*)
@@ -1755,6 +1771,7 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
         /// 
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
         pub fn setShowDragDrop(self: *Initializer, arg: bool) Initializer {
@@ -1762,6 +1779,7 @@ pub const FlatTree = opaque {
             interop.setBoolAttribute(self.ref, "SHOWDRAGDROP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// The SPACING attribute is simply the vertical space between each node,
@@ -1818,6 +1836,7 @@ pub const FlatTree = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1846,6 +1865,7 @@ pub const FlatTree = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -2478,6 +2498,10 @@ pub const FlatTree = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -2567,12 +2591,14 @@ pub const FlatTree = opaque {
         interop.setIntAttribute(self, "ICONSPACING", .{}, arg);
     }
 
+
     /// 
     /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
     /// BUTTONBRDCOLOR(*)BUTTONSIZE(*) BUTTONPLUSIMAGE(*)BUTTONMINUSIMAGE(*)
     pub fn getHideLines(self: *Self) bool {
         return interop.getBoolAttribute(self, "HIDELINES", .{});
     }
+
 
     /// 
     /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
@@ -2740,11 +2766,13 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "USERSIZE", .{}, value);
     }
 
+
     /// 
     /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
     pub fn getMarked(self: *Self, index: i32) bool {
         return interop.getBoolAttribute(self, "MARKED", .{index});
     }
+
 
     /// 
     /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
@@ -2918,6 +2946,7 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "SB_IMAGERIGHTINACTIVE", .{}, arg);
     }
 
+
     /// 
     /// AUTOREDRAW BGCOLOR BORDERCOLOR(*)BORDERWIDTH(*)COUNT
     /// EXPANDEXTRATEXTWIDTH(*) FGCOLORHLCOLOR(*)
@@ -2984,6 +3013,7 @@ pub const FlatTree = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// AUTOREDRAW BGCOLOR BORDERCOLOR(*)BORDERWIDTH(*)COUNT
     /// EXPANDEXTRATEXTWIDTH(*) FGCOLORHLCOLOR(*)
@@ -2992,6 +3022,7 @@ pub const FlatTree = opaque {
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// AUTOREDRAW BGCOLOR BORDERCOLOR(*)BORDERWIDTH(*)COUNT
@@ -3002,11 +3033,13 @@ pub const FlatTree = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDropEqualDrag(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPEQUALDRAG", .{});
     }
+
 
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
@@ -3225,6 +3258,7 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "SB_IMAGETOPINACTIVE", .{}, arg);
     }
 
+
     /// 
     /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
     pub fn mark(self: *Self, arg: ?Mark) void {
@@ -3238,6 +3272,7 @@ pub const FlatTree = opaque {
             interop.clearAttribute(self, "MARK", .{});
         }
     }
+
 
     /// 
     /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
@@ -3253,11 +3288,13 @@ pub const FlatTree = opaque {
         }
     }
 
+
     /// 
     /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
     pub fn rename(self: *Self) void {
         interop.setStrAttribute(self, "RENAME", .{}, null);
     }
+
 
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
@@ -3274,6 +3311,7 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "MARKEDNODES", .{}, arg);
     }
 
+
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
@@ -3284,6 +3322,7 @@ pub const FlatTree = opaque {
         if (std.ascii.eqlIgnoreCase("COLLAPSED", ret)) return .Collapsed;
         return null;
     }
+
 
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
@@ -3308,11 +3347,13 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
+
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDragDropTree(self: *Self) bool {
         return interop.getBoolAttribute(self, "DRAGDROPTREE", .{});
     }
+
 
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
@@ -3442,6 +3483,7 @@ pub const FlatTree = opaque {
     pub fn setFontSize(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
+
 
     /// 
     /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
@@ -3712,6 +3754,7 @@ pub const FlatTree = opaque {
         interop.setRgb(self, "DRAWBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// ADDEXPANDEDADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
@@ -3780,17 +3823,20 @@ pub const FlatTree = opaque {
         interop.setRgb(self, "BACKCOLOR", .{index}, rgb);
     }
 
+
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDropFilesTarget(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
 
+
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
     }
+
 
     /// 
     /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED
@@ -3802,6 +3848,7 @@ pub const FlatTree = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED
@@ -3890,6 +3937,7 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "RENAMECARET", .{}, arg);
     }
 
+
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
@@ -3897,12 +3945,14 @@ pub const FlatTree = opaque {
         return interop.getStrAttribute(self, "TITLE", .{index});
     }
 
+
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
     pub fn setTitle(self: *Self, index: i32, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TITLE", .{index}, arg);
     }
+
 
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
@@ -4048,6 +4098,7 @@ pub const FlatTree = opaque {
         }
     }
 
+
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
     /// STATE TITLE TITLEFONTUSERDATAEXTRATEXT(*)
@@ -4055,12 +4106,14 @@ pub const FlatTree = opaque {
         return interop.getIntAttribute(self, "CHILDCOUNT", .{index});
     }
 
+
     /// 
     /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
     /// BUTTONBRDCOLOR(*)BUTTONSIZE(*) BUTTONPLUSIMAGE(*)BUTTONMINUSIMAGE(*)
     pub fn getHideButtons(self: *Self) bool {
         return interop.getBoolAttribute(self, "HIDEBUTTONS", .{});
     }
+
 
     /// 
     /// HIDELINES HIDEBUTTONS LINECOLOR(*) BUTTONBGCOLOR(*)BUTTONFGCOLOR(*)
@@ -4080,6 +4133,7 @@ pub const FlatTree = opaque {
     pub fn setTouch(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
+
 
     /// 
     /// CHILDCOUNT TOTALCHILDCOUNT COLORBACKCOLOR(*) ITEMTIP(*)DEPTH KIND PARENT
@@ -4116,11 +4170,13 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "RENAMESELECTION", .{}, arg);
     }
 
+
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getShowDragDrop(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOWDRAGDROP", .{});
     }
+
 
     /// 
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
@@ -4128,12 +4184,14 @@ pub const FlatTree = opaque {
         interop.setBoolAttribute(self, "SHOWDRAGDROP", .{}, arg);
     }
 
+
     /// 
     /// The SPACING attribute is simply the vertical space between each node,
     /// different from the IupTree.
     pub fn getSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "SPACING", .{});
     }
+
 
     /// 
     /// The SPACING attribute is simply the vertical space between each node,
@@ -4203,6 +4261,7 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -4223,6 +4282,7 @@ pub const FlatTree = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -4246,6 +4306,7 @@ pub const FlatTree = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -4266,6 +4327,7 @@ pub const FlatTree = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

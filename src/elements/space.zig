@@ -60,7 +60,7 @@ pub const Space = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -207,6 +207,7 @@ pub const Space = opaque {
             return self.*;
         }
 
+
         /// 
         /// SIZE, RASTERSIZE, EXPAND, FONT, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
         pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
@@ -298,6 +299,7 @@ pub const Space = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -326,6 +328,7 @@ pub const Space = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -446,6 +449,10 @@ pub const Space = opaque {
 
     pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
         return interop.fromHandleName(Self, handle_name);
+    }
+
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
     }
 
     ///
@@ -609,12 +616,14 @@ pub const Space = opaque {
         interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
+
     /// 
     /// SIZE, RASTERSIZE, EXPAND, FONT, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
     pub fn getSize(self: *Self) Size {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE, RASTERSIZE, EXPAND, FONT, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
@@ -719,6 +728,7 @@ pub const Space = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// WID (read-only): returns -1 if mapped.
     pub fn getWId(self: *Self) i32 {
@@ -747,6 +757,7 @@ pub const Space = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -767,6 +778,7 @@ pub const Space = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -790,6 +802,7 @@ pub const Space = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -810,6 +823,7 @@ pub const Space = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

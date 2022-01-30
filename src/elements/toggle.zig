@@ -185,7 +185,7 @@ pub const Toggle = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const ZOrder = enum {
         Top,
@@ -275,6 +275,7 @@ pub const Toggle = opaque {
             return self.*;
         }
 
+
         /// 
         /// FGCOLOR: Color of the text shown on the toggle.
         /// In Windows, when using Visual Styles FGCOLOR is ignored.
@@ -303,6 +304,7 @@ pub const Toggle = opaque {
             return self.*;
         }
 
+
         /// 
         /// RIGHTBUTTON (Windows Only) (creation only): place the check button at the
         /// right of the text.
@@ -330,6 +332,7 @@ pub const Toggle = opaque {
             return self.*;
         }
 
+
         /// 
         /// IMPRESS (non inheritable): Image name of the pressed toggle.
         /// Unlike buttons, toggles always display the button border when IMAGE and
@@ -350,6 +353,7 @@ pub const Toggle = opaque {
             interop.setStrAttribute(self.ref, "IMPRESS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMINACTIVE (non inheritable): Image name of the inactive toggle.
@@ -379,6 +383,7 @@ pub const Toggle = opaque {
             return self.*;
         }
 
+
         /// 
         /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
         /// the control.
@@ -396,6 +401,7 @@ pub const Toggle = opaque {
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGE (non inheritable): Image name.
@@ -461,6 +467,7 @@ pub const Toggle = opaque {
             return self.*;
         }
 
+
         /// 
         /// PADDING: internal margin when IMAGE is defined.
         /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
@@ -503,6 +510,7 @@ pub const Toggle = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE (non inheritable): Toggle's text.
         /// If IMAGE is not defined before map, then the default behavior is to contain
@@ -524,6 +532,7 @@ pub const Toggle = opaque {
             return self.*;
         }
 
+
         /// 
         /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
         /// the next native parent with FOCUS_CB defined.
@@ -534,6 +543,7 @@ pub const Toggle = opaque {
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BGCOLOR: Background color of toggle mark when displaying a text.
@@ -547,6 +557,7 @@ pub const Toggle = opaque {
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// MARKUP [GTK only]: allows the title string to contains pango markup commands.
@@ -597,6 +608,7 @@ pub const Toggle = opaque {
             return self.*;
         }
 
+
         /// 
         /// 3STATE (creation only): Enable a three state toggle.
         /// Valid for toggles with text only and that do not belong to a radio.
@@ -613,6 +625,7 @@ pub const Toggle = opaque {
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VALUE (non inheritable): Toggle's state.
@@ -635,6 +648,7 @@ pub const Toggle = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -665,6 +679,7 @@ pub const Toggle = opaque {
             return self.*;
         }
 
+
         /// 
         /// FLAT (creation only): Hides the toggle borders until the mouse enter the
         /// toggle area when the toggle is not checked.
@@ -684,6 +699,7 @@ pub const Toggle = opaque {
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IGNORERADIO (non inheritable): when set the toggle will not behave as a
@@ -706,6 +722,7 @@ pub const Toggle = opaque {
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -735,6 +752,7 @@ pub const Toggle = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1005,6 +1023,10 @@ pub const Toggle = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1077,6 +1099,7 @@ pub const Toggle = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// FGCOLOR: Color of the text shown on the toggle.
     /// In Windows, when using Visual Styles FGCOLOR is ignored.
@@ -1084,6 +1107,7 @@ pub const Toggle = opaque {
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR: Color of the text shown on the toggle.
@@ -1144,6 +1168,7 @@ pub const Toggle = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
+
     /// 
     /// IMPRESS (non inheritable): Image name of the pressed toggle.
     /// Unlike buttons, toggles always display the button border when IMAGE and
@@ -1156,6 +1181,7 @@ pub const Toggle = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMPRESS (non inheritable): Image name of the pressed toggle.
@@ -1171,6 +1197,7 @@ pub const Toggle = opaque {
         interop.setStrAttribute(self, "IMPRESS", .{}, arg);
     }
 
+
     /// 
     /// IMINACTIVE (non inheritable): Image name of the inactive toggle.
     /// If it is not defined but IMAGE is defined then for inactive toggles the
@@ -1184,6 +1211,7 @@ pub const Toggle = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMINACTIVE (non inheritable): Image name of the inactive toggle.
@@ -1216,6 +1244,7 @@ pub const Toggle = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// IMAGE (non inheritable): Image name.
     /// When the IMAGE attribute is defined, the TITLE is not shown.
@@ -1231,6 +1260,7 @@ pub const Toggle = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGE (non inheritable): Image name.
@@ -1310,6 +1340,7 @@ pub const Toggle = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
+
     /// 
     /// PADDING: internal margin when IMAGE is defined.
     /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
@@ -1322,6 +1353,7 @@ pub const Toggle = opaque {
         var str = interop.getStrAttribute(self, "PADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// PADDING: internal margin when IMAGE is defined.
@@ -1381,6 +1413,7 @@ pub const Toggle = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+
     /// 
     /// TITLE (non inheritable): Toggle's text.
     /// If IMAGE is not defined before map, then the default behavior is to contain
@@ -1399,6 +1432,7 @@ pub const Toggle = opaque {
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE (non inheritable): Toggle's text.
@@ -1419,6 +1453,7 @@ pub const Toggle = opaque {
         interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
 
+
     /// 
     /// RADIO (read-only): returns if the toggle is inside a radio.
     /// Can be "YES" or "NO".
@@ -1427,6 +1462,7 @@ pub const Toggle = opaque {
     pub fn getRadio(self: *Self) bool {
         return interop.getBoolAttribute(self, "RADIO", .{});
     }
+
 
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
@@ -1437,6 +1473,7 @@ pub const Toggle = opaque {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
+
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -1445,6 +1482,7 @@ pub const Toggle = opaque {
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
+
 
     /// 
     /// BGCOLOR: Background color of toggle mark when displaying a text.
@@ -1457,6 +1495,7 @@ pub const Toggle = opaque {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
+
     /// 
     /// BGCOLOR: Background color of toggle mark when displaying a text.
     /// The text background is transparent, it will use the background color of the
@@ -1468,6 +1507,7 @@ pub const Toggle = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// MARKUP [GTK only]: allows the title string to contains pango markup commands.
     /// Works only if a mnemonic is NOT defined in the title.
@@ -1476,6 +1516,7 @@ pub const Toggle = opaque {
     pub fn getMarkup(self: *Self) bool {
         return interop.getBoolAttribute(self, "MARKUP", .{});
     }
+
 
     /// 
     /// MARKUP [GTK only]: allows the title string to contains pango markup commands.
@@ -1548,6 +1589,7 @@ pub const Toggle = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// VALUE (non inheritable): Toggle's state.
     /// Values can be "ON", "OFF" or "TOGGLE".
@@ -1566,6 +1608,7 @@ pub const Toggle = opaque {
         if (std.ascii.eqlIgnoreCase("NOTDEF", ret)) return .NotDef;
         return null;
     }
+
 
     /// 
     /// VALUE (non inheritable): Toggle's state.
@@ -1587,12 +1630,14 @@ pub const Toggle = opaque {
         }
     }
 
+
     /// 
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -1641,6 +1686,7 @@ pub const Toggle = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// IGNORERADIO (non inheritable): when set the toggle will not behave as a
     /// radio when inside an IupRadio hierarchy.
@@ -1648,6 +1694,7 @@ pub const Toggle = opaque {
     pub fn getIgnoreRadio(self: *Self) bool {
         return interop.getBoolAttribute(self, "IGNORERADIO", .{});
     }
+
 
     /// 
     /// IGNORERADIO (non inheritable): when set the toggle will not behave as a
@@ -1673,6 +1720,7 @@ pub const Toggle = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1693,6 +1741,7 @@ pub const Toggle = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1716,6 +1765,7 @@ pub const Toggle = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1736,6 +1786,7 @@ pub const Toggle = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

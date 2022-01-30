@@ -80,9 +80,9 @@ pub const Label = opaque {
     /// See Also LEAVEWINDOW_CB
     pub const OnEnterWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -261,6 +261,7 @@ pub const Label = opaque {
             return self.*;
         }
 
+
         /// 
         /// FGCOLOR: Text color.
         /// Default: the global attribute DLGFGCOLOR.
@@ -281,6 +282,7 @@ pub const Label = opaque {
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// WORDWRAP [Windows and GTK only]: enables or disable the wrapping of lines
@@ -317,6 +319,7 @@ pub const Label = opaque {
             return self.*;
         }
 
+
         /// 
         /// IMINACTIVE (non inheritable) [GTK and Motif only]: Image name of the
         /// element when inactive.
@@ -338,6 +341,7 @@ pub const Label = opaque {
             interop.setStrAttribute(self.ref, "IMINACTIVE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
@@ -375,6 +379,7 @@ pub const Label = opaque {
             return self.*;
         }
 
+
         /// 
         /// SEPARATOR (creation only) (non inheritable): Turns the label into a line separator.
         /// Possible values: "HORIZONTAL" or "VERTICAL".
@@ -391,6 +396,7 @@ pub const Label = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// IMAGE (non inheritable): Image name.
@@ -460,6 +466,7 @@ pub const Label = opaque {
             return self.*;
         }
 
+
         /// 
         /// PADDING: internal margin.
         /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
@@ -507,6 +514,7 @@ pub const Label = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE (non inheritable): Label's text.
         /// If SEPARATOR or IMAGE are not defined before map, then the default behavior
@@ -533,6 +541,7 @@ pub const Label = opaque {
             return self.*;
         }
 
+
         /// 
         /// BGCOLOR: ignored, transparent in all systems.
         /// Will use the background color of the native parent.
@@ -553,6 +562,7 @@ pub const Label = opaque {
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MARKUP [GTK only]: allows the title string to contains pango markup commands.
@@ -609,6 +619,7 @@ pub const Label = opaque {
             return self.*;
         }
 
+
         /// 
         /// ELLIPSIS [Windows and GTK only]: add an ellipsis: "..." to the text if
         /// there is not enough space to render the entire string.
@@ -621,6 +632,7 @@ pub const Label = opaque {
             return self.*;
         }
 
+
         /// 
         /// CPADDING: same as PADDING but using the units of the SIZE attribute.
         /// It will actually set the PADDING attribute.
@@ -632,6 +644,7 @@ pub const Label = opaque {
             interop.setStrAttribute(self.ref, "CPADDING", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// ACTIVE: The only difference between an active label and an inactive one is
@@ -682,6 +695,7 @@ pub const Label = opaque {
             return self.*;
         }
 
+
         /// 
         /// FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
         /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
@@ -690,6 +704,7 @@ pub const Label = opaque {
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -719,6 +734,7 @@ pub const Label = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -982,6 +998,10 @@ pub const Label = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1054,12 +1074,14 @@ pub const Label = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// FGCOLOR: Text color.
     /// Default: the global attribute DLGFGCOLOR.
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR: Text color.
@@ -1084,6 +1106,7 @@ pub const Label = opaque {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// WORDWRAP [Windows and GTK only]: enables or disable the wrapping of lines
     /// that does not fits in the label.
@@ -1094,6 +1117,7 @@ pub const Label = opaque {
     pub fn getWordWrap(self: *Self) bool {
         return interop.getBoolAttribute(self, "WORDWRAP", .{});
     }
+
 
     /// 
     /// WORDWRAP [Windows and GTK only]: enables or disable the wrapping of lines
@@ -1141,6 +1165,7 @@ pub const Label = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
+
     /// 
     /// IMINACTIVE (non inheritable) [GTK and Motif only]: Image name of the
     /// element when inactive.
@@ -1154,6 +1179,7 @@ pub const Label = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMINACTIVE (non inheritable) [GTK and Motif only]: Image name of the
@@ -1170,6 +1196,7 @@ pub const Label = opaque {
         interop.setStrAttribute(self, "IMINACTIVE", .{}, arg);
     }
 
+
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
     /// the drop of files.
@@ -1179,6 +1206,7 @@ pub const Label = opaque {
     pub fn getDropFilesTarget(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
+
 
     /// 
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
@@ -1222,6 +1250,7 @@ pub const Label = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// IMAGE (non inheritable): Image name.
     /// If set before map defines the behavior of the label to contain an image.
@@ -1235,6 +1264,7 @@ pub const Label = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGE (non inheritable): Image name.
@@ -1320,6 +1350,7 @@ pub const Label = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
+
     /// 
     /// PADDING: internal margin.
     /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
@@ -1331,6 +1362,7 @@ pub const Label = opaque {
         var str = interop.getStrAttribute(self, "PADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// PADDING: internal margin.
@@ -1397,6 +1429,7 @@ pub const Label = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+
     /// 
     /// TITLE (non inheritable): Label's text.
     /// If SEPARATOR or IMAGE are not defined before map, then the default behavior
@@ -1414,6 +1447,7 @@ pub const Label = opaque {
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE (non inheritable): Label's text.
@@ -1441,12 +1475,14 @@ pub const Label = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: ignored, transparent in all systems.
     /// Will use the background color of the native parent.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR: ignored, transparent in all systems.
@@ -1471,6 +1507,7 @@ pub const Label = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
     }
 
+
     /// 
     /// MARKUP [GTK only]: allows the title string to contains pango markup commands.
     /// Works only if a mnemonic is NOT defined in the title.
@@ -1479,6 +1516,7 @@ pub const Label = opaque {
     pub fn getMarkup(self: *Self) bool {
         return interop.getBoolAttribute(self, "MARKUP", .{});
     }
+
 
     /// 
     /// MARKUP [GTK only]: allows the title string to contains pango markup commands.
@@ -1551,6 +1589,7 @@ pub const Label = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// ELLIPSIS [Windows and GTK only]: add an ellipsis: "..." to the text if
     /// there is not enough space to render the entire string.
@@ -1560,6 +1599,7 @@ pub const Label = opaque {
     pub fn getEllipsis(self: *Self) bool {
         return interop.getBoolAttribute(self, "ELLIPSIS", .{});
     }
+
 
     /// 
     /// ELLIPSIS [Windows and GTK only]: add an ellipsis: "..." to the text if
@@ -1571,6 +1611,7 @@ pub const Label = opaque {
         interop.setBoolAttribute(self, "ELLIPSIS", .{}, arg);
     }
 
+
     /// 
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
     /// It will actually set the PADDING attribute.
@@ -1579,6 +1620,7 @@ pub const Label = opaque {
         var str = interop.getStrAttribute(self, "CPADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
@@ -1590,6 +1632,7 @@ pub const Label = opaque {
         interop.setStrAttribute(self, "CPADDING", .{}, value);
     }
 
+
     /// 
     /// ACTIVE: The only difference between an active label and an inactive one is
     /// its visual feedback.
@@ -1598,6 +1641,7 @@ pub const Label = opaque {
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE: The only difference between an active label and an inactive one is
@@ -1664,6 +1708,7 @@ pub const Label = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
     /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
@@ -1671,12 +1716,14 @@ pub const Label = opaque {
         return interop.getStrAttribute(self, "FONT", .{});
     }
 
+
     /// 
     /// FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP, SIZE,
     /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1698,6 +1745,7 @@ pub const Label = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1721,6 +1769,7 @@ pub const Label = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1741,6 +1790,7 @@ pub const Label = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

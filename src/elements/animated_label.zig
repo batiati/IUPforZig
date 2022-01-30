@@ -83,9 +83,9 @@ pub const AnimatedLabel = opaque {
     /// See Also LEAVEWINDOW_CB
     pub const OnEnterWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -276,6 +276,7 @@ pub const AnimatedLabel = opaque {
             interop.setBoolAttribute(self.ref, "WORDWRAP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FRAMETIME: The time between each frame.
@@ -525,6 +526,7 @@ pub const AnimatedLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// START (write-only): starts the animation.
         /// The value is ignored.
@@ -599,6 +601,7 @@ pub const AnimatedLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// ANIMATION: the name of the element that contains the list of images.
         /// The value passed must be the name of an IupUser element with several
@@ -635,6 +638,7 @@ pub const AnimatedLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -663,6 +667,7 @@ pub const AnimatedLabel = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -926,6 +931,10 @@ pub const AnimatedLabel = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1030,6 +1039,7 @@ pub const AnimatedLabel = opaque {
         interop.setBoolAttribute(self, "WORDWRAP", .{}, arg);
     }
 
+
     /// 
     /// FRAMETIME: The time between each frame.
     /// If the IupUser element has a FRAMETIME attribute it will be used to set the
@@ -1037,6 +1047,7 @@ pub const AnimatedLabel = opaque {
     pub fn getFrameTime(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FRAMETIME", .{});
     }
+
 
     /// 
     /// FRAMETIME: The time between each frame.
@@ -1381,6 +1392,7 @@ pub const AnimatedLabel = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// START (write-only): starts the animation.
     /// The value is ignored.
@@ -1491,6 +1503,7 @@ pub const AnimatedLabel = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
+
     /// 
     /// ANIMATION: the name of the element that contains the list of images.
     /// The value passed must be the name of an IupUser element with several
@@ -1504,6 +1517,7 @@ pub const AnimatedLabel = opaque {
             return null;
         }
     }
+
 
     /// 
     /// ANIMATION: the name of the element that contains the list of images.
@@ -1548,6 +1562,7 @@ pub const AnimatedLabel = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1568,6 +1583,7 @@ pub const AnimatedLabel = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1591,6 +1607,7 @@ pub const AnimatedLabel = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1611,6 +1628,7 @@ pub const AnimatedLabel = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

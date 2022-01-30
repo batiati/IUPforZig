@@ -61,7 +61,7 @@ pub const Param = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -156,6 +156,7 @@ pub const Param = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE: text of the parameter, used as label.
         /// For all parameters.
@@ -164,6 +165,7 @@ pub const Param = opaque {
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// MULTILINE: can be Yes or No.
@@ -181,6 +183,7 @@ pub const Param = opaque {
             return self.*;
         }
 
+
         /// 
         /// TIP: text of the tip.
         /// For all parameters.
@@ -195,6 +198,7 @@ pub const Param = opaque {
             interop.setDoubleAttribute(self.ref, "MAX", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BUTTON1, BUTTON2, BUTTON3: button titles.
@@ -213,6 +217,7 @@ pub const Param = opaque {
             return self.*;
         }
 
+
         /// 
         /// MASK: mask for the edit box input.
         /// For 's' and 'm' parameters.
@@ -228,6 +233,7 @@ pub const Param = opaque {
             return self.*;
         }
 
+
         /// 
         /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
         /// 'r'), STRING ('m', 's'), INTEGER ('i'), DATE ('d'), FILE ('f'), COLOR
@@ -240,6 +246,7 @@ pub const Param = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE - the value of the parameter.
         /// IupGetFloat and IupGetInt can also be used.
@@ -251,6 +258,7 @@ pub const Param = opaque {
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
@@ -287,6 +295,7 @@ pub const Param = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
@@ -296,6 +305,7 @@ pub const Param = opaque {
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -313,6 +323,7 @@ pub const Param = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -342,6 +353,7 @@ pub const Param = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -464,6 +476,10 @@ pub const Param = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -537,12 +553,14 @@ pub const Param = opaque {
         interop.setBoolAttribute(self, "NOOVERWRITEPROMPT", .{}, arg);
     }
 
+
     /// 
     /// TITLE: text of the parameter, used as label.
     /// For all parameters.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE: text of the parameter, used as label.
@@ -551,6 +569,7 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
 
+
     /// 
     /// MULTILINE: can be Yes or No.
     /// Defines if the edit box can have more than one line.
@@ -558,6 +577,7 @@ pub const Param = opaque {
     pub fn getMultiline(self: *Self) bool {
         return interop.getBoolAttribute(self, "MULTILINE", .{});
     }
+
 
     /// 
     /// MULTILINE: can be Yes or No.
@@ -575,12 +595,14 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "FILTER", .{}, arg);
     }
 
+
     /// 
     /// TIP: text of the tip.
     /// For all parameters.
     pub fn getTip(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TIP", .{});
     }
+
 
     /// 
     /// TIP: text of the tip.
@@ -597,6 +619,7 @@ pub const Param = opaque {
         interop.setDoubleAttribute(self, "MAX", .{}, arg);
     }
 
+
     /// 
     /// BUTTON1, BUTTON2, BUTTON3: button titles.
     /// Default is "OK/Cancel/Help" for regular IupGetParam, and "Apply/Reset/Help"
@@ -605,6 +628,7 @@ pub const Param = opaque {
     pub fn getButton1(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "BUTTON1", .{});
     }
+
 
     /// 
     /// BUTTON1, BUTTON2, BUTTON3: button titles.
@@ -623,12 +647,14 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "BUTTON2", .{}, arg);
     }
 
+
     /// 
     /// MASK: mask for the edit box input.
     /// For 's' and 'm' parameters.
     pub fn getMask(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "MASK", .{});
     }
+
 
     /// 
     /// MASK: mask for the edit box input.
@@ -645,6 +671,7 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "BUTTON3", .{}, arg);
     }
 
+
     /// 
     /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
     /// 'r'), STRING ('m', 's'), INTEGER ('i'), DATE ('d'), FILE ('f'), COLOR
@@ -654,6 +681,7 @@ pub const Param = opaque {
     pub fn getType(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TYPE", .{});
     }
+
 
     /// 
     /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
@@ -665,6 +693,7 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "TYPE", .{}, arg);
     }
 
+
     /// 
     /// VALUE - the value of the parameter.
     /// IupGetFloat and IupGetInt can also be used.
@@ -675,6 +704,7 @@ pub const Param = opaque {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
 
+
     /// 
     /// VALUE - the value of the parameter.
     /// IupGetFloat and IupGetInt can also be used.
@@ -684,6 +714,7 @@ pub const Param = opaque {
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
+
 
     /// 
     /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
@@ -698,6 +729,7 @@ pub const Param = opaque {
         if (std.ascii.eqlIgnoreCase("OPEN", ret)) return .Open;
         return null;
     }
+
 
     /// 
     /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
@@ -738,6 +770,7 @@ pub const Param = opaque {
         interop.setDoubleAttribute(self, "STEP", .{}, arg);
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -746,6 +779,7 @@ pub const Param = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -753,6 +787,7 @@ pub const Param = opaque {
     pub fn setExpandWeight(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -768,6 +803,7 @@ pub const Param = opaque {
         return null;
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -782,6 +818,7 @@ pub const Param = opaque {
             interop.clearAttribute(self, "FLOATING", .{});
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -803,6 +840,7 @@ pub const Param = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -826,6 +864,7 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -846,6 +885,7 @@ pub const Param = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

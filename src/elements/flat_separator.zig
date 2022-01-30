@@ -226,7 +226,7 @@ pub const FlatSeparator = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -242,7 +242,7 @@ pub const FlatSeparator = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -370,7 +370,7 @@ pub const FlatSeparator = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
@@ -622,6 +622,7 @@ pub const FlatSeparator = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPAND (non inheritable): Its behavior depends on the orientation.
         /// It will expand in the direction of the separator, but occupying only the
@@ -678,6 +679,7 @@ pub const FlatSeparator = opaque {
             interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ORIENTATION (non inheritable): Indicates the orientation of the separator.
@@ -804,6 +806,7 @@ pub const FlatSeparator = opaque {
             return self.*;
         }
 
+
         /// 
         /// COLOR (non inheritable): Changes the color of the separator.
         /// Default: "192 192 192".
@@ -832,6 +835,7 @@ pub const FlatSeparator = opaque {
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// BARSIZE (non inheritable): controls the size of the separator in the
@@ -968,6 +972,7 @@ pub const FlatSeparator = opaque {
             return self.*;
         }
 
+
         /// 
         /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
         /// MAXSIZE, THEME: also accepted.
@@ -994,6 +999,7 @@ pub const FlatSeparator = opaque {
             interop.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1023,6 +1029,7 @@ pub const FlatSeparator = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1535,6 +1542,10 @@ pub const FlatSeparator = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1800,6 +1811,7 @@ pub const FlatSeparator = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// EXPAND (non inheritable): Its behavior depends on the orientation.
     /// It will expand in the direction of the separator, but occupying only the
@@ -1815,6 +1827,7 @@ pub const FlatSeparator = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): Its behavior depends on the orientation.
@@ -1888,6 +1901,7 @@ pub const FlatSeparator = opaque {
         interop.setIntAttribute(self, "YMIN", .{}, arg);
     }
 
+
     /// 
     /// ORIENTATION (non inheritable): Indicates the orientation of the separator.
     /// Possible values are "VERTICAL" or "HORIZONTAL".
@@ -1899,6 +1913,7 @@ pub const FlatSeparator = opaque {
         if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
         return null;
     }
+
 
     /// 
     /// ORIENTATION (non inheritable): Indicates the orientation of the separator.
@@ -2072,12 +2087,14 @@ pub const FlatSeparator = opaque {
         }
     }
 
+
     /// 
     /// COLOR (non inheritable): Changes the color of the separator.
     /// Default: "192 192 192".
     pub fn getColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "COLOR", .{});
     }
+
 
     /// 
     /// COLOR (non inheritable): Changes the color of the separator.
@@ -2117,6 +2134,7 @@ pub const FlatSeparator = opaque {
         return interop.getBoolAttribute(self, "YHIDDEN", .{});
     }
 
+
     /// 
     /// BARSIZE (non inheritable): controls the size of the separator in the
     /// opposite direction of its orientation.
@@ -2124,6 +2142,7 @@ pub const FlatSeparator = opaque {
     pub fn getBarSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "BARSIZE", .{});
     }
+
 
     /// 
     /// BARSIZE (non inheritable): controls the size of the separator in the
@@ -2319,12 +2338,14 @@ pub const FlatSeparator = opaque {
         interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
+
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
+
 
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
@@ -2357,6 +2378,7 @@ pub const FlatSeparator = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2377,6 +2399,7 @@ pub const FlatSeparator = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2400,6 +2423,7 @@ pub const FlatSeparator = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2420,6 +2444,7 @@ pub const FlatSeparator = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

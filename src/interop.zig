@@ -430,6 +430,10 @@ pub inline fn hide(handle: anytype) void {
     _ = c.IupHide(getHandle(handle));
 }
 
+pub inline fn postMessage(handle: anytype, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void { 
+    c.IupPostMessage(getHandle(handle), toCStr(s), i, f, p);
+}
+
 pub inline fn getDialog(handle: anytype) ?*iup.Dialog {
     if (c.IupGetDialog(getHandle(handle))) |value| {
         return fromHandle(iup.Dialog, value);

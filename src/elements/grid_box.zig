@@ -87,7 +87,7 @@ pub const GridBox = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
@@ -216,6 +216,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
         /// the biggest natural size among the reference line and/or the reference column.
@@ -239,6 +240,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
         /// is in the same units of the SIZE attribute for the height.
@@ -256,6 +258,7 @@ pub const GridBox = opaque {
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// EXPANDCHILDREN (non inheritable): forces all children to expand in the
@@ -296,6 +299,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
         /// CGAPCOL is in the same units of the SIZE attribute for the height.
@@ -312,6 +316,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
         /// of the SIZE attribute.
@@ -325,6 +330,7 @@ pub const GridBox = opaque {
             interop.setStrAttribute(self.ref, "CMARGIN", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable*): The default value is "YES".
@@ -344,6 +350,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
         /// MAXSIZE, THEME: also accepted.
@@ -355,6 +362,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
         /// is in the same units of the SIZE attribute for the height.
@@ -364,6 +372,7 @@ pub const GridBox = opaque {
             interop.setIntAttribute(self.ref, "CGAPLIN", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ORIENTATION (non inheritable): controls the distribution of the children in
@@ -395,6 +404,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
         /// are non inheritable.
@@ -409,6 +419,7 @@ pub const GridBox = opaque {
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -425,6 +436,7 @@ pub const GridBox = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
@@ -450,6 +462,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
         /// are non inheritable.
@@ -458,6 +471,7 @@ pub const GridBox = opaque {
             interop.setIntAttribute(self.ref, "NCGAPCOL", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
@@ -474,6 +488,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// NUMDIV: controls the number of divisions along the distribution according
         /// to ORIENTATION.
@@ -487,6 +502,7 @@ pub const GridBox = opaque {
             interop.setIntAttribute(self.ref, "NUMDIV", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
@@ -535,6 +551,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
         /// CGAPCOL is in the same units of the SIZE attribute for the height.
@@ -545,6 +562,7 @@ pub const GridBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
         pub fn setNcMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
@@ -554,6 +572,7 @@ pub const GridBox = opaque {
             interop.setStrAttribute(self.ref, "NCMARGIN", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -574,6 +593,7 @@ pub const GridBox = opaque {
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -603,6 +623,7 @@ pub const GridBox = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -731,6 +752,10 @@ pub const GridBox = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -815,6 +840,7 @@ pub const GridBox = opaque {
         interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
+
     /// 
     /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
     /// the biggest natural size among the reference line and/or the reference column.
@@ -834,6 +860,7 @@ pub const GridBox = opaque {
         if (std.ascii.eqlIgnoreCase("NONE", ret)) return .None;
         return null;
     }
+
 
     /// 
     /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
@@ -856,6 +883,7 @@ pub const GridBox = opaque {
         }
     }
 
+
     /// 
     /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
     /// is in the same units of the SIZE attribute for the height.
@@ -863,6 +891,7 @@ pub const GridBox = opaque {
     pub fn getGapLin(self: *Self) i32 {
         return interop.getIntAttribute(self, "GAPLIN", .{});
     }
+
 
     /// 
     /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
@@ -883,6 +912,7 @@ pub const GridBox = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
+
     /// 
     /// EXPANDCHILDREN (non inheritable): forces all children to expand in the
     /// given direction and to fully occupy its space available inside the box.
@@ -898,6 +928,7 @@ pub const GridBox = opaque {
         if (std.ascii.eqlIgnoreCase("NONE", ret)) return .None;
         return null;
     }
+
 
     /// 
     /// EXPANDCHILDREN (non inheritable): forces all children to expand in the
@@ -943,6 +974,7 @@ pub const GridBox = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
     /// CGAPCOL is in the same units of the SIZE attribute for the height.
@@ -950,6 +982,7 @@ pub const GridBox = opaque {
     pub fn getCGapCol(self: *Self) i32 {
         return interop.getIntAttribute(self, "CGAPCOL", .{});
     }
+
 
     /// 
     /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
@@ -967,6 +1000,7 @@ pub const GridBox = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
     /// of the SIZE attribute.
@@ -977,6 +1011,7 @@ pub const GridBox = opaque {
         var str = interop.getStrAttribute(self, "CMARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -989,6 +1024,7 @@ pub const GridBox = opaque {
         var value = Margin.intIntToString(&buffer, horiz, vert);
         interop.setStrAttribute(self, "CMARGIN", .{}, value);
     }
+
 
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
@@ -1004,6 +1040,7 @@ pub const GridBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable*): The default value is "YES".
@@ -1021,6 +1058,7 @@ pub const GridBox = opaque {
         }
     }
 
+
     /// 
     /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
@@ -1028,6 +1066,7 @@ pub const GridBox = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE, RASTERSIZE, FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
@@ -1038,11 +1077,13 @@ pub const GridBox = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
+
     /// 
     /// WID (read-only): returns -1 if mapped.
     pub fn getWId(self: *Self) i32 {
         return interop.getIntAttribute(self, "WID", .{});
     }
+
 
     /// 
     /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
@@ -1052,6 +1093,7 @@ pub const GridBox = opaque {
         return interop.getIntAttribute(self, "CGAPLIN", .{});
     }
 
+
     /// 
     /// GAPLIN, CGAPLIN: Defines a vertical space in pixels between lines, CGAPLIN
     /// is in the same units of the SIZE attribute for the height.
@@ -1059,6 +1101,7 @@ pub const GridBox = opaque {
     pub fn setCGapLin(self: *Self, arg: i32) void {
         interop.setIntAttribute(self, "CGAPLIN", .{}, arg);
     }
+
 
     /// 
     /// ORIENTATION (non inheritable): controls the distribution of the children in
@@ -1072,6 +1115,7 @@ pub const GridBox = opaque {
         if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
         return null;
     }
+
 
     /// 
     /// ORIENTATION (non inheritable): controls the distribution of the children in
@@ -1111,12 +1155,14 @@ pub const GridBox = opaque {
         interop.setStrAttribute(self, "USERSIZE", .{}, value);
     }
 
+
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn getNGapCol(self: *Self) i32 {
         return interop.getIntAttribute(self, "NGAPCOL", .{});
     }
+
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
@@ -1133,6 +1179,7 @@ pub const GridBox = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -1145,6 +1192,7 @@ pub const GridBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -1160,12 +1208,14 @@ pub const GridBox = opaque {
         }
     }
 
+
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     pub fn getNMargin(self: *Self) Margin {
         var str = interop.getStrAttribute(self, "NMARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
@@ -1194,12 +1244,14 @@ pub const GridBox = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn getNcGapCol(self: *Self) i32 {
         return interop.getIntAttribute(self, "NCGAPCOL", .{});
     }
+
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
@@ -1208,12 +1260,14 @@ pub const GridBox = opaque {
         interop.setIntAttribute(self, "NCGAPCOL", .{}, arg);
     }
 
+
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn getNGapLin(self: *Self) i32 {
         return interop.getIntAttribute(self, "NGAPLIN", .{});
     }
+
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
@@ -1230,6 +1284,7 @@ pub const GridBox = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
+
     /// 
     /// NUMDIV: controls the number of divisions along the distribution according
     /// to ORIENTATION.
@@ -1241,6 +1296,7 @@ pub const GridBox = opaque {
     pub fn getNumDiv(self: *Self) i32 {
         return interop.getIntAttribute(self, "NUMDIV", .{});
     }
+
 
     /// 
     /// NUMDIV: controls the number of divisions along the distribution according
@@ -1254,12 +1310,14 @@ pub const GridBox = opaque {
         interop.setIntAttribute(self, "NUMDIV", .{}, arg);
     }
 
+
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
     /// are non inheritable.
     pub fn getNcGapLin(self: *Self) i32 {
         return interop.getIntAttribute(self, "NCGAPLIN", .{});
     }
+
 
     /// 
     /// NGAPLIN, NCGAPLIN, NGAPCOL, NCGAPCOL (non inheritable): Same as *GAP* but
@@ -1275,6 +1333,7 @@ pub const GridBox = opaque {
     pub fn setName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
+
 
     /// 
     /// NUMCOL (read-only): returns the number of columns.
@@ -1308,6 +1367,7 @@ pub const GridBox = opaque {
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
+
 
     /// 
     /// NUMLIN (read-only): returns the number of lines.
@@ -1346,6 +1406,7 @@ pub const GridBox = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
     /// CGAPCOL is in the same units of the SIZE attribute for the height.
@@ -1353,6 +1414,7 @@ pub const GridBox = opaque {
     pub fn getGapCol(self: *Self) i32 {
         return interop.getIntAttribute(self, "GAPCOL", .{});
     }
+
 
     /// 
     /// GAPCOL, CGAPCOL: Defines a horizontal space in pixels between columns,
@@ -1362,12 +1424,14 @@ pub const GridBox = opaque {
         interop.setIntAttribute(self, "GAPCOL", .{}, arg);
     }
 
+
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     pub fn getNcMargin(self: *Self) Margin {
         var str = interop.getStrAttribute(self, "NCMARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
@@ -1376,6 +1440,7 @@ pub const GridBox = opaque {
         var value = Margin.intIntToString(&buffer, horiz, vert);
         interop.setStrAttribute(self, "NCMARGIN", .{}, value);
     }
+
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -1387,6 +1452,7 @@ pub const GridBox = opaque {
         var str = interop.getStrAttribute(self, "MARGIN", .{});
         return Margin.parse(str);
     }
+
 
     /// 
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
@@ -1408,6 +1474,7 @@ pub const GridBox = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1428,6 +1495,7 @@ pub const GridBox = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1451,6 +1519,7 @@ pub const GridBox = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1471,6 +1540,7 @@ pub const GridBox = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

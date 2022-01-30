@@ -64,7 +64,7 @@ pub const Normalizer = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -137,6 +137,7 @@ pub const Normalizer = opaque {
             return self.*;
         }
 
+
         /// 
         /// ADDCONTROL_HANDLE (non inheritable, write-only): Adds a control to the normalizer.
         /// The value passed must be a handle of an element.
@@ -151,6 +152,7 @@ pub const Normalizer = opaque {
             interop.setStrAttribute(self.ref, "ADDCONTROL_HANDLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// DELCONTROL_HANDLE (non inheritable, write-only): Removes a control from the normalizer.
@@ -168,6 +170,7 @@ pub const Normalizer = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
@@ -177,6 +180,7 @@ pub const Normalizer = opaque {
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -194,6 +198,7 @@ pub const Normalizer = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -223,6 +228,7 @@ pub const Normalizer = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -345,6 +351,10 @@ pub const Normalizer = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -418,6 +428,7 @@ pub const Normalizer = opaque {
         }
     }
 
+
     /// 
     /// ADDCONTROL_HANDLE (non inheritable, write-only): Adds a control to the normalizer.
     /// The value passed must be a handle of an element.
@@ -428,6 +439,7 @@ pub const Normalizer = opaque {
     pub fn addControlHandleHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "ADDCONTROL_HANDLE", .{}, arg);
     }
+
 
     /// 
     /// DELCONTROL_HANDLE (non inheritable, write-only): Removes a control from the normalizer.
@@ -441,6 +453,7 @@ pub const Normalizer = opaque {
         interop.setStrAttribute(self, "DELCONTROL_HANDLE", .{}, arg);
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -449,6 +462,7 @@ pub const Normalizer = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -456,6 +470,7 @@ pub const Normalizer = opaque {
     pub fn setExpandWeight(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -471,6 +486,7 @@ pub const Normalizer = opaque {
         return null;
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -485,6 +501,7 @@ pub const Normalizer = opaque {
             interop.clearAttribute(self, "FLOATING", .{});
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -506,6 +523,7 @@ pub const Normalizer = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -529,6 +547,7 @@ pub const Normalizer = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -549,6 +568,7 @@ pub const Normalizer = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

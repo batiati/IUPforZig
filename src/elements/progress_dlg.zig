@@ -139,7 +139,7 @@ pub const ProgressDlg = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -155,7 +155,7 @@ pub const ProgressDlg = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -253,7 +253,7 @@ pub const ProgressDlg = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const ZOrder = enum {
         Top,
@@ -349,6 +349,7 @@ pub const ProgressDlg = opaque {
             interop.setHandle(self.ref, arg);
             return self.*;
         }
+
 
         /// 
         /// COUNT: current count of iterations.
@@ -476,6 +477,7 @@ pub const ProgressDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// ICON: Dialog’s icon.
         pub fn setIcon(self: *Initializer, arg: [:0]const u8) Initializer {
@@ -483,6 +485,7 @@ pub const ProgressDlg = opaque {
             interop.setStrAttribute(self.ref, "ICON", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VISIBLE: Simply call IupShow or IupHide for the dialog.
@@ -672,6 +675,7 @@ pub const ProgressDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE (non inheritable): Dialog’s title.
         /// Default: NULL.
@@ -731,6 +735,7 @@ pub const ProgressDlg = opaque {
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
@@ -796,6 +801,7 @@ pub const ProgressDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// STATE: describe the state of the iteration.
         /// Can be: IDLE, PROCESSING, UNDEFINED or ABORTED.
@@ -836,6 +842,7 @@ pub const ProgressDlg = opaque {
             interop.setStrAttribute(self.ref, "DEFAULTENTER", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
@@ -1014,6 +1021,7 @@ pub const ProgressDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1042,6 +1050,7 @@ pub const ProgressDlg = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1425,6 +1434,10 @@ pub const ProgressDlg = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1499,11 +1512,13 @@ pub const ProgressDlg = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// COUNT: current count of iterations.
     pub fn getCount(self: *Self) i32 {
         return interop.getIntAttribute(self, "COUNT", .{});
     }
+
 
     /// 
     /// COUNT: current count of iterations.
@@ -1678,11 +1693,13 @@ pub const ProgressDlg = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
     }
 
+
     /// 
     /// ICON: Dialog’s icon.
     pub fn getIcon(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "ICON", .{});
     }
+
 
     /// 
     /// ICON: Dialog’s icon.
@@ -1690,11 +1707,13 @@ pub const ProgressDlg = opaque {
         interop.setStrAttribute(self, "ICON", .{}, arg);
     }
 
+
     /// 
     /// VISIBLE: Simply call IupShow or IupHide for the dialog.
     pub fn getVisible(self: *Self) bool {
         return interop.getBoolAttribute(self, "VISIBLE", .{});
     }
+
 
     /// 
     /// VISIBLE: Simply call IupShow or IupHide for the dialog.
@@ -1955,6 +1974,7 @@ pub const ProgressDlg = opaque {
         interop.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
     }
 
+
     /// 
     /// TITLE (non inheritable): Dialog’s title.
     /// Default: NULL.
@@ -1964,6 +1984,7 @@ pub const ProgressDlg = opaque {
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE (non inheritable): Dialog’s title.
@@ -2042,11 +2063,13 @@ pub const ProgressDlg = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
     }
 
+
     /// 
     /// RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
     pub fn getResize(self: *Self) bool {
         return interop.getBoolAttribute(self, "RESIZE", .{});
     }
+
 
     /// 
     /// RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
@@ -2132,6 +2155,7 @@ pub const ProgressDlg = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// STATE: describe the state of the iteration.
     /// Can be: IDLE, PROCESSING, UNDEFINED or ABORTED.
@@ -2151,6 +2175,7 @@ pub const ProgressDlg = opaque {
         if (std.ascii.eqlIgnoreCase("IDLE", ret)) return .Idle;
         return null;
     }
+
 
     /// 
     /// STATE: describe the state of the iteration.
@@ -2414,6 +2439,7 @@ pub const ProgressDlg = opaque {
         interop.setBoolAttribute(self, "SIMULATEMODAL", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2434,6 +2460,7 @@ pub const ProgressDlg = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2457,6 +2484,7 @@ pub const ProgressDlg = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2477,6 +2505,7 @@ pub const ProgressDlg = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

@@ -64,7 +64,7 @@ pub const Split = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -196,6 +196,7 @@ pub const Split = opaque {
             return self.*;
         }
 
+
         /// 
         /// BARSIZE (non inheritable): controls the size of the bar handler.
         /// Default: 5.
@@ -230,6 +231,7 @@ pub const Split = opaque {
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// When AUTOHIDE=Yes the control will set FLOATING=IGNORE and VISIBLE=NO for
@@ -276,6 +278,7 @@ pub const Split = opaque {
             return self.*;
         }
 
+
         /// 
         /// LAYOUTDRAG (non inheritable): When the bar is moved automatically update
         /// the children layout.
@@ -286,6 +289,7 @@ pub const Split = opaque {
             interop.setBoolAttribute(self.ref, "LAYOUTDRAG", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
@@ -302,6 +306,7 @@ pub const Split = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE (non inheritable): The proportion of the left or top (child1) client
         /// area relative to the full available area.
@@ -313,6 +318,7 @@ pub const Split = opaque {
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable): The default value is "YES".
@@ -337,6 +343,7 @@ pub const Split = opaque {
             return self.*;
         }
 
+
         /// 
         /// AUTOHIDE (non inheritable): if the child client area is smaller than the
         /// bar size, then automatically hide the child.
@@ -354,6 +361,7 @@ pub const Split = opaque {
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// COLOR: Changes the color of the bar grip affordance.
@@ -376,6 +384,7 @@ pub const Split = opaque {
             return self.*;
         }
 
+
         /// 
         /// ORIENTATION (creation only) (non inheritable): Indicates the orientation of
         /// the bar handler.
@@ -392,6 +401,7 @@ pub const Split = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// SHOWGRIP (non inheritable): Shows the bar grip affordance.
@@ -443,6 +453,7 @@ pub const Split = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -471,6 +482,7 @@ pub const Split = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -603,6 +615,10 @@ pub const Split = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -706,12 +722,14 @@ pub const Split = opaque {
         interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
+
     /// 
     /// BARSIZE (non inheritable): controls the size of the bar handler.
     /// Default: 5.
     pub fn getBarSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "BARSIZE", .{});
     }
+
 
     /// 
     /// BARSIZE (non inheritable): controls the size of the bar handler.
@@ -760,6 +778,7 @@ pub const Split = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// When AUTOHIDE=Yes the control will set FLOATING=IGNORE and VISIBLE=NO for
     /// the child to be auto-hidden, then back to FLOATING=NO and VISIBLE=Yes when shown.
@@ -770,6 +789,7 @@ pub const Split = opaque {
     pub fn getVisible(self: *Self) bool {
         return interop.getBoolAttribute(self, "VISIBLE", .{});
     }
+
 
     /// 
     /// When AUTOHIDE=Yes the control will set FLOATING=IGNORE and VISIBLE=NO for
@@ -835,6 +855,7 @@ pub const Split = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// LAYOUTDRAG (non inheritable): When the bar is moved automatically update
     /// the children layout.
@@ -843,6 +864,7 @@ pub const Split = opaque {
     pub fn getLayoutDrag(self: *Self) bool {
         return interop.getBoolAttribute(self, "LAYOUTDRAG", .{});
     }
+
 
     /// 
     /// LAYOUTDRAG (non inheritable): When the bar is moved automatically update
@@ -853,12 +875,14 @@ pub const Split = opaque {
         interop.setBoolAttribute(self, "LAYOUTDRAG", .{}, arg);
     }
 
+
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
+
 
     /// 
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
@@ -875,6 +899,7 @@ pub const Split = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// VALUE (non inheritable): The proportion of the left or top (child1) client
     /// area relative to the full available area.
@@ -885,6 +910,7 @@ pub const Split = opaque {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
 
+
     /// 
     /// VALUE (non inheritable): The proportion of the left or top (child1) client
     /// area relative to the full available area.
@@ -894,6 +920,7 @@ pub const Split = opaque {
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
+
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
@@ -908,6 +935,7 @@ pub const Split = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
@@ -932,6 +960,7 @@ pub const Split = opaque {
         interop.setBoolAttribute(self, "CANFOCUS", .{}, arg);
     }
 
+
     /// 
     /// AUTOHIDE (non inheritable): if the child client area is smaller than the
     /// bar size, then automatically hide the child.
@@ -939,6 +968,7 @@ pub const Split = opaque {
     pub fn getAutoHide(self: *Self) bool {
         return interop.getBoolAttribute(self, "AUTOHIDE", .{});
     }
+
 
     /// 
     /// AUTOHIDE (non inheritable): if the child client area is smaller than the
@@ -959,12 +989,14 @@ pub const Split = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// COLOR: Changes the color of the bar grip affordance.
     /// Default: "160 160 160".
     pub fn getColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "COLOR", .{});
     }
+
 
     /// 
     /// COLOR: Changes the color of the bar grip affordance.
@@ -992,6 +1024,7 @@ pub const Split = opaque {
         }
     }
 
+
     /// 
     /// SHOWGRIP (non inheritable): Shows the bar grip affordance.
     /// Default: YES.
@@ -1004,6 +1037,7 @@ pub const Split = opaque {
     pub fn getShowGrip(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOWGRIP", .{});
     }
+
 
     /// 
     /// SHOWGRIP (non inheritable): Shows the bar grip affordance.
@@ -1025,6 +1059,7 @@ pub const Split = opaque {
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
+
 
     /// 
     /// WID (read-only): returns -1 if mapped.
@@ -1080,6 +1115,7 @@ pub const Split = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1100,6 +1136,7 @@ pub const Split = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1123,6 +1160,7 @@ pub const Split = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1143,6 +1181,7 @@ pub const Split = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

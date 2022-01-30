@@ -98,6 +98,7 @@ pub const Clipboard = opaque {
             return self.*;
         }
 
+
         /// 
         /// FORMAT: set the current format to be used by the FORMATAVAILABLE and
         /// FORMATDATA attributes.
@@ -111,6 +112,7 @@ pub const Clipboard = opaque {
             return self.*;
         }
 
+
         /// 
         /// TEXT: copy or paste text to or from the clipboard.
         /// If set to NULL clears the clipboard data.
@@ -119,6 +121,7 @@ pub const Clipboard = opaque {
             interop.setStrAttribute(self.ref, "TEXT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGE (write-only): name of an image to copy to the clipboard.
@@ -140,6 +143,7 @@ pub const Clipboard = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
@@ -149,6 +153,7 @@ pub const Clipboard = opaque {
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -166,6 +171,7 @@ pub const Clipboard = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -195,6 +201,7 @@ pub const Clipboard = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -260,6 +267,10 @@ pub const Clipboard = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -317,6 +328,7 @@ pub const Clipboard = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// FORMAT: set the current format to be used by the FORMATAVAILABLE and
     /// FORMATDATA attributes.
@@ -327,6 +339,7 @@ pub const Clipboard = opaque {
     pub fn getFormat(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FORMAT", .{});
     }
+
 
     /// 
     /// FORMAT: set the current format to be used by the FORMATAVAILABLE and
@@ -339,6 +352,7 @@ pub const Clipboard = opaque {
         interop.setStrAttribute(self, "FORMAT", .{}, arg);
     }
 
+
     /// 
     /// TEXT: copy or paste text to or from the clipboard.
     /// If set to NULL clears the clipboard data.
@@ -346,12 +360,14 @@ pub const Clipboard = opaque {
         return interop.getStrAttribute(self, "TEXT", .{});
     }
 
+
     /// 
     /// TEXT: copy or paste text to or from the clipboard.
     /// If set to NULL clears the clipboard data.
     pub fn setText(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TEXT", .{}, arg);
     }
+
 
     /// 
     /// IMAGE (write-only): name of an image to copy to the clipboard.
@@ -366,6 +382,7 @@ pub const Clipboard = opaque {
         interop.setStrAttribute(self, "IMAGE", .{}, arg);
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -374,6 +391,7 @@ pub const Clipboard = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -381,6 +399,7 @@ pub const Clipboard = opaque {
     pub fn setExpandWeight(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -396,6 +415,7 @@ pub const Clipboard = opaque {
         return null;
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -410,6 +430,7 @@ pub const Clipboard = opaque {
             interop.clearAttribute(self, "FLOATING", .{});
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -431,6 +452,7 @@ pub const Clipboard = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -454,6 +476,7 @@ pub const Clipboard = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -474,6 +497,7 @@ pub const Clipboard = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

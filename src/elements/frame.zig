@@ -180,6 +180,7 @@ pub const Frame = opaque {
             return self.*;
         }
 
+
         /// 
         /// CHILDOFFSET: Allow to specify a position offset for the child.
         /// Available for native containers only.
@@ -197,6 +198,7 @@ pub const Frame = opaque {
             return self.*;
         }
 
+
         /// 
         /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
         /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
@@ -212,6 +214,7 @@ pub const Frame = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE (non inheritable): Text the user will see at the top of the frame.
         /// If not defined during creation it can not be added lately, to be changed it
@@ -221,6 +224,7 @@ pub const Frame = opaque {
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FGCOLOR: Text title color.
@@ -293,6 +297,7 @@ pub const Frame = opaque {
             return self.*;
         }
 
+
         /// 
         /// BGCOLOR: ignored, transparent in all systems.
         /// Will use the background color of the native parent.
@@ -339,6 +344,7 @@ pub const Frame = opaque {
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable): The default value is "YES".
@@ -411,6 +417,7 @@ pub const Frame = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -439,6 +446,7 @@ pub const Frame = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -539,6 +547,10 @@ pub const Frame = opaque {
 
     pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
         return interop.fromHandleName(Self, handle_name);
+    }
+
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
     }
 
     ///
@@ -686,6 +698,7 @@ pub const Frame = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
+
     /// 
     /// CHILDOFFSET: Allow to specify a position offset for the child.
     /// Available for native containers only.
@@ -699,6 +712,7 @@ pub const Frame = opaque {
         var str = interop.getStrAttribute(self, "CHILDOFFSET", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CHILDOFFSET: Allow to specify a position offset for the child.
@@ -715,12 +729,14 @@ pub const Frame = opaque {
         interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
 
+
     /// 
     /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
     /// MAXSIZE, WID, SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
@@ -737,6 +753,7 @@ pub const Frame = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
+
     /// 
     /// TITLE (non inheritable): Text the user will see at the top of the frame.
     /// If not defined during creation it can not be added lately, to be changed it
@@ -744,6 +761,7 @@ pub const Frame = opaque {
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE (non inheritable): Text the user will see at the top of the frame.
@@ -753,6 +771,7 @@ pub const Frame = opaque {
         interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
 
+
     /// 
     /// FGCOLOR: Text title color.
     /// Not available in Windows when using Windows Visual Styles.
@@ -760,6 +779,7 @@ pub const Frame = opaque {
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR: Text title color.
@@ -865,6 +885,7 @@ pub const Frame = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
+
     /// 
     /// BGCOLOR: ignored, transparent in all systems.
     /// Will use the background color of the native parent.
@@ -873,6 +894,7 @@ pub const Frame = opaque {
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR: ignored, transparent in all systems.
@@ -931,6 +953,7 @@ pub const Frame = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
@@ -944,6 +967,7 @@ pub const Frame = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
@@ -1053,6 +1077,7 @@ pub const Frame = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1073,6 +1098,7 @@ pub const Frame = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1096,6 +1122,7 @@ pub const Frame = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1116,6 +1143,7 @@ pub const Frame = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

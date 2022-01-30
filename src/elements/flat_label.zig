@@ -228,7 +228,7 @@ pub const FlatLabel = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -244,7 +244,7 @@ pub const FlatLabel = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -372,7 +372,7 @@ pub const FlatLabel = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
@@ -484,6 +484,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// FGCOLOR: Text color.
         /// Default: the global attribute DLGFGCOLOR.
@@ -587,6 +588,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// IMAGE (non inheritable): Image name.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -664,6 +666,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPAND (non inheritable): The default value is "NO".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
@@ -694,6 +697,7 @@ pub const FlatLabel = opaque {
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// PADDING: internal margin.
@@ -734,6 +738,7 @@ pub const FlatLabel = opaque {
             interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TEXTELLIPSIS (non inheritable): If the text is larger that its box, an
@@ -785,6 +790,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE (non inheritable): Label's text.
         /// The '\n' character is accepted for line change.
@@ -811,6 +817,7 @@ pub const FlatLabel = opaque {
             interop.setIntAttribute(self.ref, "XMAX", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BGCOLOR: ignored.
@@ -875,6 +882,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// SPACING (non inheritable): spacing between the image and the text.
         /// Default: "2".
@@ -916,6 +924,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// CSPACING: same as SPACING but using the units of the vertical part of the
         /// SIZE attribute.
@@ -926,6 +935,7 @@ pub const FlatLabel = opaque {
             interop.setIntAttribute(self.ref, "CSPACING", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FRONTIMAGE (non inheritable): image name to be used as foreground.
@@ -1006,6 +1016,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
         /// occupy the full background.
@@ -1019,6 +1030,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// CPADDING: same as PADDING but using the units of the SIZE attribute.
         /// It will actually set the PADDING attribute.
@@ -1031,6 +1043,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
         /// The text size will adapt to include the rotated space.
@@ -1040,6 +1053,7 @@ pub const FlatLabel = opaque {
             interop.setDoubleAttribute(self.ref, "TEXTORIENTATION", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
@@ -1052,6 +1066,7 @@ pub const FlatLabel = opaque {
             interop.setBoolAttribute(self.ref, "FITTOBACKIMAGE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -1074,6 +1089,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// BACKIMAGE (non inheritable): image name to be used as background.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1093,6 +1109,7 @@ pub const FlatLabel = opaque {
             interop.setStrAttribute(self.ref, "BACKIMAGE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
@@ -1134,6 +1151,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// BORDER (creation only): the default value is "NO".
         /// This is the IupCanvas border.
@@ -1142,6 +1160,7 @@ pub const FlatLabel = opaque {
             interop.setBoolAttribute(self.ref, "BORDER", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
@@ -1179,6 +1198,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// TEXTALIGNMENT (non inheritable): Horizontal text alignment for multiple lines.
         /// Can be: ALEFT, ARIGHT or ACENTER.
@@ -1201,6 +1221,7 @@ pub const FlatLabel = opaque {
             interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TEXTWRAP (non inheritable): For single line texts if the text is larger
@@ -1240,6 +1261,7 @@ pub const FlatLabel = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1268,6 +1290,7 @@ pub const FlatLabel = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1780,6 +1803,10 @@ pub const FlatLabel = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1837,12 +1864,14 @@ pub const FlatLabel = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// FGCOLOR: Text color.
     /// Default: the global attribute DLGFGCOLOR.
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR: Text color.
@@ -1985,6 +2014,7 @@ pub const FlatLabel = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// IMAGE (non inheritable): Image name.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1996,6 +2026,7 @@ pub const FlatLabel = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGE (non inheritable): Image name.
@@ -2084,6 +2115,7 @@ pub const FlatLabel = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// EXPAND (non inheritable): The default value is "NO".
     pub fn getExpand(self: *Self) ?Expand {
@@ -2097,6 +2129,7 @@ pub const FlatLabel = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): The default value is "NO".
@@ -2132,6 +2165,7 @@ pub const FlatLabel = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
+
     /// 
     /// PADDING: internal margin.
     /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
@@ -2144,6 +2178,7 @@ pub const FlatLabel = opaque {
         var str = interop.getStrAttribute(self, "PADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// PADDING: internal margin.
@@ -2195,6 +2230,7 @@ pub const FlatLabel = opaque {
         interop.setIntAttribute(self, "YMIN", .{}, arg);
     }
 
+
     /// 
     /// TEXTELLIPSIS (non inheritable): If the text is larger that its box, an
     /// ellipsis ("...") will be placed near the last visible part of the text and
@@ -2204,6 +2240,7 @@ pub const FlatLabel = opaque {
     pub fn getTextEllipsis(self: *Self) bool {
         return interop.getBoolAttribute(self, "TEXTELLIPSIS", .{});
     }
+
 
     /// 
     /// TEXTELLIPSIS (non inheritable): If the text is larger that its box, an
@@ -2275,12 +2312,14 @@ pub const FlatLabel = opaque {
         return interop.getBoolAttribute(self, "XHIDDEN", .{});
     }
 
+
     /// 
     /// TITLE (non inheritable): Label's text.
     /// The '\n' character is accepted for line change.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE (non inheritable): Label's text.
@@ -2313,12 +2352,14 @@ pub const FlatLabel = opaque {
         interop.setIntAttribute(self, "XMAX", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: ignored.
     /// It will use the background color of the native parent.
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
+
 
     /// 
     /// BGCOLOR: ignored.
@@ -2402,6 +2443,7 @@ pub const FlatLabel = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// SPACING (non inheritable): spacing between the image and the text.
     /// Default: "2".
@@ -2410,6 +2452,7 @@ pub const FlatLabel = opaque {
     pub fn getSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "SPACING", .{});
     }
+
 
     /// 
     /// SPACING (non inheritable): spacing between the image and the text.
@@ -2460,6 +2503,7 @@ pub const FlatLabel = opaque {
         interop.setStrAttribute(self, "FRONTIMAGEINACTIVE", .{}, arg);
     }
 
+
     /// 
     /// CSPACING: same as SPACING but using the units of the vertical part of the
     /// SIZE attribute.
@@ -2468,6 +2512,7 @@ pub const FlatLabel = opaque {
     pub fn getCSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "CSPACING", .{});
     }
+
 
     /// 
     /// CSPACING: same as SPACING but using the units of the vertical part of the
@@ -2483,6 +2528,7 @@ pub const FlatLabel = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// FRONTIMAGE (non inheritable): image name to be used as foreground.
     /// The foreground image is drawn in the same position as the background, but
@@ -2496,6 +2542,7 @@ pub const FlatLabel = opaque {
             return null;
         }
     }
+
 
     /// 
     /// FRONTIMAGE (non inheritable): image name to be used as foreground.
@@ -2597,6 +2644,7 @@ pub const FlatLabel = opaque {
         }
     }
 
+
     /// 
     /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
     /// occupy the full background.
@@ -2607,6 +2655,7 @@ pub const FlatLabel = opaque {
     pub fn getBackImageZoom(self: *Self) bool {
         return interop.getBoolAttribute(self, "BACKIMAGEZOOM", .{});
     }
+
 
     /// 
     /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
@@ -2619,6 +2668,7 @@ pub const FlatLabel = opaque {
         interop.setBoolAttribute(self, "BACKIMAGEZOOM", .{}, arg);
     }
 
+
     /// 
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
     /// It will actually set the PADDING attribute.
@@ -2627,6 +2677,7 @@ pub const FlatLabel = opaque {
         var str = interop.getStrAttribute(self, "CPADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
@@ -2638,6 +2689,7 @@ pub const FlatLabel = opaque {
         interop.setStrAttribute(self, "CPADDING", .{}, value);
     }
 
+
     /// 
     /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
     /// The text size will adapt to include the rotated space.
@@ -2646,6 +2698,7 @@ pub const FlatLabel = opaque {
         return interop.getDoubleAttribute(self, "TEXTORIENTATION", .{});
     }
 
+
     /// 
     /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
     /// The text size will adapt to include the rotated space.
@@ -2653,6 +2706,7 @@ pub const FlatLabel = opaque {
     pub fn setTextOrientation(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "TEXTORIENTATION", .{}, arg);
     }
+
 
     /// 
     /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
@@ -2664,6 +2718,7 @@ pub const FlatLabel = opaque {
         return interop.getBoolAttribute(self, "FITTOBACKIMAGE", .{});
     }
 
+
     /// 
     /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
     /// from the BACKIMAGE.
@@ -2674,12 +2729,14 @@ pub const FlatLabel = opaque {
         interop.setBoolAttribute(self, "FITTOBACKIMAGE", .{}, arg);
     }
 
+
     /// 
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -2704,6 +2761,7 @@ pub const FlatLabel = opaque {
         interop.setIntAttribute(self, "YMAX", .{}, arg);
     }
 
+
     /// 
     /// BACKIMAGE (non inheritable): image name to be used as background.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2715,6 +2773,7 @@ pub const FlatLabel = opaque {
             return null;
         }
     }
+
 
     /// 
     /// BACKIMAGE (non inheritable): image name to be used as background.
@@ -2729,6 +2788,7 @@ pub const FlatLabel = opaque {
         interop.setStrAttribute(self, "BACKIMAGE", .{}, arg);
     }
 
+
     /// 
     /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
     /// If it is not defined then the IMAGE is used and its colors will be replaced
@@ -2740,6 +2800,7 @@ pub const FlatLabel = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
@@ -2786,6 +2847,7 @@ pub const FlatLabel = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
     /// when both are displayed.
@@ -2800,6 +2862,7 @@ pub const FlatLabel = opaque {
         if (std.ascii.eqlIgnoreCase("TOP", ret)) return .Top;
         return null;
     }
+
 
     /// 
     /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
@@ -2841,6 +2904,7 @@ pub const FlatLabel = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// TEXTALIGNMENT (non inheritable): Horizontal text alignment for multiple lines.
     /// Can be: ALEFT, ARIGHT or ACENTER.
@@ -2854,6 +2918,7 @@ pub const FlatLabel = opaque {
         if (std.ascii.eqlIgnoreCase("ACENTER", ret)) return .ACenter;
         return null;
     }
+
 
     /// 
     /// TEXTALIGNMENT (non inheritable): Horizontal text alignment for multiple lines.
@@ -2878,6 +2943,7 @@ pub const FlatLabel = opaque {
         interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
+
     /// 
     /// TEXTWRAP (non inheritable): For single line texts if the text is larger
     /// than its box the line will be automatically broken in multiple lines.
@@ -2889,6 +2955,7 @@ pub const FlatLabel = opaque {
     pub fn getTextWrap(self: *Self) bool {
         return interop.getBoolAttribute(self, "TEXTWRAP", .{});
     }
+
 
     /// 
     /// TEXTWRAP (non inheritable): For single line texts if the text is larger
@@ -2934,6 +3001,7 @@ pub const FlatLabel = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2954,6 +3022,7 @@ pub const FlatLabel = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2977,6 +3046,7 @@ pub const FlatLabel = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2997,6 +3067,7 @@ pub const FlatLabel = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

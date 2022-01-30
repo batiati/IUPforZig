@@ -224,7 +224,7 @@ pub const Button = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const ZOrder = enum {
         Top,
@@ -311,6 +311,7 @@ pub const Button = opaque {
             return self.*;
         }
 
+
         /// 
         /// FGCOLOR: Text color.
         /// Default: the global attribute DLGFGCOLOR.
@@ -354,6 +355,7 @@ pub const Button = opaque {
             return self.*;
         }
 
+
         /// 
         /// IMPRESS (non inheritable): Image name of the pressed button.
         /// If IMPRESS and IMAGE are defined, the button borders are not shown and not
@@ -379,6 +381,7 @@ pub const Button = opaque {
             interop.setStrAttribute(self.ref, "IMPRESS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMINACTIVE (non inheritable): Image name of the element when inactive.
@@ -408,6 +411,7 @@ pub const Button = opaque {
             return self.*;
         }
 
+
         /// 
         /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
         /// the control.
@@ -429,6 +433,7 @@ pub const Button = opaque {
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGE (non inheritable): Image name.
@@ -497,6 +502,7 @@ pub const Button = opaque {
             return self.*;
         }
 
+
         /// 
         /// PADDING: internal margin.
         /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
@@ -539,6 +545,7 @@ pub const Button = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE (non inheritable): Button's text.
         /// If IMAGE is not defined before map, then the default behavior is to contain
@@ -564,6 +571,7 @@ pub const Button = opaque {
             return self.*;
         }
 
+
         /// 
         /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
         /// the next native parent with FOCUS_CB defined.
@@ -574,6 +582,7 @@ pub const Button = opaque {
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// BGCOLOR: Background color.
@@ -594,6 +603,7 @@ pub const Button = opaque {
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// MARKUP [GTK only]: allows the title string to contains pango markup commands.
@@ -624,6 +634,7 @@ pub const Button = opaque {
             return self.*;
         }
 
+
         /// 
         /// SPACING (creation only): defines the spacing between the image associated
         /// and the button's text.
@@ -633,6 +644,7 @@ pub const Button = opaque {
             interop.setIntAttribute(self.ref, "SPACING", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// The buttons with image and text simultaneous have PADDING=5x5, the other
@@ -652,6 +664,7 @@ pub const Button = opaque {
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// CSPACING: same as SPACING but using the units of the vertical part of the
@@ -676,6 +689,7 @@ pub const Button = opaque {
             return self.*;
         }
 
+
         /// 
         /// CPADDING: same as PADDING but using the units of the SIZE attribute.
         /// It will actually set the PADDING attribute.
@@ -687,6 +701,7 @@ pub const Button = opaque {
             interop.setStrAttribute(self.ref, "CPADDING", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -717,6 +732,7 @@ pub const Button = opaque {
             return self.*;
         }
 
+
         /// 
         /// FLAT (creation only): Hides the button borders until the mouse cursor
         /// enters the button area.
@@ -734,6 +750,7 @@ pub const Button = opaque {
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
@@ -766,6 +783,7 @@ pub const Button = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -794,6 +812,7 @@ pub const Button = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1104,6 +1123,10 @@ pub const Button = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1176,12 +1199,14 @@ pub const Button = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// FGCOLOR: Text color.
     /// Default: the global attribute DLGFGCOLOR.
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR: Text color.
@@ -1241,6 +1266,7 @@ pub const Button = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
+
     /// 
     /// IMPRESS (non inheritable): Image name of the pressed button.
     /// If IMPRESS and IMAGE are defined, the button borders are not shown and not
@@ -1258,6 +1284,7 @@ pub const Button = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMPRESS (non inheritable): Image name of the pressed button.
@@ -1278,6 +1305,7 @@ pub const Button = opaque {
         interop.setStrAttribute(self, "IMPRESS", .{}, arg);
     }
 
+
     /// 
     /// IMINACTIVE (non inheritable): Image name of the element when inactive.
     /// If it is not defined then the IMAGE is used and the colors will be replaced
@@ -1291,6 +1319,7 @@ pub const Button = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMINACTIVE (non inheritable): Image name of the element when inactive.
@@ -1315,6 +1344,7 @@ pub const Button = opaque {
         interop.setStrAttribute(self, "TIP", .{}, arg);
     }
 
+
     /// 
     /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
     /// the control.
@@ -1328,6 +1358,7 @@ pub const Button = opaque {
     pub fn getCanFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "CANFOCUS", .{});
     }
+
 
     /// 
     /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
@@ -1351,6 +1382,7 @@ pub const Button = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
+
     /// 
     /// IMAGE (non inheritable): Image name.
     /// If set before map defines the behavior of the button to contain an image.
@@ -1369,6 +1401,7 @@ pub const Button = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGE (non inheritable): Image name.
@@ -1451,6 +1484,7 @@ pub const Button = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
+
     /// 
     /// PADDING: internal margin.
     /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
@@ -1463,6 +1497,7 @@ pub const Button = opaque {
         var str = interop.getStrAttribute(self, "PADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// PADDING: internal margin.
@@ -1522,6 +1557,7 @@ pub const Button = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+
     /// 
     /// TITLE (non inheritable): Button's text.
     /// If IMAGE is not defined before map, then the default behavior is to contain
@@ -1544,6 +1580,7 @@ pub const Button = opaque {
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE (non inheritable): Button's text.
@@ -1568,6 +1605,7 @@ pub const Button = opaque {
         interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
 
+
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -1577,6 +1615,7 @@ pub const Button = opaque {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
+
     /// 
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -1585,6 +1624,7 @@ pub const Button = opaque {
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
+
 
     /// 
     /// BGCOLOR: Background color.
@@ -1604,6 +1644,7 @@ pub const Button = opaque {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
+
     /// 
     /// BGCOLOR: Background color.
     /// If text and image are not defined, the button is configured to simply show
@@ -1622,6 +1663,7 @@ pub const Button = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// MARKUP [GTK only]: allows the title string to contains pango markup commands.
     /// Works only if a mnemonic is NOT defined in the title.
@@ -1630,6 +1672,7 @@ pub const Button = opaque {
     pub fn getMarkup(self: *Self) bool {
         return interop.getBoolAttribute(self, "MARKUP", .{});
     }
+
 
     /// 
     /// MARKUP [GTK only]: allows the title string to contains pango markup commands.
@@ -1667,6 +1710,7 @@ pub const Button = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// The buttons with image and text simultaneous have PADDING=5x5, the other
     /// buttons have no padding.
@@ -1676,6 +1720,7 @@ pub const Button = opaque {
         var str = interop.getStrAttribute(self, "RASTERSIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// The buttons with image and text simultaneous have PADDING=5x5, the other
@@ -1696,6 +1741,7 @@ pub const Button = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// CSPACING: same as SPACING but using the units of the vertical part of the
     /// SIZE attribute.
@@ -1704,6 +1750,7 @@ pub const Button = opaque {
     pub fn getCSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "CSPACING", .{});
     }
+
 
     /// 
     /// CSPACING: same as SPACING but using the units of the vertical part of the
@@ -1730,6 +1777,7 @@ pub const Button = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
     /// It will actually set the PADDING attribute.
@@ -1738,6 +1786,7 @@ pub const Button = opaque {
         var str = interop.getStrAttribute(self, "CPADDING", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
@@ -1749,12 +1798,14 @@ pub const Button = opaque {
         interop.setStrAttribute(self, "CPADDING", .{}, value);
     }
 
+
     /// 
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
@@ -1803,6 +1854,7 @@ pub const Button = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
     /// when both are displayed.
@@ -1818,6 +1870,7 @@ pub const Button = opaque {
         if (std.ascii.eqlIgnoreCase("TOP", ret)) return .Top;
         return null;
     }
+
 
     /// 
     /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
@@ -1852,6 +1905,7 @@ pub const Button = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1872,6 +1926,7 @@ pub const Button = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1895,6 +1950,7 @@ pub const Button = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1915,6 +1971,7 @@ pub const Button = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

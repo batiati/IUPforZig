@@ -259,7 +259,7 @@ pub const FlatTabs = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -275,7 +275,7 @@ pub const FlatTabs = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -419,7 +419,7 @@ pub const FlatTabs = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const DrawTextAlignment = enum {
         ACenter,
@@ -560,6 +560,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABFONTSIZEn: text font size.
         /// When change will actually set TABFONTn.
@@ -589,6 +590,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXTRAIMAGEid: image name to be used in the respective button.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -615,6 +617,7 @@ pub const FlatTabs = opaque {
             interop.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
@@ -665,6 +668,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHOWCLOSE: enables the close button on each tab.
         /// Default value: "NO".
@@ -675,6 +679,7 @@ pub const FlatTabs = opaque {
             interop.setBoolAttribute(self.ref, "SHOWCLOSE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
@@ -749,6 +754,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// HIGHCOLOR: text color for the highlighted Tab.
         /// The current Tab is never highlighted, so it affects only the other tabs.
@@ -758,6 +764,7 @@ pub const FlatTabs = opaque {
             interop.setRgb(self.ref, "HIGHCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// TABSFONTSIZE: text font size.
@@ -774,6 +781,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// CHILDOFFSET: Allow to specify a position offset for the child.
         /// Available for native containers only.
@@ -789,6 +797,7 @@ pub const FlatTabs = opaque {
             interop.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// TABTYPE (non inheritable): the type of tabs, which can be "TOP", "BOTTOM",
@@ -810,6 +819,7 @@ pub const FlatTabs = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// EXPAND: The default value is "YES".
@@ -833,6 +843,7 @@ pub const FlatTabs = opaque {
             interop.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// SIZE: The default size is the smallest size that fits its largest child.
@@ -881,6 +892,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXTRAIMAGEPRESSid: same as EXTRAIMAGEid when in pressed state.
         /// If not defined EXTRAIMAGEid is used.
@@ -926,6 +938,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABVISIBLEn: controls the visibility of a tab.
         /// When a tab is hidden the tabs indices are not changed.
@@ -936,6 +949,7 @@ pub const FlatTabs = opaque {
             interop.setBoolAttribute(self.ref, "TABVISIBLE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
@@ -954,6 +968,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// BGCOLOR: background color for the current Tab and the children.
         /// Default: "255 255 255".
@@ -964,6 +979,7 @@ pub const FlatTabs = opaque {
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// VALUE_HANDLE: Changes the current tab by its handle.
@@ -979,6 +995,7 @@ pub const FlatTabs = opaque {
             interop.setStrAttribute(self.ref, "VALUE_HANDLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CLOSEIMAGEHIGHLIGHT: image name to be used in the close button in highlight state.
@@ -1003,6 +1020,7 @@ pub const FlatTabs = opaque {
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
@@ -1045,6 +1063,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
         /// then its size and position will be ignored by the layout processing.
@@ -1076,6 +1095,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// CLOSEIMAGEINACTIVE: image name to be used in the close button in inactive state.
         /// If it is not defined then the CLOSEIMAGE is used and its colors will be
@@ -1102,6 +1122,7 @@ pub const FlatTabs = opaque {
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// CLOSEIMAGEPRESS: image name to be used in the close button in pressed state.
@@ -1146,6 +1167,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
         /// "HORIZONTAL" or "VERTICAL".
@@ -1168,6 +1190,7 @@ pub const FlatTabs = opaque {
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VALUEPOS: Changes the current tab by its position, starting at 0.
@@ -1204,6 +1227,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE: Changes the current tab by its name.
         /// The value passed must be the name of one of the elements contained in the tabs.
@@ -1216,6 +1240,7 @@ pub const FlatTabs = opaque {
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn: image name to be used in the respective tab.
@@ -1241,6 +1266,7 @@ pub const FlatTabs = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
@@ -1277,6 +1303,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// CLOSEIMAGE: image name to be used in the close button.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1298,6 +1325,7 @@ pub const FlatTabs = opaque {
             interop.setStrAttribute(self.ref, "CLOSEIMAGE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// EXTRAIMAGEINACTIVEid: same as EXTRAIMAGEid when in inactive state.
@@ -1325,6 +1353,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXTRABUTTONS: sets the number of extra image buttons at right in the free
         /// space area.
@@ -1336,6 +1365,7 @@ pub const FlatTabs = opaque {
             interop.setIntAttribute(self.ref, "EXTRABUTTONS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FORECOLOR: text color for the current Tab.
@@ -1370,6 +1400,7 @@ pub const FlatTabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABTITLEn: contains the text to be shown in the respective tab title.
         /// n starts at 0.
@@ -1383,6 +1414,7 @@ pub const FlatTabs = opaque {
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// EXTRAIMAGEHIGHLIGHTid: same as EXTRAIMAGEid when in highlight state.
@@ -1998,6 +2030,10 @@ pub const FlatTabs = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -2074,6 +2110,7 @@ pub const FlatTabs = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// COUNT (read-only): returns the number of tabs.
     /// Same value returned by IupGetChildCount.
@@ -2097,6 +2134,7 @@ pub const FlatTabs = opaque {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// HASFOCUS (read-only): returns the tabs state if it has focus.
     /// Can be Yes or No.
@@ -2105,12 +2143,14 @@ pub const FlatTabs = opaque {
         return interop.getBoolAttribute(self, "HASFOCUS", .{});
     }
 
+
     /// 
     /// TABFONTSIZEn: text font size.
     /// When change will actually set TABFONTn.
     pub fn getTabFontSize(self: *Self, index: i32) i32 {
         return interop.getIntAttribute(self, "TABFONTSIZE", .{index});
     }
+
 
     /// 
     /// TABFONTSIZEn: text font size.
@@ -2146,6 +2186,7 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
+
     /// 
     /// EXTRAIMAGEid: image name to be used in the respective button.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2158,6 +2199,7 @@ pub const FlatTabs = opaque {
             return null;
         }
     }
+
 
     /// 
     /// EXTRAIMAGEid: image name to be used in the respective button.
@@ -2186,6 +2228,7 @@ pub const FlatTabs = opaque {
         return iup.XYPos.parse(str, ',');
     }
 
+
     /// 
     /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
     /// Can be Yes or No.
@@ -2194,6 +2237,7 @@ pub const FlatTabs = opaque {
     pub fn getFocusFeedback(self: *Self) bool {
         return interop.getBoolAttribute(self, "FOCUSFEEDBACK", .{});
     }
+
 
     /// 
     /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
@@ -2258,6 +2302,7 @@ pub const FlatTabs = opaque {
         interop.setBoolAttribute(self, "DRAWTEXTLAYOUTCENTER", .{}, arg);
     }
 
+
     /// 
     /// SHOWCLOSE: enables the close button on each tab.
     /// Default value: "NO".
@@ -2266,6 +2311,7 @@ pub const FlatTabs = opaque {
     pub fn getShowClose(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOWCLOSE", .{});
     }
+
 
     /// 
     /// SHOWCLOSE: enables the close button on each tab.
@@ -2358,6 +2404,7 @@ pub const FlatTabs = opaque {
         interop.setBoolAttribute(self, "DRAGDROP", .{}, arg);
     }
 
+
     /// 
     /// HIGHCOLOR: text color for the highlighted Tab.
     /// The current Tab is never highlighted, so it affects only the other tabs.
@@ -2365,6 +2412,7 @@ pub const FlatTabs = opaque {
     pub fn getHighColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "HIGHCOLOR", .{});
     }
+
 
     /// 
     /// HIGHCOLOR: text color for the highlighted Tab.
@@ -2374,12 +2422,14 @@ pub const FlatTabs = opaque {
         interop.setRgb(self, "HIGHCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// TABSFONTSIZE: text font size.
     /// When change will actually set TABSFONT.
     pub fn getTabsFontSize(self: *Self) i32 {
         return interop.getIntAttribute(self, "TABSFONTSIZE", .{});
     }
+
 
     /// 
     /// TABSFONTSIZE: text font size.
@@ -2396,6 +2446,7 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// CHILDOFFSET: Allow to specify a position offset for the child.
     /// Available for native containers only.
@@ -2408,6 +2459,7 @@ pub const FlatTabs = opaque {
         var str = interop.getStrAttribute(self, "CHILDOFFSET", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CHILDOFFSET: Allow to specify a position offset for the child.
@@ -2422,6 +2474,7 @@ pub const FlatTabs = opaque {
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
+
 
     /// 
     /// TABTYPE (non inheritable): the type of tabs, which can be "TOP", "BOTTOM",
@@ -2440,6 +2493,7 @@ pub const FlatTabs = opaque {
         if (std.ascii.eqlIgnoreCase("TOP", ret)) return .Top;
         return null;
     }
+
 
     /// 
     /// TABTYPE (non inheritable): the type of tabs, which can be "TOP", "BOTTOM",
@@ -2460,6 +2514,7 @@ pub const FlatTabs = opaque {
         }
     }
 
+
     /// 
     /// EXPAND: The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
@@ -2473,6 +2528,7 @@ pub const FlatTabs = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND: The default value is "YES".
@@ -2497,6 +2553,7 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "DRAWFONT", .{}, arg);
     }
 
+
     /// 
     /// SIZE: The default size is the smallest size that fits its largest child.
     /// All child elements are considered even invisible ones.
@@ -2504,6 +2561,7 @@ pub const FlatTabs = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE: The default size is the smallest size that fits its largest child.
@@ -2571,6 +2629,7 @@ pub const FlatTabs = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// EXTRAIMAGEPRESSid: same as EXTRAIMAGEid when in pressed state.
     /// If not defined EXTRAIMAGEid is used.
@@ -2581,6 +2640,7 @@ pub const FlatTabs = opaque {
             return null;
         }
     }
+
 
     /// 
     /// EXTRAIMAGEPRESSid: same as EXTRAIMAGEid when in pressed state.
@@ -2637,6 +2697,7 @@ pub const FlatTabs = opaque {
         interop.setBoolAttribute(self, "XAUTOHIDE", .{}, arg);
     }
 
+
     /// 
     /// TABVISIBLEn: controls the visibility of a tab.
     /// When a tab is hidden the tabs indices are not changed.
@@ -2645,6 +2706,7 @@ pub const FlatTabs = opaque {
     pub fn getTabVisible(self: *Self, index: i32) bool {
         return interop.getBoolAttribute(self, "TABVISIBLE", .{index});
     }
+
 
     /// 
     /// TABVISIBLEn: controls the visibility of a tab.
@@ -2655,6 +2717,7 @@ pub const FlatTabs = opaque {
         interop.setBoolAttribute(self, "TABVISIBLE", .{index}, arg);
     }
 
+
     /// 
     /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
@@ -2663,6 +2726,7 @@ pub const FlatTabs = opaque {
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
+
 
     /// 
     /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
@@ -2681,6 +2745,7 @@ pub const FlatTabs = opaque {
         interop.setIntAttribute(self, "XMAX", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: background color for the current Tab and the children.
     /// Default: "255 255 255".
@@ -2690,6 +2755,7 @@ pub const FlatTabs = opaque {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
+
     /// 
     /// BGCOLOR: background color for the current Tab and the children.
     /// Default: "255 255 255".
@@ -2698,6 +2764,7 @@ pub const FlatTabs = opaque {
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
+
 
     /// 
     /// VALUE_HANDLE: Changes the current tab by its handle.
@@ -2710,6 +2777,7 @@ pub const FlatTabs = opaque {
         }
     }
 
+
     /// 
     /// VALUE_HANDLE: Changes the current tab by its handle.
     /// The value passed must be the handle of a child contained in the tabs.
@@ -2721,6 +2789,7 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "VALUE_HANDLE", .{}, arg);
     }
 
+
     /// 
     /// CLOSEIMAGEHIGHLIGHT: image name to be used in the close button in highlight state.
     pub fn getCloseImageHighlight(self: *Self) ?iup.Element {
@@ -2730,6 +2799,7 @@ pub const FlatTabs = opaque {
             return null;
         }
     }
+
 
     /// 
     /// CLOSEIMAGEHIGHLIGHT: image name to be used in the close button in highlight state.
@@ -2750,6 +2820,7 @@ pub const FlatTabs = opaque {
         interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
     }
 
+
     /// 
     /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
     /// If set to NO will compute using only the current tab.
@@ -2758,6 +2829,7 @@ pub const FlatTabs = opaque {
     pub fn getChildSizeAll(self: *Self) bool {
         return interop.getBoolAttribute(self, "CHILDSIZEALL", .{});
     }
+
 
     /// 
     /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
@@ -2808,6 +2880,7 @@ pub const FlatTabs = opaque {
         interop.setBoolAttribute(self, "DRAWTEXTCLIP", .{}, arg);
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -2821,6 +2894,7 @@ pub const FlatTabs = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -2856,6 +2930,7 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// CLOSEIMAGEINACTIVE: image name to be used in the close button in inactive state.
     /// If it is not defined then the CLOSEIMAGE is used and its colors will be
@@ -2868,6 +2943,7 @@ pub const FlatTabs = opaque {
             return null;
         }
     }
+
 
     /// 
     /// CLOSEIMAGEINACTIVE: image name to be used in the close button in inactive state.
@@ -2900,6 +2976,7 @@ pub const FlatTabs = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// CLOSEIMAGEPRESS: image name to be used in the close button in pressed state.
     /// Default: "IMGFLATCLOSEPRESS".
@@ -2910,6 +2987,7 @@ pub const FlatTabs = opaque {
             return null;
         }
     }
+
 
     /// 
     /// CLOSEIMAGEPRESS: image name to be used in the close button in pressed state.
@@ -2955,6 +3033,7 @@ pub const FlatTabs = opaque {
         interop.setRgb(self, "DRAWBGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
     /// "HORIZONTAL" or "VERTICAL".
@@ -2968,6 +3047,7 @@ pub const FlatTabs = opaque {
         if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
         return null;
     }
+
 
     /// 
     /// TABORIENTATION (non inheritable): the orientation of tab text, which can be
@@ -2992,11 +3072,13 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// VALUEPOS: Changes the current tab by its position, starting at 0.
     pub fn getValuePos(self: *Self) i32 {
         return interop.getIntAttribute(self, "VALUEPOS", .{});
     }
+
 
     /// 
     /// VALUEPOS: Changes the current tab by its position, starting at 0.
@@ -3049,6 +3131,7 @@ pub const FlatTabs = opaque {
         }
     }
 
+
     /// 
     /// VALUE: Changes the current tab by its name.
     /// The value passed must be the name of one of the elements contained in the tabs.
@@ -3060,6 +3143,7 @@ pub const FlatTabs = opaque {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
 
+
     /// 
     /// VALUE: Changes the current tab by its name.
     /// The value passed must be the name of one of the elements contained in the tabs.
@@ -3070,6 +3154,7 @@ pub const FlatTabs = opaque {
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
+
 
     /// 
     /// TABIMAGEn: image name to be used in the respective tab.
@@ -3087,6 +3172,7 @@ pub const FlatTabs = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn: image name to be used in the respective tab.
@@ -3106,12 +3192,14 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
     /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
@@ -3155,6 +3243,7 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
+
     /// 
     /// CLOSEIMAGE: image name to be used in the close button.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -3168,6 +3257,7 @@ pub const FlatTabs = opaque {
             return null;
         }
     }
+
 
     /// 
     /// CLOSEIMAGE: image name to be used in the close button.
@@ -3184,6 +3274,7 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "CLOSEIMAGE", .{}, arg);
     }
 
+
     /// 
     /// EXTRAIMAGEINACTIVEid: same as EXTRAIMAGEid when in inactive state.
     /// If not defined EXTRAIMAGEid is used and its colors will be replaced by a
@@ -3195,6 +3286,7 @@ pub const FlatTabs = opaque {
             return null;
         }
     }
+
 
     /// 
     /// EXTRAIMAGEINACTIVEid: same as EXTRAIMAGEid when in inactive state.
@@ -3217,6 +3309,7 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
+
     /// 
     /// EXTRABUTTONS: sets the number of extra image buttons at right in the free
     /// space area.
@@ -3226,6 +3319,7 @@ pub const FlatTabs = opaque {
     pub fn getExtraButtons(self: *Self) i32 {
         return interop.getIntAttribute(self, "EXTRABUTTONS", .{});
     }
+
 
     /// 
     /// EXTRABUTTONS: sets the number of extra image buttons at right in the free
@@ -3256,12 +3350,14 @@ pub const FlatTabs = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// FORECOLOR: text color for the current Tab.
     /// Default: "50 150 255".
     pub fn getForeColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FORECOLOR", .{});
     }
+
 
     /// 
     /// FORECOLOR: text color for the current Tab.
@@ -3302,6 +3398,7 @@ pub const FlatTabs = opaque {
         interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
+
     /// 
     /// TABTITLEn: contains the text to be shown in the respective tab title.
     /// n starts at 0.
@@ -3313,6 +3410,7 @@ pub const FlatTabs = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn: contains the text to be shown in the respective tab title.
@@ -3326,6 +3424,7 @@ pub const FlatTabs = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
+
     /// 
     /// EXTRAIMAGEHIGHLIGHTid: same as EXTRAIMAGEid when in highlight state.
     /// If not defined EXTRAIMAGEid is used.
@@ -3336,6 +3435,7 @@ pub const FlatTabs = opaque {
             return null;
         }
     }
+
 
     /// 
     /// EXTRAIMAGEHIGHLIGHTid: same as EXTRAIMAGEid when in highlight state.

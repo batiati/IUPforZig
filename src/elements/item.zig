@@ -79,7 +79,7 @@ pub const Item = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -174,6 +174,7 @@ pub const Item = opaque {
             return self.*;
         }
 
+
         /// 
         /// ACTIVE, THEME: also accepted.
         pub fn setActive(self: *Initializer, arg: bool) Initializer {
@@ -181,6 +182,7 @@ pub const Item = opaque {
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TITLE (non inheritable): Item text.
@@ -194,6 +196,7 @@ pub const Item = opaque {
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
@@ -214,6 +217,7 @@ pub const Item = opaque {
             return self.*;
         }
 
+
         /// 
         /// HIDEMARK [Motif and GTK Only]: If enabled the item cannot be checked, since
         /// the check box will not be shown.
@@ -231,6 +235,7 @@ pub const Item = opaque {
             interop.setStrAttribute(self.ref, "HIDEMARK", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the check
@@ -267,6 +272,7 @@ pub const Item = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLEIMAGE (non inheritable): Image name of the title image.
         /// In Windows, it appears before of the title text and after the check mark
@@ -291,6 +297,7 @@ pub const Item = opaque {
             return self.*;
         }
 
+
         /// 
         /// KEY (non inheritable): Underlines a key character in the submenu title.
         /// It is updated only when TITLE is updated.
@@ -313,6 +320,7 @@ pub const Item = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE (non inheritable): Indicates the item's state.
         /// When the value is ON, a mark will be displayed to the left of the item.
@@ -333,6 +341,7 @@ pub const Item = opaque {
             return self.*;
         }
 
+
         /// 
         /// AUTOTOGGLE (non inheritable): enables the automatic toggle of VALUE state
         /// when the item is activated.
@@ -344,6 +353,7 @@ pub const Item = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
@@ -353,6 +363,7 @@ pub const Item = opaque {
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -370,6 +381,7 @@ pub const Item = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -399,6 +411,7 @@ pub const Item = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -561,6 +574,10 @@ pub const Item = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -618,17 +635,20 @@ pub const Item = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// ACTIVE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
 
+
     /// 
     /// ACTIVE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "ACTIVE", .{}, arg);
     }
+
 
     /// 
     /// TITLE (non inheritable): Item text.
@@ -641,6 +661,7 @@ pub const Item = opaque {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
 
+
     /// 
     /// TITLE (non inheritable): Item text.
     /// The "&" character can be used to define a mnemonic, the next character will
@@ -651,6 +672,7 @@ pub const Item = opaque {
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
+
 
     /// 
     /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
@@ -663,6 +685,7 @@ pub const Item = opaque {
         }
     }
 
+
     /// 
     /// IMPRESS [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=ON.
@@ -674,6 +697,7 @@ pub const Item = opaque {
     pub fn setImPressHandleName(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "IMPRESS", .{}, arg);
     }
+
 
     /// 
     /// HIDEMARK [Motif and GTK Only]: If enabled the item cannot be checked, since
@@ -691,6 +715,7 @@ pub const Item = opaque {
         return interop.getStrAttribute(self, "HIDEMARK", .{});
     }
 
+
     /// 
     /// HIDEMARK [Motif and GTK Only]: If enabled the item cannot be checked, since
     /// the check box will not be shown.
@@ -707,6 +732,7 @@ pub const Item = opaque {
         interop.setStrAttribute(self, "HIDEMARK", .{}, arg);
     }
 
+
     /// 
     /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the check
     /// mark image when VALUE=OFF.
@@ -721,6 +747,7 @@ pub const Item = opaque {
             return null;
         }
     }
+
 
     /// 
     /// IMAGE [Windows and GTK Only] (non inheritable): Image name of the check
@@ -754,6 +781,7 @@ pub const Item = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
+
     /// 
     /// TITLEIMAGE (non inheritable): Image name of the title image.
     /// In Windows, it appears before of the title text and after the check mark
@@ -769,6 +797,7 @@ pub const Item = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TITLEIMAGE (non inheritable): Image name of the title image.
@@ -787,6 +816,7 @@ pub const Item = opaque {
         interop.setStrAttribute(self, "TITLEIMAGE", .{}, arg);
     }
 
+
     /// 
     /// KEY (non inheritable): Underlines a key character in the submenu title.
     /// It is updated only when TITLE is updated.
@@ -794,6 +824,7 @@ pub const Item = opaque {
     pub fn getKey(self: *Self) i32 {
         return interop.getIntAttribute(self, "KEY", .{});
     }
+
 
     /// 
     /// KEY (non inheritable): Underlines a key character in the submenu title.
@@ -819,6 +850,7 @@ pub const Item = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// VALUE (non inheritable): Indicates the item's state.
     /// When the value is ON, a mark will be displayed to the left of the item.
@@ -835,6 +867,7 @@ pub const Item = opaque {
         if (std.ascii.eqlIgnoreCase("OFF", ret)) return .Off;
         return null;
     }
+
 
     /// 
     /// VALUE (non inheritable): Indicates the item's state.
@@ -854,11 +887,13 @@ pub const Item = opaque {
         }
     }
 
+
     /// 
     /// WID (non inheritable): In Windows, returns the HMENU of the parent menu.
     pub fn getWId(self: *Self) i32 {
         return interop.getIntAttribute(self, "WID", .{});
     }
+
 
     /// 
     /// AUTOTOGGLE (non inheritable): enables the automatic toggle of VALUE state
@@ -869,6 +904,7 @@ pub const Item = opaque {
         return interop.getBoolAttribute(self, "AUTOTOGGLE", .{});
     }
 
+
     /// 
     /// AUTOTOGGLE (non inheritable): enables the automatic toggle of VALUE state
     /// when the item is activated.
@@ -878,6 +914,7 @@ pub const Item = opaque {
         interop.setBoolAttribute(self, "AUTOTOGGLE", .{}, arg);
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -886,6 +923,7 @@ pub const Item = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
+
     /// 
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
@@ -893,6 +931,7 @@ pub const Item = opaque {
     pub fn setExpandWeight(self: *Self, arg: f64) void {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -908,6 +947,7 @@ pub const Item = opaque {
         return null;
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -922,6 +962,7 @@ pub const Item = opaque {
             interop.clearAttribute(self, "FLOATING", .{});
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -943,6 +984,7 @@ pub const Item = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -966,6 +1008,7 @@ pub const Item = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -986,6 +1029,7 @@ pub const Item = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

@@ -205,7 +205,7 @@ pub const Tabs = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const ZOrder = enum {
         Top,
@@ -323,6 +323,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// FGCOLOR: Tabs title color.
         /// Default: the global attribute DLGFGCOLOR.
@@ -372,6 +373,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// SHOWCLOSE [Windows and GTK Only] (non inheritable): enables the close
         /// button on each tab.
@@ -415,6 +417,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// CHILDOFFSET: Allow to specify a position offset for the child.
         /// Available for native containers only.
@@ -431,6 +434,7 @@ pub const Tabs = opaque {
             interop.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
@@ -454,6 +458,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// EXPAND (non inheritable): The default value is "YES".
         pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
@@ -470,6 +475,7 @@ pub const Tabs = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// SIZE (non inheritable): The default size is the smallest size that fits its
@@ -509,6 +515,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABVISIBLEn (non inheritable): Allows to hide a tab.
         /// n starts at 0.
@@ -528,6 +535,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// BGCOLOR: In Windows and in GTK when in Windows, the tab buttons background
         /// it will be always defined by the system.
@@ -538,6 +546,7 @@ pub const Tabs = opaque {
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
             return self.*;
         }
+
 
         /// 
         /// VALUE_HANDLE (non inheritable): Changes the current tab by its handle.
@@ -556,6 +565,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
         /// If set to NO will compute using only the current tab.
@@ -566,6 +576,7 @@ pub const Tabs = opaque {
             interop.setBoolAttribute(self.ref, "CHILDSIZEALL", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -610,6 +621,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABORIENTATION (non inheritable): Indicates the orientation of tab text,
         /// which can be "HORIZONTAL" or "VERTICAL".
@@ -636,6 +648,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUEPOS (non inheritable): Changes the current tab by its position,
         /// starting at 0.
@@ -648,6 +661,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE (non inheritable): Changes the current tab by its name.
         /// The value passed must be the name of one of the elements contained in the tabs.
@@ -658,6 +672,7 @@ pub const Tabs = opaque {
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -688,6 +703,7 @@ pub const Tabs = opaque {
             return self.*;
         }
 
+
         /// 
         /// MULTILINE [Windows Only] (non inheritable): Enable multiple lines of tab buttons.
         /// This will hide the tab scroll and fits to make all tab buttons visible.
@@ -700,6 +716,7 @@ pub const Tabs = opaque {
             interop.setBoolAttribute(self.ref, "MULTILINE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
@@ -741,6 +758,7 @@ pub const Tabs = opaque {
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1047,6 +1065,10 @@ pub const Tabs = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     ///
     /// Creates an interface element given its class name and parameters.
     /// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
@@ -1138,6 +1160,7 @@ pub const Tabs = opaque {
         Impl(Self).refresh(self);
     }
 
+
     /// 
     /// COUNT (read-only) (non inheritable): returns the number of tabs.
     /// Same value returned by IupGetChildCount.
@@ -1146,12 +1169,14 @@ pub const Tabs = opaque {
         return interop.getIntAttribute(self, "COUNT", .{});
     }
 
+
     /// 
     /// FGCOLOR: Tabs title color.
     /// Default: the global attribute DLGFGCOLOR.
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
+
 
     /// 
     /// FGCOLOR: Tabs title color.
@@ -1219,6 +1244,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "TIP", .{}, arg);
     }
 
+
     /// 
     /// SHOWCLOSE [Windows and GTK Only] (non inheritable): enables the close
     /// button on each tab.
@@ -1230,6 +1256,7 @@ pub const Tabs = opaque {
     pub fn getShowClose(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOWCLOSE", .{});
     }
+
 
     /// 
     /// SHOWCLOSE [Windows and GTK Only] (non inheritable): enables the close
@@ -1284,6 +1311,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
+
     /// 
     /// CHILDOFFSET: Allow to specify a position offset for the child.
     /// Available for native containers only.
@@ -1297,6 +1325,7 @@ pub const Tabs = opaque {
         var str = interop.getStrAttribute(self, "CHILDOFFSET", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// CHILDOFFSET: Allow to specify a position offset for the child.
@@ -1312,6 +1341,7 @@ pub const Tabs = opaque {
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
+
 
     /// 
     /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
@@ -1331,6 +1361,7 @@ pub const Tabs = opaque {
         if (std.ascii.eqlIgnoreCase("TOP", ret)) return .Top;
         return null;
     }
+
 
     /// 
     /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
@@ -1352,6 +1383,7 @@ pub const Tabs = opaque {
         }
     }
 
+
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
@@ -1365,6 +1397,7 @@ pub const Tabs = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
@@ -1381,6 +1414,7 @@ pub const Tabs = opaque {
         }
     }
 
+
     /// 
     /// SIZE (non inheritable): The default size is the smallest size that fits its
     /// largest child.
@@ -1389,6 +1423,7 @@ pub const Tabs = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE (non inheritable): The default size is the smallest size that fits its
@@ -1444,6 +1479,7 @@ pub const Tabs = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
+
     /// 
     /// TABVISIBLEn (non inheritable): Allows to hide a tab.
     /// n starts at 0.
@@ -1454,6 +1490,7 @@ pub const Tabs = opaque {
     pub fn getTabVisible(self: *Self, index: i32) bool {
         return interop.getBoolAttribute(self, "TABVISIBLE", .{index});
     }
+
 
     /// 
     /// TABVISIBLEn (non inheritable): Allows to hide a tab.
@@ -1474,6 +1511,7 @@ pub const Tabs = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
+
     /// 
     /// BGCOLOR: In Windows and in GTK when in Windows, the tab buttons background
     /// it will be always defined by the system.
@@ -1483,6 +1521,7 @@ pub const Tabs = opaque {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
+
     /// 
     /// BGCOLOR: In Windows and in GTK when in Windows, the tab buttons background
     /// it will be always defined by the system.
@@ -1491,6 +1530,7 @@ pub const Tabs = opaque {
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
+
 
     /// 
     /// VALUE_HANDLE (non inheritable): Changes the current tab by its handle.
@@ -1505,6 +1545,7 @@ pub const Tabs = opaque {
         }
     }
 
+
     /// 
     /// VALUE_HANDLE (non inheritable): Changes the current tab by its handle.
     /// The value passed must be the handle of a child contained in the tabs.
@@ -1518,6 +1559,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "VALUE_HANDLE", .{}, arg);
     }
 
+
     /// 
     /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
     /// If set to NO will compute using only the current tab.
@@ -1527,6 +1569,7 @@ pub const Tabs = opaque {
         return interop.getBoolAttribute(self, "CHILDSIZEALL", .{});
     }
 
+
     /// 
     /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
     /// If set to NO will compute using only the current tab.
@@ -1535,6 +1578,7 @@ pub const Tabs = opaque {
     pub fn setChildSizeAll(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "CHILDSIZEALL", .{}, arg);
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -1549,6 +1593,7 @@ pub const Tabs = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -1600,6 +1645,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
+
     /// 
     /// TABORIENTATION (non inheritable): Indicates the orientation of tab text,
     /// which can be "HORIZONTAL" or "VERTICAL".
@@ -1616,6 +1662,7 @@ pub const Tabs = opaque {
         if (std.ascii.eqlIgnoreCase("VERTICAL", ret)) return .Vertical;
         return null;
     }
+
 
     /// 
     /// TABORIENTATION (non inheritable): Indicates the orientation of tab text,
@@ -1643,6 +1690,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// VALUEPOS (non inheritable): Changes the current tab by its position,
     /// starting at 0.
@@ -1652,6 +1700,7 @@ pub const Tabs = opaque {
     pub fn getValuePos(self: *Self) i32 {
         return interop.getIntAttribute(self, "VALUEPOS", .{});
     }
+
 
     /// 
     /// VALUEPOS (non inheritable): Changes the current tab by its position,
@@ -1663,6 +1712,7 @@ pub const Tabs = opaque {
         interop.setIntAttribute(self, "VALUEPOS", .{}, arg);
     }
 
+
     /// 
     /// VALUE (non inheritable): Changes the current tab by its name.
     /// The value passed must be the name of one of the elements contained in the tabs.
@@ -1672,6 +1722,7 @@ pub const Tabs = opaque {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
 
+
     /// 
     /// VALUE (non inheritable): Changes the current tab by its name.
     /// The value passed must be the name of one of the elements contained in the tabs.
@@ -1680,6 +1731,7 @@ pub const Tabs = opaque {
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1701,6 +1753,7 @@ pub const Tabs = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1724,6 +1777,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// MULTILINE [Windows Only] (non inheritable): Enable multiple lines of tab buttons.
     /// This will hide the tab scroll and fits to make all tab buttons visible.
@@ -1734,6 +1788,7 @@ pub const Tabs = opaque {
     pub fn getMultiline(self: *Self) bool {
         return interop.getBoolAttribute(self, "MULTILINE", .{});
     }
+
 
     /// 
     /// MULTILINE [Windows Only] (non inheritable): Enable multiple lines of tab buttons.
@@ -1746,12 +1801,14 @@ pub const Tabs = opaque {
         interop.setBoolAttribute(self, "MULTILINE", .{}, arg);
     }
 
+
     /// 
     /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
     /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
+
 
     /// 
     /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
@@ -1818,6 +1875,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1838,6 +1896,7 @@ pub const Tabs = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

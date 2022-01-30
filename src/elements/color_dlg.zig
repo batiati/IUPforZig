@@ -142,7 +142,7 @@ pub const ColorDlg = opaque {
     /// (ret: number) [in Lua]
     pub const OnColorUpDateFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
+    pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
     /// 
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
@@ -158,7 +158,7 @@ pub const ColorDlg = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: *iup.Unknow, arg2: i32) anyerror!void;
+    pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -256,7 +256,7 @@ pub const ColorDlg = opaque {
     /// See Also ENTERWINDOW_CB
     pub const OnLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     pub const ZOrder = enum {
         Top,
@@ -647,6 +647,7 @@ pub const ColorDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// TITLE: Dialog title.
         pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
@@ -783,6 +784,7 @@ pub const ColorDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
         /// This dialog will be always in front of the parent dialog.
@@ -813,6 +815,7 @@ pub const ColorDlg = opaque {
             interop.setBoolAttribute(self.ref, "HIDETASKBAR", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VALUE: The color value in RGB coordinates and optionally alpha.
@@ -972,6 +975,7 @@ pub const ColorDlg = opaque {
             return self.*;
         }
 
+
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -1000,6 +1004,7 @@ pub const ColorDlg = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -1383,6 +1388,10 @@ pub const ColorDlg = opaque {
 
     pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
         return interop.fromHandleName(Self, handle_name);
+    }
+
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
     }
 
     ///
@@ -1807,6 +1816,7 @@ pub const ColorDlg = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
+
     /// 
     /// STATUS (read-only): defined to "1" if the user pressed the Ok button, NULL
     /// if pressed the Cancel button.
@@ -1902,11 +1912,13 @@ pub const ColorDlg = opaque {
         interop.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
     }
 
+
     /// 
     /// TITLE: Dialog title.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
+
 
     /// 
     /// TITLE: Dialog title.
@@ -2111,6 +2123,7 @@ pub const ColorDlg = opaque {
         interop.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
     }
 
+
     /// 
     /// VALUE: The color value in RGB coordinates and optionally alpha.
     /// It is used as the initial value and contains the selected value if the user
@@ -2120,6 +2133,7 @@ pub const ColorDlg = opaque {
     pub fn getValue(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
+
 
     /// 
     /// VALUE: The color value in RGB coordinates and optionally alpha.
@@ -2328,6 +2342,7 @@ pub const ColorDlg = opaque {
         interop.setBoolAttribute(self, "SIMULATEMODAL", .{}, arg);
     }
 
+
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
@@ -2348,6 +2363,7 @@ pub const ColorDlg = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -2371,6 +2387,7 @@ pub const ColorDlg = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -2391,6 +2408,7 @@ pub const ColorDlg = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the

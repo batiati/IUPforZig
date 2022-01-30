@@ -65,7 +65,7 @@ pub const ZBox = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: *iup.Unknow) anyerror!void;
+    pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
     /// 
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
@@ -218,6 +218,7 @@ pub const ZBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// The ZBOX relies on the VISIBLE attribute.
         /// If a child that is hidden by the zbox has its VISIBLE attribute changed
@@ -241,6 +242,7 @@ pub const ZBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
         /// If set to NO will compute using only the visible child.
@@ -257,6 +259,7 @@ pub const ZBox = opaque {
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// VALUEPOS (non inheritable): The visible child accessed by its position.
@@ -276,6 +279,7 @@ pub const ZBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// SIZE / RASTERSIZE (non inheritable): The default size is the smallest size
         /// that fits its largest child.
@@ -288,6 +292,7 @@ pub const ZBox = opaque {
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// VALUE_HANDLE (non inheritable): The visible child accessed by its handle.
@@ -312,6 +317,7 @@ pub const ZBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
         pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
@@ -326,6 +332,7 @@ pub const ZBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// VALUE (non inheritable): The visible child accessed by its name.
         /// The value passed must be the name of one of the children contained in the zbox.
@@ -338,6 +345,7 @@ pub const ZBox = opaque {
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
             return self.*;
         }
+
 
         /// 
         /// EXPAND (non inheritable): The default value is "YES".
@@ -369,6 +377,7 @@ pub const ZBox = opaque {
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
             return self.*;
         }
+
 
         /// 
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -409,6 +418,7 @@ pub const ZBox = opaque {
             return self.*;
         }
 
+
         /// 
         /// ALIGNMENT (non inheritable): Defines the alignment of the visible child.
         /// Possible values:
@@ -429,6 +439,7 @@ pub const ZBox = opaque {
             }
             return self.*;
         }
+
 
         /// 
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -458,6 +469,7 @@ pub const ZBox = opaque {
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
             return self.*;
         }
+
 
         /// 
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
@@ -578,6 +590,10 @@ pub const ZBox = opaque {
 
     pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
         return interop.fromHandleName(Self, handle_name);
+    }
+
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
     }
 
     ///
@@ -723,6 +739,7 @@ pub const ZBox = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// The ZBOX relies on the VISIBLE attribute.
     /// If a child that is hidden by the zbox has its VISIBLE attribute changed
@@ -737,6 +754,7 @@ pub const ZBox = opaque {
     pub fn getVisible(self: *Self) bool {
         return interop.getBoolAttribute(self, "VISIBLE", .{});
     }
+
 
     /// 
     /// The ZBOX relies on the VISIBLE attribute.
@@ -766,6 +784,7 @@ pub const ZBox = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
+
     /// 
     /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
     /// If set to NO will compute using only the visible child.
@@ -774,6 +793,7 @@ pub const ZBox = opaque {
     pub fn getChildSizeAll(self: *Self) bool {
         return interop.getBoolAttribute(self, "CHILDSIZEALL", .{});
     }
+
 
     /// 
     /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
@@ -792,6 +812,7 @@ pub const ZBox = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
+
     /// 
     /// VALUEPOS (non inheritable): The visible child accessed by its position.
     /// The value passed must be the index of a child contained in the zbox,
@@ -801,6 +822,7 @@ pub const ZBox = opaque {
     pub fn getValuePos(self: *Self) i32 {
         return interop.getIntAttribute(self, "VALUEPOS", .{});
     }
+
 
     /// 
     /// VALUEPOS (non inheritable): The visible child accessed by its position.
@@ -825,6 +847,7 @@ pub const ZBox = opaque {
         interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
+
     /// 
     /// SIZE / RASTERSIZE (non inheritable): The default size is the smallest size
     /// that fits its largest child.
@@ -834,6 +857,7 @@ pub const ZBox = opaque {
         var str = interop.getStrAttribute(self, "SIZE", .{});
         return Size.parse(str);
     }
+
 
     /// 
     /// SIZE / RASTERSIZE (non inheritable): The default size is the smallest size
@@ -845,6 +869,7 @@ pub const ZBox = opaque {
         var value = Size.intIntToString(&buffer, width, height);
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
+
 
     /// 
     /// VALUE_HANDLE (non inheritable): The visible child accessed by its handle.
@@ -858,6 +883,7 @@ pub const ZBox = opaque {
             return null;
         }
     }
+
 
     /// 
     /// VALUE_HANDLE (non inheritable): The visible child accessed by its handle.
@@ -880,11 +906,13 @@ pub const ZBox = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
+
     /// 
     /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
+
 
     /// 
     /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
@@ -900,6 +928,7 @@ pub const ZBox = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
+
     /// 
     /// VALUE (non inheritable): The visible child accessed by its name.
     /// The value passed must be the name of one of the children contained in the zbox.
@@ -911,6 +940,7 @@ pub const ZBox = opaque {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
 
+
     /// 
     /// VALUE (non inheritable): The visible child accessed by its name.
     /// The value passed must be the name of one of the children contained in the zbox.
@@ -921,6 +951,7 @@ pub const ZBox = opaque {
     pub fn setValue(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
+
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
@@ -935,6 +966,7 @@ pub const ZBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// EXPAND (non inheritable): The default value is "YES".
@@ -970,6 +1002,7 @@ pub const ZBox = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
+
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
@@ -983,6 +1016,7 @@ pub const ZBox = opaque {
         if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
         return null;
     }
+
 
     /// 
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
@@ -1006,6 +1040,7 @@ pub const ZBox = opaque {
     pub fn setTheme(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
+
 
     /// 
     /// WID (read-only): returns -1 if mapped.
@@ -1040,6 +1075,7 @@ pub const ZBox = opaque {
         return Size.parse(str);
     }
 
+
     /// 
     /// ALIGNMENT (non inheritable): Defines the alignment of the visible child.
     /// Possible values:
@@ -1057,6 +1093,7 @@ pub const ZBox = opaque {
         if (std.ascii.eqlIgnoreCase("ACENTER", ret)) return .ACenter;
         return null;
     }
+
 
     /// 
     /// ALIGNMENT (non inheritable): Defines the alignment of the visible child.
@@ -1076,6 +1113,7 @@ pub const ZBox = opaque {
             interop.clearAttribute(self, "ALIGNMENT", .{});
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1097,6 +1135,7 @@ pub const ZBox = opaque {
             return null;
         }
     }
+
 
     /// 
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
@@ -1120,6 +1159,7 @@ pub const ZBox = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
+
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
@@ -1140,6 +1180,7 @@ pub const ZBox = opaque {
     pub fn getTabTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
+
 
     /// 
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
