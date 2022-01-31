@@ -862,9 +862,13 @@ pub const Tree = opaque {
         /// 
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
         /// TOPITEM
-        pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
+        pub fn setSpacing(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "SPACING", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "SPACING", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "SPACING", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -892,9 +896,13 @@ pub const Tree = opaque {
             return self.*;
         }
 
-        pub fn setCSpacing(self: *Initializer, arg: i32) Initializer {
+        pub fn setCSpacing(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CSPACING", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "CSPACING", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "CSPACING", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -2373,8 +2381,12 @@ pub const Tree = opaque {
     /// 
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
-    pub fn setSpacing(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "SPACING", .{}, arg);
+    pub fn setSpacing(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "SPACING", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "SPACING", .{}, arg.?);
+        }
     }
 
 
@@ -2436,8 +2448,12 @@ pub const Tree = opaque {
         return interop.getIntAttribute(self, "CSPACING", .{});
     }
 
-    pub fn setCSpacing(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CSPACING", .{}, arg);
+    pub fn setCSpacing(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "CSPACING", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "CSPACING", .{}, arg.?);
+        }
     }
 
     pub fn getTitleFont(self: *Self, index: i32) [:0]const u8 {

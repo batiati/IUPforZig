@@ -581,9 +581,13 @@ pub const Multiline = opaque {
             return self.*;
         }
 
-        pub fn setVisibleLines(self: *Initializer, arg: i32) Initializer {
+        pub fn setVisibleLines(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "VISIBLELINES", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "VISIBLELINES", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "VISIBLELINES", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -745,9 +749,13 @@ pub const Multiline = opaque {
             return self.*;
         }
 
-        pub fn setVisibleColumns(self: *Initializer, arg: i32) Initializer {
+        pub fn setVisibleColumns(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "VISIBLECOLUMNS", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -1793,8 +1801,12 @@ pub const Multiline = opaque {
         return interop.getIntAttribute(self, "VISIBLELINES", .{});
     }
 
-    pub fn setVisibleLines(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "VISIBLELINES", .{}, arg);
+    pub fn setVisibleLines(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "VISIBLELINES", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "VISIBLELINES", .{}, arg.?);
+        }
     }
 
     pub fn getSize(self: *Self) Size {
@@ -2017,8 +2029,12 @@ pub const Multiline = opaque {
         return interop.getIntAttribute(self, "VISIBLECOLUMNS", .{});
     }
 
-    pub fn setVisibleColumns(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "VISIBLECOLUMNS", .{}, arg);
+    pub fn setVisibleColumns(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "VISIBLECOLUMNS", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "VISIBLECOLUMNS", .{}, arg.?);
+        }
     }
 
     pub fn getMaskInt(self: *Self) iup.Range {

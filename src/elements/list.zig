@@ -612,9 +612,13 @@ pub const List = opaque {
         /// VISIBLELINES: When DROPDOWN=NO defines the number of visible lines for the
         /// Natural Size, this means that will act also as minimum number of visible lines.
         /// (since 3.0)
-        pub fn setVisibleLines(self: *Initializer, arg: i32) Initializer {
+        pub fn setVisibleLines(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "VISIBLELINES", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "VISIBLELINES", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "VISIBLELINES", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -696,9 +700,13 @@ pub const List = opaque {
         /// If value is NULL or "ALL" removes all the items.
         /// Ignored if set before map.
         /// (since 3.0)
-        pub fn removeItem(self: *Initializer, arg: i32) Initializer {
+        pub fn removeItem(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "REMOVEITEM", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "REMOVEITEM", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "REMOVEITEM", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -875,9 +883,13 @@ pub const List = opaque {
         /// In Windows, the text is aligned at the top left of the item always.
         /// Valid only when DROPDOWN=NO.
         /// (since 3.0)
-        pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
+        pub fn setSpacing(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "SPACING", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "SPACING", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "SPACING", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -919,9 +931,13 @@ pub const List = opaque {
         /// SIZE attribute.
         /// It will actually set the SPACING attribute.
         /// (since 3.29)
-        pub fn setCSpacing(self: *Initializer, arg: i32) Initializer {
+        pub fn setCSpacing(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CSPACING", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "CSPACING", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "CSPACING", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -939,9 +955,13 @@ pub const List = opaque {
         /// strings will fit better without the need of extra columns.
         /// Set this attribute to speed Natural Size computation for very large lists.
         /// (since 3.0)
-        pub fn setVisibleColumns(self: *Initializer, arg: i32) Initializer {
+        pub fn setVisibleColumns(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "VISIBLECOLUMNS", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -2055,8 +2075,12 @@ pub const List = opaque {
     /// VISIBLELINES: When DROPDOWN=NO defines the number of visible lines for the
     /// Natural Size, this means that will act also as minimum number of visible lines.
     /// (since 3.0)
-    pub fn setVisibleLines(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "VISIBLELINES", .{}, arg);
+    pub fn setVisibleLines(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "VISIBLELINES", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "VISIBLELINES", .{}, arg.?);
+        }
     }
 
 
@@ -2186,8 +2210,12 @@ pub const List = opaque {
     /// If value is NULL or "ALL" removes all the items.
     /// Ignored if set before map.
     /// (since 3.0)
-    pub fn removeItem(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "REMOVEITEM", .{}, arg);
+    pub fn removeItem(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "REMOVEITEM", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "REMOVEITEM", .{}, arg.?);
+        }
     }
 
 
@@ -2426,8 +2454,12 @@ pub const List = opaque {
     /// In Windows, the text is aligned at the top left of the item always.
     /// Valid only when DROPDOWN=NO.
     /// (since 3.0)
-    pub fn setSpacing(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "SPACING", .{}, arg);
+    pub fn setSpacing(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "SPACING", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "SPACING", .{}, arg.?);
+        }
     }
 
     pub fn insertItem(self: *Self, index: i32, arg: [:0]const u8) void {
@@ -2485,8 +2517,12 @@ pub const List = opaque {
     /// SIZE attribute.
     /// It will actually set the SPACING attribute.
     /// (since 3.29)
-    pub fn setCSpacing(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CSPACING", .{}, arg);
+    pub fn setCSpacing(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "CSPACING", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "CSPACING", .{}, arg.?);
+        }
     }
 
     pub fn getFontFace(self: *Self) [:0]const u8 {
@@ -2517,8 +2553,12 @@ pub const List = opaque {
     /// strings will fit better without the need of extra columns.
     /// Set this attribute to speed Natural Size computation for very large lists.
     /// (since 3.0)
-    pub fn setVisibleColumns(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "VISIBLECOLUMNS", .{}, arg);
+    pub fn setVisibleColumns(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "VISIBLECOLUMNS", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "VISIBLECOLUMNS", .{}, arg.?);
+        }
     }
 
     pub fn getMaskInt(self: *Self) iup.Range {

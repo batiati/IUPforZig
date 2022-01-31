@@ -67,6 +67,7 @@ pub fn build(b: *std.build.Builder) void {
     addExample(b, "tempConv", "2. Temperature Converter", "src/temp_conv.zig");
     addExample(b, "bookFlight", "3. Flight Booker", "src/book_flight.zig");
     addExample(b, "timer", "4. Timer", "src/timer.zig");
+    addExample(b, "crud", "5. Crud", "src/crud.zig");
 }
 
 fn addExample(b: *Builder, comptime name: []const u8, comptime description: []const u8, comptime file: []const u8) void {

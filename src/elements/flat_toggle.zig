@@ -1165,9 +1165,13 @@ pub const FlatToggle = opaque {
         /// The natural size will be a combination of the size of the image and the
         /// title, if any, plus PADDING and SPACING (if both image and title are
         /// present), and the check box if visible.
-        pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
+        pub fn setSpacing(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "SPACING", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "SPACING", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "SPACING", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -1303,9 +1307,13 @@ pub const FlatToggle = opaque {
         /// SIZE attribute.
         /// It will actually set the SPACING attribute.
         /// (since 3.29)
-        pub fn setCSpacing(self: *Initializer, arg: i32) Initializer {
+        pub fn setCSpacing(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CSPACING", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "CSPACING", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "CSPACING", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -3410,8 +3418,12 @@ pub const FlatToggle = opaque {
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are
     /// present), and the check box if visible.
-    pub fn setSpacing(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "SPACING", .{}, arg);
+    pub fn setSpacing(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "SPACING", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "SPACING", .{}, arg.?);
+        }
     }
 
 
@@ -3605,8 +3617,12 @@ pub const FlatToggle = opaque {
     /// SIZE attribute.
     /// It will actually set the SPACING attribute.
     /// (since 3.29)
-    pub fn setCSpacing(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CSPACING", .{}, arg);
+    pub fn setCSpacing(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "CSPACING", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "CSPACING", .{}, arg.?);
+        }
     }
 
     pub fn getDrawSize(self: *Self) Size {

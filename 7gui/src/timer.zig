@@ -40,7 +40,7 @@ const Timer = struct {
 
         try self.createDialog();
         try self.refreshDuration();
-        
+
         return self;
     }
 
@@ -100,7 +100,6 @@ const Timer = struct {
                             .setActionCallback(onTimer)
                             .setTime(100)
                             .setRun(true),
-                            
                     },
                 ),
             },
@@ -118,19 +117,18 @@ const Timer = struct {
     fn onReset(button: *iup.Button) !void {
         var dialog = button.getDialog() orelse unreachable;
         var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
-        
-        self.resetTimer();      
+
+        self.resetTimer();
     }
 
     fn onTimer(timer: *iup.Timer) !void {
-
         var dialog = timer.getDialog() orelse unreachable;
         var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
 
         const elapsed_ms = std.time.milliTimestamp() - self.start_timestamp;
         const elapsed_s = @intToFloat(f64, elapsed_ms) / @as(f64, std.time.ms_per_s);
 
-        self.progress.setValue(elapsed_s);   
+        self.progress.setValue(elapsed_s);
     }
 
     fn resetTimer(self: *Self) void {

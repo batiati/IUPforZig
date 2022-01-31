@@ -1064,9 +1064,13 @@ pub const DropButton = opaque {
         /// The natural size will be a combination of the size of the image and the
         /// title, if any, plus PADDING and SPACING (if both image and title are
         /// present), and plus the horizontal space occupied by the arrow.
-        pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
+        pub fn setSpacing(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "SPACING", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "SPACING", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "SPACING", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -1228,9 +1232,13 @@ pub const DropButton = opaque {
         /// SIZE attribute.
         /// It will actually set the SPACING attribute.
         /// (since 3.29)
-        pub fn setCSpacing(self: *Initializer, arg: i32) Initializer {
+        pub fn setCSpacing(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CSPACING", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "CSPACING", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "CSPACING", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -1300,9 +1308,13 @@ pub const DropButton = opaque {
         /// It uses a wider character size then the one used for the SIZE attribute so
         /// strings will fit better without the need of extra columns.
         /// Padding will be around the visible columns.
-        pub fn setVisibleColumns(self: *Initializer, arg: i32) Initializer {
+        pub fn setVisibleColumns(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "VISIBLECOLUMNS", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -3192,8 +3204,12 @@ pub const DropButton = opaque {
     /// The natural size will be a combination of the size of the image and the
     /// title, if any, plus PADDING and SPACING (if both image and title are
     /// present), and plus the horizontal space occupied by the arrow.
-    pub fn setSpacing(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "SPACING", .{}, arg);
+    pub fn setSpacing(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "SPACING", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "SPACING", .{}, arg.?);
+        }
     }
 
 
@@ -3424,8 +3440,12 @@ pub const DropButton = opaque {
     /// SIZE attribute.
     /// It will actually set the SPACING attribute.
     /// (since 3.29)
-    pub fn setCSpacing(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CSPACING", .{}, arg);
+    pub fn setCSpacing(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "CSPACING", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "CSPACING", .{}, arg.?);
+        }
     }
 
     pub fn getDrawSize(self: *Self) Size {
@@ -3542,8 +3562,12 @@ pub const DropButton = opaque {
     /// It uses a wider character size then the one used for the SIZE attribute so
     /// strings will fit better without the need of extra columns.
     /// Padding will be around the visible columns.
-    pub fn setVisibleColumns(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "VISIBLECOLUMNS", .{}, arg);
+    pub fn setVisibleColumns(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "VISIBLECOLUMNS", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "VISIBLECOLUMNS", .{}, arg.?);
+        }
     }
 
 

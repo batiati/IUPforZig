@@ -661,9 +661,13 @@ pub const Text = opaque {
         /// visible lines.
         /// As for SIZE you can set to NULL after map to use it as an initial value.
         /// Default: 1 (since 3.0)
-        pub fn setVisibleLines(self: *Initializer, arg: i32) Initializer {
+        pub fn setVisibleLines(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "VISIBLELINES", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "VISIBLELINES", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "VISIBLELINES", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -902,9 +906,13 @@ pub const Text = opaque {
         /// strings will fit better without the need of extra columns.
         /// As for SIZE you can set to NULL after map to use it as an initial value.
         /// Default: 5 (since 3.0)
-        pub fn setVisibleColumns(self: *Initializer, arg: i32) Initializer {
+        pub fn setVisibleColumns(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "VISIBLECOLUMNS", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -2146,8 +2154,12 @@ pub const Text = opaque {
     /// visible lines.
     /// As for SIZE you can set to NULL after map to use it as an initial value.
     /// Default: 1 (since 3.0)
-    pub fn setVisibleLines(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "VISIBLELINES", .{}, arg);
+    pub fn setVisibleLines(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "VISIBLELINES", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "VISIBLELINES", .{}, arg.?);
+        }
     }
 
 
@@ -2476,8 +2488,12 @@ pub const Text = opaque {
     /// strings will fit better without the need of extra columns.
     /// As for SIZE you can set to NULL after map to use it as an initial value.
     /// Default: 5 (since 3.0)
-    pub fn setVisibleColumns(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "VISIBLECOLUMNS", .{}, arg);
+    pub fn setVisibleColumns(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "VISIBLECOLUMNS", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "VISIBLECOLUMNS", .{}, arg.?);
+        }
     }
 
     pub fn getMaskInt(self: *Self) iup.Range {

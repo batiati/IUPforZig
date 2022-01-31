@@ -822,9 +822,13 @@ pub const FlatList = opaque {
         /// 
         /// VISIBLELINES: Defines the number of visible lines for the Natural Size,
         /// this means that will act also as minimum number of visible lines.
-        pub fn setVisibleLines(self: *Initializer, arg: i32) Initializer {
+        pub fn setVisibleLines(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "VISIBLELINES", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "VISIBLELINES", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "VISIBLELINES", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -960,9 +964,13 @@ pub const FlatList = opaque {
         /// value starts at 1.
         /// If value is NULL or "ALL" removes all the items.
         /// Different from IupList, can be set before map.
-        pub fn removeItem(self: *Initializer, arg: i32) Initializer {
+        pub fn removeItem(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "REMOVEITEM", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "REMOVEITEM", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "REMOVEITEM", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -1162,9 +1170,13 @@ pub const FlatList = opaque {
         /// Different from IupList, it does not affects the internal margin.
         /// Not drawn with any item background color.
         /// Default: 0
-        pub fn setSpacing(self: *Initializer, arg: i32) Initializer {
+        pub fn setSpacing(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "SPACING", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "SPACING", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "SPACING", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -1248,9 +1260,13 @@ pub const FlatList = opaque {
         /// SIZE attribute.
         /// It will actually set the SPACING attribute.
         /// (since 3.29)
-        pub fn setCSpacing(self: *Initializer, arg: i32) Initializer {
+        pub fn setCSpacing(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "CSPACING", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "CSPACING", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "CSPACING", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -1295,9 +1311,13 @@ pub const FlatList = opaque {
         /// It uses a wider character size then the one used for the SIZE attribute so
         /// strings will fit better without the need of extra columns.
         /// Set this attribute to speed Natural Size computation for very large lists.
-        pub fn setVisibleColumns(self: *Initializer, arg: i32) Initializer {
+        pub fn setVisibleColumns(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "VISIBLECOLUMNS", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -2832,8 +2852,12 @@ pub const FlatList = opaque {
     /// 
     /// VISIBLELINES: Defines the number of visible lines for the Natural Size,
     /// this means that will act also as minimum number of visible lines.
-    pub fn setVisibleLines(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "VISIBLELINES", .{}, arg);
+    pub fn setVisibleLines(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "VISIBLELINES", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "VISIBLELINES", .{}, arg.?);
+        }
     }
 
     pub fn getDrawFont(self: *Self) [:0]const u8 {
@@ -3037,8 +3061,12 @@ pub const FlatList = opaque {
     /// value starts at 1.
     /// If value is NULL or "ALL" removes all the items.
     /// Different from IupList, can be set before map.
-    pub fn removeItem(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "REMOVEITEM", .{}, arg);
+    pub fn removeItem(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "REMOVEITEM", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "REMOVEITEM", .{}, arg.?);
+        }
     }
 
     pub fn getDrawMakeInactive(self: *Self) bool {
@@ -3308,8 +3336,12 @@ pub const FlatList = opaque {
     /// Different from IupList, it does not affects the internal margin.
     /// Not drawn with any item background color.
     /// Default: 0
-    pub fn setSpacing(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "SPACING", .{}, arg);
+    pub fn setSpacing(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "SPACING", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "SPACING", .{}, arg.?);
+        }
     }
 
     pub fn getSbImageRightPress(self: *Self) ?iup.Element {
@@ -3433,8 +3465,12 @@ pub const FlatList = opaque {
     /// SIZE attribute.
     /// It will actually set the SPACING attribute.
     /// (since 3.29)
-    pub fn setCSpacing(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "CSPACING", .{}, arg);
+    pub fn setCSpacing(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "CSPACING", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "CSPACING", .{}, arg.?);
+        }
     }
 
     pub fn getDrawSize(self: *Self) Size {
@@ -3508,8 +3544,12 @@ pub const FlatList = opaque {
     /// It uses a wider character size then the one used for the SIZE attribute so
     /// strings will fit better without the need of extra columns.
     /// Set this attribute to speed Natural Size computation for very large lists.
-    pub fn setVisibleColumns(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "VISIBLECOLUMNS", .{}, arg);
+    pub fn setVisibleColumns(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "VISIBLECOLUMNS", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "VISIBLECOLUMNS", .{}, arg.?);
+        }
     }
 
     pub fn getSbImageTopHighlight(self: *Self) ?iup.Element {

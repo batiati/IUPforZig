@@ -373,9 +373,13 @@ pub const VBox = opaque {
         /// When consulted behaves as the standard SIZE/RASTERSIZE attributes.
         /// The standard format "wxh" can also be used, but width will be ignored
         /// (since 3.3).
-        pub fn setSize(self: *Initializer, arg: i32) Initializer {
+        pub fn setSize(self: *Initializer, arg: ?i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setIntAttribute(self.ref, "SIZE", .{}, arg);
+            if (arg == null) {
+                interop.setStrAttribute(self.ref, "SIZE", .{}, null);
+            } else {
+                interop.setIntAttribute(self.ref, "SIZE", .{}, arg.?);
+            }
             return self.*;
         }
 
@@ -1086,8 +1090,12 @@ pub const VBox = opaque {
     /// When consulted behaves as the standard SIZE/RASTERSIZE attributes.
     /// The standard format "wxh" can also be used, but width will be ignored
     /// (since 3.3).
-    pub fn setSize(self: *Self, arg: i32) void {
-        interop.setIntAttribute(self, "SIZE", .{}, arg);
+    pub fn setSize(self: *Self, arg: ?i32) void {
+        if (arg == null) {
+            interop.setStrAttribute(self, "SIZE", .{}, null);
+        } else {
+            interop.setIntAttribute(self, "SIZE", .{}, arg.?);
+        }
     }
 
     pub fn getNormalizerGroup(self: *Self) [:0]const u8 {
