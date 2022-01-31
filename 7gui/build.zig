@@ -20,14 +20,14 @@ fn addIupReference(step: *std.build.LibExeObjStep) !void {
         // #9002 Find native include and libraries is broken with msvc ABI
         // https://github.com/ziglang/zig/issues/9002
 
-        step.addLibPath("lib/uwp");
-        step.addLibPath("lib/um");
-        step.addLibPath("lib/ucrt");
+        step.addLibPath("../lib/uwp");
+        step.addLibPath("../lib/um");
+        step.addLibPath("../lib/ucrt");
 
         step.addLibPath("C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.16.27023\\lib\\x64");
 
         // Link againts .lib files
-        step.addLibPath("lib/win64");
+        step.addLibPath("../lib/win64");
 
         step.linkSystemLibrary("iupfiledlg");
         step.linkSystemLibrary("iupole");
