@@ -22,11 +22,13 @@ pub fn main() anyerror!void {
 
 // Data model
 const Person = struct {
+    id: i32,
     name: [:0]const u8,
     surname: [:0]const u8,
 
-    pub fn copy(allocator: Allocator, name: []const u8, surname: []const u8) !Person {
+    pub fn copy(allocator: Allocator, id: i32, name: []const u8, surname: []const u8) !Person {
         return Person{
+            .id = id,
             .name = try allocator.dupeZ(u8, name),
             .surname = try allocator.dupeZ(u8, surname),
         };
@@ -45,28 +47,22 @@ const Person = struct {
 /// A simple datasource capable of Load/Add/Update/Delete/Filter
 const DataSource = struct {
     const Self = @This();
-    const PersonIndex = struct {
-        index: usize,
-        person: Person,
-    };
+    const PersonList = std.AutoArrayHashMap(i32, Person);
 
-    list: std.ArrayList(Person),
-    filtred_entries: ?std.MultiArrayList(PersonIndex),
+    list: PersonList,
+    sequence: i32 = 0,
 
     pub fn init(allocator: Allocator) !Self {
         var self = Self{
-            .list = std.ArrayList(Person).init(allocator),
-            .filtred_entries = null,
+            .list = PersonList.init(allocator),
         };
 
         return self;
     }
 
     pub fn deinit(self: *Self) void {
-        self.clearFilter();
-
         const allocator = self.list.allocator;
-        for (self.list.items) |*person| {
+        for (self.list.values()) |*person| {
             person.free(allocator);
         }
 
@@ -74,90 +70,66 @@ const DataSource = struct {
     }
 
     pub fn loadInitialData(self: *Self) !void {
-        self.clearFilter();
+        self.sequence = 0;
         self.list.clearAndFree();
 
-        const allocator = self.list.allocator;
-        try self.list.append(try Person.copy(allocator, "Hans", "Emil"));
-        try self.list.append(try Person.copy(allocator, "Max", "Mustermann"));
-        try self.list.append(try Person.copy(allocator, "Roman", "Tisch"));
+        try self.create("Hans", "Emil");
+        try self.create("Max", "Mustermann");
+        try self.create("Roman", "Tisch");
     }
 
-    pub fn filter(self: *Self, filter_text: ?[:0]const u8) !void {
-        self.clearFilter();
-        if (filter_text == null or filter_text.?.len == 0) return;
-
-        const allocator = self.list.allocator;
-        var current_filter = std.MultiArrayList(PersonIndex){};
-
-        for (self.list.items) |person, i| {
-            if (std.ascii.startsWithIgnoreCase(person.name, filter_text.?) or std.ascii.startsWithIgnoreCase(person.surname, filter_text.?)) {
-                try current_filter.append(allocator, .{ .index = i, .person = person });
-            }
-        }
-
-        self.filtred_entries = current_filter;
-    }
-
-    pub fn items(self: *Self) []Person {
-        if (self.filtred_entries) |current_filter| {
-            return current_filter.items(.person);
-        } else {
-            return self.list.items;
-        }
-    }
-
-    pub fn get(self: *Self, element: usize) ?Person {
-        var index = self.getIndexFromFilter(element);
-        if (index >= self.list.items.len) return null;
-
-        return self.list.items[index];
+    pub fn get(self: *Self, id: i32) ?Person {
+        return self.list.get(id);
     }
 
     pub fn create(self: *Self, name: [:0]const u8, surname: [:0]const u8) !void {
         const allocator = self.list.allocator;
-        var person = try Person.copy(allocator, name, surname);
-        try self.list.append(person);
+
+        self.sequence += 1;
+        var person = try Person.copy(allocator, self.sequence, name, surname);
+        try self.list.put(person.id, person);
     }
 
-    pub fn update(self: *Self, element: usize, name: [:0]const u8, surname: [:0]const u8) !void {
-        var index = self.getIndexFromFilter(element);
-        if (index >= self.list.items.len) return;
+    pub fn update(self: *Self, id: i32, name: [:0]const u8, surname: [:0]const u8) !void {
+        var person = self.list.getPtr(id) orelse return;
 
         const allocator = self.list.allocator;
-        var person = &self.list.items[index];
         person.free(allocator);
 
-        person.* = try Person.copy(allocator, name, surname);
+        person.* = try Person.copy(allocator, id, name, surname);
     }
 
-    pub fn delete(self: *Self, element: usize) !void {
-        var index = self.getIndexFromFilter(element);
-        if (index >= self.list.items.len) return;
+    pub fn delete(self: *Self, id: i32) void {
+        var kv = self.list.fetchSwapRemove(id) orelse return;
 
         const allocator = self.list.allocator;
-        var person = self.list.swapRemove(index);
-        person.free(allocator);
-
-        self.clearFilter();
+        kv.value.free(allocator);
     }
 
-    fn getIndexFromFilter(self: *Self, index: usize) usize {
-        if (self.filtred_entries) |current_filter| {
-            var indexes = current_filter.items(.index);
-            return indexes[index];
-        } else {
-            return index;
-        }
-    }
+    pub const FilterIterator = struct {
+        index: usize = 0,
+        slice: []Person,
+        filter_text: ?[:0]const u8,
 
-    fn clearFilter(self: *Self) void {
-        if (self.filtred_entries) |*current_filter| {
-            const allocator = self.list.allocator;
-            current_filter.deinit(allocator);
+        pub fn next(self: *@This()) ?Person {
+            if (self.index < self.slice.len) {
+                for (self.slice[self.index..]) |person| {
+                    self.index += 1;
+                    if (self.filter_text == null or std.ascii.startsWithIgnoreCase(person.name, self.filter_text.?) or std.ascii.startsWithIgnoreCase(person.surname, self.filter_text.?)) {
+                        return person;
+                    }
+                }
+            }
 
-            self.filtred_entries = null;
+            return null;
         }
+    };
+
+    pub fn filter(self: *Self, filter_text: ?[:0]const u8) FilterIterator {
+        return .{
+            .slice = self.list.values(),
+            .filter_text = filter_text,
+        };
     }
 };
 
@@ -166,7 +138,7 @@ const Crud = struct {
 
     allocator: Allocator,
     data_source: DataSource,
-    current_selection: ?usize = null,
+    current_selection: ?i32 = null,
     dialog: *iup.Dialog = undefined,
     filter_text: *iup.Text = undefined,
     name_text: *iup.Text = undefined,
@@ -205,7 +177,7 @@ const Crud = struct {
             .setChildren(
             .{
                 iup.VBox.init()
-                    .setExpandChildren(true)
+                    .setExpand(.Yes)
                     .setMargin(10, 10)
                     .setGap(10)
                     .setChildren(
@@ -233,18 +205,21 @@ const Crud = struct {
                                     .setExpand(.Yes),
                                 iup.GridBox.init()
                                     .setGapLin(20)
-                                    .setNormalizeSize(.Horizontal)
                                     .setOrientation(.Horizontal)
                                     .setNumDiv(2)
                                     .setChildren(
                                     .{
                                         iup.Label.init()
+                                            .setSize(40, null)
                                             .setTitle("Name:"),
                                         iup.Text.init()
+                                            .setExpand(.Horizontal)
                                             .capture(&self.name_text),
                                         iup.Label.init()
+                                            .setSize(40, null)
                                             .setTitle("Surname:"),
                                         iup.Text.init()
+                                            .setExpand(.Horizontal)
                                             .capture(&self.surname_text),
                                     },
                                 ),
@@ -286,8 +261,8 @@ const Crud = struct {
         var dialog = list.getDialog() orelse unreachable;
         var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
 
-        const index = @intCast(usize, row - 1);
-        try self.edit(index);
+        const id = self.list_view.getIntId("id", row);
+        try self.edit(id);
     }
 
     fn onCreate(button: *iup.Button) !void {
@@ -311,24 +286,24 @@ const Crud = struct {
         try self.delete();
     }
 
-    fn edit(self: *Self, index: usize) !void {
-        if (self.data_source.get(index)) |person| {
-            self.current_selection = index;
+    fn edit(self: *Self, id: i32) !void {
+        if (self.data_source.get(id)) |person| {
+            self.current_selection = id;
             self.name_text.setValue(person.name);
             self.surname_text.setValue(person.surname);
         }
     }
 
     fn update(self: *Self) !void {
-        if (self.current_selection) |index| {
-            try self.data_source.update(index, self.name_text.getValue(), self.surname_text.getValue());
+        if (self.current_selection) |id| {
+            try self.data_source.update(id, self.name_text.getValue(), self.surname_text.getValue());
             try self.refreshList();
         }
     }
 
     fn delete(self: *Self) !void {
-        if (self.current_selection) |index| {
-            try self.data_source.delete(index);
+        if (self.current_selection) |id| {
+            self.data_source.delete(id);
             try self.refreshList();
         }
     }
@@ -343,12 +318,14 @@ const Crud = struct {
         self.name_text.setValue("");
         self.surname_text.setValue("");
 
-        try self.data_source.filter(self.filter_text.getValue());
-
-        for (self.data_source.items()) |person| {
+        var iterator = self.data_source.filter(self.filter_text.getValue());
+        while (iterator.next()) |person| {
             var full_name = try person.fullNameOwned(self.allocator);
             defer self.allocator.free(full_name);
+
             self.list_view.appendItem(full_name);
+            const row = self.list_view.getCount();
+            self.list_view.setIntId("id", row, person.id);
         }
     }
 };
