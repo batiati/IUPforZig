@@ -87,7 +87,7 @@ const TempConv = struct {
             return;
         };
 
-        const fahrenheit_value = (celsius_value * (@as(f32, 9) / @as(f32, 5))) + @as(f32, 32);
+        const fahrenheit_value = (celsius_value * (9.0 / 5.0)) + 32.0;
         var fahrenheit_str = try std.fmt.allocPrintZ(self.allocator, "{d:.2}", .{fahrenheit_value});
         defer self.allocator.free(fahrenheit_str);
 
@@ -102,7 +102,7 @@ const TempConv = struct {
             return;
         };
 
-        const celsius_value = (fahrenheit_value - @as(f32, 32)) * (@as(f32, 5) / @as(f32, 9));
+        const celsius_value = (fahrenheit_value - 32.0) * (5.0 / 9.0);
         var celsius_str = try std.fmt.allocPrintZ(self.allocator, "{d:.2}", .{celsius_value});
         defer self.allocator.free(celsius_str);
 
