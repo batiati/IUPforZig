@@ -134,15 +134,7 @@ const BookFlight = struct {
                 try std.fmt.allocPrintZ(self.allocator, "You have booked a return flight from {s} to {s}", .{ self.initial_date.getValue(), self.final_date.getValue() });
             defer self.allocator.free(message);
 
-            var dialog = try iup.MessageDlg.init()
-                .setTitle(self.dialog.getTitle())
-                .setParentDialog(self.dialog)
-                .setValue(message)
-                .setDialogType(.Information)
-                .unwrap();
-            defer dialog.deinit();
-
-            _ = try dialog.popup(.CenterParent, .CenterParent);
+            try iup.MessageDlg.alert(self.dialog, self.dialog.getTitle(), message);
         }
     }
 
