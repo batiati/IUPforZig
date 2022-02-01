@@ -177,18 +177,14 @@ const Crud = struct {
             .setChildren(
             .{
                 iup.VBox.init()
-                    .setExpand(.Yes)
                     .setMargin(10, 10)
-                    .setGap(10)
                     .setChildren(
                     .{
-                        iup.GridBox.init()
-                            .setNormalizeSize(.Horizontal)
-                            .setOrientation(.Horizontal)
-                            .setNumDiv(2)
+                        iup.HBox.init()
                             .setChildren(
                             .{
                                 iup.HBox.init()
+                                    .setGap(10)
                                     .setChildren(
                                     .{
                                         iup.Label.init()
@@ -199,6 +195,12 @@ const Crud = struct {
                                     },
                                 ),
                                 iup.Fill.init(),
+                            },
+                        ),
+                        iup.HBox.init()
+                            .setAlignment(.ATop)
+                            .setChildren(
+                            .{
                                 iup.List.init()
                                     .capture(&self.list_view)
                                     .setActionCallback(onSelected)
@@ -226,7 +228,7 @@ const Crud = struct {
                             },
                         ),
                         iup.HBox.init()
-                            .setAlignment(.ACenter)
+                            .setGap(10)
                             .setChildren(
                             .{
                                 iup.Button.init()
