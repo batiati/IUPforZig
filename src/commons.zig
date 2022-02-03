@@ -542,6 +542,26 @@ pub const Rgb = struct {
     pub const FG_COLOR = Rgb{ .alias = "FGCOLOR", .r = 0, .g = 0, .b = 0 };
 };
 
+pub const Rect = struct {
+    x1: i32,
+    y1: i32,
+    x2: i32,
+    y2: i32,
+};
+
+pub const DrawSize = struct {
+    width: i32,
+    height: i32,
+};
+
+pub const mouse = struct {
+    pub const BUTTON_1 = '1';
+    pub const BUTTON_2 = '2';
+    pub const BUTTON_3 = '3';
+    pub const BUTTON_4 = '4';
+    pub const BUTTON_5 = '5';
+};
+
 pub const keys = struct {
     pub const PAUSE = 0xFF13;
     pub const ESC = 0xFF1B;

@@ -1714,6 +1714,127 @@ pub const BackgroundBox = opaque {
         Impl(Self).refresh(self);
     }
 
+    /// Initialize the drawing process.
+    /// All other functions can be called only between calls to DrawBegin and DrawEnd.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub fn drawBegin(self: *Self) void {
+        interop.drawBegin(self);
+    }
+
+    /// Terminates the drawing process and actually draw on screen.
+    /// All other functions can be called only between calls to DrawBegin and DrawEnd.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub fn drawEnd(self: *Self) void {
+        interop.drawEnd(self);
+    }
+
+    /// Defines a rectangular clipping region.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub fn drawSetClipRect(self: *Self, x1: i32, y1: i32, x2: i32, y2: i32) void {
+        interop.drawSetClipRect(self, x1, y1, x2, y2);
+    }
+
+    /// Reset the clipping area to none.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub fn drawResetClip(self: *Self) void {
+        interop.drawResetClip(self);
+    }
+
+    /// Returns the previous rectangular clipping region set by IupDrawSetClipRect, 
+    /// if clipping was reset returns 0 in all values. (since 3.25)
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub fn drawGetClipRect(self: *Self) iup.Rect {
+        return interop.drawGetClipRect(self);
+    }
+
+    /// Fills the canvas with the native parent background color.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub fn drawParentBackground(self: *Self) void {
+        interop.drawParentBackground(self);
+    }
+
+    /// Draws a line including start and end points.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub inline fn drawLine(self: *Self, x1: i32, y1: i32, x2: i32, y2: i32) void {
+        interop.drawLine(self, x1, y1, x2, y2);
+    }
+
+    /// Draws a rectangle including start and end points.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub inline fn drawRectangle(self: *Self, x1: i32, y1: i32, x2: i32, y2: i32) void {
+        interop.drawRectangle(self, x1, y1, x2, y2);
+    }
+
+    /// Draws an arc inside a rectangle between the two angles in degrees. When filled will draw a pie shape with the vertex at the center of the rectangle.
+    /// Angles are counter-clock wise relative to the 3 o'clock position.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub inline fn drawArc(self: *Self, x1: i32, y1: i32, x2: i32, y2: i32, a1: f64, a2: f64) void {
+        interop.drawArc(self, x1, y1, x2, y2, a1, a2);
+    }
+
+    /// Draws a polygon. Coordinates are stored in the array in the sequence: x1, y1, x2, y2, ...
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub inline fn drawPolygon(self: *Self, points: []const i32) void {
+        interop.drawPolygon(self, points.ptr, @intCast(c_int, points.len));
+    }
+
+    /// Draws a text in the given position using the font defined by DRAWFONT (since 3.22),
+    /// if not defined then use FONT.
+    /// The coordinates are relative the top-left corner of the text.
+    /// Strings with multiple line are accepted using \n as line separator.
+    /// Horizontal text alignment for multiple lines can be controlled using DRAWTEXTALIGNMENT attribute: ALEFT (default), ARIGHT and ACENTER options (since 3.22).
+    /// For single line texts if the text is larger than its box and DRAWTEXTWRAP=Yes, then the line will be automatically broken in multiple lines.
+    /// Notice that this is done internally by the system, the element natural size will still use only a single line.
+    /// For the remaining lines to be visible the element should use EXPAND=VERTICAL or set a SIZE/RASTERSIZE with enough height for the wrapped lines. (since 3.25)
+    /// If the text is larger that its box and DRAWTEXTELLIPSIS=Yes, an ellipsis (...) will be placed near the last visible part of the text and replace the invisible part.
+    /// It will be ignored when WRAP=Yes (since 3.25).
+    /// w and h are optional and can be -1 or 0, the text size will be used, so WRAP nor ELLIPSIS will not produce any changes.
+    /// The text is not automatically clipped to the rectangle, if DRAWTEXTCLIP=Yes it will be clipped but depending on the driver may affect the clipping set by IupDrawSetClipRect (since 3.25).
+    /// The text can be draw in any angle using DRAWTEXTORIENTATION, in degrees and counterclockwise (since 3.25), its layout is not centered inside the given rectangle when text is oriented, to center the layout use DRAWTEXTLAYOUTCENTER=Yes.
+    /// Text orientation, ellipsis and wrap are not supported in X11.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub inline fn drawText(self: *Self, str: [:0]const u8, x: i32, y: i32, w: i32, h: i32) void {
+        interop.drawText(self, str, x, y, w, h);
+    }
+
+    ///Draws an image given its name.
+    /// The coordinates are relative the top-left corner of the image.
+    /// The image name follows the same behavior as the IMAGE attribute used by many controls.
+    /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
+    /// See also IupImage. In Lua, the name parameter can be the actual image handle.
+    /// The DRAWMAKEINACTIVE attribute can be used to force the image to be draw with an inactive state appearance.
+    /// The DRAWBGCOLOR can be used to control the inactive state background color or when transparency is flatten.
+    /// w and h are optional and can be -1 or 0, then the image size will be used and no zoom will be performed (since 3.25). 
+    /// Image zoom is not supported in X11 and GDK.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub inline fn drawImage(self: *Self, name: [:0]const u8, x: i32, y: i32, w: i32, h: i32) void {
+        interop.drawImage(self, name, x, y, w, h);
+    }
+
+    /// Draws a selection rectangle.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub inline fn drawSelectRect(self: *Self, x1: i32, y1: i32, x2: i32, y2: i32) void {
+        interop.drawSelectRect(self, x1, y1, x2, y2);
+    }
+
+    /// Draws a focus rectangle.
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub inline fn drawFocusRect(self: *Self, x1: i32, y1: i32, x2: i32, y2: i32) void {
+        interop.drawFocusRect(self, x1, y1, x2, y2);
+    }
+
+    /// Returns the drawing area size
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub fn drawGetSize(self: *Self) iup.DrawSize {
+        return interop.drawGetSize(self);
+    }
+
+    /// Returns the given text size using the font defined by DRAWFONT, if not defined then use FONT. 
+    /// IMPORTANT: this function can be used only inside the ACTION callback.
+    pub fn drawGetTextSize(self: *Self, str: [:0]const u8) iup.DrawSize {
+        return interop.drawGetTextSize(self, str);
+    }
+
     pub fn getHandleName(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HANDLENAME", .{});
     }

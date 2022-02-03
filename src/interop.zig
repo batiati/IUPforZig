@@ -6,6 +6,7 @@ const iup = @import("iup.zig");
 
 const c = @cImport({
     @cInclude("iup.h");
+    @cInclude("iupdraw.h");
 });
 
 const trait = std.meta.trait;
@@ -517,6 +518,76 @@ pub fn convertPosToLinCol(handle: anytype, pos: i32) ?iup.LinColPos {
     } else {
         return iup.LinColPos{ .lin = lin, .col = col };
     }
+}
+
+pub inline fn drawBegin(handle: anytype) void {
+    c.IupDrawBegin(getHandle(handle));
+}
+
+pub inline fn drawEnd(handle: anytype) void {
+    c.IupDrawEnd(getHandle(handle));
+}
+
+pub inline fn drawSetClipRect(handle: anytype, x1: i32, y1: i32, x2: i32, y2: i32) void {
+    c.IupDrawSetClipRect(getHandle(handle), x1, y1, x2, y2);
+}
+
+pub inline fn drawResetClip(handle: anytype) void {
+    c.IupDrawResetClip(getHandle(handle));
+}
+
+pub inline fn drawGetClipRect(handle: anytype) iup.Rect {
+    var rect: iup.Rect = undefined;
+    c.IupDrawGetClipRect(getHandle(handle), &rect.x1, &rect.y1, &rect.x2, &rect.y2);
+    return rect;
+}
+
+pub inline fn drawParentBackground(handle: anytype) void {
+    c.IupDrawParentBackground(getHandle(handle));
+}
+
+pub inline fn drawLine(handle: anytype, x1: i32, y1: i32, x2: i32, y2: i32) void {
+    c.IupDrawLine(getHandle(handle), x1, y1, x2, y2);
+}
+
+pub inline fn drawRectangle(handle: anytype, x1: i32, y1: i32, x2: i32, y2: i32) void {
+    c.IupDrawRectangle(getHandle(handle), x1, y1, x2, y2);
+}
+
+pub inline fn drawArc(handle: anytype, x1: i32, y1: i32, x2: i32, y2: i32, a1: f64, a2: f64) void {
+    c.IupDrawArc(getHandle(handle), x1, y1, x2, y2, a1, a2);
+}
+
+pub inline fn drawPolygon(handle: anytype, points: []const i32) void {
+    c.IupDrawPolygon(getHandle(handle), points.ptr, @intCast(c_int, points.len));
+}
+
+pub inline fn drawText(handle: anytype, str: [:0]const u8, x: i32, y: i32, w: i32, h: i32) void {
+    c.IupDrawText(getHandle(handle), toCStr(str), -1, x, y, w, h);
+}
+
+pub inline fn drawImage(handle: anytype, name: [:0]const u8, x: i32, y: i32, w: i32, h: i32) void {
+    c.IupDrawImage(getHandle(handle), toCStr(name), x, y, w, h);
+}
+
+pub inline fn drawSelectRect(handle: anytype, x1: i32, y1: i32, x2: i32, y2: i32) void {
+    c.IupDrawSelectRect(getHandle(handle), x1, y1, x2, y2);
+}
+
+pub inline fn drawFocusRect(handle: anytype, x1: i32, y1: i32, x2: i32, y2: i32) void {
+    c.IupDrawFocusRect(getHandle(handle), x1, y1, x2, y2);
+}
+
+pub inline fn drawGetSize(handle: anytype) iup.DrawSize {
+    var size: iup.DrawSize = undefined;
+    c.IupDrawGetSize(getHandle(handle), &size.width, &size.height);
+    return size;
+}
+
+pub inline fn drawGetTextSize(handle: anytype, str: [:0]const u8) iup.DrawSize {
+    var size: iup.DrawSize = undefined;
+    c.IupDrawGetTextSize(getHandle(handle), toCStr(str), &size.width, &size.height);
+    return size;
 }
 
 fn validateIds(ids_tuple: anytype) void {
