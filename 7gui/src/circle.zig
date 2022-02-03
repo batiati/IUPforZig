@@ -44,7 +44,7 @@ const Circle = struct {
 };
 
 /// Simple DataSource to store all circles perform the undo/redo history.
-const Drawn = struct {
+const Drawing = struct {
     const Self = @This();
 
     const Action = union(enum) {
@@ -199,7 +199,7 @@ const CircleDrawer = struct {
     const Self = @This();
 
     allocator: Allocator,
-    drawn: Drawn,
+    drawing: Drawing,
     dialog: *iup.Dialog = undefined,
     canvas: *iup.Canvas = undefined,
     redo_button: *iup.Button = undefined,
@@ -210,7 +210,7 @@ const CircleDrawer = struct {
 
         self.* = .{
             .allocator = allocator,
-            .drawn = try Drawn.init(allocator),
+            .drawing = try Drawing.init(allocator),
         };
 
         try self.createDialog();
@@ -219,7 +219,7 @@ const CircleDrawer = struct {
 
     pub fn deinit(self: *Self) void {
         self.dialog.deinit();
-        self.drawn.deinit();
+        self.drawing.deinit();
         self.allocator.destroy(self);
     }
 
@@ -279,16 +279,16 @@ const CircleDrawer = struct {
         var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
 
         if (button == iup.mouse.BUTTON_1) {
-            if (self.drawn.getCollision(x, y)) |id| {
-                self.drawn.setSelected(id, true);
+            if (self.drawing.getCollision(x, y)) |id| {
+                self.drawing.setSelected(id, true);
             } else {
-                try self.drawn.create(x, y);
+                try self.drawing.create(x, y);
             }
 
             canvas.update();
         } else if (button == iup.mouse.BUTTON_3) {
-            if (self.drawn.getCollision(x, y)) |id| {
-                self.drawn.setSelected(id, false);
+            if (self.drawing.getCollision(x, y)) |id| {
+                self.drawing.setSelected(id, false);
                 canvas.update();
 
                 var config = try ConfigDialog.init(self);
@@ -317,8 +317,8 @@ const CircleDrawer = struct {
         canvas.setDrawStyle(.Fill);
         canvas.drawRectangle(0, 0, size.width - 1, size.height - 1);
 
-        for (self.drawn.items()) |circle| {
-            if (circle.id == self.drawn.selected) {
+        for (self.drawing.items()) |circle| {
+            if (circle.id == self.drawing.selected) {
                 canvas.setDrawColor(.{ .r = 128, .g = 128, .b = 128 });
                 canvas.setDrawStyle(.Fill);
             } else {
@@ -342,9 +342,9 @@ const CircleDrawer = struct {
         var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
 
         if (button == self.undo_button) {
-            try self.drawn.undo();
+            try self.drawing.undo();
         } else if (button == self.redo_button) {
-            try self.drawn.redo();
+            try self.drawing.redo();
         }
 
         self.canvas.update();
@@ -352,17 +352,17 @@ const CircleDrawer = struct {
     }
 
     fn updateButtons(self: *Self) void {
-        self.undo_button.setActive(self.drawn.canUndo());
-        self.redo_button.setActive(self.drawn.canRedo());
+        self.undo_button.setActive(self.drawing.canUndo());
+        self.redo_button.setActive(self.drawing.canRedo());
     }
 
     pub fn updateRadius(self: *Self, id: u32, old_radius: i32, new_radius: i32) !void {
-        try self.drawn.update(id, old_radius, new_radius);
+        try self.drawing.update(id, old_radius, new_radius);
         self.canvas.update();
     }
 
     pub fn previewRadius(self: *Self, id: u32, new_radius: i32) !void {
-        try self.drawn.setRadius(id, new_radius);
+        try self.drawing.setRadius(id, new_radius);
         self.canvas.update();
     }
 };
@@ -396,7 +396,7 @@ const ConfigDialog = struct {
     }
 
     pub fn show(self: *Self) !void {
-        const circle = self.parent.drawn.getSelected() orelse return;
+        const circle = self.parent.drawing.getSelected() orelse return;
         const allocator = self.parent.allocator;
 
         var label_text = try std.fmt.allocPrintZ(allocator, "Adjust diameter of the circle at ({}, {})", .{ circle.x, circle.y });
