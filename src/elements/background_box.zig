@@ -1714,6 +1714,24 @@ pub const BackgroundBox = opaque {
         Impl(Self).refresh(self);
     }
 
+    ///
+    /// Updates the size and layout of all controls in the same dialog. 
+    pub fn update(self: *Self) void {
+        Impl(Self).update(self);
+    }
+
+    ///
+    /// Updates the size and layout of all controls in the same dialog. 
+    pub fn updateChildren(self: *Self) void {
+        Impl(Self).updateChildren(self);
+    }
+
+    ///
+    /// Force the element and its children to be redrawn immediately. 
+    pub fn redraw(self: *Self, redraw_children: bool) void {
+        Impl(Self).redraw(self, redraw_children);
+    }
+
     /// Initialize the drawing process.
     /// All other functions can be called only between calls to DrawBegin and DrawEnd.
     /// IMPORTANT: this function can be used only inside the ACTION callback.

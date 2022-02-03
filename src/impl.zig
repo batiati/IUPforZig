@@ -31,10 +31,21 @@ pub fn Impl(comptime T: type) type {
 
         ///
         /// Updates the size and layout of all controls in the same dialog. 
-        /// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
         pub fn update(self: *T) void {
             interop.update(self);
         }
+
+        ///
+        /// Updates the size and layout of all controls in the same dialog. 
+        pub fn updateChildren(self: *T) void {
+            interop.updateChildren(self);
+        }        
+
+        ///
+        /// Force the element and its children to be redrawn immediately. 
+        pub fn redraw(self: *T, children: bool) void {
+            interop.redraw(self, children);
+        }  
 
         pub fn appendChildren(self: *T, tuple: anytype) !void {
             const typeOf = @TypeOf(tuple);

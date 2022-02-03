@@ -462,6 +462,14 @@ pub inline fn update(handle: anytype) void {
     c.IupUpdate(getHandle(handle));
 }
 
+pub inline fn updateChildren(handle: anytype) void {
+    c.IupUpdateChildren(getHandle(handle));
+}        
+
+pub inline fn redraw(handle: anytype, children: bool) void {
+    c.IupRedraw(getHandle(handle), if (children) 1 else 0);
+} 
+
 pub inline fn getChildCount(handle: anytype) i32 {
     return c.IupGetChildCount(getHandle(handle));
 }

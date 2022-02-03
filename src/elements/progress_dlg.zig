@@ -1512,6 +1512,24 @@ pub const ProgressDlg = opaque {
         Impl(Self).refresh(self);
     }
 
+    ///
+    /// Updates the size and layout of all controls in the same dialog. 
+    pub fn update(self: *Self) void {
+        Impl(Self).update(self);
+    }
+
+    ///
+    /// Updates the size and layout of all controls in the same dialog. 
+    pub fn updateChildren(self: *Self) void {
+        Impl(Self).updateChildren(self);
+    }
+
+    ///
+    /// Force the element and its children to be redrawn immediately. 
+    pub fn redraw(self: *Self, redraw_children: bool) void {
+        Impl(Self).redraw(self, redraw_children);
+    }
+
 
     /// 
     /// COUNT: current count of iterations.
