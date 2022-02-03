@@ -398,7 +398,7 @@ const ConfigDialog = struct {
         const circle = self.parent.drawn.getSelected() orelse return;
         const allocator = self.parent.allocator;
 
-        var label_text = try std.fmt.allocPrintZ(allocator, "Adjust the diameter of the circle at ({}, {})", .{ circle.x, circle.y });
+        var label_text = try std.fmt.allocPrintZ(allocator, "Adjust diameter of the circle at ({}, {})", .{ circle.x, circle.y });
         defer allocator.free(label_text);
 
         self.editing_circle = circle;
