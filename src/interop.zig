@@ -458,6 +458,10 @@ pub inline fn refresh(handle: anytype) void {
     c.IupRefresh(getHandle(handle));
 }
 
+pub inline fn update(handle: anytype) void {
+    c.IupUpdate(getHandle(handle));
+}
+
 pub inline fn getChildCount(handle: anytype) i32 {
     return c.IupGetChildCount(getHandle(handle));
 }

@@ -1655,6 +1655,12 @@ pub const Canvas = opaque {
         Impl(Self).refresh(self);
     }
 
+    ///
+    /// Mark the element or its children to be redraw when the control returns to the system.
+    pub fn update(self: *Self) void {
+        Impl(Self).update(self);
+    }    
+
     /// Initialize the drawing process.
     /// All other functions can be called only between calls to DrawBegin and DrawEnd.
     /// IMPORTANT: this function can be used only inside the ACTION callback.

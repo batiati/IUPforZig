@@ -285,10 +285,11 @@ const CircleDrawer = struct {
                 try self.drawn.create(x, y);
             }
 
-            canvas.refresh();
+            canvas.update();
         } else if (button == iup.mouse.BUTTON_3) {
             if (self.drawn.getCollision(x, y)) |id| {
                 self.drawn.setSelected(id, false);
+                canvas.update();
 
                 var config = try ConfigDialog.init(self);
                 defer config.deinit();
@@ -346,7 +347,7 @@ const CircleDrawer = struct {
             try self.drawn.redo();
         }
 
-        self.canvas.refresh();
+        self.canvas.update();
         self.updateButtons();
     }
 
@@ -357,12 +358,12 @@ const CircleDrawer = struct {
 
     pub fn updateRadius(self: *Self, id: u32, old_radius: i32, new_radius: i32) !void {
         try self.drawn.update(id, old_radius, new_radius);
-        self.canvas.refresh();
+        self.canvas.update();
     }
 
     pub fn previewRadius(self: *Self, id: u32, new_radius: i32) !void {
         try self.drawn.setRadius(id, new_radius);
-        self.canvas.refresh();
+        self.canvas.update();
     }
 };
 
@@ -417,6 +418,7 @@ const ConfigDialog = struct {
             .setMinBox(false)
             .setMaxBox(false)
             .setResize(false)
+            .setToolBox(true)
             .setCloseCallback(onClose)
             .setChildren(
             .{
