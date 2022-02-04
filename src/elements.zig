@@ -52,10 +52,14 @@ pub const DatePick = @import("elements/date_pick.zig").DatePick;
 pub const Spin = @import("elements/spin.zig").Spin;
 pub const Clipboard = @import("elements/clipboard.zig").Clipboard;
 pub const SubMenu = @import("elements/sub_menu.zig").SubMenu;
+pub const Cells = @import("elements/cells.zig").Cells;
+pub const MatrixEx = @import("elements/matrix_ex.zig").MatrixEx;
 pub const GridBox = @import("elements/grid_box.zig").GridBox;
 pub const ImageRgba = @import("elements/image_rgba.zig").ImageRgba;
+pub const MatrixList = @import("elements/matrix_list.zig").MatrixList;
 pub const Text = @import("elements/text.zig").Text;
 pub const Radio = @import("elements/radio.zig").Radio;
+pub const Matrix = @import("elements/matrix.zig").Matrix;
 pub const Gauge = @import("elements/gauge.zig").Gauge;
 pub const ColorBar = @import("elements/color_bar.zig").ColorBar;
 pub const ProgressDlg = @import("elements/progress_dlg.zig").ProgressDlg;
@@ -133,10 +137,14 @@ pub const Element = union(enum) {
     Spin: *Spin,
     Clipboard: *Clipboard,
     SubMenu: *SubMenu,
+    Cells: *Cells,
+    MatrixEx: *MatrixEx,
     GridBox: *GridBox,
     ImageRgba: *ImageRgba,
+    MatrixList: *MatrixList,
     Text: *Text,
     Radio: *Radio,
+    Matrix: *Matrix,
     Gauge: *Gauge,
     ColorBar: *ColorBar,
     ProgressDlg: *ProgressDlg,
@@ -206,10 +214,14 @@ pub const Element = union(enum) {
             Spin, *Spin => return .{ .Spin = @ptrCast(*Spin, handle) },
             Clipboard, *Clipboard => return .{ .Clipboard = @ptrCast(*Clipboard, handle) },
             SubMenu, *SubMenu => return .{ .SubMenu = @ptrCast(*SubMenu, handle) },
+            Cells, *Cells => return .{ .Cells = @ptrCast(*Cells, handle) },
+            MatrixEx, *MatrixEx => return .{ .MatrixEx = @ptrCast(*MatrixEx, handle) },
             GridBox, *GridBox => return .{ .GridBox = @ptrCast(*GridBox, handle) },
             ImageRgba, *ImageRgba => return .{ .ImageRgba = @ptrCast(*ImageRgba, handle) },
+            MatrixList, *MatrixList => return .{ .MatrixList = @ptrCast(*MatrixList, handle) },
             Text, *Text => return .{ .Text = @ptrCast(*Text, handle) },
             Radio, *Radio => return .{ .Radio = @ptrCast(*Radio, handle) },
+            Matrix, *Matrix => return .{ .Matrix = @ptrCast(*Matrix, handle) },
             Gauge, *Gauge => return .{ .Gauge = @ptrCast(*Gauge, handle) },
             ColorBar, *ColorBar => return .{ .ColorBar = @ptrCast(*ColorBar, handle) },
             ProgressDlg, *ProgressDlg => return .{ .ProgressDlg = @ptrCast(*ProgressDlg, handle) },
@@ -286,10 +298,14 @@ pub const Element = union(enum) {
                 Spin => return .{ .Spin = reference },
                 Clipboard => return .{ .Clipboard = reference },
                 SubMenu => return .{ .SubMenu = reference },
+                Cells => return .{ .Cells = reference },
+                MatrixEx => return .{ .MatrixEx = reference },
                 GridBox => return .{ .GridBox = reference },
                 ImageRgba => return .{ .ImageRgba = reference },
+                MatrixList => return .{ .MatrixList = reference },
                 Text => return .{ .Text = reference },
                 Radio => return .{ .Radio = reference },
+                Matrix => return .{ .Matrix = reference },
                 Gauge => return .{ .Gauge = reference },
                 ColorBar => return .{ .ColorBar = reference },
                 ProgressDlg => return .{ .ProgressDlg = reference },
@@ -363,10 +379,14 @@ pub const Element = union(enum) {
         if (ascii.eqlIgnoreCase(className, Spin.CLASS_NAME)) return .{ .Spin = @ptrCast(*Spin, handle) };
         if (ascii.eqlIgnoreCase(className, Clipboard.CLASS_NAME)) return .{ .Clipboard = @ptrCast(*Clipboard, handle) };
         if (ascii.eqlIgnoreCase(className, SubMenu.CLASS_NAME)) return .{ .SubMenu = @ptrCast(*SubMenu, handle) };
+        if (ascii.eqlIgnoreCase(className, Cells.CLASS_NAME)) return .{ .Cells = @ptrCast(*Cells, handle) };
+        if (ascii.eqlIgnoreCase(className, MatrixEx.CLASS_NAME)) return .{ .MatrixEx = @ptrCast(*MatrixEx, handle) };
         if (ascii.eqlIgnoreCase(className, GridBox.CLASS_NAME)) return .{ .GridBox = @ptrCast(*GridBox, handle) };
         if (ascii.eqlIgnoreCase(className, ImageRgba.CLASS_NAME)) return .{ .ImageRgba = @ptrCast(*ImageRgba, handle) };
+        if (ascii.eqlIgnoreCase(className, MatrixList.CLASS_NAME)) return .{ .MatrixList = @ptrCast(*MatrixList, handle) };
         if (ascii.eqlIgnoreCase(className, Text.CLASS_NAME)) return .{ .Text = @ptrCast(*Text, handle) };
         if (ascii.eqlIgnoreCase(className, Radio.CLASS_NAME)) return .{ .Radio = @ptrCast(*Radio, handle) };
+        if (ascii.eqlIgnoreCase(className, Matrix.CLASS_NAME)) return .{ .Matrix = @ptrCast(*Matrix, handle) };
         if (ascii.eqlIgnoreCase(className, Gauge.CLASS_NAME)) return .{ .Gauge = @ptrCast(*Gauge, handle) };
         if (ascii.eqlIgnoreCase(className, ColorBar.CLASS_NAME)) return .{ .ColorBar = @ptrCast(*ColorBar, handle) };
         if (ascii.eqlIgnoreCase(className, ProgressDlg.CLASS_NAME)) return .{ .ProgressDlg = @ptrCast(*ProgressDlg, handle) };
@@ -437,10 +457,14 @@ pub const Element = union(enum) {
             .Spin => |value| return @ptrCast(*Handle, value),
             .Clipboard => |value| return @ptrCast(*Handle, value),
             .SubMenu => |value| return @ptrCast(*Handle, value),
+            .Cells => |value| return @ptrCast(*Handle, value),
+            .MatrixEx => |value| return @ptrCast(*Handle, value),
             .GridBox => |value| return @ptrCast(*Handle, value),
             .ImageRgba => |value| return @ptrCast(*Handle, value),
+            .MatrixList => |value| return @ptrCast(*Handle, value),
             .Text => |value| return @ptrCast(*Handle, value),
             .Radio => |value| return @ptrCast(*Handle, value),
+            .Matrix => |value| return @ptrCast(*Handle, value),
             .Gauge => |value| return @ptrCast(*Handle, value),
             .ColorBar => |value| return @ptrCast(*Handle, value),
             .ProgressDlg => |value| return @ptrCast(*Handle, value),
@@ -547,10 +571,14 @@ pub const Element = union(enum) {
             .Spin => |element| element.deinit(),
             .Clipboard => |element| element.deinit(),
             .SubMenu => |element| element.deinit(),
+            .Cells => |element| element.deinit(),
+            .MatrixEx => |element| element.deinit(),
             .GridBox => |element| element.deinit(),
             .ImageRgba => |element| element.deinit(),
+            .MatrixList => |element| element.deinit(),
             .Text => |element| element.deinit(),
             .Radio => |element| element.deinit(),
+            .Matrix => |element| element.deinit(),
             .Gauge => |element| element.deinit(),
             .ColorBar => |element| element.deinit(),
             .ProgressDlg => |element| element.deinit(),

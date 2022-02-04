@@ -6,6 +6,7 @@ const iup = @import("iup.zig");
 
 const c = @cImport({
     @cInclude("iup.h");
+    @cInclude("iupcontrols.h");
     @cInclude("iupdraw.h");
 });
 
@@ -97,9 +98,9 @@ pub inline fn destroy(element: anytype) void {
 }
 
 pub inline fn open() iup.Error!void {
-    const ret = c.IupOpen(null, null);
-    if (ret == c.IUP_ERROR) return iup.Error.OpenFailed;
-
+    if (c.IupOpen(null, null) == c.IUP_ERROR) return iup.Error.OpenFailed;
+    if (c.IupControlsOpen() == c.IUP_ERROR)  return iup.Error.OpenFailed;
+    
     c.IupImageLibOpen();
 }
 
