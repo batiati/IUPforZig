@@ -385,7 +385,7 @@ pub const ColorBar = opaque {
     /// CELL_CB: called when the user double clicks a color cell to change its value.
     /// char* function(Ihandle* ih, int cell); [in C] ih:cell_cb(cell: number) ->
     /// (ret: string) [in Lua]
-    pub const OnCellFn = fn (self: *Self, arg0: i32) anyerror![:0]const u8;
+    pub const OnCellFn = fn (self: *Self, arg0: i32) [:0]const u8;
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 

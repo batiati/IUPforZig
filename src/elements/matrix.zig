@@ -51,7 +51,7 @@ pub const Matrix = opaque {
 
     pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
-    pub const OnTransLateValueFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror![:0]const u8;
+    pub const OnTranslateValueFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) [:0]const u8;
 
     pub const OnScrollFn = fn (self: *Self, arg0: i32, arg1: f32, arg2: f32) anyerror!void;
 
@@ -85,7 +85,7 @@ pub const Matrix = opaque {
 
     pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    pub const OnTypeFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror![:0]const u8;
+    pub const OnTypeFn = fn (self: *Self, arg0: i32, arg1: i32) [:0]const u8;
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
@@ -99,7 +99,7 @@ pub const Matrix = opaque {
 
     pub const OnValueEditFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
-    pub const OnFontFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror![:0]const u8;
+    pub const OnFontFn = fn (self: *Self, arg0: i32, arg1: i32) [:0]const u8;
 
     pub const OnDropMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
@@ -125,7 +125,7 @@ pub const Matrix = opaque {
 
     pub const OnDrawFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: i32, arg5: i32, arg6: *iup.Canvas) anyerror!void;
 
-    pub const OnValueFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror![:0]const u8;
+    pub const OnValueFn = fn (self: *Self, arg0: i32, arg1: i32) [:0]const u8;
 
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
@@ -139,7 +139,7 @@ pub const Matrix = opaque {
 
     pub const OnFgColorFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: *i32, arg3: *i32, arg4: *i32) anyerror!void;
 
-    pub const OnNumEricGetValueFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!f64;
+    pub const OnNumEricGetValueFn = fn (self: *Self, arg0: i32, arg1: i32) f64;
 
     pub const OnBgColorFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: *i32, arg3: *i32, arg4: *i32) anyerror!void;
 
@@ -1760,8 +1760,8 @@ pub const Matrix = opaque {
             return self.*;
         }
 
-        pub fn setTransLateValueCallback(self: *Initializer, callback: ?OnTransLateValueFn) Initializer {
-            const Handler = CallbackHandler(Self, OnTransLateValueFn, "TRANSLATEVALUE_CB");
+        pub fn setTranslateValueCallback(self: *Initializer, callback: ?OnTranslateValueFn) Initializer {
+            const Handler = CallbackHandler(Self, OnTranslateValueFn, "TRANSLATEVALUE_CB");
             Handler.setCallback(self.ref, callback);
             return self.*;
         }
@@ -4205,8 +4205,8 @@ pub const Matrix = opaque {
         Handler.setCallback(self, callback);
     }
 
-    pub fn setTransLateValueCallback(self: *Self, callback: ?OnTransLateValueFn) void {
-        const Handler = CallbackHandler(Self, OnTransLateValueFn, "TRANSLATEVALUE_CB");
+    pub fn setTranslateValueCallback(self: *Self, callback: ?OnTranslateValueFn) void {
+        const Handler = CallbackHandler(Self, OnTranslateValueFn, "TRANSLATEVALUE_CB");
         Handler.setCallback(self, callback);
     }
 
