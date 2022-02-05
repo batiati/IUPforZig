@@ -1848,9 +1848,9 @@ pub const MatrixEx = opaque {
             return self.*;
         }
 
-        pub fn setMarkMultiple(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setMarkMultiple(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "MARKMULTIPLE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MARKMULTIPLE", .{}, arg);
             return self.*;
         }
 
@@ -4621,12 +4621,12 @@ pub const MatrixEx = opaque {
         interop.setStrAttribute(self, "SB_IMAGELEFTINACTIVE", .{}, arg);
     }
 
-    pub fn getMarkMultiple(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "MARKMULTIPLE", .{});
+    pub fn getMarkMultiple(self: *Self) bool {
+        return interop.getBoolAttribute(self, "MARKMULTIPLE", .{});
     }
 
-    pub fn setMarkMultiple(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "MARKMULTIPLE", .{}, arg);
+    pub fn setMarkMultiple(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "MARKMULTIPLE", .{}, arg);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
@@ -7314,12 +7314,12 @@ test "MatrixEx MarkMultiple" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MatrixEx.init().setMarkMultiple("Hello").unwrap());
+    var item = try (iup.MatrixEx.init().setMarkMultiple(true).unwrap());
     defer item.deinit();
 
     var ret = item.getMarkMultiple();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == true);
 }
 
 test "MatrixEx Floating" {

@@ -185,8 +185,11 @@ pub const Matrix = opaque {
     };
 
     pub const MarkMode = enum {
-        SInGle,
-        Multiple,
+        No,
+        Cell,
+        Lin,
+        Col,
+        LinCol,
     };
 
     pub const ToggleValue = enum {
@@ -1260,8 +1263,11 @@ pub const Matrix = opaque {
         pub fn setMarkMode(self: *Initializer, arg: ?MarkMode) Initializer {
             if (self.last_error) |_| return self.*;
             if (arg) |value| switch (value) {
-                .SInGle => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "SINGLE"),
-                .Multiple => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "MULTIPLE"),
+                .No => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "NO"),
+                .Cell => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "CELL"),
+                .Lin => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "LIN"),
+                .Col => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "COL"),
+                .LinCol => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "LINCOL"),
             } else {
                 interop.clearAttribute(self.ref, "MARKMODE", .{});
             }
@@ -1540,9 +1546,9 @@ pub const Matrix = opaque {
             return self.*;
         }
 
-        pub fn setMarkMultiple(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setMarkMultiple(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "MARKMULTIPLE", .{}, arg);
+            interop.setBoolAttribute(self.ref, "MARKMULTIPLE", .{}, arg);
             return self.*;
         }
 
@@ -3547,15 +3553,21 @@ pub const Matrix = opaque {
     pub fn getMarkMode(self: *Self) ?MarkMode {
         var ret = interop.getStrAttribute(self, "MARKMODE", .{});
 
-        if (std.ascii.eqlIgnoreCase("SINGLE", ret)) return .SInGle;
-        if (std.ascii.eqlIgnoreCase("MULTIPLE", ret)) return .Multiple;
+        if (std.ascii.eqlIgnoreCase("NO", ret)) return .No;
+        if (std.ascii.eqlIgnoreCase("CELL", ret)) return .Cell;
+        if (std.ascii.eqlIgnoreCase("LIN", ret)) return .Lin;
+        if (std.ascii.eqlIgnoreCase("COL", ret)) return .Col;
+        if (std.ascii.eqlIgnoreCase("LINCOL", ret)) return .LinCol;
         return null;
     }
 
     pub fn setMarkMode(self: *Self, arg: ?MarkMode) void {
         if (arg) |value| switch (value) {
-            .SInGle => interop.setStrAttribute(self, "MARKMODE", .{}, "SINGLE"),
-            .Multiple => interop.setStrAttribute(self, "MARKMODE", .{}, "MULTIPLE"),
+            .No => interop.setStrAttribute(self, "MARKMODE", .{}, "NO"),
+            .Cell => interop.setStrAttribute(self, "MARKMODE", .{}, "CELL"),
+            .Lin => interop.setStrAttribute(self, "MARKMODE", .{}, "LIN"),
+            .Col => interop.setStrAttribute(self, "MARKMODE", .{}, "COL"),
+            .LinCol => interop.setStrAttribute(self, "MARKMODE", .{}, "LINCOL"),
         } else {
             interop.clearAttribute(self, "MARKMODE", .{});
         }
@@ -3921,12 +3933,12 @@ pub const Matrix = opaque {
         interop.setStrAttribute(self, "SB_IMAGELEFTINACTIVE", .{}, arg);
     }
 
-    pub fn getMarkMultiple(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "MARKMULTIPLE", .{});
+    pub fn getMarkMultiple(self: *Self) bool {
+        return interop.getBoolAttribute(self, "MARKMULTIPLE", .{});
     }
 
-    pub fn setMarkMultiple(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "MARKMULTIPLE", .{}, arg);
+    pub fn setMarkMultiple(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "MARKMULTIPLE", .{}, arg);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
@@ -5834,12 +5846,12 @@ test "Matrix MarkMode" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Matrix.init().setMarkMode(.SInGle).unwrap());
+    var item = try (iup.Matrix.init().setMarkMode(.No).unwrap());
     defer item.deinit();
 
     var ret = item.getMarkMode();
 
-    try std.testing.expect(ret != null and ret.? == .SInGle);
+    try std.testing.expect(ret != null and ret.? == .No);
 }
 
 test "Matrix DrawFont" {
@@ -6194,12 +6206,12 @@ test "Matrix MarkMultiple" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.Matrix.init().setMarkMultiple("Hello").unwrap());
+    var item = try (iup.Matrix.init().setMarkMultiple(true).unwrap());
     defer item.deinit();
 
     var ret = item.getMarkMultiple();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == true);
 }
 
 test "Matrix Floating" {
