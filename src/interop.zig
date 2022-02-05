@@ -127,6 +127,10 @@ pub inline fn setHandle(handle: anytype, name: [:0]const u8) void {
 }
 
 pub inline fn getStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) [:0]const u8 {
+   return getNullableStrAttribute(handle, attribute, ids_tuple) orelse "";
+}
+
+pub inline fn getNullableStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) ?[:0]const u8 {
     validateIds(ids_tuple);
 
     var ret = blk: {
@@ -139,7 +143,7 @@ pub inline fn getStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tupl
         }
     };
 
-    if (ret == null) return "";
+    if (ret == null) return null;
     return fromCStr(ret);
 }
 

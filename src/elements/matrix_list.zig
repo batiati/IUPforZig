@@ -766,9 +766,9 @@ pub const MatrixList = opaque {
             return self.*;
         }
 
-        pub fn setWidthDef(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setWidthDef(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "WIDTHDEF", .{}, arg);
+            interop.setIntAttribute(self.ref, "WIDTHDEF", .{}, arg);
             return self.*;
         }
 
@@ -973,9 +973,9 @@ pub const MatrixList = opaque {
             return self.*;
         }
 
-        pub fn setMinColWidthDef(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setMinColWidthDef(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "MINCOLWIDTHDEF", .{}, arg);
+            interop.setIntAttribute(self.ref, "MINCOLWIDTHDEF", .{}, arg);
             return self.*;
         }
 
@@ -1293,9 +1293,9 @@ pub const MatrixList = opaque {
             return self.*;
         }
 
-        pub fn setResizeMatrix(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setResizeMatrix(self: *Initializer, arg: bool) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "RESIZEMATRIX", .{}, arg);
+            interop.setBoolAttribute(self.ref, "RESIZEMATRIX", .{}, arg);
             return self.*;
         }
 
@@ -1404,9 +1404,9 @@ pub const MatrixList = opaque {
             return self.*;
         }
 
-        pub fn setHeightDef(self: *Initializer, arg: [:0]const u8) Initializer {
+        pub fn setHeightDef(self: *Initializer, arg: i32) Initializer {
             if (self.last_error) |_| return self.*;
-            interop.setStrAttribute(self.ref, "HEIGHTDEF", .{}, arg);
+            interop.setIntAttribute(self.ref, "HEIGHTDEF", .{}, arg);
             return self.*;
         }
 
@@ -3092,12 +3092,12 @@ pub const MatrixList = opaque {
         interop.setStrAttribute(self, "LINEALIGNMENT", .{index}, arg);
     }
 
-    pub fn getWidthDef(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "WIDTHDEF", .{});
+    pub fn getWidthDef(self: *Self) i32 {
+        return interop.getIntAttribute(self, "WIDTHDEF", .{});
     }
 
-    pub fn setWidthDef(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "WIDTHDEF", .{}, arg);
+    pub fn setWidthDef(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "WIDTHDEF", .{}, arg);
     }
 
     pub fn getImageValue(self: *Self, index: i32) [:0]const u8 {
@@ -3371,12 +3371,12 @@ pub const MatrixList = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
-    pub fn getMinColWidthDef(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "MINCOLWIDTHDEF", .{});
+    pub fn getMinColWidthDef(self: *Self) i32 {
+        return interop.getIntAttribute(self, "MINCOLWIDTHDEF", .{});
     }
 
-    pub fn setMinColWidthDef(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "MINCOLWIDTHDEF", .{}, arg);
+    pub fn setMinColWidthDef(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "MINCOLWIDTHDEF", .{}, arg);
     }
 
     pub fn getEditText(self: *Self) [:0]const u8 {
@@ -3796,12 +3796,12 @@ pub const MatrixList = opaque {
         return interop.getStrAttribute(self, "CELL", .{index});
     }
 
-    pub fn getResizeMatrix(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "RESIZEMATRIX", .{});
+    pub fn getResizeMatrix(self: *Self) bool {
+        return interop.getBoolAttribute(self, "RESIZEMATRIX", .{});
     }
 
-    pub fn setResizeMatrix(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "RESIZEMATRIX", .{}, arg);
+    pub fn setResizeMatrix(self: *Self, arg: bool) void {
+        interop.setBoolAttribute(self, "RESIZEMATRIX", .{}, arg);
     }
 
     pub fn getActive(self: *Self) bool {
@@ -3950,12 +3950,12 @@ pub const MatrixList = opaque {
         interop.setStrAttribute(self, "DRAWFONT", .{}, arg);
     }
 
-    pub fn getHeightDef(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "HEIGHTDEF", .{});
+    pub fn getHeightDef(self: *Self) i32 {
+        return interop.getIntAttribute(self, "HEIGHTDEF", .{});
     }
 
-    pub fn setHeightDef(self: *Self, arg: [:0]const u8) void {
-        interop.setStrAttribute(self, "HEIGHTDEF", .{}, arg);
+    pub fn setHeightDef(self: *Self, arg: i32) void {
+        interop.setIntAttribute(self, "HEIGHTDEF", .{}, arg);
     }
 
     pub fn getExpandWeight(self: *Self) f64 {
@@ -4147,8 +4147,12 @@ pub const MatrixList = opaque {
         interop.setStrAttribute(self, "SB_IMAGERIGHTHIGHLIGHT", .{}, arg);
     }
 
-    pub fn getEditCell(self: *Self) [:0]const u8 {
-        return interop.getStrAttribute(self, "EDITCELL", .{});
+    pub fn getEditCell(self: *Self) ?iup.LinColPos {
+        if (interop.getNullableStrAttribute(self, "EDITCELL", .{})) |str| {
+            return iup.LinColPos.parse(str, ':');
+        } else {
+            return null;
+        }
     }
 
     pub fn getNumEricUnitIndex(self: *Self, index: i32) [:0]const u8 {
@@ -5627,12 +5631,12 @@ test "MatrixList WidthDef" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MatrixList.init().setWidthDef("Hello").unwrap());
+    var item = try (iup.MatrixList.init().setWidthDef(42).unwrap());
     defer item.deinit();
 
     var ret = item.getWidthDef();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == 42);
 }
 
 test "MatrixList ImageValue" {
@@ -5951,12 +5955,12 @@ test "MatrixList MinColWidthDef" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MatrixList.init().setMinColWidthDef("Hello").unwrap());
+    var item = try (iup.MatrixList.init().setMinColWidthDef(42).unwrap());
     defer item.deinit();
 
     var ret = item.getMinColWidthDef();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == 42);
 }
 
 test "MatrixList ResizeMatrixColor" {
@@ -6323,12 +6327,12 @@ test "MatrixList ResizeMatrix" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MatrixList.init().setResizeMatrix("Hello").unwrap());
+    var item = try (iup.MatrixList.init().setResizeMatrix(true).unwrap());
     defer item.deinit();
 
     var ret = item.getResizeMatrix();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == true);
 }
 
 test "MatrixList Active" {
@@ -6491,12 +6495,12 @@ test "MatrixList HeightDef" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MatrixList.init().setHeightDef("Hello").unwrap());
+    var item = try (iup.MatrixList.init().setHeightDef(42).unwrap());
     defer item.deinit();
 
     var ret = item.getHeightDef();
 
-    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
+    try std.testing.expect(ret == 42);
 }
 
 test "MatrixList ExpandWeight" {
