@@ -140,16 +140,30 @@ const BookFlight = struct {
 
     fn isValid(self: *Self) bool {
         if (self.getSelection() == .ReturnFlight) {
-            std.log.debug("isValid from: {s} to: {s}", .{ self.initial_date.getValue(), self.final_date.getValue() });
-
-            var initial_date = iup.Date.parse(self.initial_date.getValue()) orelse return false;
-            var final_date = iup.Date.parse(self.final_date.getValue()) orelse return false;
-
-            return (final_date.year > initial_date.year) or
-                (final_date.year == initial_date.year and final_date.month > initial_date.month) or
-                (final_date.year == initial_date.year and final_date.month == initial_date.month and final_date.day >= initial_date.day);
+            return DateComparer.greaterOrEqualsThan(
+                self.final_date.getValue(),
+                self.initial_date.getValue(),
+            );
         } else {
             return true;
         }
+    }
+};
+
+const DateComparer = struct {
+    pub fn greaterOrEqualsThan(date_str1: [:0]const u8, date_str2: [:0]const u8) bool {
+        var date1 = iup.Date.parse(date_str1) orelse return false;
+        var date2 = iup.Date.parse(date_str2) orelse return false;
+
+        return (date1.year > date2.year) or
+            (date1.year == date2.year and date1.month > date2.month) or
+            (date1.year == date2.year and date1.month == date2.month and date1.day >= date2.day);
+    }
+
+    test "greater or equals than" {
+        try std.testing.expectEqual(false, greaterOrEqualsThan("1900/01/01", "1900/01/02"));
+        try std.testing.expectEqual(true, greaterOrEqualsThan("1900/01/03", "1900/01/02"));
+        try std.testing.expectEqual(true, greaterOrEqualsThan("1900/02/01", "1900/01/02"));
+        try std.testing.expectEqual(true, greaterOrEqualsThan("1901/01/01", "1900/01/02"));
     }
 };

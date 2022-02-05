@@ -20,6 +20,113 @@ pub fn main() anyerror!void {
     try iup.MainLoop.beginLoop();
 }
 
+const Cells = struct {
+    const Self = @This();
+
+    allocator: Allocator,
+    fixed_buffer: []u8,
+    spreadsheet: Spreadsheet,
+    dialog: *iup.Dialog = undefined,
+
+    pub fn init(allocator: Allocator) !*Self {
+        var self = try allocator.create(Self);
+
+        self.* = .{
+            .allocator = allocator,
+            .fixed_buffer = try allocator.alloc(u8, 256),
+            .spreadsheet = try Spreadsheet.init(allocator),
+        };
+
+        try self.createDialog();
+        return self;
+    }
+
+    pub fn deinit(self: *Self) void {
+        self.dialog.deinit();
+        self.allocator.free(self.fixed_buffer);
+        self.spreadsheet.deinit();
+        self.allocator.destroy(self);
+    }
+
+    pub fn show(self: *Self) !void {
+        try self.dialog.showXY(.Center, .Center);
+    }
+
+    fn createDialog(self: *Self) !void {
+        self.dialog = try iup.Dialog.init()
+            .setPtrAttribute(Self, "parent", self)
+            .setTitle("Cells")
+            .setSize(.Half, .Half)
+            .setChildren(
+            .{
+                iup.VBox.init()
+                    .setChildren(
+                    .{
+                        iup.Matrix.init().setExpand(.Yes)
+                            .setValueCallback(onValue)
+                            .setValueEditCallback(onValueEdit)
+                            .setNumCol(26)
+                            .setNumLin(100)
+                            .setWidth(0, 15)
+                            .setHeight(0, 8)
+                            .setWidthDef(40)
+                            .setResizeMatrix(true)
+                            .setMarkMultiple(true)
+                            .setMarkMode(.Cell),
+                        iup.HBox.init()
+                            .setMargin(10, 10)
+                            .setChildren(
+                            .{
+                                iup.Label.init()
+                                    .setExpand(.Horizontal)
+                                    .setTitle(
+                                    \\Tip: use formulas to calculate some fun stuff!
+                                    \\Example =SUM(A1:A10)
+                                    \\Supported functions are SUM, MIN, MAX, AVG and COUNT
+                                    \\Expressions like +, -, /, * are not supported yet
+                                ),
+                            },
+                        ),
+                    },
+                ),
+            },
+        ).unwrap();
+    }
+
+    fn onValue(matrix: *iup.Matrix, row: i32, col: i32) [:0]const u8 {
+        const dialog = matrix.getDialog() orelse unreachable;
+        const self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
+
+        const EMPTY = "";
+        if (row == 0 and col == 0) return EMPTY;
+
+        var fba = std.heap.FixedBufferAllocator.init(self.fixed_buffer);
+        var allocator = fba.allocator();
+
+        if (row == 0) return Cell.getColName(allocator, col) catch return Cell.ERR;
+        if (col == 0) return Cell.getRowName(allocator, row) catch return Cell.ERR;
+
+        if (self.spreadsheet.getCell(row, col)) |cell| {
+            if (matrix.getEditCell()) |edit_pos| {
+                if (edit_pos.lin == row and edit_pos.col == col) {
+                    return cell.editText(allocator, &self.spreadsheet) catch return Cell.ERR;
+                }
+            }
+
+            return cell.displayText(allocator, &self.spreadsheet) catch return Cell.ERR;
+        } else {
+            return EMPTY;
+        }
+    }
+
+    fn onValueEdit(matrix: *iup.Matrix, row: i32, col: i32, value: [:0]const u8) !void {
+        const dialog = matrix.getDialog() orelse unreachable;
+        const self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
+
+        try self.spreadsheet.editCell(row, col, value);
+    }
+};
+
 const Spreadsheet = struct {
     const Self = @This();
 
@@ -69,6 +176,63 @@ const Spreadsheet = struct {
         } else {
             cell.data = .{ .Str = try allocator.dupeZ(u8, value) };
         }
+    }
+
+    test "editing" {
+        var allocator = std.testing.allocator;
+        var self = try Self.init(allocator);
+        defer self.deinit();
+
+        try self.editCell(1, 1, "100");
+        var a1 = self.getCell(1, 1) orelse {
+            try std.testing.expect(false);
+            return;
+        };
+
+        try std.testing.expect(a1.data == .Int);
+        try std.testing.expect(a1.data.Int == 100);
+
+        try self.editCell(2, 1, "99.50");
+        var a2 = self.getCell(2, 1) orelse {
+            try std.testing.expect(false);
+            return;
+        };
+
+        try std.testing.expect(a2.data == .Float);
+        try std.testing.expect(a2.data.Float == 99.50);
+
+        try self.editCell(3, 3, "Hello");
+        var c3 = self.getCell(3, 3) orelse {
+            try std.testing.expect(false);
+            return;
+        };
+
+        try std.testing.expect(c3.data == .Str);
+        try std.testing.expectEqualStrings("Hello", c3.data.Str);
+    }
+
+    test "formula" {
+        var allocator = std.testing.allocator;
+        var self = try Self.init(allocator);
+        defer self.deinit();
+
+        try self.editCell(1, 1, "100");
+        try self.editCell(2, 1, "99.50");
+
+        try self.editCell(3, 1, "=SUM(a1:a2)");
+
+        var a3 = self.getCell(3, 1) orelse {
+            try std.testing.expect(false);
+            return;
+        };
+
+        try std.testing.expect(a3.data == .Formula);
+        var eval_a3 = a3.value(&self) orelse {
+            try std.testing.expect(false);
+            return;
+        };
+
+        try std.testing.expect(eval_a3 == 199.50);
     }
 };
 
@@ -159,6 +323,24 @@ const Cell = struct {
             .Formula => |formula| formula.free(allocator),
             else => {},
         }
+    }
+
+    test "parse index" {
+        var a1 = Self.parseIndex("A1");
+        try std.testing.expect(a1 != null);
+        try std.testing.expectEqual(@as(i32, 1), a1.?.col);
+        try std.testing.expectEqual(@as(i32, 1), a1.?.row);
+
+        var b20 = Self.parseIndex("B20");
+        try std.testing.expect(b20 != null);
+        try std.testing.expectEqual(@as(i32, 2), b20.?.col);
+        try std.testing.expectEqual(@as(i32, 20), b20.?.row);
+
+        try std.testing.expect(Self.parseIndex("INCORRECT") == null);
+        try std.testing.expect(Self.parseIndex("10A") == null);
+        try std.testing.expect(Self.parseIndex("") == null);
+        try std.testing.expect(Self.parseIndex("1") == null);
+        try std.testing.expect(Self.parseIndex("A") == null);
     }
 };
 
@@ -307,109 +489,37 @@ const Formula = struct {
 
         return result;
     }
-};
 
-const Cells = struct {
-    const Self = @This();
+    test "parse formula" {
+        var arena = std.heap.ArenaAllocator.init(std.testing.allocator);
+        defer arena.deinit();
 
-    allocator: Allocator,
-    fixed_buffer: []u8,
-    spreadsheet: Spreadsheet,
-    dialog: *iup.Dialog = undefined,
+        const allocator = arena.allocator();
 
-    pub fn init(allocator: Allocator) !*Self {
-        var self = try allocator.create(Self);
+        try std.testing.expect((try Formula.validate(allocator, "INCORRECT")) == null);
+        try std.testing.expect((try Formula.validate(allocator, "")) == null);
+        try std.testing.expect((try Formula.validate(allocator, "A1")) == null);
+        try std.testing.expect((try Formula.validate(allocator, "100")) == null);
 
-        self.* = .{
-            .allocator = allocator,
-            .fixed_buffer = try allocator.alloc(u8, 256),
-            .spreadsheet = try Spreadsheet.init(allocator),
+        try std.testing.expect((try Formula.validate(allocator, "=SUM()")).?.err == true);
+        try std.testing.expect((try Formula.validate(allocator, "=SUM(0)")).?.err == true);
+        try std.testing.expect((try Formula.validate(allocator, "=SUM(0:0)")).?.err == true);
+        try std.testing.expect((try Formula.validate(allocator, "=SUM(A0)")).?.err == true);
+
+        try std.testing.expect((try Formula.validate(allocator, "=SUM(A10:B10)")).?.function_type == .Sum);
+        try std.testing.expect((try Formula.validate(allocator, "=Min(A10:B10)")).?.function_type == .Min);
+        try std.testing.expect((try Formula.validate(allocator, "=max(A10:B10)")).?.function_type == .Max);
+        try std.testing.expect((try Formula.validate(allocator, "=avg(A10:B10)")).?.function_type == .Avg);
+        try std.testing.expect((try Formula.validate(allocator, "=COUNT(A10:B10)")).?.function_type == .Count);
+
+        var formula = (try Formula.validate(allocator, "=SUM(A1:A10)")) orelse {
+            try std.testing.expect(false);
+            return;
         };
 
-        try self.createDialog();
-        return self;
-    }
-
-    pub fn deinit(self: *Self) void {
-        self.dialog.deinit();
-        self.allocator.free(self.fixed_buffer);
-        self.spreadsheet.deinit();
-        self.allocator.destroy(self);
-    }
-
-    pub fn show(self: *Self) !void {
-        try self.dialog.showXY(.Center, .Center);
-    }
-
-    fn createDialog(self: *Self) !void {
-        self.dialog = try iup.Dialog.init()
-            .setPtrAttribute(Self, "parent", self)
-            .setTitle("Cells")
-            .setSize(.Half, .Half)
-            .setChildren(
-            .{
-                iup.VBox.init()
-                    .setChildren(
-                    .{
-                        iup.Matrix.init().setExpand(.Yes)
-                            .setValueCallback(onValue)
-                            .setValueEditCallback(onValueEdit)
-                            .setNumCol(26)
-                            .setNumLin(100)
-                            .setWidth(0, 15)
-                            .setHeight(0, 8)
-                            .setWidthDef(40)
-                            .setResizeMatrix(true)
-                            .setMarkMultiple(true)
-                            .setMarkMode(.Cell),
-                        iup.HBox.init()
-                            .setMargin(10, 10)
-                            .setChildren(
-                            .{iup.Label.init()
-                                .setTitle(
-                                \\Tip: use formulas to calculate some fun stuff! 
-                                \\Example =SUM(A1:A10)
-                                \\Supported functions are SUM, MIN, MAX, AVG and COUNT
-                                \\Expressions like +, -, /, * are not supported yes
-                            )
-                                .setExpand(.Horizontal)},
-                        ),
-                    },
-                ),
-            },
-        ).unwrap();
-    }
-
-    fn onValue(matrix: *iup.Matrix, row: i32, col: i32) [:0]const u8 {
-        const dialog = matrix.getDialog() orelse unreachable;
-        const self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
-
-        const EMPTY = "";
-        if (row == 0 and col == 0) return EMPTY;
-
-        var fba = std.heap.FixedBufferAllocator.init(self.fixed_buffer);
-        var allocator = fba.allocator();
-
-        if (row == 0) return Cell.getColName(allocator, col) catch return Cell.ERR;
-        if (col == 0) return Cell.getRowName(allocator, row) catch return Cell.ERR;
-
-        if (self.spreadsheet.getCell(row, col)) |cell| {
-            if (matrix.getEditCell()) |edit_pos| {
-                if (edit_pos.lin == row and edit_pos.col == col) {
-                    return cell.editText(allocator, &self.spreadsheet) catch return Cell.ERR;
-                }
-            }
-
-            return cell.displayText(allocator, &self.spreadsheet) catch return Cell.ERR;
-        } else {
-            return EMPTY;
-        }
-    }
-
-    fn onValueEdit(matrix: *iup.Matrix, row: i32, col: i32, value: [:0]const u8) !void {
-        const dialog = matrix.getDialog() orelse unreachable;
-        const self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
-
-        try self.spreadsheet.editCell(row, col, value);
+        try std.testing.expectEqualStrings("=SUM(A1:A10)", formula.text);
+        try std.testing.expect(formula.err == false);
+        try std.testing.expect(formula.function_type == .Sum);
+        try std.testing.expect(formula.cells.len == 10);
     }
 };

@@ -70,6 +70,15 @@ pub fn build(b: *std.build.Builder) void {
     addExample(b, "crud", "5. Crud", "src/crud.zig");
     addExample(b, "circle", "6. Circle Drawer", "src/circle.zig");
     addExample(b, "cells", "7. Circle Drawer", "src/cells.zig");
+
+    const mode = b.standardReleaseOptions();
+    var main_tests = b.addTest("src/tests.zig");
+    main_tests.setBuildMode(mode);
+    main_tests.linkLibC();
+    try addIupReference(main_tests);
+
+    const test_step = b.step("test", "Run library tests");
+    test_step.dependOn(&main_tests.step);    
 }
 
 fn addExample(b: *Builder, comptime name: []const u8, comptime description: []const u8, comptime file: []const u8) void {

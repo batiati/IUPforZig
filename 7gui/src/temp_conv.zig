@@ -4,6 +4,8 @@
 const std = @import("std");
 const iup = @import("iup");
 
+const expect = std.testing.expect;
+
 const Allocator = std.mem.Allocator;
 const GeneralPurposeAllocator = std.heap.GeneralPurposeAllocator(.{});
 
@@ -87,7 +89,7 @@ const TempConv = struct {
             return;
         };
 
-        const fahrenheit_value = (celsius_value * (9.0 / 5.0)) + 32.0;
+        const fahrenheit_value = Converter.celsiusToFahrenheit(celsius_value);
         var fahrenheit_str = try std.fmt.allocPrintZ(self.allocator, "{d:.2}", .{fahrenheit_value});
         defer self.allocator.free(fahrenheit_str);
 
@@ -102,7 +104,7 @@ const TempConv = struct {
             return;
         };
 
-        const celsius_value = (fahrenheit_value - 32.0) * (5.0 / 9.0);
+        const celsius_value = Converter.fahrenheitToCelsius(fahrenheit_value);
         var celsius_str = try std.fmt.allocPrintZ(self.allocator, "{d:.2}", .{celsius_value});
         defer self.allocator.free(celsius_str);
 
@@ -121,5 +123,25 @@ const TempConv = struct {
         var dialog = text.getDialog() orelse unreachable;
         var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
         try self.convertToFahrenheit(value);
+    }
+};
+
+const Converter = struct {
+    pub fn fahrenheitToCelsius(fahrenheit_value: f32) f32 {
+        return (fahrenheit_value - 32.0) * (5.0 / 9.0);
+    }
+
+    pub fn celsiusToFahrenheit(celsius_value: f32) f32 {
+        return (celsius_value * (9.0 / 5.0)) + 32.0;
+    }
+
+    test "fahrenheit to celsius" {
+        try std.testing.expectApproxEqAbs(@as(f32, 0.0), fahrenheitToCelsius(32.0), 0.0001);
+        try std.testing.expectApproxEqAbs(@as(f32, 100.0), fahrenheitToCelsius(212.0), 0.0001);
+    }
+
+    test "celsius to fahrenheit" {
+        try std.testing.expectApproxEqAbs(@as(f32, 32.0), celsiusToFahrenheit(0.0), 0.0001);
+        try std.testing.expectApproxEqAbs(@as(f32, 212.0), celsiusToFahrenheit(100.0), 0.0001);
     }
 };

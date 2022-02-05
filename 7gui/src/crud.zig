@@ -44,95 +44,6 @@ const Person = struct {
     }
 };
 
-/// A simple datasource capable of Load/Add/Update/Delete/Filter
-const DataSource = struct {
-    const Self = @This();
-    const PersonList = std.AutoArrayHashMap(i32, Person);
-
-    list: PersonList,
-    sequence: i32 = 0,
-
-    pub fn init(allocator: Allocator) !Self {
-        var self = Self{
-            .list = PersonList.init(allocator),
-        };
-
-        return self;
-    }
-
-    pub fn deinit(self: *Self) void {
-        const allocator = self.list.allocator;
-        for (self.list.values()) |*person| {
-            person.free(allocator);
-        }
-
-        self.list.deinit();
-    }
-
-    pub fn loadInitialData(self: *Self) !void {
-        self.sequence = 0;
-        self.list.clearAndFree();
-
-        try self.create("Hans", "Emil");
-        try self.create("Max", "Mustermann");
-        try self.create("Roman", "Tisch");
-    }
-
-    pub fn get(self: *Self, id: i32) ?Person {
-        return self.list.get(id);
-    }
-
-    pub fn create(self: *Self, name: [:0]const u8, surname: [:0]const u8) !void {
-        const allocator = self.list.allocator;
-
-        self.sequence += 1;
-        var person = try Person.copy(allocator, self.sequence, name, surname);
-        try self.list.put(person.id, person);
-    }
-
-    pub fn update(self: *Self, id: i32, name: [:0]const u8, surname: [:0]const u8) !void {
-        var person = self.list.getPtr(id) orelse return;
-
-        const allocator = self.list.allocator;
-        person.free(allocator);
-
-        person.* = try Person.copy(allocator, id, name, surname);
-    }
-
-    pub fn delete(self: *Self, id: i32) void {
-        var kv = self.list.fetchSwapRemove(id) orelse return;
-
-        const allocator = self.list.allocator;
-        kv.value.free(allocator);
-    }
-
-    pub const FilterIterator = struct {
-        index: usize = 0,
-        slice: []Person,
-        filter_text: ?[:0]const u8,
-
-        pub fn next(self: *@This()) ?Person {
-            if (self.index < self.slice.len) {
-                for (self.slice[self.index..]) |person| {
-                    self.index += 1;
-                    if (self.filter_text == null or std.ascii.startsWithIgnoreCase(person.name, self.filter_text.?) or std.ascii.startsWithIgnoreCase(person.surname, self.filter_text.?)) {
-                        return person;
-                    }
-                }
-            }
-
-            return null;
-        }
-    };
-
-    pub fn filter(self: *Self, filter_text: ?[:0]const u8) FilterIterator {
-        return .{
-            .slice = self.list.values(),
-            .filter_text = filter_text,
-        };
-    }
-};
-
 const Crud = struct {
     const Self = @This();
 
@@ -329,5 +240,159 @@ const Crud = struct {
             const row = self.list_view.getCount();
             self.list_view.setIntId("id", row, person.id);
         }
+    }
+};
+
+/// A simple datasource capable of Load/Add/Update/Delete/Filter
+const DataSource = struct {
+    const Self = @This();
+    const PersonList = std.AutoArrayHashMap(i32, Person);
+
+    list: PersonList,
+    sequence: i32 = 0,
+
+    pub fn init(allocator: Allocator) !Self {
+        var self = Self{
+            .list = PersonList.init(allocator),
+        };
+
+        return self;
+    }
+
+    pub fn deinit(self: *Self) void {
+        const allocator = self.list.allocator;
+        for (self.list.values()) |*person| {
+            person.free(allocator);
+        }
+
+        self.list.deinit();
+    }
+
+    pub fn loadInitialData(self: *Self) !void {
+        self.sequence = 0;
+        self.list.clearAndFree();
+
+        try self.create("Hans", "Emil");
+        try self.create("Max", "Mustermann");
+        try self.create("Roman", "Tisch");
+    }
+
+    pub fn get(self: *Self, id: i32) ?Person {
+        return self.list.get(id);
+    }
+
+    pub fn create(self: *Self, name: [:0]const u8, surname: [:0]const u8) !void {
+        const allocator = self.list.allocator;
+
+        self.sequence += 1;
+        var person = try Person.copy(allocator, self.sequence, name, surname);
+        try self.list.put(person.id, person);
+    }
+
+    pub fn update(self: *Self, id: i32, name: [:0]const u8, surname: [:0]const u8) !void {
+        var person = self.list.getPtr(id) orelse return;
+
+        const allocator = self.list.allocator;
+        person.free(allocator);
+
+        person.* = try Person.copy(allocator, id, name, surname);
+    }
+
+    pub fn delete(self: *Self, id: i32) void {
+        var kv = self.list.fetchSwapRemove(id) orelse return;
+
+        const allocator = self.list.allocator;
+        kv.value.free(allocator);
+    }
+
+    pub const FilterIterator = struct {
+        index: usize = 0,
+        slice: []Person,
+        filter_text: ?[:0]const u8,
+
+        pub fn next(self: *@This()) ?Person {
+            if (self.index < self.slice.len) {
+                for (self.slice[self.index..]) |person| {
+                    self.index += 1;
+                    if (self.filter_text == null or std.ascii.startsWithIgnoreCase(person.name, self.filter_text.?) or std.ascii.startsWithIgnoreCase(person.surname, self.filter_text.?)) {
+                        return person;
+                    }
+                }
+            }
+
+            return null;
+        }
+    };
+
+    pub fn filter(self: *Self, filter_text: ?[:0]const u8) FilterIterator {
+        return .{
+            .slice = self.list.values(),
+            .filter_text = filter_text,
+        };
+    }
+
+    test "crud" {
+        const allocator = std.testing.allocator;
+        var self = try Self.init(allocator);
+        defer self.deinit();
+
+        try self.create("ZZA", "AAA");
+        var person = self.filter("").next() orelse {
+            try std.testing.expect(false);
+            return;
+        };
+
+        var get_person = self.get(person.id) orelse {
+            try std.testing.expect(false);
+            return;
+        };
+
+        try std.testing.expect(std.meta.eql(person, get_person));
+
+        try self.update(person.id, "CHANGED_NAME", "CHANGED_SURNAME");
+
+        var changed_person = self.get(person.id) orelse {
+            try std.testing.expect(false);
+            return;
+        };
+
+        try std.testing.expectEqualStrings("CHANGED_NAME", changed_person.name);
+        try std.testing.expectEqualStrings("CHANGED_SURNAME", changed_person.surname);
+
+        self.delete(person.id);
+        try std.testing.expect(self.get(person.id) == null);
+    }
+
+    test "filter" {
+        const allocator = std.testing.allocator;
+        var self = try Self.init(allocator);
+        defer self.deinit();
+
+        try self.create("ZZA", "AAA");
+        try self.create("ZZA", "XXX");
+        try self.create("XYZ", "XXX");
+        try self.create("NOT", "NOT");
+
+        try std.testing.expectEqual(@as(usize, 4), self.list.count());
+
+        var iterator_name = self.filter("ZZA");
+        try std.testing.expect(iterator_name.next() != null);
+        try std.testing.expect(iterator_name.next() != null);
+        try std.testing.expect(iterator_name.next() == null);
+
+        var iterator_surname = self.filter("XXX");
+        try std.testing.expect(iterator_surname.next() != null);
+        try std.testing.expect(iterator_surname.next() != null);
+        try std.testing.expect(iterator_surname.next() == null);
+
+        var iterator_none = self.filter("WWW");
+        try std.testing.expect(iterator_none.next() == null);
+
+        var iterator_empty = self.filter("");
+        try std.testing.expect(iterator_empty.next() != null);
+        try std.testing.expect(iterator_empty.next() != null);
+        try std.testing.expect(iterator_empty.next() != null);
+        try std.testing.expect(iterator_empty.next() != null);
+        try std.testing.expect(iterator_empty.next() == null);
     }
 };

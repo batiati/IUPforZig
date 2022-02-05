@@ -22,179 +22,6 @@ pub fn main() anyerror!void {
     try iup.MainLoop.beginLoop();
 }
 
-const Circle = struct {
-    const Self = @This();
-
-    pub const DefaultRadius = 30;
-    pub const MinRadius = 5;
-    pub const MaxRadius = 120;
-
-    id: u32,
-    x: i32,
-    y: i32,
-    radius: i32,
-
-    pub fn collision(self: Self, x: i32, y: i32) ?i32 {
-        const dx = self.x - x;
-        const dy = self.y - y;
-        const r = @floatToInt(i32, std.math.sqrt(@intToFloat(f64, dx * dx + dy * dy)));
-
-        return if (r < self.radius) r else null;
-    }
-};
-
-/// Simple DataSource to store all circles perform the undo/redo history.
-const Drawing = struct {
-    const Self = @This();
-
-    const Action = union(enum) {
-        Create: Circle,
-        Update: struct { id: u32, old_radius: i32, new_radius: i32 },
-    };
-
-    sequence: u32,
-    selected: ?u32,
-    circles: std.AutoArrayHashMap(u32, Circle),
-    undo_history: std.ArrayList(Action),
-    undo_index: ?usize,
-
-    pub fn init(allocator: Allocator) !Self {
-        return Self{
-            .sequence = 0,
-            .selected = null,
-            .circles = std.AutoArrayHashMap(u32, Circle).init(allocator),
-            .undo_history = std.ArrayList(Action).init(allocator),
-            .undo_index = null,
-        };
-    }
-
-    pub fn deinit(self: *Self) void {
-        self.circles.deinit();
-        self.undo_history.deinit();
-    }
-
-    pub fn canUndo(self: *const Self) bool {
-        return self.undo_history.items.len > 0 and (self.undo_index == null or self.undo_index.? > 0);
-    }
-
-    pub fn canRedo(self: *const Self) bool {
-        return self.undo_history.items.len > 0 and self.undo_index != null;
-    }
-
-    pub fn getCircleById(self: *const Self, id: u32) ?Circle {
-        return self.circles.get(id);
-    }
-
-    pub fn getSelected(self: *const Self) ?Circle {
-        const id = self.selected orelse return null;
-        return self.getCircleById(id);
-    }
-
-    pub fn setSelected(self: *Self, id: ?u32, toggle: bool) void {
-        if (toggle and std.meta.eql(self.selected, id)) {
-            self.selected = null;
-        } else {
-            self.selected = id;
-        }
-    }
-
-    pub fn getCollision(self: *const Self, x: i32, y: i32) ?u32 {
-        var id: ?u32 = null;
-        var min_distance: ?i32 = null;
-
-        for (self.circles.values()) |*circle| {
-            if (circle.collision(x, y)) |distance| {
-                if (min_distance == null or distance < min_distance.?) {
-                    min_distance = distance;
-                    id = circle.id;
-                }
-            }
-        }
-
-        return id;
-    }
-
-    pub fn items(self: *const Self) []Circle {
-        return self.circles.values();
-    }
-
-    pub fn create(self: *Self, x: i32, y: i32) !void {
-        self.sequence += 1;
-        var circle = Circle{
-            .id = self.sequence,
-            .x = x,
-            .y = y,
-            .radius = Circle.DefaultRadius,
-        };
-
-        try self.invalidateRedoHistory();
-        try self.undo_history.append(.{ .Create = circle });
-
-        try self.addCircle(circle);
-    }
-
-    pub fn update(self: *Self, id: u32, old_radius: i32, new_radius: i32) !void {
-        try self.invalidateRedoHistory();
-        try self.undo_history.append(.{ .Update = .{ .id = id, .old_radius = old_radius, .new_radius = new_radius } });
-    }
-
-    pub fn setRadius(self: *Self, id: u32, radius: i32) !void {
-        var circle = self.circles.getPtr(id) orelse return;
-        circle.radius = radius;
-    }
-
-    fn addCircle(self: *Self, circle: Circle) !void {
-        try self.circles.put(circle.id, circle);
-        self.selected = null;
-    }
-
-    fn removeCircle(self: *Self, id: u32) void {
-        _ = self.circles.swapRemove(id);
-    }
-
-    pub fn undo(self: *Self) !void {
-        self.undo_index = blk: {
-            if (self.undo_index) |undo_index| {
-                if (undo_index == 0) return;
-                assert(undo_index < self.undo_history.items.len);
-                break :blk undo_index - 1;
-            } else {
-                break :blk self.undo_history.items.len - 1;
-            }
-        };
-
-        const action = self.undo_history.items[self.undo_index.?];
-
-        switch (action) {
-            .Create => |circle| self.removeCircle(circle.id),
-            .Update => |change| try self.setRadius(change.id, change.old_radius),
-        }
-    }
-
-    pub fn redo(self: *Self) !void {
-        if (self.undo_index) |undo_index| {
-            assert(undo_index < self.undo_history.items.len);
-
-            const action = self.undo_history.items[undo_index];
-            self.undo_index = if (undo_index == self.undo_history.items.len - 1) null else undo_index + 1;
-
-            switch (action) {
-                .Create => |circle| try self.addCircle(circle),
-                .Update => |change| try self.setRadius(change.id, change.new_radius),
-            }
-        }
-    }
-
-    pub fn invalidateRedoHistory(self: *Self) !void {
-        if (self.undo_index) |undo_index| {
-            assert(undo_index < self.undo_history.items.len);
-
-            self.undo_history.shrinkRetainingCapacity(undo_index);
-            self.undo_index = null;
-        }
-    }
-};
-
 const CircleDrawer = struct {
     const Self = @This();
 
@@ -462,5 +289,278 @@ const ConfigDialog = struct {
 
             try self.parent.updateRadius(circle.id, circle.radius, new_radius);
         }
+    }
+};
+
+const Circle = struct {
+    const Self = @This();
+
+    pub const DefaultRadius = 30;
+    pub const MinRadius = 5;
+    pub const MaxRadius = 120;
+
+    id: u32,
+    x: i32,
+    y: i32,
+    radius: i32,
+
+    pub fn collision(self: Self, x: i32, y: i32) ?i32 {
+        const dx = self.x - x;
+        const dy = self.y - y;
+        const r = @floatToInt(i32, std.math.sqrt(@intToFloat(f64, dx * dx + dy * dy)));
+
+        return if (r < self.radius) r else null;
+    }
+
+    test "collision" {
+        var self = Self{
+            .id = 0,
+            .x = 100,
+            .y = 100,
+            .radius = 20,
+        };
+
+        const distance = @as(i32, 7);
+        try std.testing.expectEqual(distance, self.collision(105, 105).?);
+        try std.testing.expectEqual(distance, self.collision(95, 105).?);
+        try std.testing.expectEqual(distance, self.collision(105, 95).?);
+        try std.testing.expectEqual(distance, self.collision(95, 95).?);
+        try std.testing.expect(self.collision(150, 150) == null);
+    }
+};
+
+/// Simple DataSource to store all circles perform the undo/redo history.
+const Drawing = struct {
+    const Self = @This();
+
+    const Action = union(enum) {
+        Create: Circle,
+        Update: struct { id: u32, old_radius: i32, new_radius: i32 },
+    };
+
+    sequence: u32,
+    selected: ?u32,
+    circles: std.AutoArrayHashMap(u32, Circle),
+    undo_history: std.ArrayList(Action),
+    undo_index: ?usize,
+
+    pub fn init(allocator: Allocator) !Self {
+        return Self{
+            .sequence = 0,
+            .selected = null,
+            .circles = std.AutoArrayHashMap(u32, Circle).init(allocator),
+            .undo_history = std.ArrayList(Action).init(allocator),
+            .undo_index = null,
+        };
+    }
+
+    pub fn deinit(self: *Self) void {
+        self.circles.deinit();
+        self.undo_history.deinit();
+    }
+
+    pub fn canUndo(self: *const Self) bool {
+        return self.undo_history.items.len > 0 and (self.undo_index == null or self.undo_index.? > 0);
+    }
+
+    pub fn canRedo(self: *const Self) bool {
+        return self.undo_history.items.len > 0 and self.undo_index != null;
+    }
+
+    pub fn getCircleById(self: *const Self, id: u32) ?Circle {
+        return self.circles.get(id);
+    }
+
+    pub fn getSelected(self: *const Self) ?Circle {
+        const id = self.selected orelse return null;
+        return self.getCircleById(id);
+    }
+
+    pub fn setSelected(self: *Self, id: ?u32, toggle: bool) void {
+        if (toggle and std.meta.eql(self.selected, id)) {
+            self.selected = null;
+        } else {
+            self.selected = id;
+        }
+    }
+
+    pub fn getCollision(self: *const Self, x: i32, y: i32) ?u32 {
+        var id: ?u32 = null;
+        var min_distance: ?i32 = null;
+
+        for (self.circles.values()) |*circle| {
+            if (circle.collision(x, y)) |distance| {
+                if (min_distance == null or distance < min_distance.?) {
+                    min_distance = distance;
+                    id = circle.id;
+                }
+            }
+        }
+
+        return id;
+    }
+
+    pub fn items(self: *const Self) []Circle {
+        return self.circles.values();
+    }
+
+    pub fn create(self: *Self, x: i32, y: i32) !void {
+        self.sequence += 1;
+        var circle = Circle{
+            .id = self.sequence,
+            .x = x,
+            .y = y,
+            .radius = Circle.DefaultRadius,
+        };
+
+        try self.invalidateRedoHistory();
+        try self.undo_history.append(.{ .Create = circle });
+
+        try self.addCircle(circle);
+    }
+
+    pub fn update(self: *Self, id: u32, old_radius: i32, new_radius: i32) !void {
+        try self.invalidateRedoHistory();
+        try self.undo_history.append(.{ .Update = .{ .id = id, .old_radius = old_radius, .new_radius = new_radius } });
+
+        try self.setRadius(id, new_radius);
+    }
+
+    pub fn setRadius(self: *Self, id: u32, radius: i32) !void {
+        var circle = self.circles.getPtr(id) orelse return;
+        circle.radius = radius;
+    }
+
+    fn addCircle(self: *Self, circle: Circle) !void {
+        try self.circles.put(circle.id, circle);
+        self.selected = null;
+    }
+
+    fn removeCircle(self: *Self, id: u32) void {
+        _ = self.circles.swapRemove(id);
+    }
+
+    pub fn undo(self: *Self) !void {
+        self.undo_index = blk: {
+            if (self.undo_index) |undo_index| {
+                if (undo_index == 0) return;
+                assert(undo_index < self.undo_history.items.len);
+                break :blk undo_index - 1;
+            } else {
+                break :blk self.undo_history.items.len - 1;
+            }
+        };
+
+        const action = self.undo_history.items[self.undo_index.?];
+
+        switch (action) {
+            .Create => |circle| self.removeCircle(circle.id),
+            .Update => |change| try self.setRadius(change.id, change.old_radius),
+        }
+    }
+
+    pub fn redo(self: *Self) !void {
+        if (self.undo_index) |undo_index| {
+            assert(undo_index < self.undo_history.items.len);
+
+            const action = self.undo_history.items[undo_index];
+            self.undo_index = if (undo_index == self.undo_history.items.len - 1) null else undo_index + 1;
+
+            switch (action) {
+                .Create => |circle| try self.addCircle(circle),
+                .Update => |change| try self.setRadius(change.id, change.new_radius),
+            }
+        }
+    }
+
+    pub fn invalidateRedoHistory(self: *Self) !void {
+        if (self.undo_index) |undo_index| {
+            assert(undo_index < self.undo_history.items.len);
+
+            self.undo_history.shrinkRetainingCapacity(undo_index);
+            self.undo_index = null;
+        }
+    }
+
+    test "create circle" {
+        const allocator = std.testing.allocator;
+        var self = try Self.init(allocator);
+        defer self.deinit();
+
+        try std.testing.expect(self.items().len == 0);
+        try std.testing.expectEqual(false, self.canUndo());
+        try std.testing.expectEqual(false, self.canRedo());
+
+        try self.create(100, 100);
+        try std.testing.expect(self.items().len == 1);
+        try std.testing.expectEqual(true, self.canUndo());
+        try std.testing.expectEqual(false, self.canRedo());
+
+        try self.create(200, 200);
+        try std.testing.expect(self.items().len == 2);
+        try std.testing.expectEqual(true, self.canUndo());
+        try std.testing.expectEqual(false, self.canRedo());
+
+        try self.undo();
+        try std.testing.expect(self.items().len == 1);
+        try std.testing.expectEqual(true, self.canUndo());
+        try std.testing.expectEqual(true, self.canRedo());
+
+        try self.undo();
+        try std.testing.expect(self.items().len == 0);
+        try std.testing.expectEqual(false, self.canUndo());
+        try std.testing.expectEqual(true, self.canRedo());
+
+        try self.redo();
+        try std.testing.expect(self.items().len == 1);
+        try std.testing.expectEqual(true, self.canUndo());
+        try std.testing.expectEqual(true, self.canRedo());
+
+        try self.redo();
+        try std.testing.expect(self.items().len == 2);
+        try std.testing.expectEqual(true, self.canUndo());
+        try std.testing.expectEqual(false, self.canRedo());
+    }
+
+    test "update radius" {
+        const allocator = std.testing.allocator;
+        var self = try Self.init(allocator);
+        defer self.deinit();
+
+        try self.create(100, 100);
+        const circle = self.items()[0];
+
+        try self.update(circle.id, circle.radius, circle.radius + 10);
+        try std.testing.expectEqual(true, self.canUndo());
+        try std.testing.expectEqual(false, self.canRedo());
+        try std.testing.expectEqual(circle.radius + 10, self.getCircleById(circle.id).?.radius);
+
+        try self.undo();
+        try std.testing.expectEqual(true, self.canUndo());
+        try std.testing.expectEqual(true, self.canRedo());
+        try std.testing.expectEqual(circle.radius, self.getCircleById(circle.id).?.radius);
+
+        try self.redo();
+        try std.testing.expectEqual(true, self.canUndo());
+        try std.testing.expectEqual(false, self.canRedo());
+        try std.testing.expectEqual(circle.radius + 10, self.getCircleById(circle.id).?.radius);
+    }
+
+    test "invalidate redo list" {
+        const allocator = std.testing.allocator;
+        var self = try Self.init(allocator);
+        defer self.deinit();
+
+        try self.create(100, 100);
+        try std.testing.expectEqual(true, self.canUndo());
+        try std.testing.expectEqual(false, self.canRedo());
+
+        try self.undo();
+        try std.testing.expectEqual(false, self.canUndo());
+        try std.testing.expectEqual(true, self.canRedo());
+
+        try self.create(101, 101);
+        try std.testing.expectEqual(true, self.canUndo());
+        try std.testing.expectEqual(false, self.canRedo());
     }
 };
