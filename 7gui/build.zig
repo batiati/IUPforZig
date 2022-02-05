@@ -69,6 +69,7 @@ pub fn build(b: *std.build.Builder) void {
     addExample(b, "timer", "4. Timer", "src/timer.zig");
     addExample(b, "crud", "5. Crud", "src/crud.zig");
     addExample(b, "circle", "6. Circle Drawer", "src/circle.zig");
+    addExample(b, "cells", "7. Circle Drawer", "src/cells.zig");
 }
 
 fn addExample(b: *Builder, comptime name: []const u8, comptime description: []const u8, comptime file: []const u8) void {
