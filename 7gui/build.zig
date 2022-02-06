@@ -69,7 +69,7 @@ pub fn build(b: *std.build.Builder) void {
     addExample(b, "timer", "4. Timer", "src/timer.zig");
     addExample(b, "crud", "5. Crud", "src/crud.zig");
     addExample(b, "circle", "6. Circle Drawer", "src/circle.zig");
-    addExample(b, "cells", "7. Circle Drawer", "src/cells.zig");
+    addExample(b, "cells", "7. Cells", "src/cells.zig");
 
     const mode = b.standardReleaseOptions();
     var main_tests = b.addTest("src/tests.zig");
