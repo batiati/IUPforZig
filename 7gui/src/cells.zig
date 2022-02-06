@@ -24,7 +24,6 @@ const Cells = struct {
     const Self = @This();
 
     allocator: Allocator,
-    fixed_buffer: []u8,
     spreadsheet: Spreadsheet,
     dialog: *iup.Dialog = undefined,
 
@@ -33,7 +32,6 @@ const Cells = struct {
 
         self.* = .{
             .allocator = allocator,
-            .fixed_buffer = try allocator.alloc(u8, 256),
             .spreadsheet = try Spreadsheet.init(allocator),
         };
 
@@ -43,7 +41,6 @@ const Cells = struct {
 
     pub fn deinit(self: *Self) void {
         self.dialog.deinit();
-        self.allocator.free(self.fixed_buffer);
         self.spreadsheet.deinit();
         self.allocator.destroy(self);
     }
@@ -100,20 +97,17 @@ const Cells = struct {
         const EMPTY = "";
         if (row == 0 and col == 0) return EMPTY;
 
-        var fba = std.heap.FixedBufferAllocator.init(self.fixed_buffer);
-        var allocator = fba.allocator();
-
-        if (row == 0) return Cell.getColName(allocator, col) catch return Cell.ERR;
-        if (col == 0) return Cell.getRowName(allocator, row) catch return Cell.ERR;
+        if (row == 0) return Cell.getColName(&self.spreadsheet, col) catch return Cell.ERR;
+        if (col == 0) return Cell.getRowName(&self.spreadsheet,row) catch return Cell.ERR;
 
         if (self.spreadsheet.getCell(row, col)) |cell| {
             if (matrix.getEditCell()) |edit_pos| {
                 if (edit_pos.lin == row and edit_pos.col == col) {
-                    return cell.editText(allocator, &self.spreadsheet) catch return Cell.ERR;
+                    return cell.editText(&self.spreadsheet) catch return Cell.ERR;
                 }
             }
 
-            return cell.displayText(allocator, &self.spreadsheet) catch return Cell.ERR;
+            return cell.displayText(&self.spreadsheet) catch return Cell.ERR;
         } else {
             return EMPTY;
         }
@@ -131,10 +125,12 @@ const Spreadsheet = struct {
     const Self = @This();
 
     cells: std.AutoHashMap(Cell.Index, Cell),
+    fixed_buffer: []u8,
 
     pub fn init(allocator: Allocator) !Self {
         return Self{
             .cells = std.AutoHashMap(Cell.Index, Cell).init(allocator),
+            .fixed_buffer = try allocator.alloc(u8, 256),
         };
     }
 
@@ -145,6 +141,7 @@ const Spreadsheet = struct {
             cell.free(allocator);
         }
 
+        allocator.free(self.fixed_buffer);
         self.cells.deinit();
     }
 
@@ -257,7 +254,11 @@ const Cell = struct {
     index: Index,
     data: Data,
 
-    pub fn getColName(allocator: Allocator, col: i32) ![:0]const u8 {
+    pub fn getColName(spreadsheet: *const Spreadsheet, col: i32) ![:0]const u8 {
+
+        var fba = std.heap.FixedBufferAllocator.init(spreadsheet.fixed_buffer);
+        var allocator = fba.allocator();
+
         var list = std.ArrayList(u8).init(allocator);
         try list.append(@intCast(u8, 'A' + col - 1));
         try list.append(0);
@@ -265,7 +266,11 @@ const Cell = struct {
         return std.meta.assumeSentinel(list.toOwnedSlice(), 0);
     }
 
-    pub fn getRowName(allocator: Allocator, row: i32) ![:0]const u8 {
+    pub fn getRowName(spreadsheet: *const Spreadsheet, row: i32) ![:0]const u8 {
+
+        var fba = std.heap.FixedBufferAllocator.init(spreadsheet.fixed_buffer);
+        var allocator = fba.allocator();
+
         return try std.fmt.allocPrintZ(allocator, "{}", .{row});
     }
 
@@ -284,7 +289,11 @@ const Cell = struct {
         }
     }
 
-    pub fn displayText(self: *const Self, allocator: Allocator, spreadsheet: *const Spreadsheet) ![:0]const u8 {
+    pub fn displayText(self: *const Self, spreadsheet: *const Spreadsheet) ![:0]const u8 {
+
+        var fba = std.heap.FixedBufferAllocator.init(spreadsheet.fixed_buffer);
+        var allocator = fba.allocator();
+
         switch (self.data) {
             .Empty => return "",
             .Str => |str| return str,
@@ -300,10 +309,11 @@ const Cell = struct {
         }
     }
 
-    pub fn editText(self: *const Self, allocator: Allocator, spreadsheet: *const Spreadsheet) ![:0]const u8 {
+    pub fn editText(self: *const Self, spreadsheet: *const Spreadsheet) ![:0]const u8 {
+        
         switch (self.data) {
             .Formula => |formula| return formula.text,
-            else => return self.displayText(allocator, spreadsheet),
+            else => return self.displayText(spreadsheet),
         }
     }
 
