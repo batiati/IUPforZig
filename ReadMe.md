@@ -149,9 +149,18 @@ pub fn main() !void {
 
 ## How to build
 
-The `build.zig` file is the bare minimum for link against IUP shared libraries on Linux and Windows.
+Installing IUP shared libraries on Linux and Windows:
 
-Please visit IUP's download page for your platform:
+```bash
+sudo ./install_iup.sh
+```
+
+```cmd
+.\install_iup.bat
+```
+
+
+For more information, please visit IUP's download page for your platform:
 https://sourceforge.net/projects/iup/files/3.30/
 
 Dependencies for `libim` and `libcd` are also required:

@@ -4,10 +4,6 @@ const Pkg = std.build.Pkg;
 
 fn addIupReference(step: *std.build.LibExeObjStep) !void {
     if (step.target.isWindows()) {
-
-        // workarround, forcing MSVC ABI
-        step.target.abi = .msvc;
-
         step.linkSystemLibrary("Gdi32");
         step.linkSystemLibrary("User32");
         step.linkSystemLibrary("Shell32");
@@ -15,19 +11,6 @@ fn addIupReference(step: *std.build.LibExeObjStep) !void {
         step.linkSystemLibrary("Comdlg32");
         step.linkSystemLibrary("Ole32");
         step.linkSystemLibrary("Advapi32");
-
-        // Workarround for
-        // #9002 Find native include and libraries is broken with msvc ABI
-        // https://github.com/ziglang/zig/issues/9002
-
-        step.addLibraryPath("lib/uwp");
-        step.addLibraryPath("lib/um");
-        step.addLibraryPath("lib/ucrt");
-
-        step.addLibraryPath("C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.16.27023\\lib\\x64");
-
-        // Link againts .lib files
-        step.addLibraryPath("lib/win64");
 
         step.linkSystemLibrary("iupfiledlg");
         step.linkSystemLibrary("iupole");
