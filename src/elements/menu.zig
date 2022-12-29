@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Creates a menu element, which groups 3 types of interface elements: item,
 /// submenu and separator.
 /// Any other interface element defined inside a menu will be an error.
@@ -33,7 +33,7 @@ pub const Menu = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Menu;
     const Self = @This();
 
-    /// 
+    ///
     /// MENUCLOSE_CB MENUCLOSE_CB Called just after the menu is closed.
     /// Callback int function(Ihandle *ih); [in C] ih:menuclose_cb() -> (ret:
     /// number) [in Lua] ih: identifier of the element that activated the event.
@@ -42,7 +42,7 @@ pub const Menu = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -57,14 +57,14 @@ pub const Menu = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// OPEN_CB OPEN_CB Called just before the menu is opened.
     /// Callback int function(Ihandle *ih); [in C] ih:open_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects IupMenu
     pub const OnOpenFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -77,14 +77,14 @@ pub const Menu = opaque {
 
     pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -113,104 +113,103 @@ pub const Menu = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setChildren(self: *Initializer, tuple: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setChildren(self: Initializer, tuple: anytype) Initializer {
+            if (self.last_error) |_| return self;
 
             Self.appendChildren(self.ref, tuple) catch |err| {
-                self.last_error = err;
+                return .{
+                    .ref = self.ref,
+                    .last_error = err,
+                };
             };
 
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BGCOLOR: the background color of the menu, affects all items in the menu.
         /// (since 3.0)
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFont(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// RADIO (non inheritable): enables the automatic toggle of one child item.
         /// When a child item is selected the other item is automatically deselected.
         /// The menu acts like a IupRadio for its children.
         /// Submenus and their children are not affected.
-        pub fn setRadio(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRadio(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "RADIO", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
         /// (since 3.1)
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
         /// then its size and position will be ignored by the layout processing.
         /// Default: "NO".
         /// (since 3.0)
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -218,11 +217,10 @@ pub const Menu = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -235,24 +233,23 @@ pub const Menu = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -269,30 +266,30 @@ pub const Menu = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MENUCLOSE_CB MENUCLOSE_CB Called just after the menu is closed.
         /// Callback int function(Ihandle *ih); [in C] ih:menuclose_cb() -> (ret:
         /// number) [in Lua] ih: identifier of the element that activated the event.
         /// Affects IupMenu
-        pub fn setMenuCloseCallback(self: *Initializer, callback: ?OnMenuCloseFn) Initializer {
+        pub fn setMenuCloseCallback(self: Initializer, callback: ?*const OnMenuCloseFn) Initializer {
             const Handler = CallbackHandler(Self, OnMenuCloseFn, "MENUCLOSE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+        pub fn setLDestroyCallback(self: Initializer, callback: ?*const OnLDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
         /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
@@ -305,24 +302,24 @@ pub const Menu = opaque {
         /// release memory allocated by the binding for the element.
         /// Also the callback will be called before the language callback.
         /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+        pub fn setDestroyCallback(self: Initializer, callback: ?*const OnDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// OPEN_CB OPEN_CB Called just before the menu is opened.
         /// Callback int function(Ihandle *ih); [in C] ih:open_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Affects IupMenu
-        pub fn setOpenCallback(self: *Initializer, callback: ?OnOpenFn) Initializer {
+        pub fn setOpenCallback(self: Initializer, callback: ?*const OnOpenFn) Initializer {
             const Handler = CallbackHandler(Self, OnOpenFn, "OPEN_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
         /// When the element is a dialog, it is called after the layout is updated.
@@ -331,27 +328,27 @@ pub const Menu = opaque {
         /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
         /// Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+        pub fn setMapCallback(self: Initializer, callback: ?*const OnMapFn) Initializer {
             const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+        pub fn setPostMessageCallback(self: Initializer, callback: ?*const OnPostMessageFn) Initializer {
             const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+        pub fn setUnmapCallback(self: Initializer, callback: ?*const OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -414,14 +411,14 @@ pub const Menu = opaque {
         }
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -480,33 +477,31 @@ pub const Menu = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
 
-
-    /// 
+    ///
     /// BGCOLOR: the background color of the menu, affects all items in the menu.
     /// (since 3.0)
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// BGCOLOR: the background color of the menu, affects all items in the menu.
     /// (since 3.0)
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
@@ -529,15 +524,13 @@ pub const Menu = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// WID (non inheritable): In Windows, returns the HMENU of the menu.
     pub fn getWId(self: *Self) i32 {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
-
-    /// 
+    ///
     /// RADIO (non inheritable): enables the automatic toggle of one child item.
     /// When a child item is selected the other item is automatically deselected.
     /// The menu acts like a IupRadio for its children.
@@ -546,8 +539,7 @@ pub const Menu = opaque {
         return interop.getBoolAttribute(self, "RADIO", .{});
     }
 
-
-    /// 
+    ///
     /// RADIO (non inheritable): enables the automatic toggle of one child item.
     /// When a child item is selected the other item is automatically deselected.
     /// The menu acts like a IupRadio for its children.
@@ -556,8 +548,7 @@ pub const Menu = opaque {
         interop.setBoolAttribute(self, "RADIO", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -565,8 +556,7 @@ pub const Menu = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -574,8 +564,7 @@ pub const Menu = opaque {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -589,8 +578,7 @@ pub const Menu = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -605,8 +593,7 @@ pub const Menu = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -627,8 +614,7 @@ pub const Menu = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -650,8 +636,7 @@ pub const Menu = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -672,8 +657,7 @@ pub const Menu = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -694,22 +678,22 @@ pub const Menu = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    /// 
+    ///
     /// MENUCLOSE_CB MENUCLOSE_CB Called just after the menu is closed.
     /// Callback int function(Ihandle *ih); [in C] ih:menuclose_cb() -> (ret:
     /// number) [in Lua] ih: identifier of the element that activated the event.
     /// Affects IupMenu
-    pub fn setMenuCloseCallback(self: *Self, callback: ?OnMenuCloseFn) void {
+    pub fn setMenuCloseCallback(self: *Self, callback: ?*const OnMenuCloseFn) void {
         const Handler = CallbackHandler(Self, OnMenuCloseFn, "MENUCLOSE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+    pub fn setLDestroyCallback(self: *Self, callback: ?*const OnLDestroyFn) void {
         const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -722,22 +706,22 @@ pub const Menu = opaque {
     /// release memory allocated by the binding for the element.
     /// Also the callback will be called before the language callback.
     /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+    pub fn setDestroyCallback(self: *Self, callback: ?*const OnDestroyFn) void {
         const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// OPEN_CB OPEN_CB Called just before the menu is opened.
     /// Callback int function(Ihandle *ih); [in C] ih:open_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects IupMenu
-    pub fn setOpenCallback(self: *Self, callback: ?OnOpenFn) void {
+    pub fn setOpenCallback(self: *Self, callback: ?*const OnOpenFn) void {
         const Handler = CallbackHandler(Self, OnOpenFn, "OPEN_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -746,22 +730,22 @@ pub const Menu = opaque {
     /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
     /// Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+    pub fn setMapCallback(self: *Self, callback: ?*const OnMapFn) void {
         const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+    pub fn setPostMessageCallback(self: *Self, callback: ?*const OnPostMessageFn) void {
         const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+    pub fn setUnmapCallback(self: *Self, callback: ?*const OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }

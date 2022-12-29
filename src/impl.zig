@@ -21,31 +21,30 @@ const ChildrenIterator = iup.ChildrenIterator;
 
 pub fn Impl(comptime T: type) type {
     return struct {
-
         ///
-        /// Updates the size and layout of all controls in the same dialog. 
+        /// Updates the size and layout of all controls in the same dialog.
         /// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
         pub fn refresh(self: *T) void {
             interop.refresh(self);
         }
 
         ///
-        /// Updates the size and layout of all controls in the same dialog. 
+        /// Updates the size and layout of all controls in the same dialog.
         pub fn update(self: *T) void {
             interop.update(self);
         }
 
         ///
-        /// Updates the size and layout of all controls in the same dialog. 
+        /// Updates the size and layout of all controls in the same dialog.
         pub fn updateChildren(self: *T) void {
             interop.updateChildren(self);
-        }        
+        }
 
         ///
-        /// Force the element and its children to be redrawn immediately. 
+        /// Force the element and its children to be redrawn immediately.
         pub fn redraw(self: *T, children: bool) void {
             interop.redraw(self, children);
-        }  
+        }
 
         pub fn appendChildren(self: *T, tuple: anytype) !void {
             const typeOf = @TypeOf(tuple);
@@ -103,7 +102,8 @@ pub fn Impl(comptime T: type) type {
                 } else if (element == .SubMenu) {
                     try appendDialogSubMenu(self, element.SubMenu);
                 } else {
-                    var parent_handle = if (self.children().next()) |container| container.getHandle() else interop.getHandle(self);
+                    var children = self.children();
+                    var parent_handle = if (children.next()) |container| container.getHandle() else interop.getHandle(self);
                     try interop.append(parent_handle, element);
                 }
             } else if (T == SubMenu and
@@ -114,7 +114,8 @@ pub fn Impl(comptime T: type) type {
 
                 // IUP needs a menu inside a subMenu to hold childrens
                 var innerMenu: *Handle = undefined;
-                if (self.children().next()) |valid| {
+                var children = self.children();
+                if (children.next()) |valid| {
                     innerMenu = valid.getHandle();
                 } else {
                     var valid = interop.getHandle(try iup.Menu.init().unwrap());

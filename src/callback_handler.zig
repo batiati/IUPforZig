@@ -9,7 +9,6 @@ const Handle = iup.Handle;
 /// Translates the C-API IUP's signature to zig function
 pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime action: [:0]const u8) type {
     return struct {
-
         /// Attribute key to store a reference to the zig callback on IUP's side
         const STORE = "__" ++ action;
         const ACTION = action;
@@ -17,7 +16,7 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
         const Self = @This();
 
         /// Set or remove the callback function
-        pub fn setCallback(handle: *T, callback: ?TCallback) void {
+        pub fn setCallback(handle: *T, callback: ?*const TCallback) void {
             if (callback) |ptr| {
                 var nativeCallback = getNativeCallback(TCallback);
                 interop.setNativeCallback(handle, ACTION, nativeCallback);
@@ -28,7 +27,7 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
             }
         }
 
-        pub fn setGlobalCallback(callback: ?TCallback) void {
+        pub fn setGlobalCallback(callback: ?*const TCallback) void {
             if (callback) |ptr| {
                 var nativeCallback = getNativeCallback(TCallback);
                 interop.setNativeCallback({}, ACTION, nativeCallback);
@@ -45,7 +44,7 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
         fn invoke(handle: ?*Handle, args: anytype) c_int {
             if (T == void) {
                 if (getGlobalCallback()) |callback| {
-                    @call(.{}, callback, args) catch |err| switch (err) {
+                    @call(.auto, callback, args) catch |err| switch (err) {
                         iup.CallbackResult.Ignore => return interop.consts.IUP_IGNORE,
                         iup.CallbackResult.Continue => return interop.consts.IUP_CONTINUE,
                         iup.CallbackResult.Close => return interop.consts.IUP_CLOSE,
@@ -57,7 +56,7 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
 
                 if (getCallback(validHandle)) |callback| {
                     var element = @ptrCast(*T, validHandle);
-                    @call(.{}, callback, .{element} ++ args) catch |err| switch (err) {
+                    @call(.auto, callback, .{element} ++ args) catch |err| switch (err) {
                         iup.CallbackResult.Ignore => return interop.consts.IUP_IGNORE,
                         iup.CallbackResult.Continue => return interop.consts.IUP_CONTINUE,
                         iup.CallbackResult.Close => return interop.consts.IUP_CLOSE,
@@ -75,27 +74,27 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
         fn invokeWithReturn(comptime TReturn: type, handle: ?*Handle, args: anytype) ?TReturn {
             if (T == void) {
                 if (getGlobalCallback()) |callback| {
-                    return @call(.{}, callback, args);
+                    return @call(.auto, callback, args);
                 }
             } else {
                 var validHandle = handle orelse @panic("Invalid handle from callback");
 
                 if (getCallback(validHandle)) |callback| {
                     var element = @ptrCast(*T, validHandle);
-                    return @call(.{}, callback, .{element} ++ args);
+                    return @call(.auto, callback, .{element} ++ args);
                 }
             }
 
             return null;
-        }        
+        }
 
         /// Gets a zig function related on the IUP's handle
-        fn getCallback(handle: *Handle) ?TCallback {
+        fn getCallback(handle: *Handle) ?*const TCallback {
             return interop.getCallbackStoreAttribute(TCallback, handle, STORE);
         }
 
         /// Gets a zig function related on the IUP's global handle
-        fn getGlobalCallback() ?TCallback {
+        fn getGlobalCallback() ?*const TCallback {
             return interop.getCallbackStoreAttribute(TCallback, {}, STORE);
         }
 
@@ -106,12 +105,12 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
                 if (info != .Fn)
                     @compileError("getNativeCallback expects a function type");
 
-                const function_info : std.builtin.TypeInfo.Fn = info.Fn;
+                const function_info: std.builtin.Type.Fn = info.Fn;
                 const return_type = function_info.return_type orelse void;
 
-                var args: [function_info.args.len]type = undefined;
-                inline for (function_info.args) |arg, i| {
-                    args[i] = arg.arg_type.?;
+                var params: [function_info.params.len]type = undefined;
+                inline for (function_info.params) |param, i| {
+                    params[i] = param.type.?;
                 }
 
                 const S = [:0]const u8;
@@ -124,47 +123,46 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
                 // See iupcbs.h for more details
 
                 if (return_type == S) {
-
-                    if (args.len == 3 and args[1] == I and args[2] == I) {
+                    if (params.len == 3 and params[1] == I and params[2] == I) {
                         break :blk Self.nativeCallbackIFnii_s;
                     }
                 }
 
-                if (args.len == 0) {
+                if (params.len == 0) {
                     break :blk Self.nativeCallbackFn;
-                } else if (args.len == 1) {
+                } else if (params.len == 1) {
                     break :blk Self.nativeCallbackIFn;
-                } else if (args.len == 2 and args[1] == I) {
+                } else if (params.len == 2 and params[1] == I) {
                     break :blk Self.nativeCallbackIFni;
-                } else if (args.len == 2 and args[1] == S) {
+                } else if (params.len == 2 and params[1] == S) {
                     break :blk Self.nativeCallbackIFns;
-                } else if (args.len == 3 and args[1] == I and args[2] == I) {
+                } else if (params.len == 3 and params[1] == I and params[2] == I) {
                     break :blk Self.nativeCallbackIFnii;
-                } else if (args.len == 3 and args[1] == F and args[2] == F) {
-                    break :blk Self.nativeCallbackIFnff;                    
-                } else if (args.len == 3 and args[1] == I and args[2] == S) {
+                } else if (params.len == 3 and params[1] == F and params[2] == F) {
+                    break :blk Self.nativeCallbackIFnff;
+                } else if (params.len == 3 and params[1] == I and params[2] == S) {
                     break :blk Self.nativeCallbackIFnis;
-                } else if (args.len == 4 and args[1] == I and args[2] == I and args[3] == I) {
+                } else if (params.len == 4 and params[1] == I and params[2] == I and params[3] == I) {
                     break :blk Self.nativeCallbackIFniii;
-                } else if (args.len == 4 and args[1] == S and args[2] == I and args[3] == I) {
+                } else if (params.len == 4 and params[1] == S and params[2] == I and params[3] == I) {
                     break :blk Self.nativeCallbackIFnsii;
-                } else if (args.len == 4 and args[1] == I and args[2] == I and args[3] == S) {
-                    break :blk Self.nativeCallbackIFniis;                    
-                } else if (args.len == 5 and args[1] == I and args[2] == I and args[3] == I and args[4] == I) {
+                } else if (params.len == 4 and params[1] == I and params[2] == I and params[3] == S) {
+                    break :blk Self.nativeCallbackIFniis;
+                } else if (params.len == 5 and params[1] == I and params[2] == I and params[3] == I and params[4] == I) {
                     break :blk Self.nativeCallbackIFniiii;
-                } else if (args.len == 5 and args[1] == S and args[2] == I and args[3] == D and args[4] == P) {
+                } else if (params.len == 5 and params[1] == S and params[2] == I and params[3] == D and params[4] == P) {
                     break :blk Self.nativeCallbackIFnsifp;
-                } else if (args.len == 5 and args[1] == I and args[2] == I and args[3] == I and args[4] == I and args[5] == S) {
-                    break :blk Self.nativeCallbackIFniiiis;                                        
-                } else if (args.len == 6 and args[1] == I and args[2] == I and args[3] == I and args[4] == I and args[5] == S) {
+                } else if (params.len == 5 and params[1] == I and params[2] == I and params[3] == I and params[4] == I and params[5] == S) {
+                    break :blk Self.nativeCallbackIFniiiis;
+                } else if (params.len == 6 and params[1] == I and params[2] == I and params[3] == I and params[4] == I and params[5] == S) {
                     break :blk Self.nativeCallbackIFniiiis;
                 } else {
-                    @compileLog("args = ", args);
+                    @compileLog("params = ", params);
                     unreachable;
                 }
             };
 
-            return @ptrCast(interop.NativeCallbackFn, native_callback);
+            return @ptrCast(interop.NativeCallbackFn, &native_callback);
         }
 
         // TODO: Add all supported callbacks
@@ -196,12 +194,12 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
 
         fn nativeCallbackIFnff(handle: ?*Handle, arg0: f32, arg1: f32) callconv(.C) c_int {
             return invoke(handle, .{ arg0, arg1 });
-        }        
-        
+        }
+
         fn nativeCallbackIFniii(handle: ?*Handle, arg0: i32, arg1: i32, arg2: i32) callconv(.C) c_int {
             return invoke(handle, .{ arg0, arg1, arg2 });
         }
-        
+
         fn nativeCallbackIFniis(handle: ?*Handle, arg0: i32, arg1: i32, arg2: [*c]const u8) callconv(.C) c_int {
             return invoke(handle, .{ arg0, arg1, interop.fromCStr(arg2) });
         }
@@ -224,7 +222,7 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
 
         fn nativeCallbackIFnsifp(handle: ?*Handle, arg0: [*]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) callconv(.C) c_int {
             return invoke(handle, .{ interop.fromCStr(arg0), arg1, arg2, arg3 });
-        }   
+        }
 
         fn nativeCallbackIFnii_s(handle: ?*Handle, arg0: i32, arg1: i32) callconv(.C) [*c]const u8 {
             var str = invokeWithReturn([:0]const u8, handle, .{ arg0, arg1 });

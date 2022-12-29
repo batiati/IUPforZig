@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Creates a thread element in IUP, which is not associated to any interface element.
 /// It is a very simple support to create and manage threads in a multithread environment.
 /// It inherits from IupUser.
@@ -34,13 +34,13 @@ pub const Thread = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Other;
     const Self = @This();
 
-    /// 
+    ///
     /// THREAD_CB: Action generated when the thread is started.
     /// If this callback returns or does not exist the thread is terminated.
     /// int function(Ihandle* ih); [in C]ih:thread_cb() -> (ret: number) [in Lua]
     pub const OnThreadFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -69,71 +69,68 @@ pub const Thread = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// START (write-only, non inheritable): starts the thread and calls the callback.
         /// Can be YES only.
         /// The thread exits when the callback is terminated.
-        pub fn start(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn start(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "START", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
         /// (since 3.1)
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
         /// then its size and position will be ignored by the layout processing.
         /// Default: "NO".
         /// (since 3.0)
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -141,11 +138,10 @@ pub const Thread = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -158,24 +154,23 @@ pub const Thread = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -192,20 +187,20 @@ pub const Thread = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// THREAD_CB: Action generated when the thread is started.
         /// If this callback returns or does not exist the thread is terminated.
         /// int function(Ihandle* ih); [in C]ih:thread_cb() -> (ret: number) [in Lua]
-        pub fn setThreadCallback(self: *Initializer, callback: ?OnThreadFn) Initializer {
+        pub fn setThreadCallback(self: Initializer, callback: ?*const OnThreadFn) Initializer {
             const Handler = CallbackHandler(Self, OnThreadFn, "THREAD_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -268,14 +263,14 @@ pub const Thread = opaque {
         }
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -311,25 +306,24 @@ pub const Thread = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
 
-
-    /// 
+    ///
     /// START (write-only, non inheritable): starts the thread and calls the callback.
     /// Can be YES only.
     /// The thread exits when the callback is terminated.
@@ -337,8 +331,7 @@ pub const Thread = opaque {
         interop.setBoolAttribute(self, "START", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -346,8 +339,7 @@ pub const Thread = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -355,8 +347,7 @@ pub const Thread = opaque {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -370,8 +361,7 @@ pub const Thread = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -386,8 +376,7 @@ pub const Thread = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -408,8 +397,7 @@ pub const Thread = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -431,8 +419,7 @@ pub const Thread = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -453,8 +440,7 @@ pub const Thread = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -475,11 +461,11 @@ pub const Thread = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    /// 
+    ///
     /// THREAD_CB: Action generated when the thread is started.
     /// If this callback returns or does not exist the thread is terminated.
     /// int function(Ihandle* ih); [in C]ih:thread_cb() -> (ret: number) [in Lua]
-    pub fn setThreadCallback(self: *Self, callback: ?OnThreadFn) void {
+    pub fn setThreadCallback(self: *Self, callback: ?*const OnThreadFn) void {
         const Handler = CallbackHandler(Self, OnThreadFn, "THREAD_CB");
         Handler.setCallback(self, callback);
     }

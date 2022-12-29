@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Creates an image to be shown on a label, button, toggle, or as a cursor.
 /// (IupImageRGB and IupImageRGBA, since 3.0)
 pub const Image = opaque {
@@ -32,7 +32,7 @@ pub const Image = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Image;
     const Self = @This();
 
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -61,93 +61,89 @@ pub const Image = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// RESIZE (write-only): given a new size if format "widthxheight", changes
         /// WIDTH and HEIGHT attributes, and resizes the image contents using bilinear
         /// interpolation for RGB and RGBA images and nearest neighborhood for 8 bits.
         /// (since 3.24)
-        pub fn resize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn resize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RESIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setColors(self: *Initializer, index: i32, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setColors(self: Initializer, index: i32, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "IDVALUE", .{index}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// RESHAPE (write-only): given a new size if format "widthxheight", allocates
         /// enough memory for the new size and changes WIDTH and HEIGHT attributes.
         /// Image contents is ignored and it will contain trash after the reshape.
         /// (since 3.24)
-        pub fn reshape(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn reshape(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RESHAPE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
         /// mouse-click spot.
         /// Its value is given by the x and y coordinates inside a cursor image.
         /// Its value has the format "x:y", where x and y are integers defining the
         /// coordinates in pixels.
         /// Default: "0:0".
-        pub fn setHotspot(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHotspot(self: Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ':');
             interop.setStrAttribute(self.ref, "HOTSPOT", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// AUTOSCALE: automatically scale the image by a given real factor.
         /// Can be "DPI" or a scale factor.
         /// If not defined the global attribute IMAGEAUTOSCALE will be used.
@@ -155,31 +151,29 @@ pub const Image = opaque {
         /// The minimum resulted size when automatically resized is 24 pixels height
         /// (since 3.29).
         /// (since 3.16)
-        pub fn setAutoScale(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setAutoScale(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "AUTOSCALE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CLEARCACHE (write-only): clears the internal native image cache, so WID can
         /// be dynamically changed.
         /// (since 3.24)
-        pub fn clearCache(self: *Initializer) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn clearCache(self: Initializer) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "CLEARCACHE", .{}, null);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BGCOLOR: The color used for transparency.
         /// If not defined uses the BGCOLOR of the control that contains the image.
         /// In Motif, the alpha channel in RGBA images is always composed with the
@@ -190,31 +184,29 @@ pub const Image = opaque {
         /// Visual Styles.
         /// This implies that if the control background is not uniform then probably
         /// there will be a visible difference where it should be transparent.
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
         /// (since 3.1)
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
         /// then its size and position will be ignored by the layout processing.
         /// Default: "NO".
         /// (since 3.0)
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -222,11 +214,10 @@ pub const Image = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -239,24 +230,23 @@ pub const Image = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -273,10 +263,10 @@ pub const Image = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
     };
 
@@ -328,7 +318,7 @@ pub const Image = opaque {
     /// Creates an image to be shown on a label, button, toggle, or as a cursor.
     /// width: Image width in pixels.
     /// height: Image height in pixels.
-    /// pixels: Vector containing the value of each pixel. 
+    /// pixels: Vector containing the value of each pixel.
     /// IupImage uses 1 value per pixel, IupImageRGB uses 3 values and  IupImageRGBA uses 4 values per pixel.
     /// Each value is always 8 bit.
     /// Origin is at the top-left corner and data is oriented top to bottom, and left to right.
@@ -345,14 +335,14 @@ pub const Image = opaque {
         }
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -388,19 +378,19 @@ pub const Image = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
@@ -445,8 +435,7 @@ pub const Image = opaque {
         interop.setPtrAttribute(type, self, attribute, .{index}, value);
     }
 
-
-    /// 
+    ///
     /// RESIZE (write-only): given a new size if format "widthxheight", changes
     /// WIDTH and HEIGHT attributes, and resizes the image contents using bilinear
     /// interpolation for RGB and RGBA images and nearest neighborhood for 8 bits.
@@ -465,16 +454,14 @@ pub const Image = opaque {
         interop.setRgb(self, "IDVALUE", .{index}, rgb);
     }
 
-
-    /// 
+    ///
     /// SCALED (read-only): returns Yes if the image has been resized.
     /// (since 3.25)
     pub fn getScaled(self: *Self) bool {
         return interop.getBoolAttribute(self, "SCALED", .{});
     }
 
-
-    /// 
+    ///
     /// BPP (read-only): returns the number of bits per pixel in the image.
     /// Images created with IupImage returns 8, with IupImageRGB returns 24 and
     /// with IupImageRGBA returns 32.
@@ -483,8 +470,7 @@ pub const Image = opaque {
         return interop.getIntAttribute(self, "BPP", .{});
     }
 
-
-    /// 
+    ///
     /// RESHAPE (write-only): given a new size if format "widthxheight", allocates
     /// enough memory for the new size and changes WIDTH and HEIGHT attributes.
     /// Image contents is ignored and it will contain trash after the reshape.
@@ -495,8 +481,7 @@ pub const Image = opaque {
         interop.setStrAttribute(self, "RESHAPE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// CHANNELS (read-only): returns the number of channels in the image.
     /// Images created with IupImage returns 1, with IupImageRGB returns 3 and with
     /// IupImageRGBA returns 4.
@@ -505,8 +490,7 @@ pub const Image = opaque {
         return interop.getIntAttribute(self, "CHANNELS", .{});
     }
 
-
-    /// 
+    ///
     /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
     /// mouse-click spot.
     /// Its value is given by the x and y coordinates inside a cursor image.
@@ -518,8 +502,7 @@ pub const Image = opaque {
         return iup.XYPos.parse(str, ':');
     }
 
-
-    /// 
+    ///
     /// HOTSPOT: Hotspot is the position inside a cursor image indicating the
     /// mouse-click spot.
     /// Its value is given by the x and y coordinates inside a cursor image.
@@ -532,8 +515,7 @@ pub const Image = opaque {
         interop.setStrAttribute(self, "HOTSPOT", .{}, value);
     }
 
-
-    /// 
+    ///
     /// AUTOSCALE: automatically scale the image by a given real factor.
     /// Can be "DPI" or a scale factor.
     /// If not defined the global attribute IMAGEAUTOSCALE will be used.
@@ -545,8 +527,7 @@ pub const Image = opaque {
         return interop.getBoolAttribute(self, "AUTOSCALE", .{});
     }
 
-
-    /// 
+    ///
     /// AUTOSCALE: automatically scale the image by a given real factor.
     /// Can be "DPI" or a scale factor.
     /// If not defined the global attribute IMAGEAUTOSCALE will be used.
@@ -566,15 +547,13 @@ pub const Image = opaque {
         interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// HEIGHT (read-only): Image height in pixels.
     pub fn getHeight(self: *Self) i32 {
         return interop.getIntAttribute(self, "HEIGHT", .{});
     }
 
-
-    /// 
+    ///
     /// CLEARCACHE (write-only): clears the internal native image cache, so WID can
     /// be dynamically changed.
     /// (since 3.24)
@@ -582,8 +561,7 @@ pub const Image = opaque {
         interop.setStrAttribute(self, "CLEARCACHE", .{}, null);
     }
 
-
-    /// 
+    ///
     /// BGCOLOR: The color used for transparency.
     /// If not defined uses the BGCOLOR of the control that contains the image.
     /// In Motif, the alpha channel in RGBA images is always composed with the
@@ -598,8 +576,7 @@ pub const Image = opaque {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// BGCOLOR: The color used for transparency.
     /// If not defined uses the BGCOLOR of the control that contains the image.
     /// In Motif, the alpha channel in RGBA images is always composed with the
@@ -614,8 +591,7 @@ pub const Image = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// ORIGINALSCALE (read-only): returns the width and height before the image
     /// was scaled.
     /// (since 3.25)
@@ -624,15 +600,13 @@ pub const Image = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// WIDTH (read-only): Image width in pixels.
     pub fn getWidth(self: *Self) i32 {
         return interop.getIntAttribute(self, "WIDTH", .{});
     }
 
-
-    /// 
+    ///
     /// RASTERSIZE (read-only): returns the image size in pixels.
     /// (since 3.0)
     pub fn getRasterSize(self: *Self) Size {
@@ -640,8 +614,7 @@ pub const Image = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// WID (read-only): returns the internal pixels data pointer.
     /// (since 3.0).
     /// If the image was created in C then there is no way to access its pixels
@@ -650,8 +623,7 @@ pub const Image = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -659,8 +631,7 @@ pub const Image = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -668,8 +639,7 @@ pub const Image = opaque {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -683,8 +653,7 @@ pub const Image = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -699,8 +668,7 @@ pub const Image = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -721,8 +689,7 @@ pub const Image = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -744,8 +711,7 @@ pub const Image = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -766,8 +732,7 @@ pub const Image = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.

@@ -1,5 +1,5 @@
-/// Creates a tree with some branches and leaves. 
-/// Two callbacks are registered: one deletes marked nodes when the Del key is pressed, 
+/// Creates a tree with some branches and leaves.
+/// Two callbacks are registered: one deletes marked nodes when the Del key is pressed,
 /// and the other, called when the right mouse button is pressed, opens a menu with options.
 /// From original example in C
 /// https://webserver2.tecgraf.puc-rio.br/iup/examples/C/tree.c
@@ -134,7 +134,7 @@ fn rightclick_cb(tree: *Tree, id: i32) !void {
     defer popup.deinit();
 
     tree.setValue(id);
-    try popup.popup(.MousePos, .MousePos);
+    try popup.popup(.MousePos, .Center);
 }
 
 fn removeNode(item: *Item) !void {

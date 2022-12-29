@@ -96,10 +96,10 @@ pub const FlatTabs = @import("elements/flat_tabs.zig").FlatTabs;
 /// The library’s main characteristic is the use of native elements.
 /// This means that the drawing and management of a button or text box is done by the native interface system, not by IUP.
 /// This makes the application’s appearance more similar to other applications in that system. On the other hand, the application’s appearance can vary from one system to another.
-/// 
+///
 /// But this is valid only for the standard elements, many additional elements are drawn by IUP.
 /// Composition elements are not visible, so they are independent from the native system.
-/// 
+///
 /// Each element has an unique creation function, and all of its management is done by means of attributes and callbacks, using functions common to all the elements. This simple but powerful approach is one of the advantages of using IUP.
 /// Elements are automatically destroyed when the dialog is destroyed.
 pub const Element = union(enum) {

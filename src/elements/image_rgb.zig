@@ -29,7 +29,7 @@ pub const ImageRgb = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Image;
     const Self = @This();
 
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -58,108 +58,106 @@ pub const ImageRgb = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn resize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn resize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RESIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn reshape(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn reshape(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RESHAPE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHotspot(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHotspot(self: Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ':');
             interop.setStrAttribute(self.ref, "HOTSPOT", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setAutoScale(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setAutoScale(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "AUTOSCALE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn clearCache(self: *Initializer) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn clearCache(self: Initializer) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "CLEARCACHE", .{}, null);
-            return self.*;
+            return self;
         }
 
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
         /// (since 3.1)
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
         /// then its size and position will be ignored by the layout processing.
         /// Default: "NO".
         /// (since 3.0)
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -167,11 +165,10 @@ pub const ImageRgb = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -184,24 +181,23 @@ pub const ImageRgb = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -218,10 +214,10 @@ pub const ImageRgb = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
     };
 
@@ -273,7 +269,7 @@ pub const ImageRgb = opaque {
     /// Creates an image to be shown on a label, button, toggle, or as a cursor.
     /// width: Image width in pixels.
     /// height: Image height in pixels.
-    /// pixels: Vector containing the value of each pixel. 
+    /// pixels: Vector containing the value of each pixel.
     /// IupImage uses 1 value per pixel, IupImageRGB uses 3 values and  IupImageRGBA uses 4 values per pixel.
     /// Each value is always 8 bit.
     /// Origin is at the top-left corner and data is oriented top to bottom, and left to right.
@@ -290,14 +286,14 @@ pub const ImageRgb = opaque {
         }
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -333,19 +329,19 @@ pub const ImageRgb = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
@@ -435,8 +431,7 @@ pub const ImageRgb = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -444,8 +439,7 @@ pub const ImageRgb = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -453,8 +447,7 @@ pub const ImageRgb = opaque {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -468,8 +461,7 @@ pub const ImageRgb = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -484,8 +476,7 @@ pub const ImageRgb = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -506,8 +497,7 @@ pub const ImageRgb = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -529,8 +519,7 @@ pub const ImageRgb = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -551,8 +540,7 @@ pub const ImageRgb = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.

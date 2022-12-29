@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Creates a tree containing nodes of branches or leaves.
 /// Both branches and leaves can have an associated text and image.
 /// The branches can be expanded or collapsed.
@@ -41,7 +41,7 @@ pub const Tree = opaque {
 
     pub const OnBranchCloseFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
     /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -72,7 +72,7 @@ pub const Tree = opaque {
     /// Affects All elements with keyboard interaction.
     pub const OnKAnyFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
     /// In Motif is also activated by the Help button in some workstations keyboard.
     /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
@@ -89,7 +89,7 @@ pub const Tree = opaque {
 
     pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
     /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
     /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
@@ -109,7 +109,7 @@ pub const Tree = opaque {
 
     pub const OnRightClickFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -122,7 +122,7 @@ pub const Tree = opaque {
 
     pub const OnDragDropFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32) anyerror!void;
 
-    /// 
+    ///
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -138,7 +138,7 @@ pub const Tree = opaque {
     /// See Also LEAVEWINDOW_CB
     pub const OnEnterWindowFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -155,7 +155,7 @@ pub const Tree = opaque {
 
     pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
-    /// 
+    ///
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
     /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
     /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -173,7 +173,7 @@ pub const Tree = opaque {
 
     pub const OnDragDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32) anyerror!void;
 
-    /// 
+    ///
     /// SELECTION_CB: Action generated when an node is selected or deselected.
     /// MULTISELECTION_CB: Action generated when multiple nodes are selected with
     /// the mouse and the shift key pressed.
@@ -195,7 +195,7 @@ pub const Tree = opaque {
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
-    /// 
+    ///
     /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
     /// When several files are dropped at once, the callback is called several
     /// times, once for each file.
@@ -218,14 +218,14 @@ pub const Tree = opaque {
 
     pub const OnToggleValueFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
     /// This callback is called after the KILLFOCUS_CB of the element that loosed
     /// the focus.
@@ -237,7 +237,7 @@ pub const Tree = opaque {
     /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnGetFocusFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// BUTTON_CB BUTTON_CB Action generated when a mouse button is pressed or released.
     /// Callback int function(Ihandle* ih, int button, int pressed, int x, int y,
     /// char* status); [in C] ih:button_cb(button, pressed, x, y: number, status:
@@ -290,7 +290,7 @@ pub const Tree = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -314,7 +314,7 @@ pub const Tree = opaque {
 
     pub const OnMultiSelectionFn = fn (self: *Self, arg0: *i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub const Kind = enum {
@@ -326,7 +326,7 @@ pub const Tree = opaque {
         Top,
         Bottom,
     };
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub const Expand = enum {
@@ -337,7 +337,7 @@ pub const Tree = opaque {
         VerticalFree,
         No,
     };
-    /// 
+    ///
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
     pub const DelNode = enum {
@@ -357,14 +357,14 @@ pub const Tree = opaque {
         SInGle,
         Multiple,
     };
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub const State = enum {
         Expanded,
         Collapsed,
     };
-    /// 
+    ///
     /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
     pub const Mark = enum {
         BLock,
@@ -398,256 +398,248 @@ pub const Tree = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
         /// TOPITEM
-        pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
         /// INSERTBRANCH MOVENODE
-        pub fn setAddExpanded(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setAddExpanded(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "ADDEXPANDED", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
-        pub fn setDropEqualDrag(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropEqualDrag(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPEQUALDRAG", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipIcon(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
         /// INSERTBRANCH MOVENODE
-        pub fn addLeaf(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn addLeaf(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ADDLEAF", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setRenameCaret(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRenameCaret(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "RENAMECARET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaxSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn imageExpanded(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn imageExpanded(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEEXPANDED", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn imageExpandedHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn imageExpandedHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEEXPANDED", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosition(self: Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn insertLeaf(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn insertLeaf(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "INSERTLEAF", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
-        pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropFilesTarget(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
-        pub fn setDragDropTree(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragDropTree(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGDROPTREE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTip(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCanFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragSourceMove(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn image(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn image(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn imageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn imageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn moveNode(self: *Initializer, index: i32, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn moveNode(self: Initializer, index: i32, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "MOVENODE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn zOrder(self: Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
                 .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
             } else {
                 interop.clearAttribute(self.ref, "ZORDER", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
-        pub fn setMarked(self: *Initializer, index: i32, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMarked(self: Initializer, index: i32, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MARKED", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragDrop(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTitleFontStyle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleFontStyle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLEFONTSTYLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setToggleVisible(self: *Initializer, index: i32, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setToggleVisible(self: Initializer, index: i32, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TOGGLEVISIBLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
         /// TOPITEM
-        pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpand(self: Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -658,37 +650,36 @@ pub const Tree = opaque {
             } else {
                 interop.clearAttribute(self.ref, "EXPAND", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTitleFontSize(self: *Initializer, index: i32, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleFontSize(self: Initializer, index: i32, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "TITLEFONTSIZE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setShowToggle(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShowToggle(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHOWTOGGLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipMarkup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
         /// have the same size.
         /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
@@ -699,28 +690,27 @@ pub const Tree = opaque {
         /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
         /// have the same size.
         /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
-        pub fn setImageLeaf(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageLeaf(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGELEAF", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageLeafHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageLeafHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGELEAF", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
         /// INSERTBRANCH MOVENODE
-        pub fn delNode(self: *Initializer, index: i32, arg: ?DelNode) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn delNode(self: Initializer, index: i32, arg: ?DelNode) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .All => interop.setStrAttribute(self.ref, "DELNODE", .{index}, "ALL"),
                 .Selected => interop.setStrAttribute(self.ref, "DELNODE", .{index}, "SELECTED"),
@@ -729,109 +719,104 @@ pub const Tree = opaque {
             } else {
                 interop.clearAttribute(self.ref, "DELNODE", .{index});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
         /// TOPITEM
-        pub fn topItem(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn topItem(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "TOPITEM", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontSize(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUserData(self: *Initializer, comptime T: type, index: i32, arg: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUserData(self: Initializer, comptime T: type, index: i32, arg: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             interop.setPtrAttribute(T, self.ref, "USERDATA", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropTypes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUserSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipDelay(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
         /// TITLEFONTUSERDATA
-        pub fn setTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
-        pub fn setShowDragDrop(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShowDragDrop(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHOWDRAGDROP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn expandAll(self: *Initializer) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn expandAll(self: Initializer) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "EXPANDALL", .{}, null);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VALUECANFOCUS PROPAGATEFOCUS
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPropagateFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
         /// TOPITEM
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropTarget(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragSource(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -839,173 +824,167 @@ pub const Tree = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
         /// TITLEFONTUSERDATA
-        pub fn setColor(self: *Initializer, index: i32, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setColor(self: Initializer, index: i32, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "COLOR", .{index}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNormalizerGroup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
         /// TOPITEM
-        pub fn setSpacing(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSpacing(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "SPACING", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "SPACING", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
         /// TOPITEM
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRasterSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setRenameSelection(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRenameSelection(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "RENAMESELECTION", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipFgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setCSpacing(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCSpacing(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "CSPACING", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "CSPACING", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTitleFont(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleFont(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLEFONT", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMarkMode(self: *Initializer, arg: ?MarkMode) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMarkMode(self: Initializer, arg: ?MarkMode) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .SInGle => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "SINGLE"),
                 .Multiple => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "MULTIPLE"),
             } else {
                 interop.clearAttribute(self.ref, "MARKMODE", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn insertBranch(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn insertBranch(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "INSERTBRANCH", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMarkWhenToggle(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMarkWhenToggle(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MARKWHENTOGGLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontFace(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
         /// TITLEFONTUSERDATA
-        pub fn setState(self: *Initializer, index: i32, arg: ?State) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setState(self: Initializer, index: i32, arg: ?State) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Expanded => interop.setStrAttribute(self.ref, "STATE", .{index}, "EXPANDED"),
                 .Collapsed => interop.setStrAttribute(self.ref, "STATE", .{index}, "COLLAPSED"),
             } else {
                 interop.clearAttribute(self.ref, "STATE", .{index});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setMarkStart(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMarkStart(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MARKSTART", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setValue(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setValue(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "VALUE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
         /// TOPITEM
-        pub fn setIndentation(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIndentation(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "INDENTATION", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCPadding(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "CPADDING", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setActive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
         /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
         /// have the same size.
@@ -1017,41 +996,40 @@ pub const Tree = opaque {
         /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
         /// have the same size.
         /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
-        pub fn setImageBranchExpanded(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageBranchExpanded(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEBRANCHEXPANDED", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageBranchExpandedHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageBranchExpandedHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEBRANCHEXPANDED", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
-        pub fn mark(self: *Initializer, arg: ?Mark) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn mark(self: Initializer, arg: ?Mark) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .BLock => interop.setStrAttribute(self.ref, "MARK", .{}, "BLOCK"),
                 .ClearAll => interop.setStrAttribute(self.ref, "MARK", .{}, "CLEARALL"),
@@ -1061,11 +1039,11 @@ pub const Tree = opaque {
             } else {
                 interop.clearAttribute(self.ref, "MARK", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setToggleValue(self: *Initializer, index: i32, arg: ?ToggleValue) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setToggleValue(self: Initializer, index: i32, arg: ?ToggleValue) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .On => interop.setStrAttribute(self.ref, "TOGGLEVALUE", .{index}, "ON"),
                 .Off => interop.setStrAttribute(self.ref, "TOGGLEVALUE", .{index}, "OFF"),
@@ -1073,32 +1051,30 @@ pub const Tree = opaque {
             } else {
                 interop.clearAttribute(self.ref, "TOGGLEVALUE", .{index});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// HIDELINES HIDEBUTTONS
-        pub fn setHideButtons(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHideButtons(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "HIDEBUTTONS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setShowRename(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShowRename(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHOWRENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
         /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
         /// have the same size.
@@ -1110,92 +1086,87 @@ pub const Tree = opaque {
         /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
         /// have the same size.
         /// In Windows, IMAGELEAF defines the size available for the image on all nodes.
-        pub fn setImageBranchCollapsed(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageBranchCollapsed(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEBRANCHCOLLAPSED", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageBranchCollapsedHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageBranchCollapsedHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEBRANCHCOLLAPSED", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragTypes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
-        pub fn rename(self: *Initializer) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn rename(self: Initializer) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "RENAME", .{}, null);
-            return self.*;
+            return self;
         }
 
-        pub fn setMarkedNodes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMarkedNodes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MARKEDNODES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontStyle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
         /// INSERTBRANCH MOVENODE
-        pub fn addBranch(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn addBranch(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ADDBRANCH", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setRubberband(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRubberband(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "RUBBERBAND", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
         /// INSERTBRANCH MOVENODE
-        pub fn copyNode(self: *Initializer, index: i32, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn copyNode(self: Initializer, index: i32, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "COPYNODE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// HIDELINES HIDEBUTTONS
-        pub fn setHideLines(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHideLines(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "HIDELINES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFont(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -1208,24 +1179,23 @@ pub const Tree = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -1242,19 +1212,19 @@ pub const Tree = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBranchCloseCallback(self: *Initializer, callback: ?OnBranchCloseFn) Initializer {
+        pub fn setBranchCloseCallback(self: Initializer, callback: ?*const OnBranchCloseFn) Initializer {
             const Handler = CallbackHandler(Self, OnBranchCloseFn, "BRANCHCLOSE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// K_ANY K_ANY Action generated when a keyboard event occurs.
         /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
         /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -1283,50 +1253,50 @@ pub const Tree = opaque {
         /// This is the way an application can create shortcut keys, also called hot keys.
         /// These callbacks are not available in IupLua.
         /// Affects All elements with keyboard interaction.
-        pub fn setKAnyCallback(self: *Initializer, callback: ?OnKAnyFn) Initializer {
+        pub fn setKAnyCallback(self: Initializer, callback: ?*const OnKAnyFn) Initializer {
             const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
         /// In Motif is also activated by the Help button in some workstations keyboard.
         /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Returns: IUP_CLOSE will be processed.
         /// Affects All elements with user interaction.
-        pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
+        pub fn setHelpCallback(self: Initializer, callback: ?*const OnHelpFn) Initializer {
             const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropMotionCallback(self: *Initializer, callback: ?OnDropMotionFn) Initializer {
+        pub fn setDropMotionCallback(self: Initializer, callback: ?*const OnDropMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setExecuteBranchCallback(self: *Initializer, callback: ?OnExecuteBranchFn) Initializer {
+        pub fn setExecuteBranchCallback(self: Initializer, callback: ?*const OnExecuteBranchFn) Initializer {
             const Handler = CallbackHandler(Self, OnExecuteBranchFn, "EXECUTEBRANCH_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragEndCallback(self: *Initializer, callback: ?OnDragEndFn) Initializer {
+        pub fn setDragEndCallback(self: Initializer, callback: ?*const OnDragEndFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragBeginCallback(self: *Initializer, callback: ?OnDragBeginFn) Initializer {
+        pub fn setDragBeginCallback(self: Initializer, callback: ?*const OnDragBeginFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MOTION_CB MOTION_CB Action generated when the mouse moves.
         /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
         /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
@@ -1340,25 +1310,25 @@ pub const Tree = opaque {
         /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
         /// called with coordinates outside the element rectangle.
         /// Affects IupCanvas, IupGLCanvas
-        pub fn setMotionCallback(self: *Initializer, callback: ?OnMotionFn) Initializer {
+        pub fn setMotionCallback(self: Initializer, callback: ?*const OnMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setMultiUnselectionCallback(self: *Initializer, callback: ?OnMultiUnselectionFn) Initializer {
+        pub fn setMultiUnselectionCallback(self: Initializer, callback: ?*const OnMultiUnselectionFn) Initializer {
             const Handler = CallbackHandler(Self, OnMultiUnselectionFn, "MULTIUNSELECTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setRightClickCallback(self: *Initializer, callback: ?OnRightClickFn) Initializer {
+        pub fn setRightClickCallback(self: Initializer, callback: ?*const OnRightClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
         /// When the element is a dialog, it is called after the layout is updated.
@@ -1367,19 +1337,19 @@ pub const Tree = opaque {
         /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
         /// Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+        pub fn setMapCallback(self: Initializer, callback: ?*const OnMapFn) Initializer {
             const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDropCallback(self: *Initializer, callback: ?OnDragDropFn) Initializer {
+        pub fn setDragDropCallback(self: Initializer, callback: ?*const OnDragDropFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDropFn, "DRAGDROP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
         /// native element.
         /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -1393,13 +1363,13 @@ pub const Tree = opaque {
         /// GTK the callbacks are called.
         /// Affects All controls with user interaction.
         /// See Also LEAVEWINDOW_CB
-        pub fn setEnterWindowCallback(self: *Initializer, callback: ?OnEnterWindowFn) Initializer {
+        pub fn setEnterWindowCallback(self: Initializer, callback: ?*const OnEnterWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
         /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
@@ -1412,19 +1382,19 @@ pub const Tree = opaque {
         /// release memory allocated by the binding for the element.
         /// Also the callback will be called before the language callback.
         /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+        pub fn setDestroyCallback(self: Initializer, callback: ?*const OnDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropDataCallback(self: *Initializer, callback: ?OnDropDataFn) Initializer {
+        pub fn setDropDataCallback(self: Initializer, callback: ?*const OnDropDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
         /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
         /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -1436,25 +1406,25 @@ pub const Tree = opaque {
         /// This causes the thread to yield control and can cause the application to
         /// stop responding to messages.
         /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setKillFocusCallback(self: *Initializer, callback: ?OnKillFocusFn) Initializer {
+        pub fn setKillFocusCallback(self: Initializer, callback: ?*const OnKillFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setShowRenameCallback(self: *Initializer, callback: ?OnShowRenameFn) Initializer {
+        pub fn setShowRenameCallback(self: Initializer, callback: ?*const OnShowRenameFn) Initializer {
             const Handler = CallbackHandler(Self, OnShowRenameFn, "SHOWRENAME_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDataCallback(self: *Initializer, callback: ?OnDragDataFn) Initializer {
+        pub fn setDragDataCallback(self: Initializer, callback: ?*const OnDragDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// SELECTION_CB: Action generated when an node is selected or deselected.
         /// MULTISELECTION_CB: Action generated when multiple nodes are selected with
         /// the mouse and the shift key pressed.
@@ -1472,19 +1442,19 @@ pub const Tree = opaque {
         /// a node.
         /// TOGGLEVALUE_CB: Action generated when the toggle&#39;s state was changed.
         /// The callback also receives the new toggle&#39;s state.
-        pub fn setSelectionCallback(self: *Initializer, callback: ?OnSelectionFn) Initializer {
+        pub fn setSelectionCallback(self: Initializer, callback: ?*const OnSelectionFn) Initializer {
             const Handler = CallbackHandler(Self, OnSelectionFn, "SELECTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDataSizeCallback(self: *Initializer, callback: ?OnDragDataSizeFn) Initializer {
+        pub fn setDragDataSizeCallback(self: Initializer, callback: ?*const OnDragDataSizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
         /// When several files are dropped at once, the callback is called several
         /// times, once for each file.
@@ -1503,30 +1473,30 @@ pub const Tree = opaque {
         /// Returns: If IUP_IGNORE is returned the callback will NOT be called for the
         /// next dropped files, and the processing of dropped files will be interrupted.
         /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
-        pub fn setDropFilesCallback(self: *Initializer, callback: ?OnDropFilesFn) Initializer {
+        pub fn setDropFilesCallback(self: Initializer, callback: ?*const OnDropFilesFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropFilesFn, "DROPFILES_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setToggleValueCallback(self: *Initializer, callback: ?OnToggleValueFn) Initializer {
+        pub fn setToggleValueCallback(self: Initializer, callback: ?*const OnToggleValueFn) Initializer {
             const Handler = CallbackHandler(Self, OnToggleValueFn, "TOGGLEVALUE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+        pub fn setUnmapCallback(self: Initializer, callback: ?*const OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
         /// This callback is called after the KILLFOCUS_CB of the element that loosed
         /// the focus.
@@ -1536,13 +1506,13 @@ pub const Tree = opaque {
         /// number) [in Lua] ih: identifier of the element that received keyboard focus.
         /// Affects All elements with user interaction, except menus.
         /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setGetFocusCallback(self: *Initializer, callback: ?OnGetFocusFn) Initializer {
+        pub fn setGetFocusCallback(self: Initializer, callback: ?*const OnGetFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// BUTTON_CB BUTTON_CB Action generated when a mouse button is pressed or released.
         /// Callback int function(Ihandle* ih, int button, int pressed, int x, int y,
         /// char* status); [in C] ih:button_cb(button, pressed, x, y: number, status:
@@ -1587,31 +1557,31 @@ pub const Tree = opaque {
         /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
         /// called with coordinates outside the element rectangle.
         /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
-        pub fn setButtonCallback(self: *Initializer, callback: ?OnButtonFn) Initializer {
+        pub fn setButtonCallback(self: Initializer, callback: ?*const OnButtonFn) Initializer {
             const Handler = CallbackHandler(Self, OnButtonFn, "BUTTON_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setBranchOpenCallback(self: *Initializer, callback: ?OnBranchOpenFn) Initializer {
+        pub fn setBranchOpenCallback(self: Initializer, callback: ?*const OnBranchOpenFn) Initializer {
             const Handler = CallbackHandler(Self, OnBranchOpenFn, "BRANCHOPEN_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setNodeRemovedCallback(self: *Initializer, callback: ?OnNodeRemovedFn) Initializer {
+        pub fn setNodeRemovedCallback(self: Initializer, callback: ?*const OnNodeRemovedFn) Initializer {
             const Handler = CallbackHandler(Self, OnNodeRemovedFn, "NODEREMOVED_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+        pub fn setLDestroyCallback(self: Initializer, callback: ?*const OnLDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
         /// native element.
         /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -1625,34 +1595,34 @@ pub const Tree = opaque {
         /// GTK the callbacks are called.
         /// Affects All controls with user interaction.
         /// See Also ENTERWINDOW_CB
-        pub fn setLeaveWindowCallback(self: *Initializer, callback: ?OnLeaveWindowFn) Initializer {
+        pub fn setLeaveWindowCallback(self: Initializer, callback: ?*const OnLeaveWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setExecuteLeafCallback(self: *Initializer, callback: ?OnExecuteLeafFn) Initializer {
+        pub fn setExecuteLeafCallback(self: Initializer, callback: ?*const OnExecuteLeafFn) Initializer {
             const Handler = CallbackHandler(Self, OnExecuteLeafFn, "EXECUTELEAF_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+        pub fn setPostMessageCallback(self: Initializer, callback: ?*const OnPostMessageFn) Initializer {
             const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setRenameCallback(self: *Initializer, callback: ?OnRenameFn) Initializer {
+        pub fn setRenameCallback(self: Initializer, callback: ?*const OnRenameFn) Initializer {
             const Handler = CallbackHandler(Self, OnRenameFn, "RENAME_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setMultiSelectionCallback(self: *Initializer, callback: ?OnMultiSelectionFn) Initializer {
+        pub fn setMultiSelectionCallback(self: Initializer, callback: ?*const OnMultiSelectionFn) Initializer {
             const Handler = CallbackHandler(Self, OnMultiSelectionFn, "MULTISELECTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -1715,7 +1685,7 @@ pub const Tree = opaque {
         }
     }
 
-    /// 
+    ///
     /// Displays a dialog in the current position, or changes a control VISIBLE attribute.
     /// For dialogs it is equivalent to call IupShowXY using IUP_CURRENT. See IupShowXY for more details.
     /// For other controls, to call IupShow is the same as setting VISIBLE=YES.
@@ -1730,14 +1700,14 @@ pub const Tree = opaque {
         interop.hide(self);
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -1773,19 +1743,19 @@ pub const Tree = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
@@ -1830,24 +1800,21 @@ pub const Tree = opaque {
         interop.setPtrAttribute(type, self, attribute, .{index}, value);
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getCount(self: *Self) i32 {
         return interop.getIntAttribute(self, "COUNT", .{});
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
@@ -1862,16 +1829,14 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
     pub fn getAddExpanded(self: *Self) bool {
         return interop.getBoolAttribute(self, "ADDEXPANDED", .{});
     }
 
-
-    /// 
+    ///
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
     pub fn setAddExpanded(self: *Self, arg: bool) void {
@@ -1886,22 +1851,19 @@ pub const Tree = opaque {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDropEqualDrag(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPEQUALDRAG", .{});
     }
 
-
-    /// 
+    ///
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setDropEqualDrag(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DROPEQUALDRAG", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getKind(self: *Self, index: i32) ?Kind {
@@ -1920,8 +1882,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
     pub fn addLeaf(self: *Self, index: i32, arg: [:0]const u8) void {
@@ -1980,29 +1941,25 @@ pub const Tree = opaque {
         return interop.getIntAttribute(self, "NEXT", .{index});
     }
 
-
-    /// 
+    ///
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDropFilesTarget(self: *Self) bool {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
 
-
-    /// 
+    ///
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setDropFilesTarget(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getDragDropTree(self: *Self) bool {
         return interop.getBoolAttribute(self, "DRAGDROPTREE", .{});
     }
 
-
-    /// 
+    ///
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setDragDropTree(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DRAGDROPTREE", .{}, arg);
@@ -2070,15 +2027,13 @@ pub const Tree = opaque {
         return interop.getIntAttribute(self, "Y", .{});
     }
 
-
-    /// 
+    ///
     /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
     pub fn getMarked(self: *Self, index: i32) bool {
         return interop.getBoolAttribute(self, "MARKED", .{index});
     }
 
-
-    /// 
+    ///
     /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
     pub fn setMarked(self: *Self, index: i32, arg: bool) void {
         interop.setBoolAttribute(self, "MARKED", .{index}, arg);
@@ -2120,8 +2075,7 @@ pub const Tree = opaque {
         return interop.getIntAttribute(self, "PREVIOUS", .{index});
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getExpand(self: *Self) ?Expand {
@@ -2136,8 +2090,7 @@ pub const Tree = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn setExpand(self: *Self, arg: ?Expand) void {
@@ -2192,8 +2145,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
     /// have the same size.
     /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
@@ -2212,8 +2164,7 @@ pub const Tree = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
     /// have the same size.
     /// In other systems only IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
@@ -2233,8 +2184,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "IMAGELEAF", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
     pub fn delNode(self: *Self, index: i32, arg: ?DelNode) void {
@@ -2248,8 +2198,7 @@ pub const Tree = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn topItem(self: *Self, arg: i32) void {
@@ -2304,31 +2253,27 @@ pub const Tree = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getTitle(self: *Self, index: i32) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn setTitle(self: *Self, index: i32, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TITLE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn getShowDragDrop(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOWDRAGDROP", .{});
     }
 
-
-    /// 
+    ///
     /// DRAGDROPTREE DROPFILESTARGET DROPEQUALDRAG SHOWDRAGDROP
     pub fn setShowDragDrop(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "SHOWDRAGDROP", .{}, arg);
@@ -2338,30 +2283,26 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "EXPANDALL", .{}, null);
     }
 
-
-    /// 
+    ///
     /// VALUECANFOCUS PROPAGATEFOCUS
     pub fn getPropagateFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
-
-    /// 
+    ///
     /// VALUECANFOCUS PROPAGATEFOCUS
     pub fn setPropagateFocus(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getBgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn setBgColor(self: *Self, rgb: iup.Rgb) void {
@@ -2403,16 +2344,14 @@ pub const Tree = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getColor(self: *Self, index: i32) ?iup.Rgb {
         return interop.getRgb(self, "COLOR", .{index});
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn setColor(self: *Self, index: i32, rgb: iup.Rgb) void {
@@ -2427,16 +2366,14 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getSpacing(self: *Self) i32 {
         return interop.getIntAttribute(self, "SPACING", .{});
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn setSpacing(self: *Self, arg: ?i32) void {
@@ -2447,8 +2384,7 @@ pub const Tree = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getRasterSize(self: *Self) Size {
@@ -2456,8 +2392,7 @@ pub const Tree = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn setRasterSize(self: *Self, width: ?i32, height: ?i32) void {
@@ -2490,8 +2425,7 @@ pub const Tree = opaque {
         return interop.getIntAttribute(self, "LAST", .{index});
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getDepth(self: *Self, index: i32) i32 {
@@ -2567,8 +2501,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getState(self: *Self, index: i32) ?State {
@@ -2579,8 +2512,7 @@ pub const Tree = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn setState(self: *Self, index: i32, arg: ?State) void {
@@ -2608,16 +2540,14 @@ pub const Tree = opaque {
         interop.setIntAttribute(self, "VALUE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn getIndentation(self: *Self) i32 {
         return interop.getIntAttribute(self, "INDENTATION", .{});
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW BGCOLOR COUNT EXPAND FGCOLOR INDENTATION RASTERSIZE SPACING
     /// TOPITEM
     pub fn setIndentation(self: *Self, arg: i32) void {
@@ -2651,8 +2581,7 @@ pub const Tree = opaque {
         interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
     /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
     /// have the same size.
@@ -2672,8 +2601,7 @@ pub const Tree = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
     /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
     /// have the same size.
@@ -2713,16 +2641,14 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getParent(self: *Self, index: i32) i32 {
         return interop.getIntAttribute(self, "PARENT", .{index});
     }
 
-
-    /// 
+    ///
     /// MARK MARKED MARKEDNODESMARKMODE MARKSTARTMARKWHENTOGGLE
     pub fn mark(self: *Self, arg: ?Mark) void {
         if (arg) |value| switch (value) {
@@ -2767,22 +2693,19 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// HIDELINES HIDEBUTTONS
     pub fn getHideButtons(self: *Self) bool {
         return interop.getBoolAttribute(self, "HIDEBUTTONS", .{});
     }
 
-
-    /// 
+    ///
     /// HIDELINES HIDEBUTTONS
     pub fn setHideButtons(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "HIDEBUTTONS", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getTotalChildCount(self: *Self, index: i32) i32 {
@@ -2802,8 +2725,7 @@ pub const Tree = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
     /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
     /// have the same size.
@@ -2823,8 +2745,7 @@ pub const Tree = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// IMAGEIMAGEEXPANDEDIMAGELEAF IMAGEBRANCHCOLLAPSED IMAGEBRANCHEXPANDED.
     /// In Windows, IMAGELEAF, IMAGEBRANCHCOLLAPSED and IMAGEBRANCHEXPANDED must
     /// have the same size.
@@ -2853,16 +2774,14 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "DRAGTYPES", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CHILDCOUNT TOTALCHILDCOUNT COLOR DEPTH KIND PARENT STATE TITLE
     /// TITLEFONTUSERDATA
     pub fn getChildCount(self: *Self, index: i32) i32 {
         return interop.getIntAttribute(self, "CHILDCOUNT", .{index});
     }
 
-
-    /// 
+    ///
     /// RENAME RENAMECARET RENAMESELECTION SHOWRENAME
     pub fn rename(self: *Self) void {
         interop.setStrAttribute(self, "RENAME", .{}, null);
@@ -2884,8 +2803,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
     pub fn addBranch(self: *Self, index: i32, arg: [:0]const u8) void {
@@ -2900,23 +2818,20 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "RUBBERBAND", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ADDEXPANDED ADDROOT ADDLEAF ADDBRANCH COPYNODE DELNODE EXPANDALL INSERTLEAF
     /// INSERTBRANCH MOVENODE
     pub fn copyNode(self: *Self, index: i32, arg: i32) void {
         interop.setIntAttribute(self, "COPYNODE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// HIDELINES HIDEBUTTONS
     pub fn getHideLines(self: *Self) bool {
         return interop.getBoolAttribute(self, "HIDELINES", .{});
     }
 
-
-    /// 
+    ///
     /// HIDELINES HIDEBUTTONS
     pub fn setHideLines(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "HIDELINES", .{}, arg);
@@ -2930,8 +2845,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -2952,8 +2866,7 @@ pub const Tree = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -2975,8 +2888,7 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -2997,8 +2909,7 @@ pub const Tree = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -3019,12 +2930,12 @@ pub const Tree = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setBranchCloseCallback(self: *Self, callback: ?OnBranchCloseFn) void {
+    pub fn setBranchCloseCallback(self: *Self, callback: ?*const OnBranchCloseFn) void {
         const Handler = CallbackHandler(Self, OnBranchCloseFn, "BRANCHCLOSE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
     /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -3053,44 +2964,44 @@ pub const Tree = opaque {
     /// This is the way an application can create shortcut keys, also called hot keys.
     /// These callbacks are not available in IupLua.
     /// Affects All elements with keyboard interaction.
-    pub fn setKAnyCallback(self: *Self, callback: ?OnKAnyFn) void {
+    pub fn setKAnyCallback(self: *Self, callback: ?*const OnKAnyFn) void {
         const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
     /// In Motif is also activated by the Help button in some workstations keyboard.
     /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Returns: IUP_CLOSE will be processed.
     /// Affects All elements with user interaction.
-    pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
+    pub fn setHelpCallback(self: *Self, callback: ?*const OnHelpFn) void {
         const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropMotionCallback(self: *Self, callback: ?OnDropMotionFn) void {
+    pub fn setDropMotionCallback(self: *Self, callback: ?*const OnDropMotionFn) void {
         const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setExecuteBranchCallback(self: *Self, callback: ?OnExecuteBranchFn) void {
+    pub fn setExecuteBranchCallback(self: *Self, callback: ?*const OnExecuteBranchFn) void {
         const Handler = CallbackHandler(Self, OnExecuteBranchFn, "EXECUTEBRANCH_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragEndCallback(self: *Self, callback: ?OnDragEndFn) void {
+    pub fn setDragEndCallback(self: *Self, callback: ?*const OnDragEndFn) void {
         const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragBeginCallback(self: *Self, callback: ?OnDragBeginFn) void {
+    pub fn setDragBeginCallback(self: *Self, callback: ?*const OnDragBeginFn) void {
         const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
     /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
     /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
@@ -3104,22 +3015,22 @@ pub const Tree = opaque {
     /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
     /// called with coordinates outside the element rectangle.
     /// Affects IupCanvas, IupGLCanvas
-    pub fn setMotionCallback(self: *Self, callback: ?OnMotionFn) void {
+    pub fn setMotionCallback(self: *Self, callback: ?*const OnMotionFn) void {
         const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMultiUnselectionCallback(self: *Self, callback: ?OnMultiUnselectionFn) void {
+    pub fn setMultiUnselectionCallback(self: *Self, callback: ?*const OnMultiUnselectionFn) void {
         const Handler = CallbackHandler(Self, OnMultiUnselectionFn, "MULTIUNSELECTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setRightClickCallback(self: *Self, callback: ?OnRightClickFn) void {
+    pub fn setRightClickCallback(self: *Self, callback: ?*const OnRightClickFn) void {
         const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -3128,17 +3039,17 @@ pub const Tree = opaque {
     /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
     /// Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+    pub fn setMapCallback(self: *Self, callback: ?*const OnMapFn) void {
         const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDropCallback(self: *Self, callback: ?OnDragDropFn) void {
+    pub fn setDragDropCallback(self: *Self, callback: ?*const OnDragDropFn) void {
         const Handler = CallbackHandler(Self, OnDragDropFn, "DRAGDROP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -3152,12 +3063,12 @@ pub const Tree = opaque {
     /// GTK the callbacks are called.
     /// Affects All controls with user interaction.
     /// See Also LEAVEWINDOW_CB
-    pub fn setEnterWindowCallback(self: *Self, callback: ?OnEnterWindowFn) void {
+    pub fn setEnterWindowCallback(self: *Self, callback: ?*const OnEnterWindowFn) void {
         const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -3170,17 +3081,17 @@ pub const Tree = opaque {
     /// release memory allocated by the binding for the element.
     /// Also the callback will be called before the language callback.
     /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+    pub fn setDestroyCallback(self: *Self, callback: ?*const OnDestroyFn) void {
         const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropDataCallback(self: *Self, callback: ?OnDropDataFn) void {
+    pub fn setDropDataCallback(self: *Self, callback: ?*const OnDropDataFn) void {
         const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
     /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
     /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -3192,22 +3103,22 @@ pub const Tree = opaque {
     /// This causes the thread to yield control and can cause the application to
     /// stop responding to messages.
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setKillFocusCallback(self: *Self, callback: ?OnKillFocusFn) void {
+    pub fn setKillFocusCallback(self: *Self, callback: ?*const OnKillFocusFn) void {
         const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setShowRenameCallback(self: *Self, callback: ?OnShowRenameFn) void {
+    pub fn setShowRenameCallback(self: *Self, callback: ?*const OnShowRenameFn) void {
         const Handler = CallbackHandler(Self, OnShowRenameFn, "SHOWRENAME_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataCallback(self: *Self, callback: ?OnDragDataFn) void {
+    pub fn setDragDataCallback(self: *Self, callback: ?*const OnDragDataFn) void {
         const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// SELECTION_CB: Action generated when an node is selected or deselected.
     /// MULTISELECTION_CB: Action generated when multiple nodes are selected with
     /// the mouse and the shift key pressed.
@@ -3225,17 +3136,17 @@ pub const Tree = opaque {
     /// a node.
     /// TOGGLEVALUE_CB: Action generated when the toggle&#39;s state was changed.
     /// The callback also receives the new toggle&#39;s state.
-    pub fn setSelectionCallback(self: *Self, callback: ?OnSelectionFn) void {
+    pub fn setSelectionCallback(self: *Self, callback: ?*const OnSelectionFn) void {
         const Handler = CallbackHandler(Self, OnSelectionFn, "SELECTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataSizeCallback(self: *Self, callback: ?OnDragDataSizeFn) void {
+    pub fn setDragDataSizeCallback(self: *Self, callback: ?*const OnDragDataSizeFn) void {
         const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
     /// When several files are dropped at once, the callback is called several
     /// times, once for each file.
@@ -3254,27 +3165,27 @@ pub const Tree = opaque {
     /// Returns: If IUP_IGNORE is returned the callback will NOT be called for the
     /// next dropped files, and the processing of dropped files will be interrupted.
     /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
-    pub fn setDropFilesCallback(self: *Self, callback: ?OnDropFilesFn) void {
+    pub fn setDropFilesCallback(self: *Self, callback: ?*const OnDropFilesFn) void {
         const Handler = CallbackHandler(Self, OnDropFilesFn, "DROPFILES_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setToggleValueCallback(self: *Self, callback: ?OnToggleValueFn) void {
+    pub fn setToggleValueCallback(self: *Self, callback: ?*const OnToggleValueFn) void {
         const Handler = CallbackHandler(Self, OnToggleValueFn, "TOGGLEVALUE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+    pub fn setUnmapCallback(self: *Self, callback: ?*const OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
     /// This callback is called after the KILLFOCUS_CB of the element that loosed
     /// the focus.
@@ -3284,12 +3195,12 @@ pub const Tree = opaque {
     /// number) [in Lua] ih: identifier of the element that received keyboard focus.
     /// Affects All elements with user interaction, except menus.
     /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setGetFocusCallback(self: *Self, callback: ?OnGetFocusFn) void {
+    pub fn setGetFocusCallback(self: *Self, callback: ?*const OnGetFocusFn) void {
         const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// BUTTON_CB BUTTON_CB Action generated when a mouse button is pressed or released.
     /// Callback int function(Ihandle* ih, int button, int pressed, int x, int y,
     /// char* status); [in C] ih:button_cb(button, pressed, x, y: number, status:
@@ -3334,27 +3245,27 @@ pub const Tree = opaque {
     /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
     /// called with coordinates outside the element rectangle.
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
-    pub fn setButtonCallback(self: *Self, callback: ?OnButtonFn) void {
+    pub fn setButtonCallback(self: *Self, callback: ?*const OnButtonFn) void {
         const Handler = CallbackHandler(Self, OnButtonFn, "BUTTON_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setBranchOpenCallback(self: *Self, callback: ?OnBranchOpenFn) void {
+    pub fn setBranchOpenCallback(self: *Self, callback: ?*const OnBranchOpenFn) void {
         const Handler = CallbackHandler(Self, OnBranchOpenFn, "BRANCHOPEN_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setNodeRemovedCallback(self: *Self, callback: ?OnNodeRemovedFn) void {
+    pub fn setNodeRemovedCallback(self: *Self, callback: ?*const OnNodeRemovedFn) void {
         const Handler = CallbackHandler(Self, OnNodeRemovedFn, "NODEREMOVED_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+    pub fn setLDestroyCallback(self: *Self, callback: ?*const OnLDestroyFn) void {
         const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -3368,27 +3279,27 @@ pub const Tree = opaque {
     /// GTK the callbacks are called.
     /// Affects All controls with user interaction.
     /// See Also ENTERWINDOW_CB
-    pub fn setLeaveWindowCallback(self: *Self, callback: ?OnLeaveWindowFn) void {
+    pub fn setLeaveWindowCallback(self: *Self, callback: ?*const OnLeaveWindowFn) void {
         const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setExecuteLeafCallback(self: *Self, callback: ?OnExecuteLeafFn) void {
+    pub fn setExecuteLeafCallback(self: *Self, callback: ?*const OnExecuteLeafFn) void {
         const Handler = CallbackHandler(Self, OnExecuteLeafFn, "EXECUTELEAF_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+    pub fn setPostMessageCallback(self: *Self, callback: ?*const OnPostMessageFn) void {
         const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setRenameCallback(self: *Self, callback: ?OnRenameFn) void {
+    pub fn setRenameCallback(self: *Self, callback: ?*const OnRenameFn) void {
         const Handler = CallbackHandler(Self, OnRenameFn, "RENAME_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMultiSelectionCallback(self: *Self, callback: ?OnMultiSelectionFn) void {
+    pub fn setMultiSelectionCallback(self: *Self, callback: ?*const OnMultiSelectionFn) void {
         const Handler = CallbackHandler(Self, OnMultiSelectionFn, "MULTISELECTION_CB");
         Handler.setCallback(self, callback);
     }

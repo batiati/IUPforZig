@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Creates a native container for composing elements in hidden layers with
 /// only one layer visible (just like IupZbox), but its visibility can be
 /// interactively controlled.
@@ -36,21 +36,21 @@ pub const Tabs = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    /// 
+    ///
     /// FOCUS_CB: Called when a child of the container gets or looses the focus.
     /// It is called only if PROPAGATEFOCUS is defined in the child.
     /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
     /// number) -> (ret: number) [in Lua]
     pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// TABCHANGE_CB: Callback called when the user changes the current tab.
     /// It is not called when the current tab is programmatically changed or removed.
     /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
     /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
     pub const OnTabChangeFn = fn (self: *Self, arg0: iup.Element, arg1: iup.Element) anyerror!void;
 
-    /// 
+    ///
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
     /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -81,7 +81,7 @@ pub const Tabs = opaque {
     /// Affects All elements with keyboard interaction.
     pub const OnKAnyFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
     /// In Motif is also activated by the Help button in some workstations keyboard.
     /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
@@ -90,14 +90,14 @@ pub const Tabs = opaque {
     /// Affects All elements with user interaction.
     pub const OnHelpFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
     /// right mouse button (since 3.10).
     /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
     /// (ret: number) [in Lua]
     pub const OnRightClickFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -108,7 +108,7 @@ pub const Tabs = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -124,7 +124,7 @@ pub const Tabs = opaque {
     /// See Also LEAVEWINDOW_CB
     pub const OnEnterWindowFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -139,7 +139,7 @@ pub const Tabs = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
     /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
     /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -153,21 +153,21 @@ pub const Tabs = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
     /// Called only when TABCHANGE_CB is not defined.
     /// (since 3.3) int function(Ihandle* ih, int new_pos, int old_pos); [in C]
     /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
     pub const OnTabChangePosFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// TABCLOSE_CB [Windows and GTK Only]: Callback called when the user clicks on
     /// the close button (since 3.10).
     /// Called only when SHOWCLOSE=Yes.
@@ -175,7 +175,7 @@ pub const Tabs = opaque {
     /// (ret: number) [in Lua]
     pub const OnTabCloseFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
     /// This callback is called after the KILLFOCUS_CB of the element that loosed
     /// the focus.
@@ -189,7 +189,7 @@ pub const Tabs = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -211,7 +211,7 @@ pub const Tabs = opaque {
         Top,
         Bottom,
     };
-    /// 
+    ///
     /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
     /// tab, which can be "TOP", "BOTTOM", "LEFT" or "RIGHT".
     /// Default is "TOP".
@@ -226,7 +226,7 @@ pub const Tabs = opaque {
         Right,
         Top,
     };
-    /// 
+    ///
     /// EXPAND (non inheritable): The default value is "YES".
     pub const Expand = enum {
         Yes,
@@ -236,7 +236,7 @@ pub const Tabs = opaque {
         VerticalFree,
         No,
     };
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -246,7 +246,7 @@ pub const Tabs = opaque {
         Ignore,
         No,
     };
-    /// 
+    ///
     /// TABORIENTATION (non inheritable): Indicates the orientation of tab text,
     /// which can be "HORIZONTAL" or "VERTICAL".
     /// Default is "HORIZONTAL".
@@ -278,103 +278,104 @@ pub const Tabs = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setChildren(self: *Initializer, tuple: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setChildren(self: Initializer, tuple: anytype) Initializer {
+            if (self.last_error) |_| return self;
 
             Self.appendChildren(self.ref, tuple) catch |err| {
-                self.last_error = err;
+                return .{
+                    .ref = self.ref,
+                    .last_error = err,
+                };
             };
 
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FGCOLOR: Tabs title color.
         /// Default: the global attribute DLGFGCOLOR.
-        pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipIcon(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaxSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosition(self: Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTip(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SHOWCLOSE [Windows and GTK Only] (non inheritable): enables the close
         /// button on each tab.
         /// Default value: "NO".
@@ -382,43 +383,42 @@ pub const Tabs = opaque {
         /// By default when closed the tab is hidden.
         /// To change that behavior use the TABCLOSE_CB callback.
         /// (since 3.10)
-        pub fn setShowClose(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShowClose(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHOWCLOSE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCanFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn zOrder(self: Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
                 .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
             } else {
                 interop.clearAttribute(self.ref, "ZORDER", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CHILDOFFSET: Allow to specify a position offset for the child.
         /// Available for native containers only.
         /// It will not affect the natural size, and allows to position controls
@@ -427,16 +427,15 @@ pub const Tabs = opaque {
         /// horizontal and vertical offsets, respectively, in pixels.
         /// Default: 0x0.
         /// (since 3.14)
-        pub fn setChildOffset(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setChildOffset(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
         /// tab, which can be "TOP", "BOTTOM", "LEFT" or "RIGHT".
         /// Default is "TOP".
@@ -445,8 +444,8 @@ pub const Tabs = opaque {
         /// In Windows, when not TOP, then visual style is removed from tabs.
         /// In Windows, the Visual Styles work only when TABTYPE is TOP.
         /// Windows Classic Windows w/ Styles
-        pub fn setTabType(self: *Initializer, arg: ?TabType) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabType(self: Initializer, arg: ?TabType) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Bottom => interop.setStrAttribute(self.ref, "TABTYPE", .{}, "BOTTOM"),
                 .Left => interop.setStrAttribute(self.ref, "TABTYPE", .{}, "LEFT"),
@@ -455,14 +454,13 @@ pub const Tabs = opaque {
             } else {
                 interop.clearAttribute(self.ref, "TABTYPE", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPAND (non inheritable): The default value is "YES".
-        pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpand(self: Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -473,118 +471,112 @@ pub const Tabs = opaque {
             } else {
                 interop.clearAttribute(self.ref, "EXPAND", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SIZE (non inheritable): The default size is the smallest size that fits its
         /// largest child.
         /// All child elements are considered even invisible ones.
-        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipMarkup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontSize(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUserSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipDelay(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABVISIBLEn (non inheritable): Allows to hide a tab.
         /// n starts at 0.
         /// When a tab is hidden the tabs indices are not changed.
         /// Can be Yes or No.
         /// Default: Yes.
         /// (since 3.8)
-        pub fn setTabVisible(self: *Initializer, index: i32, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabVisible(self: Initializer, index: i32, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TABVISIBLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPropagateFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BGCOLOR: In Windows and in GTK when in Windows, the tab buttons background
         /// it will be always defined by the system.
         /// In Windows the default background is different from the dialog background.
         /// Default: the global attribute DLGBGCOLOR.
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VALUE_HANDLE (non inheritable): Changes the current tab by its handle.
         /// The value passed must be the handle of a child contained in the tabs.
         /// When the tabs is created, the first element inserted is set as the visible child.
         /// (since 3.0)
-        pub fn setValueHandle(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setValueHandle(self: Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandleAttribute(self.ref, "VALUE_HANDLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setValueHandleHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setValueHandleHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "VALUE_HANDLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
         /// If set to NO will compute using only the current tab.
         /// Default: Yes.
         /// (since 3.27)
-        pub fn setChildSizeAll(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setChildSizeAll(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CHILDSIZEALL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
         /// then its size and position will be ignored by the layout processing.
         /// Default: "NO".
         /// (since 3.27)
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -592,37 +584,36 @@ pub const Tabs = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNormalizerGroup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRasterSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipFgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontFace(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABORIENTATION (non inheritable): Indicates the orientation of tab text,
         /// which can be "HORIZONTAL" or "VERTICAL".
         /// Default is "HORIZONTAL".
@@ -631,50 +622,47 @@ pub const Tabs = opaque {
         /// TABTYPE=LEFT or TABTYPE=RIGHT then TABORIENTATION=VERTICAL, if TABTYPE=TOP
         /// or TABTYPE=BOTTOM then TABORIENTATION=HORIZONTAL.
         /// (GTK 2.6)
-        pub fn setTabOrientation(self: *Initializer, arg: ?TabOrientation) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabOrientation(self: Initializer, arg: ?TabOrientation) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Horizontal => interop.setStrAttribute(self.ref, "TABORIENTATION", .{}, "HORIZONTAL"),
                 .Vertical => interop.setStrAttribute(self.ref, "TABORIENTATION", .{}, "VERTICAL"),
             } else {
                 interop.clearAttribute(self.ref, "TABORIENTATION", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VALUEPOS (non inheritable): Changes the current tab by its position,
         /// starting at 0.
         /// When the tabs is created, the first element inserted is set as the visible child.
         /// In GTK, inside the callback the returned value is still the previous one.
         /// (since 3.0)
-        pub fn setValuePos(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setValuePos(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "VALUEPOS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VALUE (non inheritable): Changes the current tab by its name.
         /// The value passed must be the name of one of the elements contained in the tabs.
         /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
         /// In Lua you can also use the element reference directly.
-        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setValue(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -687,80 +675,77 @@ pub const Tabs = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MULTILINE [Windows Only] (non inheritable): Enable multiple lines of tab buttons.
         /// This will hide the tab scroll and fits to make all tab buttons visible.
         /// Can be "YES" or "NO".
         /// Default "NO".
         /// It is always enabled when TABTYPE=LEFT or TABTYPE=RIGHT.
         /// (since 3.0)
-        pub fn setMultiline(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMultiline(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MULTILINE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
         /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setActive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontStyle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -777,41 +762,41 @@ pub const Tabs = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFont(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// FOCUS_CB: Called when a child of the container gets or looses the focus.
         /// It is called only if PROPAGATEFOCUS is defined in the child.
         /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
         /// number) -> (ret: number) [in Lua]
-        pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
+        pub fn setFocusCallback(self: Initializer, callback: ?*const OnFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// TABCHANGE_CB: Callback called when the user changes the current tab.
         /// It is not called when the current tab is programmatically changed or removed.
         /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
         /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
-        pub fn setTabChangeCallback(self: *Initializer, callback: ?OnTabChangeFn) Initializer {
+        pub fn setTabChangeCallback(self: Initializer, callback: ?*const OnTabChangeFn) Initializer {
             const Handler = CallbackHandler(Self, OnTabChangeFn, "TABCHANGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// K_ANY K_ANY Action generated when a keyboard event occurs.
         /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
         /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -840,37 +825,37 @@ pub const Tabs = opaque {
         /// This is the way an application can create shortcut keys, also called hot keys.
         /// These callbacks are not available in IupLua.
         /// Affects All elements with keyboard interaction.
-        pub fn setKAnyCallback(self: *Initializer, callback: ?OnKAnyFn) Initializer {
+        pub fn setKAnyCallback(self: Initializer, callback: ?*const OnKAnyFn) Initializer {
             const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
         /// In Motif is also activated by the Help button in some workstations keyboard.
         /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Returns: IUP_CLOSE will be processed.
         /// Affects All elements with user interaction.
-        pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
+        pub fn setHelpCallback(self: Initializer, callback: ?*const OnHelpFn) Initializer {
             const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
         /// right mouse button (since 3.10).
         /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
         /// (ret: number) [in Lua]
-        pub fn setRightClickCallback(self: *Initializer, callback: ?OnRightClickFn) Initializer {
+        pub fn setRightClickCallback(self: Initializer, callback: ?*const OnRightClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
         /// When the element is a dialog, it is called after the layout is updated.
@@ -879,13 +864,13 @@ pub const Tabs = opaque {
         /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
         /// Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+        pub fn setMapCallback(self: Initializer, callback: ?*const OnMapFn) Initializer {
             const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
         /// native element.
         /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -899,13 +884,13 @@ pub const Tabs = opaque {
         /// GTK the callbacks are called.
         /// Affects All controls with user interaction.
         /// See Also LEAVEWINDOW_CB
-        pub fn setEnterWindowCallback(self: *Initializer, callback: ?OnEnterWindowFn) Initializer {
+        pub fn setEnterWindowCallback(self: Initializer, callback: ?*const OnEnterWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
         /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
@@ -918,13 +903,13 @@ pub const Tabs = opaque {
         /// release memory allocated by the binding for the element.
         /// Also the callback will be called before the language callback.
         /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+        pub fn setDestroyCallback(self: Initializer, callback: ?*const OnDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
         /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
         /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -936,47 +921,47 @@ pub const Tabs = opaque {
         /// This causes the thread to yield control and can cause the application to
         /// stop responding to messages.
         /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setKillFocusCallback(self: *Initializer, callback: ?OnKillFocusFn) Initializer {
+        pub fn setKillFocusCallback(self: Initializer, callback: ?*const OnKillFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+        pub fn setUnmapCallback(self: Initializer, callback: ?*const OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
         /// Called only when TABCHANGE_CB is not defined.
         /// (since 3.3) int function(Ihandle* ih, int new_pos, int old_pos); [in C]
         /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
-        pub fn setTabChangePosCallback(self: *Initializer, callback: ?OnTabChangePosFn) Initializer {
+        pub fn setTabChangePosCallback(self: Initializer, callback: ?*const OnTabChangePosFn) Initializer {
             const Handler = CallbackHandler(Self, OnTabChangePosFn, "TABCHANGEPOS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// TABCLOSE_CB [Windows and GTK Only]: Callback called when the user clicks on
         /// the close button (since 3.10).
         /// Called only when SHOWCLOSE=Yes.
         /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
         /// (ret: number) [in Lua]
-        pub fn setTabCloseCallback(self: *Initializer, callback: ?OnTabCloseFn) Initializer {
+        pub fn setTabCloseCallback(self: Initializer, callback: ?*const OnTabCloseFn) Initializer {
             const Handler = CallbackHandler(Self, OnTabCloseFn, "TABCLOSE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
         /// This callback is called after the KILLFOCUS_CB of the element that loosed
         /// the focus.
@@ -986,19 +971,19 @@ pub const Tabs = opaque {
         /// number) [in Lua] ih: identifier of the element that received keyboard focus.
         /// Affects All elements with user interaction, except menus.
         /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setGetFocusCallback(self: *Initializer, callback: ?OnGetFocusFn) Initializer {
+        pub fn setGetFocusCallback(self: Initializer, callback: ?*const OnGetFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+        pub fn setLDestroyCallback(self: Initializer, callback: ?*const OnLDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
         /// native element.
         /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -1012,16 +997,16 @@ pub const Tabs = opaque {
         /// GTK the callbacks are called.
         /// Affects All controls with user interaction.
         /// See Also ENTERWINDOW_CB
-        pub fn setLeaveWindowCallback(self: *Initializer, callback: ?OnLeaveWindowFn) Initializer {
+        pub fn setLeaveWindowCallback(self: Initializer, callback: ?*const OnLeaveWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+        pub fn setPostMessageCallback(self: Initializer, callback: ?*const OnPostMessageFn) Initializer {
             const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -1084,7 +1069,7 @@ pub const Tabs = opaque {
         }
     }
 
-    /// 
+    ///
     /// Displays a dialog in the current position, or changes a control VISIBLE attribute.
     /// For dialogs it is equivalent to call IupShowXY using IUP_CURRENT. See IupShowXY for more details.
     /// For other controls, to call IupShow is the same as setting VISIBLE=YES.
@@ -1099,14 +1084,14 @@ pub const Tabs = opaque {
         interop.hide(self);
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -1161,19 +1146,19 @@ pub const Tabs = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
@@ -1218,8 +1203,7 @@ pub const Tabs = opaque {
         interop.setPtrAttribute(type, self, attribute, .{index}, value);
     }
 
-
-    /// 
+    ///
     /// COUNT (read-only) (non inheritable): returns the number of tabs.
     /// Same value returned by IupGetChildCount.
     /// (since 3.3)
@@ -1227,16 +1211,14 @@ pub const Tabs = opaque {
         return interop.getIntAttribute(self, "COUNT", .{});
     }
 
-
-    /// 
+    ///
     /// FGCOLOR: Tabs title color.
     /// Default: the global attribute DLGFGCOLOR.
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// FGCOLOR: Tabs title color.
     /// Default: the global attribute DLGFGCOLOR.
     pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
@@ -1302,8 +1284,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "TIP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// SHOWCLOSE [Windows and GTK Only] (non inheritable): enables the close
     /// button on each tab.
     /// Default value: "NO".
@@ -1315,8 +1296,7 @@ pub const Tabs = opaque {
         return interop.getBoolAttribute(self, "SHOWCLOSE", .{});
     }
 
-
-    /// 
+    ///
     /// SHOWCLOSE [Windows and GTK Only] (non inheritable): enables the close
     /// button on each tab.
     /// Default value: "NO".
@@ -1369,8 +1349,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CHILDOFFSET: Allow to specify a position offset for the child.
     /// Available for native containers only.
     /// It will not affect the natural size, and allows to position controls
@@ -1384,8 +1363,7 @@ pub const Tabs = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// CHILDOFFSET: Allow to specify a position offset for the child.
     /// Available for native containers only.
     /// It will not affect the natural size, and allows to position controls
@@ -1400,8 +1378,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
 
-
-    /// 
+    ///
     /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
     /// tab, which can be "TOP", "BOTTOM", "LEFT" or "RIGHT".
     /// Default is "TOP".
@@ -1420,8 +1397,7 @@ pub const Tabs = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// TABTYPE (non inheritable) (creation only in Windows): Indicates the type of
     /// tab, which can be "TOP", "BOTTOM", "LEFT" or "RIGHT".
     /// Default is "TOP".
@@ -1441,8 +1417,7 @@ pub const Tabs = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
         var ret = interop.getStrAttribute(self, "EXPAND", .{});
@@ -1456,8 +1431,7 @@ pub const Tabs = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
@@ -1472,8 +1446,7 @@ pub const Tabs = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// SIZE (non inheritable): The default size is the smallest size that fits its
     /// largest child.
     /// All child elements are considered even invisible ones.
@@ -1482,8 +1455,7 @@ pub const Tabs = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// SIZE (non inheritable): The default size is the smallest size that fits its
     /// largest child.
     /// All child elements are considered even invisible ones.
@@ -1537,8 +1509,7 @@ pub const Tabs = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TABVISIBLEn (non inheritable): Allows to hide a tab.
     /// n starts at 0.
     /// When a tab is hidden the tabs indices are not changed.
@@ -1549,8 +1520,7 @@ pub const Tabs = opaque {
         return interop.getBoolAttribute(self, "TABVISIBLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABVISIBLEn (non inheritable): Allows to hide a tab.
     /// n starts at 0.
     /// When a tab is hidden the tabs indices are not changed.
@@ -1569,8 +1539,7 @@ pub const Tabs = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BGCOLOR: In Windows and in GTK when in Windows, the tab buttons background
     /// it will be always defined by the system.
     /// In Windows the default background is different from the dialog background.
@@ -1579,8 +1548,7 @@ pub const Tabs = opaque {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// BGCOLOR: In Windows and in GTK when in Windows, the tab buttons background
     /// it will be always defined by the system.
     /// In Windows the default background is different from the dialog background.
@@ -1589,8 +1557,7 @@ pub const Tabs = opaque {
         interop.setRgb(self, "BGCOLOR", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// VALUE_HANDLE (non inheritable): Changes the current tab by its handle.
     /// The value passed must be the handle of a child contained in the tabs.
     /// When the tabs is created, the first element inserted is set as the visible child.
@@ -1603,8 +1570,7 @@ pub const Tabs = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// VALUE_HANDLE (non inheritable): Changes the current tab by its handle.
     /// The value passed must be the handle of a child contained in the tabs.
     /// When the tabs is created, the first element inserted is set as the visible child.
@@ -1617,8 +1583,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "VALUE_HANDLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
     /// If set to NO will compute using only the current tab.
     /// Default: Yes.
@@ -1627,8 +1592,7 @@ pub const Tabs = opaque {
         return interop.getBoolAttribute(self, "CHILDSIZEALL", .{});
     }
 
-
-    /// 
+    ///
     /// CHILDSIZEALL (non inheritable): compute the natural size using all children.
     /// If set to NO will compute using only the current tab.
     /// Default: Yes.
@@ -1637,8 +1601,7 @@ pub const Tabs = opaque {
         interop.setBoolAttribute(self, "CHILDSIZEALL", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -1652,8 +1615,7 @@ pub const Tabs = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -1703,8 +1665,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TABORIENTATION (non inheritable): Indicates the orientation of tab text,
     /// which can be "HORIZONTAL" or "VERTICAL".
     /// Default is "HORIZONTAL".
@@ -1721,8 +1682,7 @@ pub const Tabs = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// TABORIENTATION (non inheritable): Indicates the orientation of tab text,
     /// which can be "HORIZONTAL" or "VERTICAL".
     /// Default is "HORIZONTAL".
@@ -1748,8 +1708,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// VALUEPOS (non inheritable): Changes the current tab by its position,
     /// starting at 0.
     /// When the tabs is created, the first element inserted is set as the visible child.
@@ -1759,8 +1718,7 @@ pub const Tabs = opaque {
         return interop.getIntAttribute(self, "VALUEPOS", .{});
     }
 
-
-    /// 
+    ///
     /// VALUEPOS (non inheritable): Changes the current tab by its position,
     /// starting at 0.
     /// When the tabs is created, the first element inserted is set as the visible child.
@@ -1770,8 +1728,7 @@ pub const Tabs = opaque {
         interop.setIntAttribute(self, "VALUEPOS", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// VALUE (non inheritable): Changes the current tab by its name.
     /// The value passed must be the name of one of the elements contained in the tabs.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
@@ -1780,8 +1737,7 @@ pub const Tabs = opaque {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
 
-
-    /// 
+    ///
     /// VALUE (non inheritable): Changes the current tab by its name.
     /// The value passed must be the name of one of the elements contained in the tabs.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a child to a name.
@@ -1790,8 +1746,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -1812,8 +1767,7 @@ pub const Tabs = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -1835,8 +1789,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// MULTILINE [Windows Only] (non inheritable): Enable multiple lines of tab buttons.
     /// This will hide the tab scroll and fits to make all tab buttons visible.
     /// Can be "YES" or "NO".
@@ -1847,8 +1800,7 @@ pub const Tabs = opaque {
         return interop.getBoolAttribute(self, "MULTILINE", .{});
     }
 
-
-    /// 
+    ///
     /// MULTILINE [Windows Only] (non inheritable): Enable multiple lines of tab buttons.
     /// This will hide the tab scroll and fits to make all tab buttons visible.
     /// Can be "YES" or "NO".
@@ -1859,16 +1811,14 @@ pub const Tabs = opaque {
         interop.setBoolAttribute(self, "MULTILINE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
     /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
 
-
-    /// 
+    ///
     /// ACTIVE, FONT, SCREENPOSITION, POSITION, CLIENTSIZE, CLIENTOFFSET, MINSIZE,
     /// MAXSIZE, WID, TIP, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
@@ -1933,8 +1883,7 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -1955,8 +1904,7 @@ pub const Tabs = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -1985,27 +1933,27 @@ pub const Tabs = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
-    /// 
+    ///
     /// FOCUS_CB: Called when a child of the container gets or looses the focus.
     /// It is called only if PROPAGATEFOCUS is defined in the child.
     /// (since 3.23) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
     /// number) -> (ret: number) [in Lua]
-    pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
+    pub fn setFocusCallback(self: *Self, callback: ?*const OnFocusFn) void {
         const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// TABCHANGE_CB: Callback called when the user changes the current tab.
     /// It is not called when the current tab is programmatically changed or removed.
     /// int function(Ihandle* ih, Ihandle* new_tab, Ihandle* old_tab); [in C]
     /// ih:tabchange_cb(new_tab, old_tab: ihandle) -> (ret: number) [in Lua]
-    pub fn setTabChangeCallback(self: *Self, callback: ?OnTabChangeFn) void {
+    pub fn setTabChangeCallback(self: *Self, callback: ?*const OnTabChangeFn) void {
         const Handler = CallbackHandler(Self, OnTabChangeFn, "TABCHANGE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
     /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -2034,34 +1982,34 @@ pub const Tabs = opaque {
     /// This is the way an application can create shortcut keys, also called hot keys.
     /// These callbacks are not available in IupLua.
     /// Affects All elements with keyboard interaction.
-    pub fn setKAnyCallback(self: *Self, callback: ?OnKAnyFn) void {
+    pub fn setKAnyCallback(self: *Self, callback: ?*const OnKAnyFn) void {
         const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
     /// In Motif is also activated by the Help button in some workstations keyboard.
     /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Returns: IUP_CLOSE will be processed.
     /// Affects All elements with user interaction.
-    pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
+    pub fn setHelpCallback(self: *Self, callback: ?*const OnHelpFn) void {
         const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// RIGHTCLICK_CB: Callback called when the user clicks on some tab using the
     /// right mouse button (since 3.10).
     /// int function(Ihandle* ih, int pos); [in C] ih:rightclick_cb(pos: number) ->
     /// (ret: number) [in Lua]
-    pub fn setRightClickCallback(self: *Self, callback: ?OnRightClickFn) void {
+    pub fn setRightClickCallback(self: *Self, callback: ?*const OnRightClickFn) void {
         const Handler = CallbackHandler(Self, OnRightClickFn, "RIGHTCLICK_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -2070,12 +2018,12 @@ pub const Tabs = opaque {
     /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
     /// Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+    pub fn setMapCallback(self: *Self, callback: ?*const OnMapFn) void {
         const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -2089,12 +2037,12 @@ pub const Tabs = opaque {
     /// GTK the callbacks are called.
     /// Affects All controls with user interaction.
     /// See Also LEAVEWINDOW_CB
-    pub fn setEnterWindowCallback(self: *Self, callback: ?OnEnterWindowFn) void {
+    pub fn setEnterWindowCallback(self: *Self, callback: ?*const OnEnterWindowFn) void {
         const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -2107,12 +2055,12 @@ pub const Tabs = opaque {
     /// release memory allocated by the binding for the element.
     /// Also the callback will be called before the language callback.
     /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+    pub fn setDestroyCallback(self: *Self, callback: ?*const OnDestroyFn) void {
         const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
     /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
     /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -2124,43 +2072,43 @@ pub const Tabs = opaque {
     /// This causes the thread to yield control and can cause the application to
     /// stop responding to messages.
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setKillFocusCallback(self: *Self, callback: ?OnKillFocusFn) void {
+    pub fn setKillFocusCallback(self: *Self, callback: ?*const OnKillFocusFn) void {
         const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+    pub fn setUnmapCallback(self: *Self, callback: ?*const OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// TABCHANGEPOS_CB: Callback called when the user changes the current tab.
     /// Called only when TABCHANGE_CB is not defined.
     /// (since 3.3) int function(Ihandle* ih, int new_pos, int old_pos); [in C]
     /// ih:tabchange_cb(new_pos, old_pos: number) -> (ret: number) [in Lua]
-    pub fn setTabChangePosCallback(self: *Self, callback: ?OnTabChangePosFn) void {
+    pub fn setTabChangePosCallback(self: *Self, callback: ?*const OnTabChangePosFn) void {
         const Handler = CallbackHandler(Self, OnTabChangePosFn, "TABCHANGEPOS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// TABCLOSE_CB [Windows and GTK Only]: Callback called when the user clicks on
     /// the close button (since 3.10).
     /// Called only when SHOWCLOSE=Yes.
     /// int function(Ihandle* ih, int pos); [in C] ih:tabclose_cb(pos: number) ->
     /// (ret: number) [in Lua]
-    pub fn setTabCloseCallback(self: *Self, callback: ?OnTabCloseFn) void {
+    pub fn setTabCloseCallback(self: *Self, callback: ?*const OnTabCloseFn) void {
         const Handler = CallbackHandler(Self, OnTabCloseFn, "TABCLOSE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
     /// This callback is called after the KILLFOCUS_CB of the element that loosed
     /// the focus.
@@ -2170,17 +2118,17 @@ pub const Tabs = opaque {
     /// number) [in Lua] ih: identifier of the element that received keyboard focus.
     /// Affects All elements with user interaction, except menus.
     /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setGetFocusCallback(self: *Self, callback: ?OnGetFocusFn) void {
+    pub fn setGetFocusCallback(self: *Self, callback: ?*const OnGetFocusFn) void {
         const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+    pub fn setLDestroyCallback(self: *Self, callback: ?*const OnLDestroyFn) void {
         const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -2194,12 +2142,12 @@ pub const Tabs = opaque {
     /// GTK the callbacks are called.
     /// Affects All controls with user interaction.
     /// See Also ENTERWINDOW_CB
-    pub fn setLeaveWindowCallback(self: *Self, callback: ?OnLeaveWindowFn) void {
+    pub fn setLeaveWindowCallback(self: *Self, callback: ?*const OnLeaveWindowFn) void {
         const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+    pub fn setPostMessageCallback(self: *Self, callback: ?*const OnPostMessageFn) void {
         const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }

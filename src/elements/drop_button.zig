@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Creates an interface element that is a button with a drop down arrow.
 /// It can function as a button and as a dropdown.
 /// Its visual presentation can contain a text and/or an image.
@@ -38,7 +38,7 @@ pub const DropButton = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Canvas;
     const Self = @This();
 
-    /// 
+    ///
     /// SCROLL_CB SCROLL_CB Called when some manipulation is made to the scrollbar.
     /// The canvas is automatically redrawn only if this callback is NOT defined.
     /// (GTK 2.8) Also the POSX and POSY values will not be correctly updated for
@@ -64,7 +64,7 @@ pub const DropButton = opaque {
     /// Affects IupCanvas, IupGLCanvas, SCROLLBAR
     pub const OnScrollFn = fn (self: *Self, arg0: i32, arg1: f32, arg2: f32) anyerror!void;
 
-    /// 
+    ///
     /// The drop dialog is configured with no decorations and it is not resizable,
     /// only the FOCUS_CB and K_ESC callbacks are set.
     /// But this can be changed by the application.
@@ -81,7 +81,7 @@ pub const DropButton = opaque {
     /// IupSetStrAttribute(ih, "TITLE", text); } return IUP_DEFAULT; }
     pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// WOM_CB WOM_CB Action generated when an audio device receives an event.
     /// [Windows Only] Callback int function(Ihandle *ih, int state); [in C]
     /// ih:wom_cb(state: number) -> (ret: number) [in Lua] ih: identifies the
@@ -97,7 +97,7 @@ pub const DropButton = opaque {
     /// Affects IupDialog, IupCanvas, IupGLCanvas
     pub const OnWomFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
     /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -130,7 +130,7 @@ pub const DropButton = opaque {
 
     pub const OnFlatFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
     /// In Motif is also activated by the Help button in some workstations keyboard.
     /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
@@ -143,7 +143,7 @@ pub const DropButton = opaque {
 
     pub const OnFlatLeaveWindowFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// KEYPRESS_CB KEYPRESS_CB Action generated when a key is pressed or released.
     /// If the key is pressed and held several calls will occur.
     /// It is called after the callback K_ANY is processed.
@@ -162,7 +162,7 @@ pub const DropButton = opaque {
 
     pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// ACTION ACTION Action generated when the element is activated.
     /// Affects each element differently.
     /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
@@ -173,7 +173,7 @@ pub const DropButton = opaque {
     /// IupToggle
     pub const OnActionFn = fn (self: *Self, arg0: f32, arg1: f32) anyerror!void;
 
-    /// 
+    ///
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
     /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
     /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
@@ -191,7 +191,7 @@ pub const DropButton = opaque {
 
     pub const OnFlatEnterWindowFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// WHEEL_CB WHEEL_CB Action generated when the mouse wheel is rotated.
     /// If this callback is not defined the wheel will automatically scroll the
     /// canvas in the vertical direction by some lines, the SCROLL_CB callback if
@@ -210,7 +210,7 @@ pub const DropButton = opaque {
     /// Affects IupCanvas, IupGLCanvas
     pub const OnWheelFn = fn (self: *Self, arg0: f32, arg1: i32, arg2: i32, arg3: [:0]const u8) anyerror!void;
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -223,7 +223,7 @@ pub const DropButton = opaque {
 
     pub const OnFlatButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
 
-    /// 
+    ///
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -239,7 +239,7 @@ pub const DropButton = opaque {
     /// See Also LEAVEWINDOW_CB
     pub const OnEnterWindowFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -256,7 +256,7 @@ pub const DropButton = opaque {
 
     pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
-    /// 
+    ///
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
     /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
     /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -270,7 +270,7 @@ pub const DropButton = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DROPSHOW_CB: Action generated right after the drop child is shown or hidden.
     /// This callback is also called when SHOWDROPDOWN is set.
     /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
@@ -281,7 +281,7 @@ pub const DropButton = opaque {
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
-    /// 
+    ///
     /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
     /// When several files are dropped at once, the callback is called several
     /// times, once for each file.
@@ -302,7 +302,7 @@ pub const DropButton = opaque {
     /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
     pub const OnDropFilesFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: i32, arg3: i32) anyerror!void;
 
-    /// 
+    ///
     /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
     /// Callback int function(Ihandle *ih, int width, int height); [in C]
     /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
@@ -321,14 +321,14 @@ pub const DropButton = opaque {
     /// Affects IupCanvas, IupGLCanvas, IupDialog
     pub const OnResizeFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// FLAT_ACTION: Action generated when the button 1 (usually left) is selected.
     /// This callback is called only after the mouse is released and when it is
     /// released inside the button area.
@@ -336,7 +336,7 @@ pub const DropButton = opaque {
     /// int function(Ihandle* ih); [in C]ih:action() -> (ret: number) [in Lua]
     pub const OnFlatActionFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
     /// This callback is called after the KILLFOCUS_CB of the element that loosed
     /// the focus.
@@ -348,7 +348,7 @@ pub const DropButton = opaque {
     /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnGetFocusFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// BUTTON_CB BUTTON_CB Action generated when a mouse button is pressed or released.
     /// Callback int function(Ihandle* ih, int button, int pressed, int x, int y,
     /// char* status); [in C] ih:button_cb(button, pressed, x, y: number, status:
@@ -397,7 +397,7 @@ pub const DropButton = opaque {
 
     pub const OnFlatMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
-    /// 
+    ///
     /// DROPDOWN_CB: Action generated right before the drop child is shown or hidden.
     /// This callback is also called when SHOWDROPDOWN is set.
     /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
@@ -406,7 +406,7 @@ pub const DropButton = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -434,7 +434,7 @@ pub const DropButton = opaque {
         Top,
         Bottom,
     };
-    /// 
+    ///
     /// EXPAND (non inheritable): The default value is "NO".
     pub const Expand = enum {
         Yes,
@@ -459,7 +459,7 @@ pub const DropButton = opaque {
         StrokeDashDotdot,
         DrawStroke,
     };
-    /// 
+    ///
     /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
     /// when both are displayed.
     /// Can be: LEFT, RIGHT, TOP, BOTTOM.
@@ -470,7 +470,7 @@ pub const DropButton = opaque {
         Bottom,
         Top,
     };
-    /// 
+    ///
     /// TEXTALIGNMENT (non inheritable): Horizontal text alignment for multiple lines.
     /// Can be: ALEFT, ARIGHT or ACENTER.
     /// Default: ALEFT.
@@ -498,159 +498,155 @@ pub const DropButton = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FGCOLOR: Text color.
         /// Default: the global attribute DLGFGCOLOR.
-        pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FRONTIMAGEHIGHLIGHT (non inheritable): foreground image name of the element
         /// in highlight state.
         /// If it is not defined then the FRONTIMAGE is used.
-        pub fn setFrontImageHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrontImageHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "FRONTIMAGEHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setFrontImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrontImageHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FRONTIMAGEHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setXMin(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setXMin(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "XMIN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipIcon(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaxSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ARROWIMAGEPRESS (non inheritable): Arrow image name of the element in
         /// pressed state.
         /// If it is not defined then the ARROWIMAGE is used.
-        pub fn setArrowImagePress(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArrowImagePress(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "ARROWIMAGEPRESS", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setArrowImagePressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArrowImagePressHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ARROWIMAGEPRESS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextWrap(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextWrap(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
         /// Can be Yes or No.
         /// Default: Yes.
         /// (since 3.26)
-        pub fn setFocusFeedback(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFocusFeedback(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "FOCUSFEEDBACK", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosition(self: Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropFilesTarget(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextAlignment(self: *Initializer, arg: ?DrawTextAlignment) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextAlignment(self: Initializer, arg: ?DrawTextAlignment) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .ACenter => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ACENTER"),
                 .ARight => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ARIGHT"),
@@ -658,140 +654,136 @@ pub const DropButton = opaque {
             } else {
                 interop.clearAttribute(self.ref, "DRAWTEXTALIGNMENT", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTip(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextLayoutCenter(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextLayoutCenter(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAWTEXTLAYOUTCENTER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
         /// the control.
         /// In Windows the button will respect CANFOCUS in opposite to the other controls.
         /// Default: YES.
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCanFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragSourceMove(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// PSCOLOR: background color used to indicate a press state.
         /// Pre-defined to "150 200 235".
         /// Can be set to NULL.
         /// If NULL BGCOLOR will be used instead.
-        pub fn setPsColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPsColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "PSCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// IMAGE (non inheritable): Image name.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// See also IupImage.
-        pub fn setImage(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImage(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setLineX(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setLineX(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "LINEX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCursor(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "CURSOR", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCursorHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setLineY(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setLineY(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "LINEY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn zOrder(self: Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
                 .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
             } else {
                 interop.clearAttribute(self.ref, "ZORDER", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawLineWidth(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawLineWidth(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "DRAWLINEWIDTH", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragDrop(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPAND (non inheritable): The default value is "NO".
-        pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpand(self: Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -802,25 +794,24 @@ pub const DropButton = opaque {
             } else {
                 interop.clearAttribute(self.ref, "EXPAND", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawFont(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// PADDING: internal margin.
         /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
         /// but uses a different name to avoid inheritance problems.
@@ -831,216 +822,209 @@ pub const DropButton = opaque {
         /// The natural size will be a combination of the size of the image and the
         /// title, if any, plus PADDING and SPACING (if both image and title are
         /// present), and plus the horizontal space occupied by the arrow.
-        pub fn setPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPadding(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "PADDING", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosX(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosX(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "POSX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosY(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosY(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "POSY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BORDERHLCOLOR: color used for borders when highlighted.
         /// Default use BORDERCOLOR.
-        pub fn setBorderHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBorderHlColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BORDERHLCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TEXTHLCOLOR: text color used to indicate a highlight state.
         /// If not defined FGCOLOR will be used instead.
         /// (since 3.26)
-        pub fn setTextHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTextHlColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TEXTHLCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipMarkup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setYMin(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setYMin(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TEXTELLIPSIS (non inheritable): If the text is larger that its box, an
         /// ellipsis ("...") will be placed near the last visible part of the text and
         /// replace the invisible part.
         /// It will be ignored when TEXTWRAP=Yes.
         /// (since 3.25)
-        pub fn setTextEllipsis(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTextEllipsis(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TEXTELLIPSIS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawMakeInactive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawMakeInactive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAWMAKEINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontSize(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropTypes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUserSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipDelay(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BACKIMAGEINACTIVE (non inheritable): background image name of the element
         /// when inactive.
         /// If it is not defined then the BACKIMAGE is used and its colors will be
         /// replaced by a modified version creating the disabled effect.
-        pub fn setBackImageInactive(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackImageInactive(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "BACKIMAGEINACTIVE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setBackImageInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackImageInactiveHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "BACKIMAGEINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setScrollBar(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setScrollBar(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SCROLLBAR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TITLE (non inheritable): Label's text.
         /// The '\n' character is accepted for line change.
-        pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setXAutoHide(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setXAutoHide(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "XAUTOHIDE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
         /// the next native parent with FOCUS_CB defined.
         /// Default: NO.
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPropagateFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setXMax(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setXMax(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "XMAX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BGCOLOR: Background color.
         /// If text and image are not defined, the button is configured to simply show
         /// a color, in this case set the button size because the natural size will be
         /// very small.
         /// If not defined it will use the background color of the native parent.
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropTarget(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDX(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDX(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "DX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDY(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDY(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "DY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextEllipsis(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextEllipsis(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAWTEXTELLIPSIS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragSource(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextClip(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextClip(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAWTEXTCLIP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -1048,337 +1032,322 @@ pub const DropButton = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNormalizerGroup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SPACING (non inheritable): spacing between the image and the text.
         /// Default: "2".
         /// The natural size will be a combination of the size of the image and the
         /// title, if any, plus PADDING and SPACING (if both image and title are
         /// present), and plus the horizontal space occupied by the arrow.
-        pub fn setSpacing(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSpacing(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "SPACING", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "SPACING", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BORDERPSCOLOR: color used for borders when pressed or selected.
         /// Default use BORDERCOLOR.
-        pub fn setBorderPsColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBorderPsColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BORDERPSCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRasterSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TEXTPSCOLOR: text color used to indicate a press state.
         /// If not defined FGCOLOR will be used instead.
         /// (since 3.26)
-        pub fn setTextPsColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTextPsColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TEXTPSCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BORDERCOLOR: color used for borders.
         /// Default: "50 150 255".
         /// This is for the IupDropButton drawn border.
-        pub fn setBorderColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBorderColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BORDERCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipFgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ARROWIMAGEHIGHLIGHT (non inheritable): Arrow image name of the element in
         /// highlight state.
         /// If it is not defined then the ARROWIMAGE is used.
-        pub fn setArrowImageHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArrowImageHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "ARROWIMAGEHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setArrowImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArrowImageHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ARROWIMAGEHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FRONTIMAGEINACTIVE (non inheritable): foreground image name of the element
         /// when inactive.
         /// If it is not defined then the FRONTIMAGE is used and its colors will be
         /// replaced by a modified version creating the disabled effect.
-        pub fn setFrontImageInactive(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrontImageInactive(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "FRONTIMAGEINACTIVE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setFrontImageInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrontImageInactiveHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FRONTIMAGEINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ARROWIMAGEINACTIVE (non inheritable): Arrow image name of the element when inactive.
         /// If it is not defined then the ARROWIMAGE is used and its colors will be
         /// replaced by a modified version creating the disabled effect.
-        pub fn setArrowImageInactive(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArrowImageInactive(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "ARROWIMAGEINACTIVE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setArrowImageInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArrowImageInactiveHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ARROWIMAGEINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BACKIMAGEHIGHLIGHT (non inheritable): background image name of the element
         /// in highlight state.
         /// If it is not defined then the BACKIMAGE is used.
-        pub fn setBackImageHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackImageHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "BACKIMAGEHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setBackImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackImageHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "BACKIMAGEHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FRONTIMAGEPRESS (non inheritable): foreground image name of the element in
         /// pressed state.
         /// If it is not defined then the FRONTIMAGE is used.
-        pub fn setFrontImagePress(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrontImagePress(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "FRONTIMAGEPRESS", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setFrontImagePressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrontImagePressHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FRONTIMAGEPRESS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CSPACING: same as SPACING but using the units of the vertical part of the
         /// SIZE attribute.
         /// It will actually set the SPACING attribute.
         /// (since 3.29)
-        pub fn setCSpacing(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCSpacing(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "CSPACING", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "CSPACING", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// HLCOLOR: background color used to indicate a highlight state.
         /// Pre-defined to "200 225 245".
         /// Can be set to NULL.
         /// If NULL BGCOLOR will be used instead.
-        pub fn setHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHlColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "HLCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FRONTIMAGE (non inheritable): image name to be used as foreground.
         /// The foreground image is drawn in the same position as the background, but
         /// it is drawn at last.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// See also IupImage.
-        pub fn setFrontImage(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrontImage(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "FRONTIMAGE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setFrontImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrontImageHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FRONTIMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontFace(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "DRAWCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextOrientation(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextOrientation(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "DRAWTEXTORIENTATION", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "DRAWBGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
         /// this means that will act also as minimum number of visible columns.
         /// It uses a wider character size then the one used for the SIZE attribute so
         /// strings will fit better without the need of extra columns.
         /// Padding will be around the visible columns.
-        pub fn setVisibleColumns(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisibleColumns(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "VISIBLECOLUMNS", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// IMAGEPRESS (non inheritable): Image name of the element in pressed state.
         /// If it is not defined then the IMAGE is used.
-        pub fn setImagePress(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImagePress(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEPRESS", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImagePressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImagePressHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEPRESS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ARROWIMAGE (non inheritable): Arrow image name.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// See also IupImage.
-        pub fn setArrowImage(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArrowImage(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "ARROWIMAGE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setArrowImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArrowImageHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ARROWIMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBackingStore(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackingStore(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "BACKINGSTORE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setYAutoHide(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setYAutoHide(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "YAUTOHIDE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawStyle(self: *Initializer, arg: ?DrawStyle) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawStyle(self: Initializer, arg: ?DrawStyle) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Fill => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "FILL"),
                 .StrokeDash => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH"),
@@ -1389,231 +1358,217 @@ pub const DropButton = opaque {
             } else {
                 interop.clearAttribute(self.ref, "DRAWSTYLE", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DROPCHILD_HANDLE: same as DROPCHILD but directly using the Ihandle* of the element.
-        pub fn setDropChildHandle(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropChildHandle(self: Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandleAttribute(self.ref, "DROPCHILD_HANDLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropChildHandleHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropChildHandleHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DROPCHILD_HANDLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
         /// occupy the full background.
         /// Aspect ratio is NOT preserved.
         /// Can be Yes or No.
         /// Default: No.
         /// (since 3.25)
-        pub fn setBackImageZoom(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackImageZoom(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "BACKIMAGEZOOM", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CPADDING: same as PADDING but using the units of the SIZE attribute.
         /// It will actually set the PADDING attribute.
         /// (since 3.29)
-        pub fn setCPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCPadding(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "CPADDING", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
         /// The text size will adapt to include the rotated space.
         /// (since 3.25)
-        pub fn setTextOrientation(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTextOrientation(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "TEXTORIENTATION", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
         /// from the BACKIMAGE.
         /// If BACKIMAGE is not defined will be ignored.
         /// Can be Yes or No.
         /// Default: No.
-        pub fn setFitToBackImage(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFitToBackImage(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "FITTOBACKIMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
         /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setActive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// IMAGEHIGHLIGHT (non inheritable): Image name of the element in highlight state.
         /// If it is not defined then the IMAGE is used.
-        pub fn setImageHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setYMax(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setYMax(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "YMAX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BACKIMAGE (non inheritable): image name to be used as background.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// See also IupImage.
-        pub fn setBackImage(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackImage(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "BACKIMAGE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setBackImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackImageHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "BACKIMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
         /// If it is not defined then the IMAGE is used and its colors will be replaced
         /// by a modified version creating the disabled effect.
-        pub fn setImageInactive(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageInactive(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEINACTIVE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageInactiveHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SHOWDROPDOWN (write-only): opens or closes the dropdown child.
         /// Can be "YES" or "NO".
         /// Ignored if set before map.
-        pub fn showDropDown(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn showDropDown(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHOWDROPDOWN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SHOWBORDER: by default borders are drawn only when the button is
         /// highlighted, if SHOWBORDER=Yes borders are always show.
         /// When SHOWBORDER=Yes and BGCOLOR is not defined, the actual BGCOLOR will be
         /// a darker version of the background color of the native parent.
-        pub fn setShowBorder(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShowBorder(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHOWBORDER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ARROWIMAGES (non inheritable): replace the drawn arrows by the following images.
         /// Make sure their sizes are equal or smaller than ARROWSIZE.
         /// Default: No.
-        pub fn setArrowImages(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArrowImages(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "ARROWIMAGES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BORDER (creation only): the default value is "NO".
         /// This is the IupCanvas border.
-        pub fn setBorder(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBorder(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "BORDER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
         /// when both are displayed.
         /// Can be: LEFT, RIGHT, TOP, BOTTOM.
         /// Default: LEFT.
-        pub fn setImagePosition(self: *Initializer, arg: ?ImagePosition) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImagePosition(self: Initializer, arg: ?ImagePosition) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Left => interop.setStrAttribute(self.ref, "IMAGEPOSITION", .{}, "LEFT"),
                 .Right => interop.setStrAttribute(self.ref, "IMAGEPOSITION", .{}, "RIGHT"),
@@ -1622,46 +1577,44 @@ pub const DropButton = opaque {
             } else {
                 interop.clearAttribute(self.ref, "IMAGEPOSITION", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragTypes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setWheelDropFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setWheelDropFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "WHEELDROPFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BORDERWIDTH: line width used for borders.
         /// Default: "1".
         /// Any borders can be hidden by simply setting this value to 0.
         /// This is for the IupDropButton drawn border.
-        pub fn setBorderWidth(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBorderWidth(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "BORDERWIDTH", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontStyle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TEXTALIGNMENT (non inheritable): Horizontal text alignment for multiple lines.
         /// Can be: ALEFT, ARIGHT or ACENTER.
         /// Default: ALEFT.
-        pub fn setTextAlignment(self: *Initializer, arg: ?TextAlignment) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTextAlignment(self: Initializer, arg: ?TextAlignment) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .ARight => interop.setStrAttribute(self.ref, "TEXTALIGNMENT", .{}, "ARIGHT"),
                 .ALeft => interop.setStrAttribute(self.ref, "TEXTALIGNMENT", .{}, "ALEFT"),
@@ -1669,17 +1622,16 @@ pub const DropButton = opaque {
             } else {
                 interop.clearAttribute(self.ref, "TEXTALIGNMENT", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTouch(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TEXTWRAP (non inheritable): For single line texts if the text is larger
         /// than its box the line will be automatically broken in multiple lines.
         /// Notice that this is done internally by the system, the element natural size
@@ -1687,59 +1639,57 @@ pub const DropButton = opaque {
         /// For the remaining lines to be visible the element should use
         /// EXPAND=VERTICAL or set a SIZE/RASTERSIZE with enough height for the wrapped lines.
         /// (since 3.25)
-        pub fn setTextWrap(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTextWrap(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TEXTWRAP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BACKIMAGEPRESS (non inheritable): background image name of the element in
         /// pressed state.
         /// If it is not defined then the BACKIMAGE is used.
-        pub fn setBackImagePress(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackImagePress(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "BACKIMAGEPRESS", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setBackImagePressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackImagePressHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "BACKIMAGEPRESS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFont(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMdiClient(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiClient(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MDICLIENT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMdiMenu(self: *Initializer, arg: *iup.Menu) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiMenu(self: Initializer, arg: *iup.Menu) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandleAttribute(self.ref, "MDIMENU", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMdiMenuHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiMenuHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -1752,24 +1702,23 @@ pub const DropButton = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -1786,13 +1735,13 @@ pub const DropButton = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// SCROLL_CB SCROLL_CB Called when some manipulation is made to the scrollbar.
         /// The canvas is automatically redrawn only if this callback is NOT defined.
         /// (GTK 2.8) Also the POSX and POSY values will not be correctly updated for
@@ -1816,13 +1765,13 @@ pub const DropButton = opaque {
         /// In Windows, after a drag when mouse is released IUP_SBPOSH or IUP_SBPOSV
         /// are called.
         /// Affects IupCanvas, IupGLCanvas, SCROLLBAR
-        pub fn setScrollCallback(self: *Initializer, callback: ?OnScrollFn) Initializer {
+        pub fn setScrollCallback(self: Initializer, callback: ?*const OnScrollFn) Initializer {
             const Handler = CallbackHandler(Self, OnScrollFn, "SCROLL_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// The drop dialog is configured with no decorations and it is not resizable,
         /// only the FOCUS_CB and K_ESC callbacks are set.
         /// But this can be changed by the application.
@@ -1837,13 +1786,13 @@ pub const DropButton = opaque {
         /// (state == 1) { Ihandle* ih = IupGetAttributeHandle(IupGetDialog(list),
         /// "DROPBUTTON"); IupSetAttribute(ih, "SHOWDROPDOWN", "No");
         /// IupSetStrAttribute(ih, "TITLE", text); } return IUP_DEFAULT; }
-        pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
+        pub fn setFocusCallback(self: Initializer, callback: ?*const OnFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// WOM_CB WOM_CB Action generated when an audio device receives an event.
         /// [Windows Only] Callback int function(Ihandle *ih, int state); [in C]
         /// ih:wom_cb(state: number) -> (ret: number) [in Lua] ih: identifies the
@@ -1857,13 +1806,13 @@ pub const DropButton = opaque {
         /// You must use the HWND attribute when calling waveOutOpen in the dwCallback
         /// parameter and set fdwOpen to CALLBACK_WINDOW.
         /// Affects IupDialog, IupCanvas, IupGLCanvas
-        pub fn setWomCallback(self: *Initializer, callback: ?OnWomFn) Initializer {
+        pub fn setWomCallback(self: Initializer, callback: ?*const OnWomFn) Initializer {
             const Handler = CallbackHandler(Self, OnWomFn, "WOM_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// K_ANY K_ANY Action generated when a keyboard event occurs.
         /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
         /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -1892,44 +1841,44 @@ pub const DropButton = opaque {
         /// This is the way an application can create shortcut keys, also called hot keys.
         /// These callbacks are not available in IupLua.
         /// Affects All elements with keyboard interaction.
-        pub fn setKAnyCallback(self: *Initializer, callback: ?OnKAnyFn) Initializer {
+        pub fn setKAnyCallback(self: Initializer, callback: ?*const OnKAnyFn) Initializer {
             const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setFlatFocusCallback(self: *Initializer, callback: ?OnFlatFocusFn) Initializer {
+        pub fn setFlatFocusCallback(self: Initializer, callback: ?*const OnFlatFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnFlatFocusFn, "FLAT_FOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
         /// In Motif is also activated by the Help button in some workstations keyboard.
         /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Returns: IUP_CLOSE will be processed.
         /// Affects All elements with user interaction.
-        pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
+        pub fn setHelpCallback(self: Initializer, callback: ?*const OnHelpFn) Initializer {
             const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropMotionCallback(self: *Initializer, callback: ?OnDropMotionFn) Initializer {
+        pub fn setDropMotionCallback(self: Initializer, callback: ?*const OnDropMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setFlatLeaveWindowCallback(self: *Initializer, callback: ?OnFlatLeaveWindowFn) Initializer {
+        pub fn setFlatLeaveWindowCallback(self: Initializer, callback: ?*const OnFlatLeaveWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnFlatLeaveWindowFn, "FLAT_LEAVEWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// KEYPRESS_CB KEYPRESS_CB Action generated when a key is pressed or released.
         /// If the key is pressed and held several calls will occur.
         /// It is called after the callback K_ANY is processed.
@@ -1942,25 +1891,25 @@ pub const DropButton = opaque {
         /// Returns: If IUP_IGNORE is returned the key is ignored by the system.
         /// IUP_CLOSE will be processed.
         /// Affects IupCanvas
-        pub fn setKeyPressCallback(self: *Initializer, callback: ?OnKeyPressFn) Initializer {
+        pub fn setKeyPressCallback(self: Initializer, callback: ?*const OnKeyPressFn) Initializer {
             const Handler = CallbackHandler(Self, OnKeyPressFn, "KEYPRESS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragEndCallback(self: *Initializer, callback: ?OnDragEndFn) Initializer {
+        pub fn setDragEndCallback(self: Initializer, callback: ?*const OnDragEndFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragBeginCallback(self: *Initializer, callback: ?OnDragBeginFn) Initializer {
+        pub fn setDragBeginCallback(self: Initializer, callback: ?*const OnDragBeginFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// ACTION ACTION Action generated when the element is activated.
         /// Affects each element differently.
         /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
@@ -1969,13 +1918,13 @@ pub const DropButton = opaque {
         /// Please refer to each element's documentation.
         /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
         /// IupToggle
-        pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
+        pub fn setActionCallback(self: Initializer, callback: ?*const OnActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MOTION_CB MOTION_CB Action generated when the mouse moves.
         /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
         /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
@@ -1989,19 +1938,19 @@ pub const DropButton = opaque {
         /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
         /// called with coordinates outside the element rectangle.
         /// Affects IupCanvas, IupGLCanvas
-        pub fn setMotionCallback(self: *Initializer, callback: ?OnMotionFn) Initializer {
+        pub fn setMotionCallback(self: Initializer, callback: ?*const OnMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setFlatEnterWindowCallback(self: *Initializer, callback: ?OnFlatEnterWindowFn) Initializer {
+        pub fn setFlatEnterWindowCallback(self: Initializer, callback: ?*const OnFlatEnterWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnFlatEnterWindowFn, "FLAT_ENTERWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// WHEEL_CB WHEEL_CB Action generated when the mouse wheel is rotated.
         /// If this callback is not defined the wheel will automatically scroll the
         /// canvas in the vertical direction by some lines, the SCROLL_CB callback if
@@ -2018,13 +1967,13 @@ pub const DropButton = opaque {
         /// In Windows is some situations delta can reach the value of two.
         /// In the future with more precise wheels this increment can be changed.
         /// Affects IupCanvas, IupGLCanvas
-        pub fn setWheelCallback(self: *Initializer, callback: ?OnWheelFn) Initializer {
+        pub fn setWheelCallback(self: Initializer, callback: ?*const OnWheelFn) Initializer {
             const Handler = CallbackHandler(Self, OnWheelFn, "WHEEL_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
         /// When the element is a dialog, it is called after the layout is updated.
@@ -2033,19 +1982,19 @@ pub const DropButton = opaque {
         /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
         /// Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+        pub fn setMapCallback(self: Initializer, callback: ?*const OnMapFn) Initializer {
             const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setFlatButtonCallback(self: *Initializer, callback: ?OnFlatButtonFn) Initializer {
+        pub fn setFlatButtonCallback(self: Initializer, callback: ?*const OnFlatButtonFn) Initializer {
             const Handler = CallbackHandler(Self, OnFlatButtonFn, "FLAT_BUTTON_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
         /// native element.
         /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -2059,13 +2008,13 @@ pub const DropButton = opaque {
         /// GTK the callbacks are called.
         /// Affects All controls with user interaction.
         /// See Also LEAVEWINDOW_CB
-        pub fn setEnterWindowCallback(self: *Initializer, callback: ?OnEnterWindowFn) Initializer {
+        pub fn setEnterWindowCallback(self: Initializer, callback: ?*const OnEnterWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
         /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
@@ -2078,19 +2027,19 @@ pub const DropButton = opaque {
         /// release memory allocated by the binding for the element.
         /// Also the callback will be called before the language callback.
         /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+        pub fn setDestroyCallback(self: Initializer, callback: ?*const OnDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropDataCallback(self: *Initializer, callback: ?OnDropDataFn) Initializer {
+        pub fn setDropDataCallback(self: Initializer, callback: ?*const OnDropDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
         /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
         /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -2102,36 +2051,36 @@ pub const DropButton = opaque {
         /// This causes the thread to yield control and can cause the application to
         /// stop responding to messages.
         /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setKillFocusCallback(self: *Initializer, callback: ?OnKillFocusFn) Initializer {
+        pub fn setKillFocusCallback(self: Initializer, callback: ?*const OnKillFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DROPSHOW_CB: Action generated right after the drop child is shown or hidden.
         /// This callback is also called when SHOWDROPDOWN is set.
         /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
         /// -> (ret: number) [in Lua]
-        pub fn setDropShowCallback(self: *Initializer, callback: ?OnDropShowFn) Initializer {
+        pub fn setDropShowCallback(self: Initializer, callback: ?*const OnDropShowFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropShowFn, "DROPSHOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDataCallback(self: *Initializer, callback: ?OnDragDataFn) Initializer {
+        pub fn setDragDataCallback(self: Initializer, callback: ?*const OnDragDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDataSizeCallback(self: *Initializer, callback: ?OnDragDataSizeFn) Initializer {
+        pub fn setDragDataSizeCallback(self: Initializer, callback: ?*const OnDragDataSizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
         /// When several files are dropped at once, the callback is called several
         /// times, once for each file.
@@ -2150,13 +2099,13 @@ pub const DropButton = opaque {
         /// Returns: If IUP_IGNORE is returned the callback will NOT be called for the
         /// next dropped files, and the processing of dropped files will be interrupted.
         /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
-        pub fn setDropFilesCallback(self: *Initializer, callback: ?OnDropFilesFn) Initializer {
+        pub fn setDropFilesCallback(self: Initializer, callback: ?*const OnDropFilesFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropFilesFn, "DROPFILES_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
         /// Callback int function(Ihandle *ih, int width, int height); [in C]
         /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
@@ -2173,36 +2122,36 @@ pub const DropButton = opaque {
         /// To update the parameters consult the DRAWSIZE attribute.
         /// Also activate the drawing toolkit only after updating the DX or DY attributes.
         /// Affects IupCanvas, IupGLCanvas, IupDialog
-        pub fn setResizeCallback(self: *Initializer, callback: ?OnResizeFn) Initializer {
+        pub fn setResizeCallback(self: Initializer, callback: ?*const OnResizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnResizeFn, "RESIZE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+        pub fn setUnmapCallback(self: Initializer, callback: ?*const OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// FLAT_ACTION: Action generated when the button 1 (usually left) is selected.
         /// This callback is called only after the mouse is released and when it is
         /// released inside the button area.
         /// Called only when DROPONARROW=Yes.
         /// int function(Ihandle* ih); [in C]ih:action() -> (ret: number) [in Lua]
-        pub fn setFlatActionCallback(self: *Initializer, callback: ?OnFlatActionFn) Initializer {
+        pub fn setFlatActionCallback(self: Initializer, callback: ?*const OnFlatActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnFlatActionFn, "FLAT_ACTION");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
         /// This callback is called after the KILLFOCUS_CB of the element that loosed
         /// the focus.
@@ -2212,13 +2161,13 @@ pub const DropButton = opaque {
         /// number) [in Lua] ih: identifier of the element that received keyboard focus.
         /// Affects All elements with user interaction, except menus.
         /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setGetFocusCallback(self: *Initializer, callback: ?OnGetFocusFn) Initializer {
+        pub fn setGetFocusCallback(self: Initializer, callback: ?*const OnGetFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// BUTTON_CB BUTTON_CB Action generated when a mouse button is pressed or released.
         /// Callback int function(Ihandle* ih, int button, int pressed, int x, int y,
         /// char* status); [in C] ih:button_cb(button, pressed, x, y: number, status:
@@ -2263,36 +2212,36 @@ pub const DropButton = opaque {
         /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
         /// called with coordinates outside the element rectangle.
         /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
-        pub fn setButtonCallback(self: *Initializer, callback: ?OnButtonFn) Initializer {
+        pub fn setButtonCallback(self: Initializer, callback: ?*const OnButtonFn) Initializer {
             const Handler = CallbackHandler(Self, OnButtonFn, "BUTTON_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setFlatMotionCallback(self: *Initializer, callback: ?OnFlatMotionFn) Initializer {
+        pub fn setFlatMotionCallback(self: Initializer, callback: ?*const OnFlatMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnFlatMotionFn, "FLAT_MOTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DROPDOWN_CB: Action generated right before the drop child is shown or hidden.
         /// This callback is also called when SHOWDROPDOWN is set.
         /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
         /// -> (ret: number) [in Lua]
-        pub fn setDropDownCallback(self: *Initializer, callback: ?OnDropDownFn) Initializer {
+        pub fn setDropDownCallback(self: Initializer, callback: ?*const OnDropDownFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropDownFn, "DROPDOWN_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+        pub fn setLDestroyCallback(self: Initializer, callback: ?*const OnLDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
         /// native element.
         /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -2306,16 +2255,16 @@ pub const DropButton = opaque {
         /// GTK the callbacks are called.
         /// Affects All controls with user interaction.
         /// See Also ENTERWINDOW_CB
-        pub fn setLeaveWindowCallback(self: *Initializer, callback: ?OnLeaveWindowFn) Initializer {
+        pub fn setLeaveWindowCallback(self: Initializer, callback: ?*const OnLeaveWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+        pub fn setPostMessageCallback(self: Initializer, callback: ?*const OnPostMessageFn) Initializer {
             const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -2378,14 +2327,14 @@ pub const DropButton = opaque {
         }
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -2421,33 +2370,31 @@ pub const DropButton = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
 
-
-    /// 
+    ///
     /// FGCOLOR: Text color.
     /// Default: the global attribute DLGFGCOLOR.
     pub fn getFgColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// FGCOLOR: Text color.
     /// Default: the global attribute DLGFGCOLOR.
     pub fn setFgColor(self: *Self, rgb: iup.Rgb) void {
@@ -2470,16 +2417,14 @@ pub const DropButton = opaque {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// HASFOCUS (read-only): returns the button state if has focus.
     /// Can be Yes or No.
     pub fn getHasFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "HASFOCUS", .{});
     }
 
-
-    /// 
+    ///
     /// FRONTIMAGEHIGHLIGHT (non inheritable): foreground image name of the element
     /// in highlight state.
     /// If it is not defined then the FRONTIMAGE is used.
@@ -2491,8 +2436,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// FRONTIMAGEHIGHLIGHT (non inheritable): foreground image name of the element
     /// in highlight state.
     /// If it is not defined then the FRONTIMAGE is used.
@@ -2532,8 +2476,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// ARROWIMAGEPRESS (non inheritable): Arrow image name of the element in
     /// pressed state.
     /// If it is not defined then the ARROWIMAGE is used.
@@ -2545,8 +2488,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// ARROWIMAGEPRESS (non inheritable): Arrow image name of the element in
     /// pressed state.
     /// If it is not defined then the ARROWIMAGE is used.
@@ -2572,8 +2514,7 @@ pub const DropButton = opaque {
         return iup.XYPos.parse(str, ',');
     }
 
-
-    /// 
+    ///
     /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
     /// Can be Yes or No.
     /// Default: Yes.
@@ -2582,8 +2523,7 @@ pub const DropButton = opaque {
         return interop.getBoolAttribute(self, "FOCUSFEEDBACK", .{});
     }
 
-
-    /// 
+    ///
     /// FOCUSFEEDBACK (non inheritable): draw the focus feedback.
     /// Can be Yes or No.
     /// Default: Yes.
@@ -2654,8 +2594,7 @@ pub const DropButton = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// PSCOLOR: background color used to indicate a press state.
     /// Pre-defined to "150 200 235".
     /// Can be set to NULL.
@@ -2664,8 +2603,7 @@ pub const DropButton = opaque {
         return interop.getRgb(self, "PSCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// PSCOLOR: background color used to indicate a press state.
     /// Pre-defined to "150 200 235".
     /// Can be set to NULL.
@@ -2682,8 +2620,7 @@ pub const DropButton = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// IMAGE (non inheritable): Image name.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
@@ -2695,8 +2632,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// IMAGE (non inheritable): Image name.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
@@ -2783,8 +2719,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// EXPAND (non inheritable): The default value is "NO".
     pub fn getExpand(self: *Self) ?Expand {
         var ret = interop.getStrAttribute(self, "EXPAND", .{});
@@ -2798,8 +2733,7 @@ pub const DropButton = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// EXPAND (non inheritable): The default value is "NO".
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
@@ -2833,8 +2767,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// PADDING: internal margin.
     /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
     /// but uses a different name to avoid inheritance problems.
@@ -2850,8 +2783,7 @@ pub const DropButton = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// PADDING: internal margin.
     /// Works just like the MARGIN attribute of the IupHbox and IupVbox containers,
     /// but uses a different name to avoid inheritance problems.
@@ -2888,24 +2820,21 @@ pub const DropButton = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
-
-    /// 
+    ///
     /// BORDERHLCOLOR: color used for borders when highlighted.
     /// Default use BORDERCOLOR.
     pub fn getBorderHlColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BORDERHLCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// BORDERHLCOLOR: color used for borders when highlighted.
     /// Default use BORDERCOLOR.
     pub fn setBorderHlColor(self: *Self, rgb: iup.Rgb) void {
         interop.setRgb(self, "BORDERHLCOLOR", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// TEXTHLCOLOR: text color used to indicate a highlight state.
     /// If not defined FGCOLOR will be used instead.
     /// (since 3.26)
@@ -2913,8 +2842,7 @@ pub const DropButton = opaque {
         return interop.getRgb(self, "TEXTHLCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// TEXTHLCOLOR: text color used to indicate a highlight state.
     /// If not defined FGCOLOR will be used instead.
     /// (since 3.26)
@@ -2938,8 +2866,7 @@ pub const DropButton = opaque {
         interop.setIntAttribute(self, "YMIN", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TEXTELLIPSIS (non inheritable): If the text is larger that its box, an
     /// ellipsis ("...") will be placed near the last visible part of the text and
     /// replace the invisible part.
@@ -2949,8 +2876,7 @@ pub const DropButton = opaque {
         return interop.getBoolAttribute(self, "TEXTELLIPSIS", .{});
     }
 
-
-    /// 
+    ///
     /// TEXTELLIPSIS (non inheritable): If the text is larger that its box, an
     /// ellipsis ("...") will be placed near the last visible part of the text and
     /// replace the invisible part.
@@ -3008,8 +2934,7 @@ pub const DropButton = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BACKIMAGEINACTIVE (non inheritable): background image name of the element
     /// when inactive.
     /// If it is not defined then the BACKIMAGE is used and its colors will be
@@ -3022,8 +2947,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// BACKIMAGEINACTIVE (non inheritable): background image name of the element
     /// when inactive.
     /// If it is not defined then the BACKIMAGE is used and its colors will be
@@ -3049,16 +2973,14 @@ pub const DropButton = opaque {
         return interop.getBoolAttribute(self, "XHIDDEN", .{});
     }
 
-
-    /// 
+    ///
     /// TITLE (non inheritable): Label's text.
     /// The '\n' character is accepted for line change.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
 
-
-    /// 
+    ///
     /// TITLE (non inheritable): Label's text.
     /// The '\n' character is accepted for line change.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
@@ -3073,8 +2995,7 @@ pub const DropButton = opaque {
         interop.setBoolAttribute(self, "XAUTOHIDE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
     /// Default: NO.
@@ -3082,8 +3003,7 @@ pub const DropButton = opaque {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
-
-    /// 
+    ///
     /// PROPAGATEFOCUS (non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
     /// Default: NO.
@@ -3099,8 +3019,7 @@ pub const DropButton = opaque {
         interop.setIntAttribute(self, "XMAX", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BGCOLOR: Background color.
     /// If text and image are not defined, the button is configured to simply show
     /// a color, in this case set the button size because the natural size will be
@@ -3110,8 +3029,7 @@ pub const DropButton = opaque {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// BGCOLOR: Background color.
     /// If text and image are not defined, the button is configured to simply show
     /// a color, in this case set the button size because the natural size will be
@@ -3129,8 +3047,7 @@ pub const DropButton = opaque {
         interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// HIGHLIGHTED (read-only): returns the button state if highlighted.
     /// Can be Yes or No.
     pub fn getHighlightEd(self: *Self) bool {
@@ -3204,8 +3121,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// SPACING (non inheritable): spacing between the image and the text.
     /// Default: "2".
     /// The natural size will be a combination of the size of the image and the
@@ -3215,8 +3131,7 @@ pub const DropButton = opaque {
         return interop.getIntAttribute(self, "SPACING", .{});
     }
 
-
-    /// 
+    ///
     /// SPACING (non inheritable): spacing between the image and the text.
     /// Default: "2".
     /// The natural size will be a combination of the size of the image and the
@@ -3230,16 +3145,14 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// BORDERPSCOLOR: color used for borders when pressed or selected.
     /// Default use BORDERCOLOR.
     pub fn getBorderPsColor(self: *Self) ?iup.Rgb {
         return interop.getRgb(self, "BORDERPSCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// BORDERPSCOLOR: color used for borders when pressed or selected.
     /// Default use BORDERCOLOR.
     pub fn setBorderPsColor(self: *Self, rgb: iup.Rgb) void {
@@ -3257,8 +3170,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// TEXTPSCOLOR: text color used to indicate a press state.
     /// If not defined FGCOLOR will be used instead.
     /// (since 3.26)
@@ -3266,8 +3178,7 @@ pub const DropButton = opaque {
         return interop.getRgb(self, "TEXTPSCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// TEXTPSCOLOR: text color used to indicate a press state.
     /// If not defined FGCOLOR will be used instead.
     /// (since 3.26)
@@ -3275,8 +3186,7 @@ pub const DropButton = opaque {
         interop.setRgb(self, "TEXTPSCOLOR", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// BORDERCOLOR: color used for borders.
     /// Default: "50 150 255".
     /// This is for the IupDropButton drawn border.
@@ -3284,8 +3194,7 @@ pub const DropButton = opaque {
         return interop.getRgb(self, "BORDERCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// BORDERCOLOR: color used for borders.
     /// Default: "50 150 255".
     /// This is for the IupDropButton drawn border.
@@ -3305,8 +3214,7 @@ pub const DropButton = opaque {
         return interop.getBoolAttribute(self, "YHIDDEN", .{});
     }
 
-
-    /// 
+    ///
     /// ARROWIMAGEHIGHLIGHT (non inheritable): Arrow image name of the element in
     /// highlight state.
     /// If it is not defined then the ARROWIMAGE is used.
@@ -3318,8 +3226,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// ARROWIMAGEHIGHLIGHT (non inheritable): Arrow image name of the element in
     /// highlight state.
     /// If it is not defined then the ARROWIMAGE is used.
@@ -3332,8 +3239,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "ARROWIMAGEHIGHLIGHT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FRONTIMAGEINACTIVE (non inheritable): foreground image name of the element
     /// when inactive.
     /// If it is not defined then the FRONTIMAGE is used and its colors will be
@@ -3346,8 +3252,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// FRONTIMAGEINACTIVE (non inheritable): foreground image name of the element
     /// when inactive.
     /// If it is not defined then the FRONTIMAGE is used and its colors will be
@@ -3361,8 +3266,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "FRONTIMAGEINACTIVE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ARROWIMAGEINACTIVE (non inheritable): Arrow image name of the element when inactive.
     /// If it is not defined then the ARROWIMAGE is used and its colors will be
     /// replaced by a modified version creating the disabled effect.
@@ -3374,8 +3278,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// ARROWIMAGEINACTIVE (non inheritable): Arrow image name of the element when inactive.
     /// If it is not defined then the ARROWIMAGE is used and its colors will be
     /// replaced by a modified version creating the disabled effect.
@@ -3388,8 +3291,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "ARROWIMAGEINACTIVE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BACKIMAGEHIGHLIGHT (non inheritable): background image name of the element
     /// in highlight state.
     /// If it is not defined then the BACKIMAGE is used.
@@ -3401,8 +3303,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// BACKIMAGEHIGHLIGHT (non inheritable): background image name of the element
     /// in highlight state.
     /// If it is not defined then the BACKIMAGE is used.
@@ -3415,8 +3316,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "BACKIMAGEHIGHLIGHT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FRONTIMAGEPRESS (non inheritable): foreground image name of the element in
     /// pressed state.
     /// If it is not defined then the FRONTIMAGE is used.
@@ -3428,8 +3328,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// FRONTIMAGEPRESS (non inheritable): foreground image name of the element in
     /// pressed state.
     /// If it is not defined then the FRONTIMAGE is used.
@@ -3442,8 +3341,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "FRONTIMAGEPRESS", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CSPACING: same as SPACING but using the units of the vertical part of the
     /// SIZE attribute.
     /// It will actually set the SPACING attribute.
@@ -3452,8 +3350,7 @@ pub const DropButton = opaque {
         return interop.getIntAttribute(self, "CSPACING", .{});
     }
 
-
-    /// 
+    ///
     /// CSPACING: same as SPACING but using the units of the vertical part of the
     /// SIZE attribute.
     /// It will actually set the SPACING attribute.
@@ -3471,8 +3368,7 @@ pub const DropButton = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// HLCOLOR: background color used to indicate a highlight state.
     /// Pre-defined to "200 225 245".
     /// Can be set to NULL.
@@ -3481,8 +3377,7 @@ pub const DropButton = opaque {
         return interop.getRgb(self, "HLCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// HLCOLOR: background color used to indicate a highlight state.
     /// Pre-defined to "200 225 245".
     /// Can be set to NULL.
@@ -3491,8 +3386,7 @@ pub const DropButton = opaque {
         interop.setRgb(self, "HLCOLOR", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// FRONTIMAGE (non inheritable): image name to be used as foreground.
     /// The foreground image is drawn in the same position as the background, but
     /// it is drawn at last.
@@ -3506,8 +3400,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// FRONTIMAGE (non inheritable): image name to be used as foreground.
     /// The foreground image is drawn in the same position as the background, but
     /// it is drawn at last.
@@ -3562,8 +3455,7 @@ pub const DropButton = opaque {
         interop.setRgb(self, "DRAWBGCOLOR", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
     /// this means that will act also as minimum number of visible columns.
     /// It uses a wider character size then the one used for the SIZE attribute so
@@ -3573,8 +3465,7 @@ pub const DropButton = opaque {
         return interop.getIntAttribute(self, "VISIBLECOLUMNS", .{});
     }
 
-
-    /// 
+    ///
     /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
     /// this means that will act also as minimum number of visible columns.
     /// It uses a wider character size then the one used for the SIZE attribute so
@@ -3588,8 +3479,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// IMAGEPRESS (non inheritable): Image name of the element in pressed state.
     /// If it is not defined then the IMAGE is used.
     pub fn getImagePress(self: *Self) ?iup.Element {
@@ -3600,8 +3490,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// IMAGEPRESS (non inheritable): Image name of the element in pressed state.
     /// If it is not defined then the IMAGE is used.
     pub fn setImagePress(self: *Self, arg: anytype) !void {
@@ -3621,8 +3510,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ARROWIMAGE (non inheritable): Arrow image name.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
@@ -3634,8 +3522,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// ARROWIMAGE (non inheritable): Arrow image name.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
@@ -3693,8 +3580,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// DROPCHILD_HANDLE: same as DROPCHILD but directly using the Ihandle* of the element.
     pub fn getDropChildHandle(self: *Self) ?iup.Element {
         if (interop.getHandleAttribute(self, "DROPCHILD_HANDLE", .{})) |handle| {
@@ -3704,8 +3590,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// DROPCHILD_HANDLE: same as DROPCHILD but directly using the Ihandle* of the element.
     pub fn setDropChildHandle(self: *Self, arg: anytype) !void {
         interop.setHandleAttribute(self, "DROPCHILD_HANDLE", .{}, arg);
@@ -3715,8 +3600,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "DROPCHILD_HANDLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
     /// occupy the full background.
     /// Aspect ratio is NOT preserved.
@@ -3727,8 +3611,7 @@ pub const DropButton = opaque {
         return interop.getBoolAttribute(self, "BACKIMAGEZOOM", .{});
     }
 
-
-    /// 
+    ///
     /// BACKIMAGEZOOM (non inheritable): if set the back image will be zoomed to
     /// occupy the full background.
     /// Aspect ratio is NOT preserved.
@@ -3747,8 +3630,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
     /// It will actually set the PADDING attribute.
     /// (since 3.29)
@@ -3757,8 +3639,7 @@ pub const DropButton = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// CPADDING: same as PADDING but using the units of the SIZE attribute.
     /// It will actually set the PADDING attribute.
     /// (since 3.29)
@@ -3768,8 +3649,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "CPADDING", .{}, value);
     }
 
-
-    /// 
+    ///
     /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
     /// The text size will adapt to include the rotated space.
     /// (since 3.25)
@@ -3777,8 +3657,7 @@ pub const DropButton = opaque {
         return interop.getDoubleAttribute(self, "TEXTORIENTATION", .{});
     }
 
-
-    /// 
+    ///
     /// TEXTORIENTATION (non inheritable): text angle in degrees and counterclockwise.
     /// The text size will adapt to include the rotated space.
     /// (since 3.25)
@@ -3786,8 +3665,7 @@ pub const DropButton = opaque {
         interop.setDoubleAttribute(self, "TEXTORIENTATION", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
     /// from the BACKIMAGE.
     /// If BACKIMAGE is not defined will be ignored.
@@ -3797,8 +3675,7 @@ pub const DropButton = opaque {
         return interop.getBoolAttribute(self, "FITTOBACKIMAGE", .{});
     }
 
-
-    /// 
+    ///
     /// FITTOBACKIMAGE (non inheritable): enable the natural size to be computed
     /// from the BACKIMAGE.
     /// If BACKIMAGE is not defined will be ignored.
@@ -3808,16 +3685,14 @@ pub const DropButton = opaque {
         interop.setBoolAttribute(self, "FITTOBACKIMAGE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
 
-
-    /// 
+    ///
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// SIZE, RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
@@ -3832,8 +3707,7 @@ pub const DropButton = opaque {
         interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// IMAGEHIGHLIGHT (non inheritable): Image name of the element in highlight state.
     /// If it is not defined then the IMAGE is used.
     pub fn getImageHighlight(self: *Self) ?iup.Element {
@@ -3844,8 +3718,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// IMAGEHIGHLIGHT (non inheritable): Image name of the element in highlight state.
     /// If it is not defined then the IMAGE is used.
     pub fn setImageHighlight(self: *Self, arg: anytype) !void {
@@ -3865,8 +3738,7 @@ pub const DropButton = opaque {
         interop.setIntAttribute(self, "YMAX", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BACKIMAGE (non inheritable): image name to be used as background.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
@@ -3878,8 +3750,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// BACKIMAGE (non inheritable): image name to be used as background.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// See also IupImage.
@@ -3892,8 +3763,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "BACKIMAGE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
     /// If it is not defined then the IMAGE is used and its colors will be replaced
     /// by a modified version creating the disabled effect.
@@ -3905,8 +3775,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// IMAGEINACTIVE (non inheritable): Image name of the element when inactive.
     /// If it is not defined then the IMAGE is used and its colors will be replaced
     /// by a modified version creating the disabled effect.
@@ -3919,8 +3788,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "IMAGEINACTIVE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// SHOWDROPDOWN (write-only): opens or closes the dropdown child.
     /// Can be "YES" or "NO".
     /// Ignored if set before map.
@@ -3947,8 +3815,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// SHOWBORDER: by default borders are drawn only when the button is
     /// highlighted, if SHOWBORDER=Yes borders are always show.
     /// When SHOWBORDER=Yes and BGCOLOR is not defined, the actual BGCOLOR will be
@@ -3957,8 +3824,7 @@ pub const DropButton = opaque {
         return interop.getBoolAttribute(self, "SHOWBORDER", .{});
     }
 
-
-    /// 
+    ///
     /// SHOWBORDER: by default borders are drawn only when the button is
     /// highlighted, if SHOWBORDER=Yes borders are always show.
     /// When SHOWBORDER=Yes and BGCOLOR is not defined, the actual BGCOLOR will be
@@ -3967,8 +3833,7 @@ pub const DropButton = opaque {
         interop.setBoolAttribute(self, "SHOWBORDER", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ARROWIMAGES (non inheritable): replace the drawn arrows by the following images.
     /// Make sure their sizes are equal or smaller than ARROWSIZE.
     /// Default: No.
@@ -3976,8 +3841,7 @@ pub const DropButton = opaque {
         return interop.getIntAttribute(self, "ARROWIMAGES", .{});
     }
 
-
-    /// 
+    ///
     /// ARROWIMAGES (non inheritable): replace the drawn arrows by the following images.
     /// Make sure their sizes are equal or smaller than ARROWSIZE.
     /// Default: No.
@@ -3998,8 +3862,7 @@ pub const DropButton = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
     /// when both are displayed.
     /// Can be: LEFT, RIGHT, TOP, BOTTOM.
@@ -4014,8 +3877,7 @@ pub const DropButton = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// IMAGEPOSITION (non inheritable): Position of the image relative to the text
     /// when both are displayed.
     /// Can be: LEFT, RIGHT, TOP, BOTTOM.
@@ -4047,8 +3909,7 @@ pub const DropButton = opaque {
         interop.setBoolAttribute(self, "WHEELDROPFOCUS", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BORDERWIDTH: line width used for borders.
     /// Default: "1".
     /// Any borders can be hidden by simply setting this value to 0.
@@ -4057,8 +3918,7 @@ pub const DropButton = opaque {
         return interop.getIntAttribute(self, "BORDERWIDTH", .{});
     }
 
-
-    /// 
+    ///
     /// BORDERWIDTH: line width used for borders.
     /// Default: "1".
     /// Any borders can be hidden by simply setting this value to 0.
@@ -4075,8 +3935,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TEXTALIGNMENT (non inheritable): Horizontal text alignment for multiple lines.
     /// Can be: ALEFT, ARIGHT or ACENTER.
     /// Default: ALEFT.
@@ -4089,8 +3948,7 @@ pub const DropButton = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// TEXTALIGNMENT (non inheritable): Horizontal text alignment for multiple lines.
     /// Can be: ALEFT, ARIGHT or ACENTER.
     /// Default: ALEFT.
@@ -4112,8 +3970,7 @@ pub const DropButton = opaque {
         interop.setBoolAttribute(self, "TOUCH", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TEXTWRAP (non inheritable): For single line texts if the text is larger
     /// than its box the line will be automatically broken in multiple lines.
     /// Notice that this is done internally by the system, the element natural size
@@ -4125,8 +3982,7 @@ pub const DropButton = opaque {
         return interop.getBoolAttribute(self, "TEXTWRAP", .{});
     }
 
-
-    /// 
+    ///
     /// TEXTWRAP (non inheritable): For single line texts if the text is larger
     /// than its box the line will be automatically broken in multiple lines.
     /// Notice that this is done internally by the system, the element natural size
@@ -4138,8 +3994,7 @@ pub const DropButton = opaque {
         interop.setBoolAttribute(self, "TEXTWRAP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BACKIMAGEPRESS (non inheritable): background image name of the element in
     /// pressed state.
     /// If it is not defined then the BACKIMAGE is used.
@@ -4151,8 +4006,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// BACKIMAGEPRESS (non inheritable): background image name of the element in
     /// pressed state.
     /// If it is not defined then the BACKIMAGE is used.
@@ -4173,8 +4027,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// PRESSED (read-only): returns the button state if pressed.
     /// Can be Yes or No.
     pub fn getPressed(self: *Self) bool {
@@ -4205,8 +4058,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -4227,8 +4079,7 @@ pub const DropButton = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -4250,8 +4101,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -4272,8 +4122,7 @@ pub const DropButton = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -4294,7 +4143,7 @@ pub const DropButton = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    /// 
+    ///
     /// SCROLL_CB SCROLL_CB Called when some manipulation is made to the scrollbar.
     /// The canvas is automatically redrawn only if this callback is NOT defined.
     /// (GTK 2.8) Also the POSX and POSY values will not be correctly updated for
@@ -4318,12 +4167,12 @@ pub const DropButton = opaque {
     /// In Windows, after a drag when mouse is released IUP_SBPOSH or IUP_SBPOSV
     /// are called.
     /// Affects IupCanvas, IupGLCanvas, SCROLLBAR
-    pub fn setScrollCallback(self: *Self, callback: ?OnScrollFn) void {
+    pub fn setScrollCallback(self: *Self, callback: ?*const OnScrollFn) void {
         const Handler = CallbackHandler(Self, OnScrollFn, "SCROLL_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// The drop dialog is configured with no decorations and it is not resizable,
     /// only the FOCUS_CB and K_ESC callbacks are set.
     /// But this can be changed by the application.
@@ -4338,12 +4187,12 @@ pub const DropButton = opaque {
     /// (state == 1) { Ihandle* ih = IupGetAttributeHandle(IupGetDialog(list),
     /// "DROPBUTTON"); IupSetAttribute(ih, "SHOWDROPDOWN", "No");
     /// IupSetStrAttribute(ih, "TITLE", text); } return IUP_DEFAULT; }
-    pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
+    pub fn setFocusCallback(self: *Self, callback: ?*const OnFocusFn) void {
         const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// WOM_CB WOM_CB Action generated when an audio device receives an event.
     /// [Windows Only] Callback int function(Ihandle *ih, int state); [in C]
     /// ih:wom_cb(state: number) -> (ret: number) [in Lua] ih: identifies the
@@ -4357,12 +4206,12 @@ pub const DropButton = opaque {
     /// You must use the HWND attribute when calling waveOutOpen in the dwCallback
     /// parameter and set fdwOpen to CALLBACK_WINDOW.
     /// Affects IupDialog, IupCanvas, IupGLCanvas
-    pub fn setWomCallback(self: *Self, callback: ?OnWomFn) void {
+    pub fn setWomCallback(self: *Self, callback: ?*const OnWomFn) void {
         const Handler = CallbackHandler(Self, OnWomFn, "WOM_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
     /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -4391,39 +4240,39 @@ pub const DropButton = opaque {
     /// This is the way an application can create shortcut keys, also called hot keys.
     /// These callbacks are not available in IupLua.
     /// Affects All elements with keyboard interaction.
-    pub fn setKAnyCallback(self: *Self, callback: ?OnKAnyFn) void {
+    pub fn setKAnyCallback(self: *Self, callback: ?*const OnKAnyFn) void {
         const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFlatFocusCallback(self: *Self, callback: ?OnFlatFocusFn) void {
+    pub fn setFlatFocusCallback(self: *Self, callback: ?*const OnFlatFocusFn) void {
         const Handler = CallbackHandler(Self, OnFlatFocusFn, "FLAT_FOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
     /// In Motif is also activated by the Help button in some workstations keyboard.
     /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Returns: IUP_CLOSE will be processed.
     /// Affects All elements with user interaction.
-    pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
+    pub fn setHelpCallback(self: *Self, callback: ?*const OnHelpFn) void {
         const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropMotionCallback(self: *Self, callback: ?OnDropMotionFn) void {
+    pub fn setDropMotionCallback(self: *Self, callback: ?*const OnDropMotionFn) void {
         const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFlatLeaveWindowCallback(self: *Self, callback: ?OnFlatLeaveWindowFn) void {
+    pub fn setFlatLeaveWindowCallback(self: *Self, callback: ?*const OnFlatLeaveWindowFn) void {
         const Handler = CallbackHandler(Self, OnFlatLeaveWindowFn, "FLAT_LEAVEWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// KEYPRESS_CB KEYPRESS_CB Action generated when a key is pressed or released.
     /// If the key is pressed and held several calls will occur.
     /// It is called after the callback K_ANY is processed.
@@ -4436,22 +4285,22 @@ pub const DropButton = opaque {
     /// Returns: If IUP_IGNORE is returned the key is ignored by the system.
     /// IUP_CLOSE will be processed.
     /// Affects IupCanvas
-    pub fn setKeyPressCallback(self: *Self, callback: ?OnKeyPressFn) void {
+    pub fn setKeyPressCallback(self: *Self, callback: ?*const OnKeyPressFn) void {
         const Handler = CallbackHandler(Self, OnKeyPressFn, "KEYPRESS_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragEndCallback(self: *Self, callback: ?OnDragEndFn) void {
+    pub fn setDragEndCallback(self: *Self, callback: ?*const OnDragEndFn) void {
         const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragBeginCallback(self: *Self, callback: ?OnDragBeginFn) void {
+    pub fn setDragBeginCallback(self: *Self, callback: ?*const OnDragBeginFn) void {
         const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// ACTION ACTION Action generated when the element is activated.
     /// Affects each element differently.
     /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
@@ -4460,12 +4309,12 @@ pub const DropButton = opaque {
     /// Please refer to each element's documentation.
     /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
     /// IupToggle
-    pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
+    pub fn setActionCallback(self: *Self, callback: ?*const OnActionFn) void {
         const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
     /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
     /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
@@ -4479,17 +4328,17 @@ pub const DropButton = opaque {
     /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
     /// called with coordinates outside the element rectangle.
     /// Affects IupCanvas, IupGLCanvas
-    pub fn setMotionCallback(self: *Self, callback: ?OnMotionFn) void {
+    pub fn setMotionCallback(self: *Self, callback: ?*const OnMotionFn) void {
         const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFlatEnterWindowCallback(self: *Self, callback: ?OnFlatEnterWindowFn) void {
+    pub fn setFlatEnterWindowCallback(self: *Self, callback: ?*const OnFlatEnterWindowFn) void {
         const Handler = CallbackHandler(Self, OnFlatEnterWindowFn, "FLAT_ENTERWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// WHEEL_CB WHEEL_CB Action generated when the mouse wheel is rotated.
     /// If this callback is not defined the wheel will automatically scroll the
     /// canvas in the vertical direction by some lines, the SCROLL_CB callback if
@@ -4506,12 +4355,12 @@ pub const DropButton = opaque {
     /// In Windows is some situations delta can reach the value of two.
     /// In the future with more precise wheels this increment can be changed.
     /// Affects IupCanvas, IupGLCanvas
-    pub fn setWheelCallback(self: *Self, callback: ?OnWheelFn) void {
+    pub fn setWheelCallback(self: *Self, callback: ?*const OnWheelFn) void {
         const Handler = CallbackHandler(Self, OnWheelFn, "WHEEL_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -4520,17 +4369,17 @@ pub const DropButton = opaque {
     /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
     /// Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+    pub fn setMapCallback(self: *Self, callback: ?*const OnMapFn) void {
         const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFlatButtonCallback(self: *Self, callback: ?OnFlatButtonFn) void {
+    pub fn setFlatButtonCallback(self: *Self, callback: ?*const OnFlatButtonFn) void {
         const Handler = CallbackHandler(Self, OnFlatButtonFn, "FLAT_BUTTON_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -4544,12 +4393,12 @@ pub const DropButton = opaque {
     /// GTK the callbacks are called.
     /// Affects All controls with user interaction.
     /// See Also LEAVEWINDOW_CB
-    pub fn setEnterWindowCallback(self: *Self, callback: ?OnEnterWindowFn) void {
+    pub fn setEnterWindowCallback(self: *Self, callback: ?*const OnEnterWindowFn) void {
         const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -4562,17 +4411,17 @@ pub const DropButton = opaque {
     /// release memory allocated by the binding for the element.
     /// Also the callback will be called before the language callback.
     /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+    pub fn setDestroyCallback(self: *Self, callback: ?*const OnDestroyFn) void {
         const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropDataCallback(self: *Self, callback: ?OnDropDataFn) void {
+    pub fn setDropDataCallback(self: *Self, callback: ?*const OnDropDataFn) void {
         const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
     /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
     /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -4584,32 +4433,32 @@ pub const DropButton = opaque {
     /// This causes the thread to yield control and can cause the application to
     /// stop responding to messages.
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setKillFocusCallback(self: *Self, callback: ?OnKillFocusFn) void {
+    pub fn setKillFocusCallback(self: *Self, callback: ?*const OnKillFocusFn) void {
         const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DROPSHOW_CB: Action generated right after the drop child is shown or hidden.
     /// This callback is also called when SHOWDROPDOWN is set.
     /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
     /// -> (ret: number) [in Lua]
-    pub fn setDropShowCallback(self: *Self, callback: ?OnDropShowFn) void {
+    pub fn setDropShowCallback(self: *Self, callback: ?*const OnDropShowFn) void {
         const Handler = CallbackHandler(Self, OnDropShowFn, "DROPSHOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataCallback(self: *Self, callback: ?OnDragDataFn) void {
+    pub fn setDragDataCallback(self: *Self, callback: ?*const OnDragDataFn) void {
         const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataSizeCallback(self: *Self, callback: ?OnDragDataSizeFn) void {
+    pub fn setDragDataSizeCallback(self: *Self, callback: ?*const OnDragDataSizeFn) void {
         const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
     /// When several files are dropped at once, the callback is called several
     /// times, once for each file.
@@ -4628,12 +4477,12 @@ pub const DropButton = opaque {
     /// Returns: If IUP_IGNORE is returned the callback will NOT be called for the
     /// next dropped files, and the processing of dropped files will be interrupted.
     /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
-    pub fn setDropFilesCallback(self: *Self, callback: ?OnDropFilesFn) void {
+    pub fn setDropFilesCallback(self: *Self, callback: ?*const OnDropFilesFn) void {
         const Handler = CallbackHandler(Self, OnDropFilesFn, "DROPFILES_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
     /// Callback int function(Ihandle *ih, int width, int height); [in C]
     /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
@@ -4650,33 +4499,33 @@ pub const DropButton = opaque {
     /// To update the parameters consult the DRAWSIZE attribute.
     /// Also activate the drawing toolkit only after updating the DX or DY attributes.
     /// Affects IupCanvas, IupGLCanvas, IupDialog
-    pub fn setResizeCallback(self: *Self, callback: ?OnResizeFn) void {
+    pub fn setResizeCallback(self: *Self, callback: ?*const OnResizeFn) void {
         const Handler = CallbackHandler(Self, OnResizeFn, "RESIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+    pub fn setUnmapCallback(self: *Self, callback: ?*const OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// FLAT_ACTION: Action generated when the button 1 (usually left) is selected.
     /// This callback is called only after the mouse is released and when it is
     /// released inside the button area.
     /// Called only when DROPONARROW=Yes.
     /// int function(Ihandle* ih); [in C]ih:action() -> (ret: number) [in Lua]
-    pub fn setFlatActionCallback(self: *Self, callback: ?OnFlatActionFn) void {
+    pub fn setFlatActionCallback(self: *Self, callback: ?*const OnFlatActionFn) void {
         const Handler = CallbackHandler(Self, OnFlatActionFn, "FLAT_ACTION");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
     /// This callback is called after the KILLFOCUS_CB of the element that loosed
     /// the focus.
@@ -4686,12 +4535,12 @@ pub const DropButton = opaque {
     /// number) [in Lua] ih: identifier of the element that received keyboard focus.
     /// Affects All elements with user interaction, except menus.
     /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setGetFocusCallback(self: *Self, callback: ?OnGetFocusFn) void {
+    pub fn setGetFocusCallback(self: *Self, callback: ?*const OnGetFocusFn) void {
         const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// BUTTON_CB BUTTON_CB Action generated when a mouse button is pressed or released.
     /// Callback int function(Ihandle* ih, int button, int pressed, int x, int y,
     /// char* status); [in C] ih:button_cb(button, pressed, x, y: number, status:
@@ -4736,32 +4585,32 @@ pub const DropButton = opaque {
     /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
     /// called with coordinates outside the element rectangle.
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
-    pub fn setButtonCallback(self: *Self, callback: ?OnButtonFn) void {
+    pub fn setButtonCallback(self: *Self, callback: ?*const OnButtonFn) void {
         const Handler = CallbackHandler(Self, OnButtonFn, "BUTTON_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFlatMotionCallback(self: *Self, callback: ?OnFlatMotionFn) void {
+    pub fn setFlatMotionCallback(self: *Self, callback: ?*const OnFlatMotionFn) void {
         const Handler = CallbackHandler(Self, OnFlatMotionFn, "FLAT_MOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DROPDOWN_CB: Action generated right before the drop child is shown or hidden.
     /// This callback is also called when SHOWDROPDOWN is set.
     /// int function (Ihandle *ih, int state); [in C]ih:dropdown_cb(state: boolean)
     /// -> (ret: number) [in Lua]
-    pub fn setDropDownCallback(self: *Self, callback: ?OnDropDownFn) void {
+    pub fn setDropDownCallback(self: *Self, callback: ?*const OnDropDownFn) void {
         const Handler = CallbackHandler(Self, OnDropDownFn, "DROPDOWN_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+    pub fn setLDestroyCallback(self: *Self, callback: ?*const OnLDestroyFn) void {
         const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -4775,12 +4624,12 @@ pub const DropButton = opaque {
     /// GTK the callbacks are called.
     /// Affects All controls with user interaction.
     /// See Also ENTERWINDOW_CB
-    pub fn setLeaveWindowCallback(self: *Self, callback: ?OnLeaveWindowFn) void {
+    pub fn setLeaveWindowCallback(self: *Self, callback: ?*const OnLeaveWindowFn) void {
         const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+    pub fn setPostMessageCallback(self: *Self, callback: ?*const OnPostMessageFn) void {
         const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }

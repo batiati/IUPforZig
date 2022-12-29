@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Construction element used only in IupParamBox.
 /// It is not mapped in the native system, but it will exist while its
 /// IupParamBox container exists.
@@ -35,7 +35,7 @@ pub const Param = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -50,7 +50,7 @@ pub const Param = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -63,14 +63,14 @@ pub const Param = opaque {
 
     pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
     /// FILE parameter dialog.
     /// See IupFileDlg.
@@ -80,7 +80,7 @@ pub const Param = opaque {
         Dir,
         Open,
     };
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -109,164 +109,156 @@ pub const Param = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDirectory(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDirectory(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DIRECTORY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNoOverwritePrompt(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNoOverwritePrompt(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "NOOVERWRITEPROMPT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TITLE: text of the parameter, used as label.
         /// For all parameters.
-        pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MULTILINE: can be Yes or No.
         /// Defines if the edit box can have more than one line.
         /// For 'm' parameter.
-        pub fn setMultiline(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMultiline(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MULTILINE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFilter(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFilter(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FILTER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TIP: text of the tip.
         /// For all parameters.
-        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTip(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMax(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMax(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "MAX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BUTTON1, BUTTON2, BUTTON3: button titles.
         /// Default is "OK/Cancel/Help" for regular IupGetParam, and "Apply/Reset/Help"
         /// when IupParamBox is directly used.
         /// For 'u' parameter.
-        pub fn setButton1(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setButton1(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "BUTTON1", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setButton2(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setButton2(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "BUTTON2", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MASK: mask for the edit box input.
         /// For 's' and 'm' parameters.
-        pub fn setMask(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMask(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MASK", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setButton3(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setButton3(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "BUTTON3", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
         /// 'r'), STRING ('m', 's'), INTEGER ('i'), DATE ('d'), FILE ('f'), COLOR
         /// ('c'), SEPARATOR ('t'), BUTTONNAMES ('u'), PARAMBOX ('x') and HANDLE ('h').
         /// And describe the type of the parameter.
         /// For all parameters.
-        pub fn setType(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setType(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TYPE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VALUE - the value of the parameter.
         /// IupGetFloat and IupGetInt can also be used.
         /// For the current parameter inside the callback contains the new value that
         /// will be applied to the control, to get the old value use the VALUE
         /// attribute for the CONTROL returned Ihandle*.
-        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setValue(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
         /// FILE parameter dialog.
         /// See IupFileDlg.
         /// For 'f' parameter.
-        pub fn setDialogType(self: *Initializer, arg: ?DialogType) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDialogType(self: Initializer, arg: ?DialogType) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Save => interop.setStrAttribute(self.ref, "DIALOGTYPE", .{}, "SAVE"),
                 .Dir => interop.setStrAttribute(self.ref, "DIALOGTYPE", .{}, "DIR"),
@@ -274,46 +266,44 @@ pub const Param = opaque {
             } else {
                 interop.clearAttribute(self.ref, "DIALOGTYPE", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setNoChangeDir(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNoChangeDir(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "NOCHANGEDIR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMin(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMin(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "MIN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setStep(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStep(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "STEP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
         /// (since 3.1)
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
         /// then its size and position will be ignored by the layout processing.
         /// Default: "NO".
         /// (since 3.0)
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -321,11 +311,10 @@ pub const Param = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -338,24 +327,23 @@ pub const Param = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -372,19 +360,19 @@ pub const Param = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+        pub fn setLDestroyCallback(self: Initializer, callback: ?*const OnLDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
         /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
@@ -397,13 +385,13 @@ pub const Param = opaque {
         /// release memory allocated by the binding for the element.
         /// Also the callback will be called before the language callback.
         /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+        pub fn setDestroyCallback(self: Initializer, callback: ?*const OnDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
         /// When the element is a dialog, it is called after the layout is updated.
@@ -412,27 +400,27 @@ pub const Param = opaque {
         /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
         /// Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+        pub fn setMapCallback(self: Initializer, callback: ?*const OnMapFn) Initializer {
             const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+        pub fn setPostMessageCallback(self: Initializer, callback: ?*const OnPostMessageFn) Initializer {
             const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+        pub fn setUnmapCallback(self: Initializer, callback: ?*const OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -495,14 +483,14 @@ pub const Param = opaque {
         }
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -538,19 +526,19 @@ pub const Param = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
@@ -571,24 +559,21 @@ pub const Param = opaque {
         interop.setBoolAttribute(self, "NOOVERWRITEPROMPT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TITLE: text of the parameter, used as label.
     /// For all parameters.
     pub fn getTitle(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
 
-
-    /// 
+    ///
     /// TITLE: text of the parameter, used as label.
     /// For all parameters.
     pub fn setTitle(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// MULTILINE: can be Yes or No.
     /// Defines if the edit box can have more than one line.
     /// For 'm' parameter.
@@ -596,8 +581,7 @@ pub const Param = opaque {
         return interop.getBoolAttribute(self, "MULTILINE", .{});
     }
 
-
-    /// 
+    ///
     /// MULTILINE: can be Yes or No.
     /// Defines if the edit box can have more than one line.
     /// For 'm' parameter.
@@ -613,16 +597,14 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "FILTER", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TIP: text of the tip.
     /// For all parameters.
     pub fn getTip(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TIP", .{});
     }
 
-
-    /// 
+    ///
     /// TIP: text of the tip.
     /// For all parameters.
     pub fn setTip(self: *Self, arg: [:0]const u8) void {
@@ -637,8 +619,7 @@ pub const Param = opaque {
         interop.setDoubleAttribute(self, "MAX", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BUTTON1, BUTTON2, BUTTON3: button titles.
     /// Default is "OK/Cancel/Help" for regular IupGetParam, and "Apply/Reset/Help"
     /// when IupParamBox is directly used.
@@ -647,8 +628,7 @@ pub const Param = opaque {
         return interop.getStrAttribute(self, "BUTTON1", .{});
     }
 
-
-    /// 
+    ///
     /// BUTTON1, BUTTON2, BUTTON3: button titles.
     /// Default is "OK/Cancel/Help" for regular IupGetParam, and "Apply/Reset/Help"
     /// when IupParamBox is directly used.
@@ -665,16 +645,14 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "BUTTON2", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// MASK: mask for the edit box input.
     /// For 's' and 'm' parameters.
     pub fn getMask(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "MASK", .{});
     }
 
-
-    /// 
+    ///
     /// MASK: mask for the edit box input.
     /// For 's' and 'm' parameters.
     pub fn setMask(self: *Self, arg: [:0]const u8) void {
@@ -689,8 +667,7 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "BUTTON3", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
     /// 'r'), STRING ('m', 's'), INTEGER ('i'), DATE ('d'), FILE ('f'), COLOR
     /// ('c'), SEPARATOR ('t'), BUTTONNAMES ('u'), PARAMBOX ('x') and HANDLE ('h').
@@ -700,8 +677,7 @@ pub const Param = opaque {
         return interop.getStrAttribute(self, "TYPE", .{});
     }
 
-
-    /// 
+    ///
     /// TYPE: can be BOOLEAN ('b'), LIST ('l'), OPTIONS ('o'), REAL ('A', 'a', 'R',
     /// 'r'), STRING ('m', 's'), INTEGER ('i'), DATE ('d'), FILE ('f'), COLOR
     /// ('c'), SEPARATOR ('t'), BUTTONNAMES ('u'), PARAMBOX ('x') and HANDLE ('h').
@@ -711,8 +687,7 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "TYPE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// VALUE - the value of the parameter.
     /// IupGetFloat and IupGetInt can also be used.
     /// For the current parameter inside the callback contains the new value that
@@ -722,8 +697,7 @@ pub const Param = opaque {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
 
-
-    /// 
+    ///
     /// VALUE - the value of the parameter.
     /// IupGetFloat and IupGetInt can also be used.
     /// For the current parameter inside the callback contains the new value that
@@ -733,8 +707,7 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "VALUE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
     /// FILE parameter dialog.
     /// See IupFileDlg.
@@ -748,8 +721,7 @@ pub const Param = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// DIALOGTYPE, FILTER, DIRECTORY, NOCHANGEDIR, NOOVERWRITEPROMPT: used for the
     /// FILE parameter dialog.
     /// See IupFileDlg.
@@ -788,8 +760,7 @@ pub const Param = opaque {
         interop.setDoubleAttribute(self, "STEP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -797,8 +768,7 @@ pub const Param = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -806,8 +776,7 @@ pub const Param = opaque {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -821,8 +790,7 @@ pub const Param = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -837,8 +805,7 @@ pub const Param = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -859,8 +826,7 @@ pub const Param = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -882,8 +848,7 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -904,8 +869,7 @@ pub const Param = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -926,12 +890,12 @@ pub const Param = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+    pub fn setLDestroyCallback(self: *Self, callback: ?*const OnLDestroyFn) void {
         const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -944,12 +908,12 @@ pub const Param = opaque {
     /// release memory allocated by the binding for the element.
     /// Also the callback will be called before the language callback.
     /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+    pub fn setDestroyCallback(self: *Self, callback: ?*const OnDestroyFn) void {
         const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -958,22 +922,22 @@ pub const Param = opaque {
     /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
     /// Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+    pub fn setMapCallback(self: *Self, callback: ?*const OnMapFn) void {
         const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+    pub fn setPostMessageCallback(self: *Self, callback: ?*const OnPostMessageFn) void {
         const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+    pub fn setUnmapCallback(self: *Self, callback: ?*const OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }

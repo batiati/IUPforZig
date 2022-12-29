@@ -12,7 +12,11 @@ index: c_int,
 pub const NoChildren = Self{ .handle = undefined, .len = 0, .index = 0 };
 
 pub fn init(handle: anytype) Self {
-    return .{ .handle = interop.getHandle(handle), .len = interop.getChildCount(handle), .index = 0 };
+    return .{
+        .handle = interop.getHandle(handle),
+        .len = interop.getChildCount(handle),
+        .index = 0,
+    };
 }
 
 pub fn next(self: *Self) ?Element {

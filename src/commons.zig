@@ -29,7 +29,7 @@ pub const Error = error{
 };
 
 pub const CallbackResult = error{
-    /// 
+    ///
     /// Returning this error inside a callback function means that this event must be ignored and not processed by the control and not propagated
     /// Used in keyboard event handlers for example
     Ignore,
@@ -169,27 +169,47 @@ fn expectDialogSize(str: []const u8, width: ?ScreenSize, height: ?ScreenSize) bo
     return std.meta.eql(dialog_size.width, width) and std.meta.eql(dialog_size.height, height);
 }
 
-pub const DialogPosX = union(enum(i32)) {
-    Left = interop.consts.IUP_LEFT,
-    Center = interop.consts.IUP_CENTER,
-    Right = interop.consts.IUP_RIGHT,
-    MousePos = interop.consts.IUP_MOUSEPOS,
-    Current = interop.consts.IUP_CURRENT,
-    CenterParent = interop.consts.IUP_CENTERPARENT,
-    LeftParent = interop.consts.IUP_LEFTPARENT,
-    RightParent = interop.consts.IUP_RIGHTPARENT,
+pub const DialogPosX = union(DialogPosX.Tag) {
+    pub const Tag = enum(i32) {
+        Left = interop.consts.IUP_LEFT,
+        Center = interop.consts.IUP_CENTER,
+        Right = interop.consts.IUP_RIGHT,
+        Current = interop.consts.IUP_CURRENT,
+        MousePos = interop.consts.IUP_MOUSEPOS,
+        CenterParent = interop.consts.IUP_CENTERPARENT,
+        LeftParent = interop.consts.IUP_LEFTPARENT,
+        RightParent = interop.consts.IUP_RIGHTPARENT,
+        X = 0,
+    };
+
+    Left: void,
+    Center: void,
+    Right: void,
+    Current: void,
+    MousePos: void,
+    CenterParent: void,
+    LeftParent: void,
+    RightParent: void,
     X: i32,
 };
 
-pub const DialogPosY = union(enum(i32)) {
-    Top = interop.consts.IUP_TOP,
-    Center = interop.consts.IUP_CENTER,
-    Bottom = interop.consts.IUP_BOTTOM,
-    MousePos = interop.consts.IUP_MOUSEPOS,
-    CenterParent = interop.consts.IUP_CENTERPARENT,
-    Current = interop.consts.IUP_CURRENT,
-    TopParent = interop.consts.IUP_TOPPARENT,
-    BottomParent = interop.consts.IUP_BOTTOMPARENT,
+pub const DialogPosY = union(DialogPosY.Tag) {
+    pub const Tag = enum(i32) {
+        Top = interop.consts.IUP_TOP,
+        Center = interop.consts.IUP_CENTER,
+        Bottom = interop.consts.IUP_BOTTOM,
+        MousePos = interop.consts.IUP_MOUSEPOS,
+        CenterParent = interop.consts.IUP_CENTERPARENT,
+        Current = interop.consts.IUP_CURRENT,
+        Y = 0,
+    };
+
+    Top: void,
+    Center: void,
+    Bottom: void,
+    MousePos: void,
+    CenterParent: void,
+    Current: void,
     Y: i32,
 };
 

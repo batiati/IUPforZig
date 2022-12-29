@@ -18,7 +18,7 @@ const MainLoop = @This();
 const Element = iup.Element;
 
 var exit_error: ?anyerror = null;
-var error_handler: ?ErrorHandlerFn = null;
+var error_handler: ?*const ErrorHandlerFn = null;
 
 ///
 /// Initializes the IUP toolkit. Must be called before any other IUP function.
@@ -43,7 +43,7 @@ pub fn exitLoop() void {
 /// Global handler for IDLE
 /// Predefined IUP action, generated when there are no events or messages to be processed.
 /// Often used to perform background operations.
-pub fn setIdleCallback(value: ?IdleHandlerFn) void {
+pub fn setIdleCallback(value: ?*const IdleHandlerFn) void {
     const Handler = CallbackHandler(void, IdleHandlerFn, "IDLE_ACTION");
     Handler.setGlobalCallback(value);
 }
@@ -63,17 +63,17 @@ pub fn onError(element: ?Element, err: anyerror) i32 {
 }
 
 ///
-/// Executes the user interaction until a callback returns IUP_CLOSE, 
+/// Executes the user interaction until a callback returns IUP_CLOSE,
 /// IupExitLoop is called, or hiding the last visible dialog.
-/// When this function is called, it will interrupt the program execution until a callback returns IUP_CLOSE, 
+/// When this function is called, it will interrupt the program execution until a callback returns IUP_CLOSE,
 /// IupExitLoop is called, or there are no visible dialogs.
-/// If you cascade many calls to IupMainLoop there must be a "return IUP_CLOSE" or 
-/// IupExitLoop call for each cascade level, hiddinh all dialogs will close only one level. 
+/// If you cascade many calls to IupMainLoop there must be a "return IUP_CLOSE" or
+/// IupExitLoop call for each cascade level, hiddinh all dialogs will close only one level.
 /// Call IupMainLoopLevel to obtain the current level.
-/// If IupMainLoop is called without any visible dialogs and no active timers, 
-/// the application will hang and will not be possible to close the main loop. 
+/// If IupMainLoop is called without any visible dialogs and no active timers,
+/// the application will hang and will not be possible to close the main loop.
 /// The process will have to be interrupted by the system.
-/// When the last visible dialog is hidden the IupExitLoop function is automatically called, 
+/// When the last visible dialog is hidden the IupExitLoop function is automatically called,
 /// causing the IupMainLoop to return. To avoid that set LOCKLOOP=YES before hiding the last dialog.
 pub fn beginLoop() !void {
     interop.beginLoop();

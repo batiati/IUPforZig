@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Creates a dialog element.
 /// It manages user interaction with the interface elements.
 /// For any interface element to be shown, it must be encapsulated in a dialog.
@@ -33,7 +33,7 @@ pub const Dialog = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Dialog;
     const Self = @This();
 
-    /// 
+    ///
     /// FOCUS_CB: Called when the dialog or any of its children gets the focus, or
     /// when another dialog or any control in another dialog gets the focus.
     /// It is called after the common callbacks GETFOCUS_CB and KILL_FOCUS_CB.
@@ -41,7 +41,7 @@ pub const Dialog = opaque {
     /// number) -> (ret: number) [in Lua]
     pub const OnFocusFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
     /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -72,7 +72,7 @@ pub const Dialog = opaque {
     /// Affects All elements with keyboard interaction.
     pub const OnKAnyFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
     /// In Motif is also activated by the Help button in some workstations keyboard.
     /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
@@ -81,7 +81,7 @@ pub const Dialog = opaque {
     /// Affects All elements with user interaction.
     pub const OnHelpFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// CLOSE_CB CLOSE_CB Called just before a dialog is closed when the user
     /// clicks the close button of the title bar or an equivalent action.
     /// Callback int function(Ihandle *ih); [in C] ih:close_cb() -> (ret: number)
@@ -98,7 +98,7 @@ pub const Dialog = opaque {
 
     pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -109,7 +109,7 @@ pub const Dialog = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -125,7 +125,7 @@ pub const Dialog = opaque {
     /// See Also LEAVEWINDOW_CB
     pub const OnEnterWindowFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -142,7 +142,7 @@ pub const Dialog = opaque {
 
     pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
-    /// 
+    ///
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
     /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
     /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -160,7 +160,7 @@ pub const Dialog = opaque {
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
-    /// 
+    ///
     /// SHOW_CB SHOW_CB Called right after the dialog is showed, hidden, maximized,
     /// minimized or restored from minimized/maximized.
     /// This callback is called when those actions were performed by the user or
@@ -175,7 +175,7 @@ pub const Dialog = opaque {
     /// Affects IupDialog
     pub const OnShowFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
     /// When several files are dropped at once, the callback is called several
     /// times, once for each file.
@@ -196,7 +196,7 @@ pub const Dialog = opaque {
     /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
     pub const OnDropFilesFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: i32, arg3: i32) anyerror!void;
 
-    /// 
+    ///
     /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
     /// Callback int function(Ihandle *ih, int width, int height); [in C]
     /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
@@ -215,21 +215,21 @@ pub const Dialog = opaque {
     /// Affects IupCanvas, IupGLCanvas, IupDialog
     pub const OnResizeFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// TRAYCLICK_CB [Windows and GTK Only]: Called right after the mouse button is
     /// pressed or released over the tray icon.
     /// (GTK 2.10) int function(Ihandle *ih, int but, int pressed, int dclick); [in
     /// C]elem:trayclick_cb(but, pressed, dclick: number) -> (ret: number) [in Lua]
     pub const OnTrayClickFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32) anyerror!void;
 
-    /// 
+    ///
     /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
     /// This callback is called after the KILLFOCUS_CB of the element that loosed
     /// the focus.
@@ -243,7 +243,7 @@ pub const Dialog = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -265,7 +265,7 @@ pub const Dialog = opaque {
         Top,
         Bottom,
     };
-    /// 
+    ///
     /// EXPAND (non inheritable): The default value is "YES".
     pub const Expand = enum {
         Yes,
@@ -275,7 +275,7 @@ pub const Dialog = opaque {
         VerticalFree,
         No,
     };
-    /// 
+    ///
     /// PLACEMENT: Changes how the dialog will be shown.
     /// Values: "FULL", "MAXIMIZED", "MINIMIZED" and "NORMAL".
     /// Default: NORMAL.
@@ -318,65 +318,67 @@ pub const Dialog = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setChildren(self: *Initializer, tuple: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setChildren(self: Initializer, tuple: anytype) Initializer {
+            if (self.last_error) |_| return self;
 
             Self.appendChildren(self.ref, tuple) catch |err| {
-                self.last_error = err;
+                return .{
+                    .ref = self.ref,
+                    .last_error = err,
+                };
             };
 
-            return self.*;
+            return self;
         }
 
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MDICLIENT (creation only) [Windows Only] (non inheritable): Configure the
         /// canvas as a MDI client.
         /// Can be YES or NO.
@@ -384,68 +386,64 @@ pub const Dialog = opaque {
         /// This canvas will be used internally only by the MDI Frame and its MDI Children.
         /// The MDI frame must have one and only one MDI client.
         /// Default: NO.
-        pub fn setMdiClient(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiClient(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MDICLIENT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CONTROL [Windows Only] (creation only): Embeds the dialog inside another window.
-        pub fn setControl(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setControl(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CONTROL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipIcon(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MENU: Name of a menu.
         /// Associates a menu to the dialog as a menu bar.
         /// The previous menu, if any, is unmapped.
         /// Use IupSetHandle or IupSetAttributeHandle to associate a menu to a name.
         /// See also IupMenu.
-        pub fn setMenu(self: *Initializer, arg: *iup.Menu) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMenu(self: Initializer, arg: *iup.Menu) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandleAttribute(self.ref, "MENU", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMenuHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMenuHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MENU", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNoFlush(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNoFlush(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "NOFLUSH", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
         /// The windowing system will not be able to change the size beyond this limit.
         /// Default: 65535x65535.
         /// (since 3.0)
-        pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaxSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
         /// it is possible to create a non rectangle window with transparency, but it
         /// can not have children.
@@ -454,14 +452,13 @@ pub const Dialog = opaque {
         /// initialized when mapped.
         /// Works also for GTK but as the SHAPEIMAGE attribute.
         /// (since 3.16)
-        pub fn setOpacityImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setOpacityImage(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "OPACITYIMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// HELPBUTTON [Windows Only] (creation only): Inserts a help button in the
         /// same place of the maximize button.
         /// It can only be used for dialogs without the minimize and maximize buttons,
@@ -470,45 +467,42 @@ pub const Dialog = opaque {
         /// callback HELP_CB will be called instead of the control defined ACTION callback.
         /// Possible values: YES, NO.
         /// Default: NO.
-        pub fn setHelpButton(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHelpButton(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "HELPBUTTON", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SHOWNOFOCUS: do not set focus after show.
         /// (since 3.30)
-        pub fn setShowNoFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShowNoFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHOWNOFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
         /// Valid values range from 0 (completely transparent) to 255 (opaque).
         /// In Windows must be set before map so the native window would be properly
         /// initialized when mapped (since 3.16).
         /// (GTK 2.12)
-        pub fn setOpacity(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setOpacity(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "OPACITY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosition(self: Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// COMPOSITED [Windows Only] (creation only): controls if the window will have
         /// an automatic double buffer for all children.
         /// Default is "NO".
@@ -516,118 +510,111 @@ pub const Dialog = opaque {
         /// It is NOT compatible with IupCanvas and all derived IUP controls such as
         /// IupFlat*, IupGL*, IupPlot and IupMatrix, because IupCanvas uses CS_OWNDC in
         /// the window class.
-        pub fn setComposited(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setComposited(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "COMPOSITED", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
         /// the drop of files.
         /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
         /// it will be automatically enabled.
-        pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropFilesTarget(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTip(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCanFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragSourceMove(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ICON: Dialogs icon.
         /// The Windows SDK recommends that cursors and icons should be implemented as
         /// resources rather than created at run time.
-        pub fn setIcon(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIcon(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ICON", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VISIBLE: Simply call IupShow or IupHide for the dialog.
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CURSOR (non inheritable): Defines a cursor for the dialog.
-        pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCursor(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "CURSOR", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCursorHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MENUBOX (creation only): Requires a system menu box from the window manager.
         /// If hidden will also remove the Close button.
         /// Default: YES.
         /// In Motif the decorations are controlled by the Window Manager and may not
         /// be possible to be changed from IUP.
         /// In Windows if hidden will hide also MAXBOX and MINBOX.
-        pub fn setMenuBox(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMenuBox(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MENUBOX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn zOrder(self: Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
                 .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
             } else {
                 interop.clearAttribute(self.ref, "ZORDER", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// HIDETITLEBAR [GTK Only] (non inheritable): hides the title bar with al its elements.
         /// (since 3.20) (GTK 3.10)
-        pub fn setHideTitleBar(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHideTitleBar(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HIDETITLEBAR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MAXBOX (creation only): Requires a maximize button from the window manager.
         /// If RESIZE=NO then MAXBOX will be set to NO.
         /// Default: YES.
@@ -635,59 +622,55 @@ pub const Dialog = opaque {
         /// be possible to be changed from IUP.
         /// In Windows MAXBOX is hidden only if MINBOX is hidden as well, or else it
         /// will be just disabled.
-        pub fn setMaxBox(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaxBox(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MAXBOX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragDrop(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
         /// to a dialog hint.
-        pub fn setDialogHint(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDialogHint(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DIALOGHINT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DIALOGFRAME: Set the common decorations for modal dialogs.
         /// This means RESIZE=NO, MINBOX=NO and MAXBOX=NO.
         /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
         /// removed, but the Close button remains.
-        pub fn setDialogFrame(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDialogFrame(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DIALOGFRAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// NACTIVE (non inheritable): same as ACTIVE but does not affects the controls
         /// inside the dialog.
         /// (since 3.13)
-        pub fn setNActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNActive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "NACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SAVEUNDER [Windows and Motif Only] (creation only): When this attribute is
         /// true (YES), the dialog stores the original image of the desktop region it
         /// occupies (if the system has enough memory to store the image).
@@ -696,25 +679,23 @@ pub const Dialog = opaque {
         /// Its default value is YES if the dialog has a parent dialog (since 3.24).
         /// To save memory disable it for your main dialog.
         /// Not available in GTK.
-        pub fn setSaveUnder(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSaveUnder(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SAVEUNDER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
         /// system tray.
         /// (GTK 2.10 and GTK < 3.14)
-        pub fn setTray(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTray(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TRAY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CHILDOFFSET: Allow to specify a position offset for the child.
         /// Available for native containers only.
         /// It will not affect the natural size, and allows to position controls
@@ -723,19 +704,18 @@ pub const Dialog = opaque {
         /// horizontal and vertical offsets, respectively, in pixels.
         /// Default: 0x0.
         /// (since 3.14)
-        pub fn setChildOffset(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setChildOffset(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "CHILDOFFSET", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPAND (non inheritable): The default value is "YES".
-        pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpand(self: Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -746,11 +726,10 @@ pub const Dialog = opaque {
             } else {
                 interop.clearAttribute(self.ref, "EXPAND", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SIZE (non inheritable): Dialogs size.
         /// Additionally the following values can also be defined for width and/or
         /// height: "FULL": Defines the dialogs width (or height) equal to the screen's
@@ -796,92 +775,88 @@ pub const Dialog = opaque {
         /// also remove that limitation set SHRINK=YES.
         /// To only change the User size in pixels, without resetting the Current size,
         /// set the USERSIZE attribute (since 3.12).
-        pub fn setSize(self: *Initializer, width: ?iup.ScreenSize, height: ?iup.ScreenSize) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSize(self: Initializer, width: ?iup.ScreenSize, height: ?iup.ScreenSize) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, str);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipMarkup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MDIMENU (creation only) [Windows Only]: Name of a IupMenu to be used as the
         /// Window list of a MDI frame.
         /// The system will automatically add the list of MDI child windows there.
-        pub fn setMdiMenu(self: *Initializer, arg: *iup.Menu) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiMenu(self: Initializer, arg: *iup.Menu) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandleAttribute(self.ref, "MDIMENU", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMdiMenuHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiMenuHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// STARTFOCUS: Name of the element that must receive the focus right after the
         /// dialog is shown using IupShow or IupPopup.
         /// If not defined then the first control than can receive the focus is
         /// selected (same effect of calling IupNextField for the dialog).
         /// Updated after SHOW_CB is called and only if the focus was not changed
         /// during the callback.
-        pub fn setStartFocus(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStartFocus(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "STARTFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontSize(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropTypes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TRAYTIPMARKUP [GTK Only]: allows the tip string to contains Pango markup commands.
         /// Can be "YES" or "NO".
         /// Default: "NO".
         /// Must be set before setting the TRAYTIP attribute.
         /// (GTK 2.16) (since 3.6)
-        pub fn setTrayTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTrayTipMarkup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TRAYTIPMARKUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUserSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipDelay(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
         /// application to customize the dialog frame elements (the title and its
         /// buttons) by using IUP controls for its elements like caption, minimize
@@ -896,44 +871,41 @@ pub const Dialog = opaque {
         /// so for older GTK versions we have to simulate the support using CUSTOMFRAMESIMULATE.
         /// (since 3.18) (renamed in 3.22) (GTK support since 3.22) See the Custom
         /// Frame notes bellow.
-        pub fn setCustomFrame(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCustomFrame(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CUSTOMFRAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TITLE (non inheritable): Dialogs title.
         /// Default: NULL.
         /// If you want to remove the title bar you must also set MENUBOX=NO, MAXBOX=NO
         /// and MINBOX=NO, before map.
         /// But in Motif and GTK it will hide it only if RESIZE=NO also.
-        pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DEFAULTESC: Name of the button activated when the user press Esc when focus
         /// is in another control of the dialog.
         /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
-        pub fn setDefaultEsc(self: *Initializer, arg: *iup.Button) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDefaultEsc(self: Initializer, arg: *iup.Button) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandleAttribute(self.ref, "DEFAULTESC", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDefaultEscHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDefaultEscHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DEFAULTESC", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// PLACEMENT: Changes how the dialog will be shown.
         /// Values: "FULL", "MAXIMIZED", "MINIMIZED" and "NORMAL".
         /// Default: NORMAL.
@@ -946,8 +918,8 @@ pub const Dialog = opaque {
         /// window from being activated (since 3.15).
         /// In Windows, the SHOWMINIMIZENEXT attribute can be set to Yes to activate
         /// the next top-level window in the Z order when minimizing (since 3.15).
-        pub fn setPlacement(self: *Initializer, arg: ?Placement) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPlacement(self: Initializer, arg: ?Placement) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Maximized => interop.setStrAttribute(self.ref, "PLACEMENT", .{}, "MAXIMIZED"),
                 .Minimized => interop.setStrAttribute(self.ref, "PLACEMENT", .{}, "MINIMIZED"),
@@ -955,48 +927,47 @@ pub const Dialog = opaque {
             } else {
                 interop.clearAttribute(self.ref, "PLACEMENT", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPropagateFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropTarget(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragSource(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// RESIZE (creation only): Allows interactively changing the dialogs size.
         /// Default: YES.
         /// If RESIZE=NO then MAXBOX will be set to NO.
         /// In Motif the decorations are controlled by the Window Manager and may not
         /// be possible to be changed from IUP.
-        pub fn setResize(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setResize(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "RESIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -1004,17 +975,16 @@ pub const Dialog = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNormalizerGroup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
         /// accepted, regardless of the minimum size required by its children.
         /// For a dialog to have the minimum necessary size to fit all elements
@@ -1051,108 +1021,102 @@ pub const Dialog = opaque {
         /// also remove that limitation set SHRINK=YES.
         /// To only change the User size in pixels, without resetting the Current size,
         /// set the USERSIZE attribute (since 3.12).
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRasterSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
         /// it is possible to create a non rectangle window with children.
         /// (GTK 2.12) Only the fully transparent pixels will be transparent.
         /// The pixels colors will be ignored, only the alpha channel is used.
         /// (since 3.26)
-        pub fn setShapeImage(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShapeImage(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SHAPEIMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipFgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontFace(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TOPMOST [Windows and GTK Only]: puts the dialog always in front of all
         /// other dialogs in all applications.
         /// Default: NO.
-        pub fn topMost(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn topMost(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TOPMOST", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MINBOX (creation only): Requires a minimize button from the window manager.
         /// Default: YES.
         /// In Motif the decorations are controlled by the Window Manager and may not
         /// be possible to be changed from IUP.
         /// In Windows MINBOX is hidden only if MAXBOX is hidden as well, or else it
         /// will be just disabled.
-        pub fn setMinBox(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinBox(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MINBOX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DEFAULTENTER: Name of the button activated when the user press Enter when
         /// focus is in another control of the dialog.
         /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
-        pub fn setDefaultEnter(self: *Initializer, arg: *iup.Button) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDefaultEnter(self: Initializer, arg: *iup.Button) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandleAttribute(self.ref, "DEFAULTENTER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDefaultEnterHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDefaultEnterHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DEFAULTENTER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// PARENTDIALOG (creation only): Name of a dialog to be used as parent.
-        pub fn setParentDialog(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setParentDialog(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Dialog, arg)) {
                 interop.setHandleAttribute(self.ref, "PARENTDIALOG", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setParentDialogHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setParentDialogHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "PARENTDIALOG", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BACKGROUND (non inheritable): Dialog background color or image.
         /// Can be a non inheritable alternative to BGCOLOR or can be the name of an
         /// image to be tiled on the background.
@@ -1160,14 +1124,13 @@ pub const Dialog = opaque {
         /// changing the dialog BACKGROUND, the dialog BGCOLOR and the children BGCOLOR.
         /// Not working in GTK 3.
         /// (since 3.0)
-        pub fn setBackground(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackground(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BACKGROUND", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
         /// set to "YES", hides the dialog, but does not decrement the visible dialog
         /// count, does not call SHOW_CB and does not mark the dialog as hidden inside IUP.
@@ -1176,106 +1139,100 @@ pub const Dialog = opaque {
         /// It has the same effect as setting LOCKLOOP=Yes and normally hiding the dialog.
         /// IMPORTANT: when you hide using HIDETASKBAR, you must show using HIDETASKBAR also.
         /// Possible values: YES, NO.
-        pub fn setHideTaskbar(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHideTaskbar(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "HIDETASKBAR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
         /// Use "YES" to activate it.
         /// Useful for multithreaded applications.
-        pub fn setBringFront(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBringFront(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "BRINGFRONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
         /// tray icon.
         /// The Windows SDK recommends that cursors and icons should be implemented as
         /// resources rather than created at run time.
         /// (GTK 2.10 and GTK < 3.14)
-        pub fn setTrayImage(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTrayImage(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TRAYIMAGE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTrayImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTrayImageHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TRAYIMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ACTIVE, BGCOLOR, FONT, EXPAND, SCREENPOSITION, WID, TIP, CLIENTOFFSET,
         /// CLIENTSIZE, RASTERSIZE, ZORDER: also accepted.
         /// Note that ACTIVE, BGCOLOR and FONT will also affect all the controls inside
         /// the dialog.
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setActive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MINSIZE: Minimum size for the dialog in raster units (pixels).
         /// The windowing system will not be able to change the size beyond this limit.
         /// Default: 1x1.
         /// Some systems define a very minimum size greater than this, for instance in
         /// Windows the horizontal minimum size includes the window decoration buttons.
         /// (since 3.0)
-        pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BORDER (non inheritable) (creation only): Shows a resize border around the dialog.
         /// Default: "YES".
         /// BORDER=NO is useful only when RESIZE=NO, MAXBOX=NO, MINBOX=NO, MENUBOX=NO
         /// and TITLE=NULL, if any of these are defined there will be always some border.
-        pub fn setBorder(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBorder(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "BORDER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
         /// elements (the title and its buttons) by using IUP controls for its elements
         /// like caption, minimize button, maximize button, and close buttons.
@@ -1289,92 +1246,86 @@ pub const Dialog = opaque {
         /// set to CUSTOMFRAMECAPTION.
         /// See the Custom Frame notes bellow.
         /// (since 3.28)
-        pub fn setCustomFramesImulate(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCustomFramesImulate(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CUSTOMFRAMESIMULATE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SHRINK: Allows changing the elements distribution when the dialog is
         /// smaller than the minimum size.
         /// Default: NO.
-        pub fn setShrink(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShrink(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHRINK", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setClientSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setClientSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "CLIENTSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
         /// (GTK 2.10 and GTK < 3.14)
-        pub fn setTrayTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTrayTip(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TRAYTIP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragTypes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TOOLBOX [Windows Only] (creation only): makes the dialog look like a
         /// toolbox with a smaller title bar.
         /// It is only valid if the PARENTDIALOG or NATIVEPARENT attribute is also defined.
         /// Default: NO.
-        pub fn setToolBox(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setToolBox(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TOOLBOX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MDIFRAME (creation only) [Windows Only] (non inheritable): Configure this
         /// dialog as a MDI frame.
         /// Can be YES or NO.
         /// Default: NO.
-        pub fn setMdiFrame(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiFrame(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MDIFRAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontStyle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MDICHILD (creation only) [Windows Only]: Configure this dialog to be a MDI child.
         /// Can be YES or NO.
         /// The PARENTDIALOG attribute must also be defined.
         /// Each MDI child is automatically named if it does not have one.
         /// Default: NO.
-        pub fn setMdiChild(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiChild(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MDICHILD", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FULLSCREEN: Makes the dialog occupy the whole screen over any system bars
         /// in the main monitor.
         /// All dialog details, such as title bar, borders, maximize button, etc, are removed.
@@ -1382,47 +1333,44 @@ pub const Dialog = opaque {
         /// In Motif you may have to click in the dialog to set its focus.
         /// In Motif if set to YES when the dialog is hidden, then it can not be
         /// changed after it is visible.
-        pub fn fullScreen(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn fullScreen(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "FULLSCREEN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// NATIVEPARENT (creation only): Native handle of a dialog to be used as parent.
         /// Used only if PARENTDIALOG is not defined.
-        pub fn setNativeParent(self: *Initializer, arg: anytype) !Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNativeParent(self: Initializer, arg: anytype) !Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandleAttribute(self.ref, "NATIVEPARENT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNativeParentHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNativeParentHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NATIVEPARENT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFont(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SIMULATEMODAL (write-only): disable all other visible dialogs, just like
         /// when the dialog is made modal.
         /// (since 3.21)
-        pub fn simulateModal(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn simulateModal(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SIMULATEMODAL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -1435,24 +1383,23 @@ pub const Dialog = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -1469,25 +1416,25 @@ pub const Dialog = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// FOCUS_CB: Called when the dialog or any of its children gets the focus, or
         /// when another dialog or any control in another dialog gets the focus.
         /// It is called after the common callbacks GETFOCUS_CB and KILL_FOCUS_CB.
         /// (since 3.21) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
         /// number) -> (ret: number) [in Lua]
-        pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
+        pub fn setFocusCallback(self: Initializer, callback: ?*const OnFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// K_ANY K_ANY Action generated when a keyboard event occurs.
         /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
         /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -1516,26 +1463,26 @@ pub const Dialog = opaque {
         /// This is the way an application can create shortcut keys, also called hot keys.
         /// These callbacks are not available in IupLua.
         /// Affects All elements with keyboard interaction.
-        pub fn setKAnyCallback(self: *Initializer, callback: ?OnKAnyFn) Initializer {
+        pub fn setKAnyCallback(self: Initializer, callback: ?*const OnKAnyFn) Initializer {
             const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
         /// In Motif is also activated by the Help button in some workstations keyboard.
         /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Returns: IUP_CLOSE will be processed.
         /// Affects All elements with user interaction.
-        pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
+        pub fn setHelpCallback(self: Initializer, callback: ?*const OnHelpFn) Initializer {
             const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// CLOSE_CB CLOSE_CB Called just before a dialog is closed when the user
         /// clicks the close button of the title bar or an equivalent action.
         /// Callback int function(Ihandle *ih); [in C] ih:close_cb() -> (ret: number)
@@ -1544,31 +1491,31 @@ pub const Dialog = opaque {
         /// If you destroy the dialog in this callback, you must return IUP_IGNORE.
         /// IUP_CLOSE will be processed.
         /// Affects IupDialog
-        pub fn setCloseCallback(self: *Initializer, callback: ?OnCloseFn) Initializer {
+        pub fn setCloseCallback(self: Initializer, callback: ?*const OnCloseFn) Initializer {
             const Handler = CallbackHandler(Self, OnCloseFn, "CLOSE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropMotionCallback(self: *Initializer, callback: ?OnDropMotionFn) Initializer {
+        pub fn setDropMotionCallback(self: Initializer, callback: ?*const OnDropMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragEndCallback(self: *Initializer, callback: ?OnDragEndFn) Initializer {
+        pub fn setDragEndCallback(self: Initializer, callback: ?*const OnDragEndFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragBeginCallback(self: *Initializer, callback: ?OnDragBeginFn) Initializer {
+        pub fn setDragBeginCallback(self: Initializer, callback: ?*const OnDragBeginFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
         /// When the element is a dialog, it is called after the layout is updated.
@@ -1577,13 +1524,13 @@ pub const Dialog = opaque {
         /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
         /// Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+        pub fn setMapCallback(self: Initializer, callback: ?*const OnMapFn) Initializer {
             const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
         /// native element.
         /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -1597,13 +1544,13 @@ pub const Dialog = opaque {
         /// GTK the callbacks are called.
         /// Affects All controls with user interaction.
         /// See Also LEAVEWINDOW_CB
-        pub fn setEnterWindowCallback(self: *Initializer, callback: ?OnEnterWindowFn) Initializer {
+        pub fn setEnterWindowCallback(self: Initializer, callback: ?*const OnEnterWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
         /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
@@ -1616,19 +1563,19 @@ pub const Dialog = opaque {
         /// release memory allocated by the binding for the element.
         /// Also the callback will be called before the language callback.
         /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+        pub fn setDestroyCallback(self: Initializer, callback: ?*const OnDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropDataCallback(self: *Initializer, callback: ?OnDropDataFn) Initializer {
+        pub fn setDropDataCallback(self: Initializer, callback: ?*const OnDropDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
         /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
         /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -1640,25 +1587,25 @@ pub const Dialog = opaque {
         /// This causes the thread to yield control and can cause the application to
         /// stop responding to messages.
         /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setKillFocusCallback(self: *Initializer, callback: ?OnKillFocusFn) Initializer {
+        pub fn setKillFocusCallback(self: Initializer, callback: ?*const OnKillFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDataCallback(self: *Initializer, callback: ?OnDragDataFn) Initializer {
+        pub fn setDragDataCallback(self: Initializer, callback: ?*const OnDragDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDataSizeCallback(self: *Initializer, callback: ?OnDragDataSizeFn) Initializer {
+        pub fn setDragDataSizeCallback(self: Initializer, callback: ?*const OnDragDataSizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// SHOW_CB SHOW_CB Called right after the dialog is showed, hidden, maximized,
         /// minimized or restored from minimized/maximized.
         /// This callback is called when those actions were performed by the user or
@@ -1671,13 +1618,13 @@ pub const Dialog = opaque {
         /// IUP_MINIMIZE IUP_MAXIMIZE (since 3.0) (not received in Motif when activated
         /// from the maximize button) Returns: IUP_CLOSE will be processed.
         /// Affects IupDialog
-        pub fn setShowCallback(self: *Initializer, callback: ?OnShowFn) Initializer {
+        pub fn setShowCallback(self: Initializer, callback: ?*const OnShowFn) Initializer {
             const Handler = CallbackHandler(Self, OnShowFn, "SHOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
         /// When several files are dropped at once, the callback is called several
         /// times, once for each file.
@@ -1696,13 +1643,13 @@ pub const Dialog = opaque {
         /// Returns: If IUP_IGNORE is returned the callback will NOT be called for the
         /// next dropped files, and the processing of dropped files will be interrupted.
         /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
-        pub fn setDropFilesCallback(self: *Initializer, callback: ?OnDropFilesFn) Initializer {
+        pub fn setDropFilesCallback(self: Initializer, callback: ?*const OnDropFilesFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropFilesFn, "DROPFILES_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
         /// Callback int function(Ihandle *ih, int width, int height); [in C]
         /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
@@ -1719,35 +1666,35 @@ pub const Dialog = opaque {
         /// To update the parameters consult the DRAWSIZE attribute.
         /// Also activate the drawing toolkit only after updating the DX or DY attributes.
         /// Affects IupCanvas, IupGLCanvas, IupDialog
-        pub fn setResizeCallback(self: *Initializer, callback: ?OnResizeFn) Initializer {
+        pub fn setResizeCallback(self: Initializer, callback: ?*const OnResizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnResizeFn, "RESIZE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+        pub fn setUnmapCallback(self: Initializer, callback: ?*const OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// TRAYCLICK_CB [Windows and GTK Only]: Called right after the mouse button is
         /// pressed or released over the tray icon.
         /// (GTK 2.10) int function(Ihandle *ih, int but, int pressed, int dclick); [in
         /// C]elem:trayclick_cb(but, pressed, dclick: number) -> (ret: number) [in Lua]
-        pub fn setTrayClickCallback(self: *Initializer, callback: ?OnTrayClickFn) Initializer {
+        pub fn setTrayClickCallback(self: Initializer, callback: ?*const OnTrayClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnTrayClickFn, "TRAYCLICK_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
         /// This callback is called after the KILLFOCUS_CB of the element that loosed
         /// the focus.
@@ -1757,19 +1704,19 @@ pub const Dialog = opaque {
         /// number) [in Lua] ih: identifier of the element that received keyboard focus.
         /// Affects All elements with user interaction, except menus.
         /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setGetFocusCallback(self: *Initializer, callback: ?OnGetFocusFn) Initializer {
+        pub fn setGetFocusCallback(self: Initializer, callback: ?*const OnGetFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+        pub fn setLDestroyCallback(self: Initializer, callback: ?*const OnLDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
         /// native element.
         /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -1783,16 +1730,16 @@ pub const Dialog = opaque {
         /// GTK the callbacks are called.
         /// Affects All controls with user interaction.
         /// See Also ENTERWINDOW_CB
-        pub fn setLeaveWindowCallback(self: *Initializer, callback: ?OnLeaveWindowFn) Initializer {
+        pub fn setLeaveWindowCallback(self: Initializer, callback: ?*const OnLeaveWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+        pub fn setPostMessageCallback(self: Initializer, callback: ?*const OnPostMessageFn) Initializer {
             const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -1855,7 +1802,7 @@ pub const Dialog = opaque {
         }
     }
 
-    /// 
+    ///
     /// Displays a dialog in the current position, or changes a control VISIBLE attribute.
     /// For dialogs it is equivalent to call IupShowXY using IUP_CURRENT. See IupShowXY for more details.
     /// For other controls, to call IupShow is the same as setting VISIBLE=YES.
@@ -1870,14 +1817,14 @@ pub const Dialog = opaque {
         interop.hide(self);
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -1934,19 +1881,19 @@ pub const Dialog = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
@@ -1975,8 +1922,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TIPICON", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// MENU: Name of a menu.
     /// Associates a menu to the dialog as a menu bar.
     /// The previous menu, if any, is unmapped.
@@ -1990,8 +1936,7 @@ pub const Dialog = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// MENU: Name of a menu.
     /// Associates a menu to the dialog as a menu bar.
     /// The previous menu, if any, is unmapped.
@@ -2013,8 +1958,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "NOFLUSH", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
     /// The windowing system will not be able to change the size beyond this limit.
     /// Default: 65535x65535.
@@ -2024,8 +1968,7 @@ pub const Dialog = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// MAXSIZE: Maximum size for the dialog in raster units (pixels).
     /// The windowing system will not be able to change the size beyond this limit.
     /// Default: 65535x65535.
@@ -2036,8 +1979,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
     /// it is possible to create a non rectangle window with transparency, but it
     /// can not have children.
@@ -2050,8 +1992,7 @@ pub const Dialog = opaque {
         return interop.getStrAttribute(self, "OPACITYIMAGE", .{});
     }
 
-
-    /// 
+    ///
     /// OPACITYIMAGE [Windows Only]: sets an RGBA image as the dialog background so
     /// it is possible to create a non rectangle window with transparency, but it
     /// can not have children.
@@ -2064,16 +2005,14 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "OPACITYIMAGE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// SHOWNOFOCUS: do not set focus after show.
     /// (since 3.30)
     pub fn getShowNoFocus(self: *Self) bool {
         return interop.getBoolAttribute(self, "SHOWNOFOCUS", .{});
     }
 
-
-    /// 
+    ///
     /// SHOWNOFOCUS: do not set focus after show.
     /// (since 3.30)
     pub fn setShowNoFocus(self: *Self, arg: bool) void {
@@ -2085,8 +2024,7 @@ pub const Dialog = opaque {
         return iup.XYPos.parse(str, ',');
     }
 
-
-    /// 
+    ///
     /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
     /// Valid values range from 0 (completely transparent) to 255 (opaque).
     /// In Windows must be set before map so the native window would be properly
@@ -2096,8 +2034,7 @@ pub const Dialog = opaque {
         return interop.getIntAttribute(self, "OPACITY", .{});
     }
 
-
-    /// 
+    ///
     /// OPACITY [Windows and GTK Only]: sets the dialog transparency alpha value.
     /// Valid values range from 0 (completely transparent) to 255 (opaque).
     /// In Windows must be set before map so the native window would be properly
@@ -2118,8 +2055,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
-
-    /// 
+    ///
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
     /// the drop of files.
     /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
@@ -2128,8 +2064,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
 
-
-    /// 
+    ///
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
     /// the drop of files.
     /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
@@ -2138,8 +2073,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "DROPFILESTARGET", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BORDERSIZE (non inheritable) (read only): returns the border size.
     /// (since 3.18)
     pub fn getBorderSize(self: *Self) i32 {
@@ -2170,8 +2104,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCEMOVE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ICON: Dialogs icon.
     /// The Windows SDK recommends that cursors and icons should be implemented as
     /// resources rather than created at run time.
@@ -2179,8 +2112,7 @@ pub const Dialog = opaque {
         return interop.getStrAttribute(self, "ICON", .{});
     }
 
-
-    /// 
+    ///
     /// ICON: Dialogs icon.
     /// The Windows SDK recommends that cursors and icons should be implemented as
     /// resources rather than created at run time.
@@ -2188,22 +2120,19 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "ICON", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// VISIBLE: Simply call IupShow or IupHide for the dialog.
     pub fn getVisible(self: *Self) bool {
         return interop.getBoolAttribute(self, "VISIBLE", .{});
     }
 
-
-    /// 
+    ///
     /// VISIBLE: Simply call IupShow or IupHide for the dialog.
     pub fn setVisible(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CURSOR (non inheritable): Defines a cursor for the dialog.
     pub fn getCursor(self: *Self) ?iup.Element {
         if (interop.getHandleAttribute(self, "CURSOR", .{})) |handle| {
@@ -2213,8 +2142,7 @@ pub const Dialog = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// CURSOR (non inheritable): Defines a cursor for the dialog.
     pub fn setCursor(self: *Self, arg: anytype) !void {
         try interop.validateHandle(.Image, arg);
@@ -2242,16 +2170,14 @@ pub const Dialog = opaque {
         return interop.getIntAttribute(self, "Y", .{});
     }
 
-
-    /// 
+    ///
     /// HIDETITLEBAR [GTK Only] (non inheritable): hides the title bar with al its elements.
     /// (since 3.20) (GTK 3.10)
     pub fn getHideTitleBar(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "HIDETITLEBAR", .{});
     }
 
-
-    /// 
+    ///
     /// HIDETITLEBAR [GTK Only] (non inheritable): hides the title bar with al its elements.
     /// (since 3.20) (GTK 3.10)
     pub fn setHideTitleBar(self: *Self, arg: [:0]const u8) void {
@@ -2266,24 +2192,21 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "DRAGDROP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
     /// to a dialog hint.
     pub fn getDialogHint(self: *Self) bool {
         return interop.getBoolAttribute(self, "DIALOGHINT", .{});
     }
 
-
-    /// 
+    ///
     /// DIALOGHINT [GTK Only] (creation-only): if enabled sets the window type hint
     /// to a dialog hint.
     pub fn setDialogHint(self: *Self, arg: bool) void {
         interop.setBoolAttribute(self, "DIALOGHINT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// DIALOGFRAME: Set the common decorations for modal dialogs.
     /// This means RESIZE=NO, MINBOX=NO and MAXBOX=NO.
     /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
@@ -2292,8 +2215,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "DIALOGFRAME", .{});
     }
 
-
-    /// 
+    ///
     /// DIALOGFRAME: Set the common decorations for modal dialogs.
     /// This means RESIZE=NO, MINBOX=NO and MAXBOX=NO.
     /// In Windows, if the PARENTDIALOG is defined then the MENUBOX is also
@@ -2302,8 +2224,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "DIALOGFRAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// NACTIVE (non inheritable): same as ACTIVE but does not affects the controls
     /// inside the dialog.
     /// (since 3.13)
@@ -2311,8 +2232,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "NACTIVE", .{});
     }
 
-
-    /// 
+    ///
     /// NACTIVE (non inheritable): same as ACTIVE but does not affects the controls
     /// inside the dialog.
     /// (since 3.13)
@@ -2328,8 +2248,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
     /// system tray.
     /// (GTK 2.10 and GTK < 3.14)
@@ -2337,8 +2256,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "TRAY", .{});
     }
 
-
-    /// 
+    ///
     /// TRAY [Windows and GTK Only]: When set to "YES", displays an icon on the
     /// system tray.
     /// (GTK 2.10 and GTK < 3.14)
@@ -2346,8 +2264,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "TRAY", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CHILDOFFSET: Allow to specify a position offset for the child.
     /// Available for native containers only.
     /// It will not affect the natural size, and allows to position controls
@@ -2361,8 +2278,7 @@ pub const Dialog = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// CHILDOFFSET: Allow to specify a position offset for the child.
     /// Available for native containers only.
     /// It will not affect the natural size, and allows to position controls
@@ -2377,8 +2293,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "CHILDOFFSET", .{}, value);
     }
 
-
-    /// 
+    ///
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
         var ret = interop.getStrAttribute(self, "EXPAND", .{});
@@ -2392,8 +2307,7 @@ pub const Dialog = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// EXPAND (non inheritable): The default value is "YES".
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
@@ -2408,8 +2322,7 @@ pub const Dialog = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// SIZE (non inheritable): Dialogs size.
     /// Additionally the following values can also be defined for width and/or
     /// height: "FULL": Defines the dialogs width (or height) equal to the screen's
@@ -2460,8 +2373,7 @@ pub const Dialog = opaque {
         return iup.DialogSize.parse(str);
     }
 
-
-    /// 
+    ///
     /// SIZE (non inheritable): Dialogs size.
     /// Additionally the following values can also be defined for width and/or
     /// height: "FULL": Defines the dialogs width (or height) equal to the screen's
@@ -2525,8 +2437,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// STARTFOCUS: Name of the element that must receive the focus right after the
     /// dialog is shown using IupShow or IupPopup.
     /// If not defined then the first control than can receive the focus is
@@ -2537,8 +2448,7 @@ pub const Dialog = opaque {
         return interop.getStrAttribute(self, "STARTFOCUS", .{});
     }
 
-
-    /// 
+    ///
     /// STARTFOCUS: Name of the element that must receive the focus right after the
     /// dialog is shown using IupShow or IupPopup.
     /// If not defined then the first control than can receive the focus is
@@ -2570,8 +2480,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "DROPTYPES", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TRAYTIPMARKUP [GTK Only]: allows the tip string to contains Pango markup commands.
     /// Can be "YES" or "NO".
     /// Default: "NO".
@@ -2581,8 +2490,7 @@ pub const Dialog = opaque {
         return interop.getStrAttribute(self, "TRAYTIPMARKUP", .{});
     }
 
-
-    /// 
+    ///
     /// TRAYTIPMARKUP [GTK Only]: allows the tip string to contains Pango markup commands.
     /// Can be "YES" or "NO".
     /// Default: "NO".
@@ -2611,8 +2519,7 @@ pub const Dialog = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
     /// application to customize the dialog frame elements (the title and its
     /// buttons) by using IUP controls for its elements like caption, minimize
@@ -2631,8 +2538,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "CUSTOMFRAME", .{});
     }
 
-
-    /// 
+    ///
     /// CUSTOMFRAME [Windows and GTK Only] (non inheritable): allows the
     /// application to customize the dialog frame elements (the title and its
     /// buttons) by using IUP controls for its elements like caption, minimize
@@ -2651,8 +2557,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "CUSTOMFRAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TITLE (non inheritable): Dialogs title.
     /// Default: NULL.
     /// If you want to remove the title bar you must also set MENUBOX=NO, MAXBOX=NO
@@ -2662,8 +2567,7 @@ pub const Dialog = opaque {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
 
-
-    /// 
+    ///
     /// TITLE (non inheritable): Dialogs title.
     /// Default: NULL.
     /// If you want to remove the title bar you must also set MENUBOX=NO, MAXBOX=NO
@@ -2673,8 +2577,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TITLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// DEFAULTESC: Name of the button activated when the user press Esc when focus
     /// is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
@@ -2686,8 +2589,7 @@ pub const Dialog = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// DEFAULTESC: Name of the button activated when the user press Esc when focus
     /// is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
@@ -2699,8 +2601,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "DEFAULTESC", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// PLACEMENT: Changes how the dialog will be shown.
     /// Values: "FULL", "MAXIMIZED", "MINIMIZED" and "NORMAL".
     /// Default: NORMAL.
@@ -2722,8 +2623,7 @@ pub const Dialog = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// PLACEMENT: Changes how the dialog will be shown.
     /// Values: "FULL", "MAXIMIZED", "MINIMIZED" and "NORMAL".
     /// Default: NORMAL.
@@ -2778,8 +2678,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "DRAGSOURCE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// MAXIMIZED [Windows and GTK Only] (read-only): indicates if the dialog is maximized.
     /// Can be YES or NO.
     /// (since 3.12)
@@ -2814,8 +2713,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
     /// accepted, regardless of the minimum size required by its children.
     /// For a dialog to have the minimum necessary size to fit all elements
@@ -2857,8 +2755,7 @@ pub const Dialog = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// Values set at SIZE or RASTERSIZE attributes of a dialog are always
     /// accepted, regardless of the minimum size required by its children.
     /// For a dialog to have the minimum necessary size to fit all elements
@@ -2901,8 +2798,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
     /// it is possible to create a non rectangle window with children.
     /// (GTK 2.12) Only the fully transparent pixels will be transparent.
@@ -2912,8 +2808,7 @@ pub const Dialog = opaque {
         return interop.getStrAttribute(self, "SHAPEIMAGE", .{});
     }
 
-
-    /// 
+    ///
     /// SHAPEIMAGE [Windows and GTK Only]: sets a RGBA image as the dialog shape so
     /// it is possible to create a non rectangle window with children.
     /// (GTK 2.12) Only the fully transparent pixels will be transparent.
@@ -2939,8 +2834,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TOPMOST [Windows and GTK Only]: puts the dialog always in front of all
     /// other dialogs in all applications.
     /// Default: NO.
@@ -2956,8 +2850,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// DEFAULTENTER: Name of the button activated when the user press Enter when
     /// focus is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
@@ -2969,8 +2862,7 @@ pub const Dialog = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// DEFAULTENTER: Name of the button activated when the user press Enter when
     /// focus is in another control of the dialog.
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
@@ -2982,8 +2874,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "DEFAULTENTER", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// MODAL (read-only): Returns the popup state.
     /// It is "YES" if the dialog was shown using IupPopup.
     /// It is "NO" if IupShow was used or it is not visible.
@@ -2993,8 +2884,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "MODAL", .{});
     }
 
-
-    /// 
+    ///
     /// BACKGROUND (non inheritable): Dialog background color or image.
     /// Can be a non inheritable alternative to BGCOLOR or can be the name of an
     /// image to be tiled on the background.
@@ -3006,8 +2896,7 @@ pub const Dialog = opaque {
         return interop.getRgb(self, "BACKGROUND", .{});
     }
 
-
-    /// 
+    ///
     /// BACKGROUND (non inheritable): Dialog background color or image.
     /// Can be a non inheritable alternative to BGCOLOR or can be the name of an
     /// image to be tiled on the background.
@@ -3019,8 +2908,7 @@ pub const Dialog = opaque {
         interop.setRgb(self, "BACKGROUND", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
     /// set to "YES", hides the dialog, but does not decrement the visible dialog
     /// count, does not call SHOW_CB and does not mark the dialog as hidden inside IUP.
@@ -3033,8 +2921,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "HIDETASKBAR", .{});
     }
 
-
-    /// 
+    ///
     /// HIDETASKBAR [Windows and GTK Only] (write-only): Action attribute that when
     /// set to "YES", hides the dialog, but does not decrement the visible dialog
     /// count, does not call SHOW_CB and does not mark the dialog as hidden inside IUP.
@@ -3047,8 +2934,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "HIDETASKBAR", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
     /// Use "YES" to activate it.
     /// Useful for multithreaded applications.
@@ -3056,8 +2942,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "BRINGFRONT", .{});
     }
 
-
-    /// 
+    ///
     /// BRINGFRONT [Windows Only] (write-only): makes the dialog the foreground window.
     /// Use "YES" to activate it.
     /// Useful for multithreaded applications.
@@ -3065,8 +2950,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "BRINGFRONT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
     /// tray icon.
     /// The Windows SDK recommends that cursors and icons should be implemented as
@@ -3080,8 +2964,7 @@ pub const Dialog = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TRAYIMAGE [Windows and GTK Only]: Name of a IUP image to be used as the
     /// tray icon.
     /// The Windows SDK recommends that cursors and icons should be implemented as
@@ -3096,8 +2979,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TRAYIMAGE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ACTIVE, BGCOLOR, FONT, EXPAND, SCREENPOSITION, WID, TIP, CLIENTOFFSET,
     /// CLIENTSIZE, RASTERSIZE, ZORDER: also accepted.
     /// Note that ACTIVE, BGCOLOR and FONT will also affect all the controls inside
@@ -3106,8 +2988,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
 
-
-    /// 
+    ///
     /// ACTIVE, BGCOLOR, FONT, EXPAND, SCREENPOSITION, WID, TIP, CLIENTOFFSET,
     /// CLIENTSIZE, RASTERSIZE, ZORDER: also accepted.
     /// Note that ACTIVE, BGCOLOR and FONT will also affect all the controls inside
@@ -3132,8 +3013,7 @@ pub const Dialog = opaque {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// MINSIZE: Minimum size for the dialog in raster units (pixels).
     /// The windowing system will not be able to change the size beyond this limit.
     /// Default: 1x1.
@@ -3145,8 +3025,7 @@ pub const Dialog = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// MINSIZE: Minimum size for the dialog in raster units (pixels).
     /// The windowing system will not be able to change the size beyond this limit.
     /// Default: 1x1.
@@ -3159,8 +3038,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "MINSIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// ACTIVEWINDOW [Windows and GTK Only] (read-only): informs if the dialog is
     /// the active window (the window with focus).
     /// Can be Yes or No.
@@ -3177,8 +3055,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
     /// elements (the title and its buttons) by using IUP controls for its elements
     /// like caption, minimize button, maximize button, and close buttons.
@@ -3196,8 +3073,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{});
     }
 
-
-    /// 
+    ///
     /// CUSTOMFRAMESIMULATE: allows the application to customize the dialog frame
     /// elements (the title and its buttons) by using IUP controls for its elements
     /// like caption, minimize button, maximize button, and close buttons.
@@ -3215,8 +3091,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "CUSTOMFRAMESIMULATE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// SHRINK: Allows changing the elements distribution when the dialog is
     /// smaller than the minimum size.
     /// Default: NO.
@@ -3224,8 +3099,7 @@ pub const Dialog = opaque {
         return interop.getBoolAttribute(self, "SHRINK", .{});
     }
 
-
-    /// 
+    ///
     /// SHRINK: Allows changing the elements distribution when the dialog is
     /// smaller than the minimum size.
     /// Default: NO.
@@ -3254,16 +3128,14 @@ pub const Dialog = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn getTrayTip(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "TRAYTIP", .{});
     }
 
-
-    /// 
+    ///
     /// TRAYTIP [Windows and GTK Only]: Tray icon's tooltip text.
     /// (GTK 2.10 and GTK < 3.14)
     pub fn setTrayTip(self: *Self, arg: [:0]const u8) void {
@@ -3286,8 +3158,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FULLSCREEN: Makes the dialog occupy the whole screen over any system bars
     /// in the main monitor.
     /// All dialog details, such as title bar, borders, maximize button, etc, are removed.
@@ -3307,8 +3178,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// SIMULATEMODAL (write-only): disable all other visible dialogs, just like
     /// when the dialog is made modal.
     /// (since 3.21)
@@ -3316,8 +3186,7 @@ pub const Dialog = opaque {
         interop.setBoolAttribute(self, "SIMULATEMODAL", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -3338,8 +3207,7 @@ pub const Dialog = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -3361,8 +3229,7 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -3383,8 +3250,7 @@ pub const Dialog = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -3405,18 +3271,18 @@ pub const Dialog = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    /// 
+    ///
     /// FOCUS_CB: Called when the dialog or any of its children gets the focus, or
     /// when another dialog or any control in another dialog gets the focus.
     /// It is called after the common callbacks GETFOCUS_CB and KILL_FOCUS_CB.
     /// (since 3.21) int function(Ihandle *ih, int focus); [in C]ih:focus_cb(focus:
     /// number) -> (ret: number) [in Lua]
-    pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
+    pub fn setFocusCallback(self: *Self, callback: ?*const OnFocusFn) void {
         const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
     /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -3445,24 +3311,24 @@ pub const Dialog = opaque {
     /// This is the way an application can create shortcut keys, also called hot keys.
     /// These callbacks are not available in IupLua.
     /// Affects All elements with keyboard interaction.
-    pub fn setKAnyCallback(self: *Self, callback: ?OnKAnyFn) void {
+    pub fn setKAnyCallback(self: *Self, callback: ?*const OnKAnyFn) void {
         const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
     /// In Motif is also activated by the Help button in some workstations keyboard.
     /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Returns: IUP_CLOSE will be processed.
     /// Affects All elements with user interaction.
-    pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
+    pub fn setHelpCallback(self: *Self, callback: ?*const OnHelpFn) void {
         const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// CLOSE_CB CLOSE_CB Called just before a dialog is closed when the user
     /// clicks the close button of the title bar or an equivalent action.
     /// Callback int function(Ihandle *ih); [in C] ih:close_cb() -> (ret: number)
@@ -3471,27 +3337,27 @@ pub const Dialog = opaque {
     /// If you destroy the dialog in this callback, you must return IUP_IGNORE.
     /// IUP_CLOSE will be processed.
     /// Affects IupDialog
-    pub fn setCloseCallback(self: *Self, callback: ?OnCloseFn) void {
+    pub fn setCloseCallback(self: *Self, callback: ?*const OnCloseFn) void {
         const Handler = CallbackHandler(Self, OnCloseFn, "CLOSE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropMotionCallback(self: *Self, callback: ?OnDropMotionFn) void {
+    pub fn setDropMotionCallback(self: *Self, callback: ?*const OnDropMotionFn) void {
         const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragEndCallback(self: *Self, callback: ?OnDragEndFn) void {
+    pub fn setDragEndCallback(self: *Self, callback: ?*const OnDragEndFn) void {
         const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragBeginCallback(self: *Self, callback: ?OnDragBeginFn) void {
+    pub fn setDragBeginCallback(self: *Self, callback: ?*const OnDragBeginFn) void {
         const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -3500,12 +3366,12 @@ pub const Dialog = opaque {
     /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
     /// Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+    pub fn setMapCallback(self: *Self, callback: ?*const OnMapFn) void {
         const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -3519,12 +3385,12 @@ pub const Dialog = opaque {
     /// GTK the callbacks are called.
     /// Affects All controls with user interaction.
     /// See Also LEAVEWINDOW_CB
-    pub fn setEnterWindowCallback(self: *Self, callback: ?OnEnterWindowFn) void {
+    pub fn setEnterWindowCallback(self: *Self, callback: ?*const OnEnterWindowFn) void {
         const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -3537,17 +3403,17 @@ pub const Dialog = opaque {
     /// release memory allocated by the binding for the element.
     /// Also the callback will be called before the language callback.
     /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+    pub fn setDestroyCallback(self: *Self, callback: ?*const OnDestroyFn) void {
         const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropDataCallback(self: *Self, callback: ?OnDropDataFn) void {
+    pub fn setDropDataCallback(self: *Self, callback: ?*const OnDropDataFn) void {
         const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
     /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
     /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -3559,22 +3425,22 @@ pub const Dialog = opaque {
     /// This causes the thread to yield control and can cause the application to
     /// stop responding to messages.
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setKillFocusCallback(self: *Self, callback: ?OnKillFocusFn) void {
+    pub fn setKillFocusCallback(self: *Self, callback: ?*const OnKillFocusFn) void {
         const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataCallback(self: *Self, callback: ?OnDragDataFn) void {
+    pub fn setDragDataCallback(self: *Self, callback: ?*const OnDragDataFn) void {
         const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataSizeCallback(self: *Self, callback: ?OnDragDataSizeFn) void {
+    pub fn setDragDataSizeCallback(self: *Self, callback: ?*const OnDragDataSizeFn) void {
         const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// SHOW_CB SHOW_CB Called right after the dialog is showed, hidden, maximized,
     /// minimized or restored from minimized/maximized.
     /// This callback is called when those actions were performed by the user or
@@ -3587,12 +3453,12 @@ pub const Dialog = opaque {
     /// IUP_MINIMIZE IUP_MAXIMIZE (since 3.0) (not received in Motif when activated
     /// from the maximize button) Returns: IUP_CLOSE will be processed.
     /// Affects IupDialog
-    pub fn setShowCallback(self: *Self, callback: ?OnShowFn) void {
+    pub fn setShowCallback(self: *Self, callback: ?*const OnShowFn) void {
         const Handler = CallbackHandler(Self, OnShowFn, "SHOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
     /// When several files are dropped at once, the callback is called several
     /// times, once for each file.
@@ -3611,12 +3477,12 @@ pub const Dialog = opaque {
     /// Returns: If IUP_IGNORE is returned the callback will NOT be called for the
     /// next dropped files, and the processing of dropped files will be interrupted.
     /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
-    pub fn setDropFilesCallback(self: *Self, callback: ?OnDropFilesFn) void {
+    pub fn setDropFilesCallback(self: *Self, callback: ?*const OnDropFilesFn) void {
         const Handler = CallbackHandler(Self, OnDropFilesFn, "DROPFILES_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// RESIZE_CB RESIZE_CB Action generated when the canvas or dialog size is changed.
     /// Callback int function(Ihandle *ih, int width, int height); [in C]
     /// ih:resize_cb(width, height: number) -> (ret: number) [in Lua] ih:
@@ -3633,32 +3499,32 @@ pub const Dialog = opaque {
     /// To update the parameters consult the DRAWSIZE attribute.
     /// Also activate the drawing toolkit only after updating the DX or DY attributes.
     /// Affects IupCanvas, IupGLCanvas, IupDialog
-    pub fn setResizeCallback(self: *Self, callback: ?OnResizeFn) void {
+    pub fn setResizeCallback(self: *Self, callback: ?*const OnResizeFn) void {
         const Handler = CallbackHandler(Self, OnResizeFn, "RESIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+    pub fn setUnmapCallback(self: *Self, callback: ?*const OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// TRAYCLICK_CB [Windows and GTK Only]: Called right after the mouse button is
     /// pressed or released over the tray icon.
     /// (GTK 2.10) int function(Ihandle *ih, int but, int pressed, int dclick); [in
     /// C]elem:trayclick_cb(but, pressed, dclick: number) -> (ret: number) [in Lua]
-    pub fn setTrayClickCallback(self: *Self, callback: ?OnTrayClickFn) void {
+    pub fn setTrayClickCallback(self: *Self, callback: ?*const OnTrayClickFn) void {
         const Handler = CallbackHandler(Self, OnTrayClickFn, "TRAYCLICK_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
     /// This callback is called after the KILLFOCUS_CB of the element that loosed
     /// the focus.
@@ -3668,17 +3534,17 @@ pub const Dialog = opaque {
     /// number) [in Lua] ih: identifier of the element that received keyboard focus.
     /// Affects All elements with user interaction, except menus.
     /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setGetFocusCallback(self: *Self, callback: ?OnGetFocusFn) void {
+    pub fn setGetFocusCallback(self: *Self, callback: ?*const OnGetFocusFn) void {
         const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+    pub fn setLDestroyCallback(self: *Self, callback: ?*const OnLDestroyFn) void {
         const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -3692,12 +3558,12 @@ pub const Dialog = opaque {
     /// GTK the callbacks are called.
     /// Affects All controls with user interaction.
     /// See Also ENTERWINDOW_CB
-    pub fn setLeaveWindowCallback(self: *Self, callback: ?OnLeaveWindowFn) void {
+    pub fn setLeaveWindowCallback(self: *Self, callback: ?*const OnLeaveWindowFn) void {
         const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+    pub fn setPostMessageCallback(self: *Self, callback: ?*const OnPostMessageFn) void {
         const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }

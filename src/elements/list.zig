@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Creates an interface element that displays a list of items.
 /// The list can be visible or can be dropped down.
 /// It also can have an edit box for text input.
@@ -35,7 +35,7 @@ pub const List = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Control;
     const Self = @This();
 
-    /// 
+    ///
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
     /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -66,7 +66,7 @@ pub const List = opaque {
     /// Affects All elements with keyboard interaction.
     pub const OnKAnyFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
     /// In Motif is also activated by the Help button in some workstations keyboard.
     /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
@@ -81,7 +81,7 @@ pub const List = opaque {
 
     pub const OnDragBeginFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// ACTION ACTION Action generated when the element is activated.
     /// Affects each element differently.
     /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
@@ -92,7 +92,7 @@ pub const List = opaque {
     /// IupToggle
     pub const OnActionFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: i32) anyerror!void;
 
-    /// 
+    ///
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
     /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
     /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
@@ -108,7 +108,7 @@ pub const List = opaque {
     /// Affects IupCanvas, IupGLCanvas
     pub const OnMotionFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: [:0]const u8) anyerror!void;
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -119,7 +119,7 @@ pub const List = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DRAGDROP_CB: Action generated when an internal drag and drop is executed.
     /// Only active if SHOWDRAGDROP=YES.
     /// (since 3.7) int function(Ihandle *ih, int drag_id, int drop_id, int
@@ -127,7 +127,7 @@ pub const List = opaque {
     /// iscontrol: number) -> (ret: number) [in Lua]
     pub const OnDragDropFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32) anyerror!void;
 
-    /// 
+    ///
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -143,7 +143,7 @@ pub const List = opaque {
     /// See Also LEAVEWINDOW_CB
     pub const OnEnterWindowFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -160,7 +160,7 @@ pub const List = opaque {
 
     pub const OnDropDataFn = fn (self: *Self, arg0: [:0]const u8, arg1: ?*anyopaque, arg2: i32, arg3: i32, arg4: i32) anyerror!void;
 
-    /// 
+    ///
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
     /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
     /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -174,7 +174,7 @@ pub const List = opaque {
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnKillFocusFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DBLCLICK_CB: Action generated when the user double click an item.
     /// Called only when DROPDOWN=NO.
     /// (since 3.0) int function (Ihandle *ih, int item, char *text); [in
@@ -185,7 +185,7 @@ pub const List = opaque {
 
     pub const OnDragDataSizeFn = fn (self: *Self, arg0: [:0]const u8) anyerror!void;
 
-    /// 
+    ///
     /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
     /// When several files are dropped at once, the callback is called several
     /// times, once for each file.
@@ -206,18 +206,18 @@ pub const List = opaque {
     /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
     pub const OnDropFilesFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: i32, arg3: i32) anyerror!void;
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// This is the same CARET_CB callback definition as for the IupText.
     pub const OnCaretFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32) anyerror!void;
 
-    /// 
+    ///
     /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
     /// This callback is called after the KILLFOCUS_CB of the element that loosed
     /// the focus.
@@ -229,7 +229,7 @@ pub const List = opaque {
     /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
     pub const OnGetFocusFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// BUTTON_CB BUTTON_CB Action generated when a mouse button is pressed or released.
     /// Callback int function(Ihandle* ih, int button, int pressed, int x, int y,
     /// char* status); [in C] ih:button_cb(button, pressed, x, y: number, status:
@@ -276,21 +276,21 @@ pub const List = opaque {
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
     pub const OnButtonFn = fn (self: *Self, arg0: i32, arg1: i32, arg2: i32, arg3: i32, arg4: [:0]const u8) anyerror!void;
 
-    /// 
+    ///
     /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
     /// Called when the selection is changed or when the text is edited.
     /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
     /// number) [in Lua]
     pub const OnValueChangedFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DROPDOWN_CB: Action generated when the list of a dropdown is shown or hidden.
     /// Called only when DROPDOWN=YES.
     /// (since 3.0) int function (Ihandle *ih, int state); [in
     /// C]ih:dropdown_cb(state: boolean) -> (ret: number) [in Lua]
     pub const OnDropDownFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// MULTISELECT_CB: Action generated when the state of an item in the multiple
     /// selection list is changed.
     /// But it is called only when the interaction is over.
@@ -300,7 +300,7 @@ pub const List = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -318,7 +318,7 @@ pub const List = opaque {
 
     pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
-    /// 
+    ///
     /// EDIT_CB: Action generated when the text in the text box is manually changed
     /// by the user, but before its value is actually updated.
     /// Valid only when EDITBOX=YES.
@@ -378,222 +378,217 @@ pub const List = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FGCOLOR: Text color.
         /// Default: the global attribute TXTFGCOLOR.
         /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
         /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
-        pub fn setFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "FGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
         /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
         /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
         /// EDITBOX=YES and effective only for the edit box inside the list.
-        pub fn setCaret(self: *Initializer, lin: i32, col: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCaret(self: Initializer, lin: i32, col: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.LinColPos.intIntToString(&buffer, lin, col, ',');
             interop.setStrAttribute(self.ref, "CARET", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaskDecimalSymbol(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaskDecimalSymbol(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MASKDECIMALSYMBOL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipIcon(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaxSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosition(self: Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
         /// the drop of files.
         /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
         /// it will be automatically enabled.
         /// (since 3.0)
-        pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropFilesTarget(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTip(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CANFOCUS (creation only) (non inheritable): enables the focus traversal of
         /// the control.
         /// In Windows the control will still get the focus when clicked.
         /// Default: YES.
         /// (since 3.0)
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCanFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragSourceMove(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn image(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn image(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn imageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn imageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNc(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNc(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "NC", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn zOrder(self: Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
                 .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
             } else {
                 interop.clearAttribute(self.ref, "ZORDER", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SHOWIMAGE (creation only) [Windows and GTK Only]: enables the use of an
         /// image for each item.
         /// Can be "YES" or "NO".
         /// Ignored if set after map.
         /// (since 3.6)
-        pub fn setShowImage(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShowImage(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHOWIMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragDrop(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaskReal(self: *Initializer, arg: ?MaskReal) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaskReal(self: Initializer, arg: ?MaskReal) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Signed => interop.setStrAttribute(self.ref, "MASKREAL", .{}, "SIGNED"),
                 .Unsigned => interop.setStrAttribute(self.ref, "MASKREAL", .{}, "UNSIGNED"),
             } else {
                 interop.clearAttribute(self.ref, "MASKREAL", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpand(self: Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -604,81 +599,76 @@ pub const List = opaque {
             } else {
                 interop.clearAttribute(self.ref, "EXPAND", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VISIBLELINES: When DROPDOWN=NO defines the number of visible lines for the
         /// Natural Size, this means that will act also as minimum number of visible lines.
         /// (since 3.0)
-        pub fn setVisibleLines(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisibleLines(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "VISIBLELINES", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "VISIBLELINES", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SIZE: Size of the list.
         /// The Natural Size is defined by the number of elements in the list and the
         /// with of the largest item, the default has room for 5 characters in 1 item.
         /// In IUP 3, the Natural Size ignores the list contents if VISIBLECOLUMNS or
         /// VISIBLELINES attributes are defined.
         /// The text in the edit box is ignored when considering the list contents.
-        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPadding(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "PADDING", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VALUESTRING (non inheritable): changes or retrieves the value attribute
         /// using a string of an item.
         /// Works only when EDITBOX=NO and DROPDOWN=YES, or DROPDOWN=NO and MULTIPLE=NO.
         /// When set it will search for the first item with the same string.
         /// (since 3.12)
-        pub fn setValueString(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setValueString(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "VALUESTRING", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DROPEXPAND [Windows Only]: When DROPDOWN=Yes the size of the dropped list
         /// will expand to include the largest text.
         /// Can be "YES" or "NO".
         /// Default: "YES".
-        pub fn setDropExpand(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropExpand(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPEXPAND", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipMarkup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
         /// support drag and drop of items between lists (IupList or IupFlatList), in
         /// the same IUP application.
@@ -687,80 +677,76 @@ pub const List = opaque {
         /// and/or target.
         /// Default: NO.
         /// (since 3.10)
-        pub fn setDragDropList(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragDropList(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGDROPLIST", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// REMOVEITEM (write-only): removes the given value.
         /// value starts at 1.
         /// If value is NULL or "ALL" removes all the items.
         /// Ignored if set before map.
         /// (since 3.0)
-        pub fn removeItem(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn removeItem(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "REMOVEITEM", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "REMOVEITEM", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TOPITEM (write-only): position the given item at the top of the list or
         /// near to make it visible.
         /// Valid only when DROPDOWN=NO.
         /// (since 3.0)
-        pub fn setTopItem(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTopItem(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "TOPITEM", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontSize(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropTypes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUserSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipDelay(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VISIBLEITEMS [Windows and Motif Only]: Number of items that are visible
         /// when DROPDOWN=YES is used for the dropdown list.
         /// Default: 5.
-        pub fn setVisibleItems(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisibleItems(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "VISIBLEITEMS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SCROLLBAR (creation only): Associates automatic scrollbars to the list when DROPDOWN=NO.
         /// Can be: "YES" or "NO" (none).
         /// Default: "YES".
@@ -775,89 +761,84 @@ pub const List = opaque {
         /// In GTK, scrollbars are never shown and all items are always visible.
         /// In Motif, the horizontal scrollbar is never shown.
         /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
-        pub fn setScrollBar(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setScrollBar(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SCROLLBAR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SHOWDRAGDROP (creation only) (non inheritable): enables the internal drag
         /// and drop of items in the same list, and enables the DRAGDROP_CB callback.
         /// Default: "NO".
         /// Works only if DROPDOWN=NO and MULTIPLE=NO.
         /// Drag & Drop attributes are NOT used.
         /// (since 3.7)
-        pub fn setShowDragDrop(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShowDragDrop(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHOWDRAGDROP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
         /// the next native parent with FOCUS_CB defined.
         /// Default: NO.
         /// (since 3.23)
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPropagateFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BGCOLOR: Background color of the text.
         /// Default: the global attribute TXTBGCOLOR.
         /// In GTK does nothing when DROPDOWN=Yes.
         /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
         /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
-        pub fn setBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropTarget(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EDITBOX (creation only): Adds an edit box to the list.
         /// Can be "YES" or "NO".
         /// Default "NO".
-        pub fn setEditBox(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setEditBox(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "EDITBOX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VALUEMASKED (non inheritable) (write-only): sets VALUE but first checks if
         /// it is validated by MASK.
         /// If not does nothing.
         /// Works only when EDITBOX=YES.
         /// (since 3.13)
-        pub fn valueMasked(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn valueMasked(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "VALUEMASKED", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragSource(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -865,17 +846,16 @@ pub const List = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNormalizerGroup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SPACING: internal padding for each item.
         /// Notice that vertically the distance between each item will be actually 2x
         /// the spacing.
@@ -883,141 +863,136 @@ pub const List = opaque {
         /// In Windows, the text is aligned at the top left of the item always.
         /// Valid only when DROPDOWN=NO.
         /// (since 3.0)
-        pub fn setSpacing(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSpacing(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "SPACING", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "SPACING", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-        pub fn insertItem(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn insertItem(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "INSERTITEM", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRasterSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn scrollTopOs(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn scrollTopOs(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "SCROLLTOPOS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn scrollTo(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn scrollTo(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "SCROLLTO", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipFgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// CSPACING: same as SPACING but using the units of the vertical part of the
         /// SIZE attribute.
         /// It will actually set the SPACING attribute.
         /// (since 3.29)
-        pub fn setCSpacing(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCSpacing(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "CSPACING", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "CSPACING", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontFace(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
         /// this means that will act also as minimum number of visible columns.
         /// It uses a wider character size then the one used for the SIZE attribute so
         /// strings will fit better without the need of extra columns.
         /// Set this attribute to speed Natural Size computation for very large lists.
         /// (since 3.0)
-        pub fn setVisibleColumns(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisibleColumns(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "VISIBLECOLUMNS", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "VISIBLECOLUMNS", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setMaskInt(self: *Initializer, begin: i32, end: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaskInt(self: Initializer, begin: i32, end: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.Range.intIntToString(&buffer, begin, end, ',');
             interop.setStrAttribute(self.ref, "MASKINT", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// APPENDITEM (write-only): inserts an item after the last item.
         /// Ignored if set before map.
         /// (since 3.0)
-        pub fn appendItem(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn appendItem(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "APPENDITEM", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaskCasei(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaskCasei(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MASKCASEI", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MULTIPLE (creation only): Allows selecting several items simultaneously
         /// (multiple list).
         /// Default: "NO".
         /// Only valid when EDITBOX=NO and DROPDOWN=NO.
-        pub fn setMultiple(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMultiple(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MULTIPLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSelectionPos(self: *Initializer, begin: i32, end: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSelectionPos(self: Initializer, begin: i32, end: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.Range.intIntToString(&buffer, begin, end, ',');
             interop.setStrAttribute(self.ref, "SELECTIONPOS", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
         /// EDITBOX=YES: Text entered by the user.
         /// MULTIPLE=YES: Sequence of '+' and '-' symbols indicating the state of each item.
@@ -1041,106 +1016,102 @@ pub const List = opaque {
         /// If you add or remove items to/from the list and you count on the 'x'
         /// values, then after adding/removing items set the VALUE attribute to ensure
         /// proper 'x' values.
-        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setValue(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSelectedText(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSelectedText(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SELECTEDTEXT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCPadding(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCPadding(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "CPADDING", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
         /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setActive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SHOWDROPDOWN (write-only): opens or closes the dropdown list.
         /// Can be "YES" or "NO".
         /// Valid only when DROPDOWN=YES.
         /// Ignored if set before map.
-        pub fn showDropDown(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn showDropDown(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SHOWDROPDOWN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setItems(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setItems(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IDVALUE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
         /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
         /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
         /// EDITBOX=YES and effective only for the edit box inside the list.
-        pub fn setCaretPos(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCaretPos(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "CARETPOS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMask(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMask(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MASK", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragTypes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// AUTOHIDE: scrollbars are shown only if they are necessary.
         /// Default: "YES".
         /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
@@ -1149,33 +1120,32 @@ pub const List = opaque {
         /// In GTK, scrollbars are never shown and all items are always visible.
         /// In Motif, the horizontal scrollbar is never shown.
         /// In Windows, if DROPEXPAND=YES then the horizontal scrollbar is never shown.
-        pub fn setAutoHide(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setAutoHide(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "AUTOHIDE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontStyle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// AUTOREDRAW [Windows] (non inheritable): automatically redraws the list when
         /// something has change.
         /// Set to NO to add many items to the list without updating the display.
         /// Default: "YES".
         /// (since 3.3)
-        pub fn setAutoRedraw(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setAutoRedraw(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "AUTOREDRAW", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setClipboard(self: *Initializer, arg: ?Clipboard) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setClipboard(self: Initializer, arg: ?Clipboard) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Copy => interop.setStrAttribute(self.ref, "CLIPBOARD", .{}, "COPY"),
                 .Cut => interop.setStrAttribute(self.ref, "CLIPBOARD", .{}, "CUT"),
@@ -1186,11 +1156,10 @@ pub const List = opaque {
             } else {
                 interop.clearAttribute(self.ref, "CLIPBOARD", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// DROPDOWN (creation only): Changes the appearance of the list for the user:
         /// only the selected item is shown beside a button with the image of an arrow
         /// pointing down.
@@ -1198,48 +1167,45 @@ pub const List = opaque {
         /// all items in the list.
         /// Can be "YES" or "NO".
         /// Default "NO".
-        pub fn setDropDown(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropDown(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPDOWN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setReadonly(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setReadonly(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "READONLY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
         /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
         /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
         /// EDITBOX=YES and effective only for the edit box inside the list.
-        pub fn append(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn append(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "APPEND", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaskNoEmpty(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaskNoEmpty(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MASKNOEMPTY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
         /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFont(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -1252,24 +1218,23 @@ pub const List = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -1286,13 +1251,13 @@ pub const List = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// K_ANY K_ANY Action generated when a keyboard event occurs.
         /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
         /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -1321,44 +1286,44 @@ pub const List = opaque {
         /// This is the way an application can create shortcut keys, also called hot keys.
         /// These callbacks are not available in IupLua.
         /// Affects All elements with keyboard interaction.
-        pub fn setKAnyCallback(self: *Initializer, callback: ?OnKAnyFn) Initializer {
+        pub fn setKAnyCallback(self: Initializer, callback: ?*const OnKAnyFn) Initializer {
             const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
         /// In Motif is also activated by the Help button in some workstations keyboard.
         /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Returns: IUP_CLOSE will be processed.
         /// Affects All elements with user interaction.
-        pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
+        pub fn setHelpCallback(self: Initializer, callback: ?*const OnHelpFn) Initializer {
             const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropMotionCallback(self: *Initializer, callback: ?OnDropMotionFn) Initializer {
+        pub fn setDropMotionCallback(self: Initializer, callback: ?*const OnDropMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragEndCallback(self: *Initializer, callback: ?OnDragEndFn) Initializer {
+        pub fn setDragEndCallback(self: Initializer, callback: ?*const OnDragEndFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragBeginCallback(self: *Initializer, callback: ?OnDragBeginFn) Initializer {
+        pub fn setDragBeginCallback(self: Initializer, callback: ?*const OnDragBeginFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// ACTION ACTION Action generated when the element is activated.
         /// Affects each element differently.
         /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
@@ -1367,13 +1332,13 @@ pub const List = opaque {
         /// Please refer to each element's documentation.
         /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
         /// IupToggle
-        pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
+        pub fn setActionCallback(self: Initializer, callback: ?*const OnActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MOTION_CB MOTION_CB Action generated when the mouse moves.
         /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
         /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
@@ -1387,13 +1352,13 @@ pub const List = opaque {
         /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
         /// called with coordinates outside the element rectangle.
         /// Affects IupCanvas, IupGLCanvas
-        pub fn setMotionCallback(self: *Initializer, callback: ?OnMotionFn) Initializer {
+        pub fn setMotionCallback(self: Initializer, callback: ?*const OnMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
         /// When the element is a dialog, it is called after the layout is updated.
@@ -1402,25 +1367,25 @@ pub const List = opaque {
         /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
         /// Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+        pub fn setMapCallback(self: Initializer, callback: ?*const OnMapFn) Initializer {
             const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DRAGDROP_CB: Action generated when an internal drag and drop is executed.
         /// Only active if SHOWDRAGDROP=YES.
         /// (since 3.7) int function(Ihandle *ih, int drag_id, int drop_id, int
         /// isshift, int iscontrol); [in C] ih:dragdrop_cb(drag_id, drop_id, isshift,
         /// iscontrol: number) -> (ret: number) [in Lua]
-        pub fn setDragDropCallback(self: *Initializer, callback: ?OnDragDropFn) Initializer {
+        pub fn setDragDropCallback(self: Initializer, callback: ?*const OnDragDropFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDropFn, "DRAGDROP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
         /// native element.
         /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -1434,13 +1399,13 @@ pub const List = opaque {
         /// GTK the callbacks are called.
         /// Affects All controls with user interaction.
         /// See Also LEAVEWINDOW_CB
-        pub fn setEnterWindowCallback(self: *Initializer, callback: ?OnEnterWindowFn) Initializer {
+        pub fn setEnterWindowCallback(self: Initializer, callback: ?*const OnEnterWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
         /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
@@ -1453,19 +1418,19 @@ pub const List = opaque {
         /// release memory allocated by the binding for the element.
         /// Also the callback will be called before the language callback.
         /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+        pub fn setDestroyCallback(self: Initializer, callback: ?*const OnDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropDataCallback(self: *Initializer, callback: ?OnDropDataFn) Initializer {
+        pub fn setDropDataCallback(self: Initializer, callback: ?*const OnDropDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
         /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
         /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -1477,36 +1442,36 @@ pub const List = opaque {
         /// This causes the thread to yield control and can cause the application to
         /// stop responding to messages.
         /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setKillFocusCallback(self: *Initializer, callback: ?OnKillFocusFn) Initializer {
+        pub fn setKillFocusCallback(self: Initializer, callback: ?*const OnKillFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DBLCLICK_CB: Action generated when the user double click an item.
         /// Called only when DROPDOWN=NO.
         /// (since 3.0) int function (Ihandle *ih, int item, char *text); [in
         /// C]ih:dblclick_cb(item: number, text: string) -> (ret: number) [in Lua]
-        pub fn setDblClickCallback(self: *Initializer, callback: ?OnDblClickFn) Initializer {
+        pub fn setDblClickCallback(self: Initializer, callback: ?*const OnDblClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnDblClickFn, "DBLCLICK_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDataCallback(self: *Initializer, callback: ?OnDragDataFn) Initializer {
+        pub fn setDragDataCallback(self: Initializer, callback: ?*const OnDragDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDataSizeCallback(self: *Initializer, callback: ?OnDragDataSizeFn) Initializer {
+        pub fn setDragDataSizeCallback(self: Initializer, callback: ?*const OnDragDataSizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
         /// When several files are dropped at once, the callback is called several
         /// times, once for each file.
@@ -1525,32 +1490,32 @@ pub const List = opaque {
         /// Returns: If IUP_IGNORE is returned the callback will NOT be called for the
         /// next dropped files, and the processing of dropped files will be interrupted.
         /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
-        pub fn setDropFilesCallback(self: *Initializer, callback: ?OnDropFilesFn) Initializer {
+        pub fn setDropFilesCallback(self: Initializer, callback: ?*const OnDropFilesFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropFilesFn, "DROPFILES_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+        pub fn setUnmapCallback(self: Initializer, callback: ?*const OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// This is the same CARET_CB callback definition as for the IupText.
-        pub fn setCaretCallback(self: *Initializer, callback: ?OnCaretFn) Initializer {
+        pub fn setCaretCallback(self: Initializer, callback: ?*const OnCaretFn) Initializer {
             const Handler = CallbackHandler(Self, OnCaretFn, "CARET_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
         /// This callback is called after the KILLFOCUS_CB of the element that loosed
         /// the focus.
@@ -1560,13 +1525,13 @@ pub const List = opaque {
         /// number) [in Lua] ih: identifier of the element that received keyboard focus.
         /// Affects All elements with user interaction, except menus.
         /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-        pub fn setGetFocusCallback(self: *Initializer, callback: ?OnGetFocusFn) Initializer {
+        pub fn setGetFocusCallback(self: Initializer, callback: ?*const OnGetFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// BUTTON_CB BUTTON_CB Action generated when a mouse button is pressed or released.
         /// Callback int function(Ihandle* ih, int button, int pressed, int x, int y,
         /// char* status); [in C] ih:button_cb(button, pressed, x, y: number, status:
@@ -1611,53 +1576,53 @@ pub const List = opaque {
         /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
         /// called with coordinates outside the element rectangle.
         /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
-        pub fn setButtonCallback(self: *Initializer, callback: ?OnButtonFn) Initializer {
+        pub fn setButtonCallback(self: Initializer, callback: ?*const OnButtonFn) Initializer {
             const Handler = CallbackHandler(Self, OnButtonFn, "BUTTON_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
         /// Called when the selection is changed or when the text is edited.
         /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
         /// number) [in Lua]
-        pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
+        pub fn setValueChangedCallback(self: Initializer, callback: ?*const OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DROPDOWN_CB: Action generated when the list of a dropdown is shown or hidden.
         /// Called only when DROPDOWN=YES.
         /// (since 3.0) int function (Ihandle *ih, int state); [in
         /// C]ih:dropdown_cb(state: boolean) -> (ret: number) [in Lua]
-        pub fn setDropDownCallback(self: *Initializer, callback: ?OnDropDownFn) Initializer {
+        pub fn setDropDownCallback(self: Initializer, callback: ?*const OnDropDownFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropDownFn, "DROPDOWN_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MULTISELECT_CB: Action generated when the state of an item in the multiple
         /// selection list is changed.
         /// But it is called only when the interaction is over.
         /// int function (Ihandle *ih, char *value); [in C]ih:multiselect_cb(value:
         /// string) -> (ret: number) [in Lua]
-        pub fn setMultiSelectCallback(self: *Initializer, callback: ?OnMultiSelectFn) Initializer {
+        pub fn setMultiSelectCallback(self: Initializer, callback: ?*const OnMultiSelectFn) Initializer {
             const Handler = CallbackHandler(Self, OnMultiSelectFn, "MULTISELECT_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+        pub fn setLDestroyCallback(self: Initializer, callback: ?*const OnLDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
         /// native element.
         /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -1671,28 +1636,28 @@ pub const List = opaque {
         /// GTK the callbacks are called.
         /// Affects All controls with user interaction.
         /// See Also ENTERWINDOW_CB
-        pub fn setLeaveWindowCallback(self: *Initializer, callback: ?OnLeaveWindowFn) Initializer {
+        pub fn setLeaveWindowCallback(self: Initializer, callback: ?*const OnLeaveWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+        pub fn setPostMessageCallback(self: Initializer, callback: ?*const OnPostMessageFn) Initializer {
             const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// EDIT_CB: Action generated when the text in the text box is manually changed
         /// by the user, but before its value is actually updated.
         /// Valid only when EDITBOX=YES.
         /// int function(Ihandle *ih, int c, char *new_value); [in C]ih:edit_cb(c:
         /// number, new_value: string) -> (ret: number) [in Lua]
-        pub fn setEditCallback(self: *Initializer, callback: ?OnEditFn) Initializer {
+        pub fn setEditCallback(self: Initializer, callback: ?*const OnEditFn) Initializer {
             const Handler = CallbackHandler(Self, OnEditFn, "EDIT_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -1755,7 +1720,7 @@ pub const List = opaque {
         }
     }
 
-    /// 
+    ///
     /// Displays a dialog in the current position, or changes a control VISIBLE attribute.
     /// For dialogs it is equivalent to call IupShowXY using IUP_CURRENT. See IupShowXY for more details.
     /// For other controls, to call IupShow is the same as setting VISIBLE=YES.
@@ -1770,14 +1735,14 @@ pub const List = opaque {
         interop.hide(self);
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -1813,19 +1778,19 @@ pub const List = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
@@ -1870,8 +1835,7 @@ pub const List = opaque {
         interop.setPtrAttribute(type, self, attribute, .{index}, value);
     }
 
-
-    /// 
+    ///
     /// COUNT (read-only) (non inheritable): returns the number of items.
     /// Before mapping it counts the number of non NULL items before the first NULL item.
     /// (since 3.0)
@@ -1879,8 +1843,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "COUNT", .{});
     }
 
-
-    /// 
+    ///
     /// FGCOLOR: Text color.
     /// Default: the global attribute TXTFGCOLOR.
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
@@ -1889,8 +1852,7 @@ pub const List = opaque {
         return interop.getRgb(self, "FGCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// FGCOLOR: Text color.
     /// Default: the global attribute TXTFGCOLOR.
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
@@ -1915,8 +1877,7 @@ pub const List = opaque {
         interop.setRgb(self, "TIPBGCOLOR", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
     /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
     /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
@@ -1926,8 +1887,7 @@ pub const List = opaque {
         return iup.LinColPos.parse(str, ',');
     }
 
-
-    /// 
+    ///
     /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
     /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
     /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
@@ -1981,8 +1941,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "POSITION", .{}, value);
     }
 
-
-    /// 
+    ///
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
     /// the drop of files.
     /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
@@ -1992,8 +1951,7 @@ pub const List = opaque {
         return interop.getBoolAttribute(self, "DROPFILESTARGET", .{});
     }
 
-
-    /// 
+    ///
     /// DROPFILESTARGET [Windows and GTK Only] (non inheritable): Enable or disable
     /// the drop of files.
     /// Default: NO, but if DROPFILES_CB is defined when the element is mapped then
@@ -2119,8 +2077,7 @@ pub const List = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// VISIBLELINES: When DROPDOWN=NO defines the number of visible lines for the
     /// Natural Size, this means that will act also as minimum number of visible lines.
     /// (since 3.0)
@@ -2128,8 +2085,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "VISIBLELINES", .{});
     }
 
-
-    /// 
+    ///
     /// VISIBLELINES: When DROPDOWN=NO defines the number of visible lines for the
     /// Natural Size, this means that will act also as minimum number of visible lines.
     /// (since 3.0)
@@ -2141,8 +2097,7 @@ pub const List = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// SIZE: Size of the list.
     /// The Natural Size is defined by the number of elements in the list and the
     /// with of the largest item, the default has room for 5 characters in 1 item.
@@ -2154,8 +2109,7 @@ pub const List = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// SIZE: Size of the list.
     /// The Natural Size is defined by the number of elements in the list and the
     /// with of the largest item, the default has room for 5 characters in 1 item.
@@ -2179,8 +2133,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "PADDING", .{}, value);
     }
 
-
-    /// 
+    ///
     /// VALUESTRING (non inheritable): changes or retrieves the value attribute
     /// using a string of an item.
     /// Works only when EDITBOX=NO and DROPDOWN=YES, or DROPDOWN=NO and MULTIPLE=NO.
@@ -2190,8 +2143,7 @@ pub const List = opaque {
         return interop.getStrAttribute(self, "VALUESTRING", .{});
     }
 
-
-    /// 
+    ///
     /// VALUESTRING (non inheritable): changes or retrieves the value attribute
     /// using a string of an item.
     /// Works only when EDITBOX=NO and DROPDOWN=YES, or DROPDOWN=NO and MULTIPLE=NO.
@@ -2205,8 +2157,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
-
-    /// 
+    ///
     /// DROPEXPAND [Windows Only]: When DROPDOWN=Yes the size of the dropped list
     /// will expand to include the largest text.
     /// Can be "YES" or "NO".
@@ -2215,8 +2166,7 @@ pub const List = opaque {
         return interop.getBoolAttribute(self, "DROPEXPAND", .{});
     }
 
-
-    /// 
+    ///
     /// DROPEXPAND [Windows Only]: When DROPDOWN=Yes the size of the dropped list
     /// will expand to include the largest text.
     /// Can be "YES" or "NO".
@@ -2233,8 +2183,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "TIPMARKUP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
     /// support drag and drop of items between lists (IupList or IupFlatList), in
     /// the same IUP application.
@@ -2247,8 +2196,7 @@ pub const List = opaque {
         return interop.getBoolAttribute(self, "DRAGDROPLIST", .{});
     }
 
-
-    /// 
+    ///
     /// DRAGDROPLIST (non inheritable): prepare the Drag & Drop callbacks to
     /// support drag and drop of items between lists (IupList or IupFlatList), in
     /// the same IUP application.
@@ -2261,8 +2209,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "DRAGDROPLIST", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// REMOVEITEM (write-only): removes the given value.
     /// value starts at 1.
     /// If value is NULL or "ALL" removes all the items.
@@ -2276,8 +2223,7 @@ pub const List = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TOPITEM (write-only): position the given item at the top of the list or
     /// near to make it visible.
     /// Valid only when DROPDOWN=NO.
@@ -2286,8 +2232,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "TOPITEM", .{});
     }
 
-
-    /// 
+    ///
     /// TOPITEM (write-only): position the given item at the top of the list or
     /// near to make it visible.
     /// Valid only when DROPDOWN=NO.
@@ -2336,8 +2281,7 @@ pub const List = opaque {
         interop.setIntAttribute(self, "TIPDELAY", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// VISIBLEITEMS [Windows and Motif Only]: Number of items that are visible
     /// when DROPDOWN=YES is used for the dropdown list.
     /// Default: 5.
@@ -2345,8 +2289,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "VISIBLEITEMS", .{});
     }
 
-
-    /// 
+    ///
     /// VISIBLEITEMS [Windows and Motif Only]: Number of items that are visible
     /// when DROPDOWN=YES is used for the dropdown list.
     /// Default: 5.
@@ -2354,8 +2297,7 @@ pub const List = opaque {
         interop.setIntAttribute(self, "VISIBLEITEMS", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// SCROLLBAR (creation only): Associates automatic scrollbars to the list when DROPDOWN=NO.
     /// Can be: "YES" or "NO" (none).
     /// Default: "YES".
@@ -2374,8 +2316,7 @@ pub const List = opaque {
         return interop.getBoolAttribute(self, "SCROLLBAR", .{});
     }
 
-
-    /// 
+    ///
     /// SCROLLBAR (creation only): Associates automatic scrollbars to the list when DROPDOWN=NO.
     /// Can be: "YES" or "NO" (none).
     /// Default: "YES".
@@ -2394,8 +2335,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "SCROLLBAR", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
     /// Default: NO.
@@ -2404,8 +2344,7 @@ pub const List = opaque {
         return interop.getBoolAttribute(self, "PROPAGATEFOCUS", .{});
     }
 
-
-    /// 
+    ///
     /// PROPAGATEFOCUS(non inheritable): enables the focus callback forwarding to
     /// the next native parent with FOCUS_CB defined.
     /// Default: NO.
@@ -2414,8 +2353,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "PROPAGATEFOCUS", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BGCOLOR: Background color of the text.
     /// Default: the global attribute TXTBGCOLOR.
     /// In GTK does nothing when DROPDOWN=Yes.
@@ -2425,8 +2363,7 @@ pub const List = opaque {
         return interop.getRgb(self, "BGCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// BGCOLOR: Background color of the text.
     /// Default: the global attribute TXTBGCOLOR.
     /// In GTK does nothing when DROPDOWN=Yes.
@@ -2444,8 +2381,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "DROPTARGET", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// VALUEMASKED (non inheritable) (write-only): sets VALUE but first checks if
     /// it is validated by MASK.
     /// If not does nothing.
@@ -2490,8 +2426,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// SPACING: internal padding for each item.
     /// Notice that vertically the distance between each item will be actually 2x
     /// the spacing.
@@ -2503,8 +2438,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "SPACING", .{});
     }
 
-
-    /// 
+    ///
     /// SPACING: internal padding for each item.
     /// Notice that vertically the distance between each item will be actually 2x
     /// the spacing.
@@ -2559,8 +2493,7 @@ pub const List = opaque {
         interop.setRgb(self, "TIPFGCOLOR", .{}, rgb);
     }
 
-
-    /// 
+    ///
     /// CSPACING: same as SPACING but using the units of the vertical part of the
     /// SIZE attribute.
     /// It will actually set the SPACING attribute.
@@ -2569,8 +2502,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "CSPACING", .{});
     }
 
-
-    /// 
+    ///
     /// CSPACING: same as SPACING but using the units of the vertical part of the
     /// SIZE attribute.
     /// It will actually set the SPACING attribute.
@@ -2591,8 +2523,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
     /// this means that will act also as minimum number of visible columns.
     /// It uses a wider character size then the one used for the SIZE attribute so
@@ -2603,8 +2534,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "VISIBLECOLUMNS", .{});
     }
 
-
-    /// 
+    ///
     /// VISIBLECOLUMNS: Defines the number of visible columns for the Natural Size,
     /// this means that will act also as minimum number of visible columns.
     /// It uses a wider character size then the one used for the SIZE attribute so
@@ -2630,8 +2560,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "MASKINT", .{}, value);
     }
 
-
-    /// 
+    ///
     /// APPENDITEM (write-only): inserts an item after the last item.
     /// Ignored if set before map.
     /// (since 3.0)
@@ -2666,8 +2595,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "SELECTIONPOS", .{}, value);
     }
 
-
-    /// 
+    ///
     /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
     /// EDITBOX=YES: Text entered by the user.
     /// MULTIPLE=YES: Sequence of '+' and '-' symbols indicating the state of each item.
@@ -2695,8 +2623,7 @@ pub const List = opaque {
         return interop.getStrAttribute(self, "VALUE", .{});
     }
 
-
-    /// 
+    ///
     /// VALUE (non inheritable): Depends on the DROPDOWN+EDITBOX combination:
     /// EDITBOX=YES: Text entered by the user.
     /// MULTIPLE=YES: Sequence of '+' and '-' symbols indicating the state of each item.
@@ -2743,16 +2670,14 @@ pub const List = opaque {
         interop.setStrAttribute(self, "CPADDING", .{}, value);
     }
 
-
-    /// 
+    ///
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn getActive(self: *Self) bool {
         return interop.getBoolAttribute(self, "ACTIVE", .{});
     }
 
-
-    /// 
+    ///
     /// ACTIVE, FONT, EXPAND, SCREENPOSITION, POSITION, MINSIZE, MAXSIZE, WID, TIP,
     /// RASTERSIZE, ZORDER, VISIBLE, THEME: also accepted.
     pub fn setActive(self: *Self, arg: bool) void {
@@ -2767,8 +2692,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "TIPVISIBLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// SHOWDROPDOWN (write-only): opens or closes the dropdown list.
     /// Can be "YES" or "NO".
     /// Valid only when DROPDOWN=YES.
@@ -2817,8 +2741,7 @@ pub const List = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
     /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
     /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
@@ -2827,8 +2750,7 @@ pub const List = opaque {
         return interop.getIntAttribute(self, "CARETPOS", .{});
     }
 
-
-    /// 
+    ///
     /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
     /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
     /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
@@ -2853,8 +2775,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "DRAGTYPES", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// AUTOHIDE: scrollbars are shown only if they are necessary.
     /// Default: "YES".
     /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
@@ -2867,8 +2788,7 @@ pub const List = opaque {
         return interop.getBoolAttribute(self, "AUTOHIDE", .{});
     }
 
-
-    /// 
+    ///
     /// AUTOHIDE: scrollbars are shown only if they are necessary.
     /// Default: "YES".
     /// When DROPDOWN=YES the scrollbars are system dependent, and do NOT depend on
@@ -2889,8 +2809,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW [Windows] (non inheritable): automatically redraws the list when
     /// something has change.
     /// Set to NO to add many items to the list without updating the display.
@@ -2900,8 +2819,7 @@ pub const List = opaque {
         return interop.getBoolAttribute(self, "AUTOREDRAW", .{});
     }
 
-
-    /// 
+    ///
     /// AUTOREDRAW [Windows] (non inheritable): automatically redraws the list when
     /// something has change.
     /// Set to NO to add many items to the list without updating the display.
@@ -2944,8 +2862,7 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "READONLY", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// APPEND, CARET, CARETPOS, CLIPBOARD, CUEBANNER, FILTER, INSERT, PADDING,
     /// MASK, NC, READONLY, SELECTEDTEXT, SELECTION, SELECTIONPOS, SCROLLTO,
     /// SCROLLTOPOS : Same as the IupText attributes, but are valid only when
@@ -2962,24 +2879,21 @@ pub const List = opaque {
         interop.setBoolAttribute(self, "MASKNOEMPTY", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
 
-
-    /// 
+    ///
     /// In GTK older than 2.12, the editbox of a dropdown will not follow the list
     /// attributes: FONT, BGCOLOR, FGCOLOR and SPACING.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -3000,8 +2914,7 @@ pub const List = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -3023,8 +2936,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -3045,8 +2957,7 @@ pub const List = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -3067,7 +2978,7 @@ pub const List = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    /// 
+    ///
     /// K_ANY K_ANY Action generated when a keyboard event occurs.
     /// Callback int function(Ihandle *ih, int c); [in C] ih:k_any(c: number) ->
     /// (ret: number) [in Lua] ih: identifier of the element that activated the event.
@@ -3096,39 +3007,39 @@ pub const List = opaque {
     /// This is the way an application can create shortcut keys, also called hot keys.
     /// These callbacks are not available in IupLua.
     /// Affects All elements with keyboard interaction.
-    pub fn setKAnyCallback(self: *Self, callback: ?OnKAnyFn) void {
+    pub fn setKAnyCallback(self: *Self, callback: ?*const OnKAnyFn) void {
         const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// HELP_CB HELP_CB Action generated when the user press F1 at a control.
     /// In Motif is also activated by the Help button in some workstations keyboard.
     /// Callback void function(Ihandle *ih); [in C] ih:help_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Returns: IUP_CLOSE will be processed.
     /// Affects All elements with user interaction.
-    pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
+    pub fn setHelpCallback(self: *Self, callback: ?*const OnHelpFn) void {
         const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropMotionCallback(self: *Self, callback: ?OnDropMotionFn) void {
+    pub fn setDropMotionCallback(self: *Self, callback: ?*const OnDropMotionFn) void {
         const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragEndCallback(self: *Self, callback: ?OnDragEndFn) void {
+    pub fn setDragEndCallback(self: *Self, callback: ?*const OnDragEndFn) void {
         const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragBeginCallback(self: *Self, callback: ?OnDragBeginFn) void {
+    pub fn setDragBeginCallback(self: *Self, callback: ?*const OnDragBeginFn) void {
         const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// ACTION ACTION Action generated when the element is activated.
     /// Affects each element differently.
     /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
@@ -3137,12 +3048,12 @@ pub const List = opaque {
     /// Please refer to each element's documentation.
     /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
     /// IupToggle
-    pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
+    pub fn setActionCallback(self: *Self, callback: ?*const OnActionFn) void {
         const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MOTION_CB MOTION_CB Action generated when the mouse moves.
     /// Callback int function(Ihandle *ih, int x, int y, char *status); [in C]
     /// ih:motion_cb(x, y: number, status: string) -> (ret: number) [in Lua] ih:
@@ -3156,12 +3067,12 @@ pub const List = opaque {
     /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
     /// called with coordinates outside the element rectangle.
     /// Affects IupCanvas, IupGLCanvas
-    pub fn setMotionCallback(self: *Self, callback: ?OnMotionFn) void {
+    pub fn setMotionCallback(self: *Self, callback: ?*const OnMotionFn) void {
         const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -3170,23 +3081,23 @@ pub const List = opaque {
     /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
     /// Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+    pub fn setMapCallback(self: *Self, callback: ?*const OnMapFn) void {
         const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DRAGDROP_CB: Action generated when an internal drag and drop is executed.
     /// Only active if SHOWDRAGDROP=YES.
     /// (since 3.7) int function(Ihandle *ih, int drag_id, int drop_id, int
     /// isshift, int iscontrol); [in C] ih:dragdrop_cb(drag_id, drop_id, isshift,
     /// iscontrol: number) -> (ret: number) [in Lua]
-    pub fn setDragDropCallback(self: *Self, callback: ?OnDragDropFn) void {
+    pub fn setDragDropCallback(self: *Self, callback: ?*const OnDragDropFn) void {
         const Handler = CallbackHandler(Self, OnDragDropFn, "DRAGDROP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// ENTERWINDOW_CB ENTERWINDOW_CB Action generated when the mouse enters the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:enterwindow_cb() -> (ret:
@@ -3200,12 +3111,12 @@ pub const List = opaque {
     /// GTK the callbacks are called.
     /// Affects All controls with user interaction.
     /// See Also LEAVEWINDOW_CB
-    pub fn setEnterWindowCallback(self: *Self, callback: ?OnEnterWindowFn) void {
+    pub fn setEnterWindowCallback(self: *Self, callback: ?*const OnEnterWindowFn) void {
         const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -3218,17 +3129,17 @@ pub const List = opaque {
     /// release memory allocated by the binding for the element.
     /// Also the callback will be called before the language callback.
     /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+    pub fn setDestroyCallback(self: *Self, callback: ?*const OnDestroyFn) void {
         const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropDataCallback(self: *Self, callback: ?OnDropDataFn) void {
+    pub fn setDropDataCallback(self: *Self, callback: ?*const OnDropDataFn) void {
         const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// KILLFOCUS_CB KILLFOCUS_CB Action generated when an element loses keyboard focus.
     /// This callback is called before the GETFOCUS_CB of the element that gets the focus.
     /// Callback int function(Ihandle *ih); [in C] ih:killfocus_cb() -> (ret:
@@ -3240,32 +3151,32 @@ pub const List = opaque {
     /// This causes the thread to yield control and can cause the application to
     /// stop responding to messages.
     /// See Also GETFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setKillFocusCallback(self: *Self, callback: ?OnKillFocusFn) void {
+    pub fn setKillFocusCallback(self: *Self, callback: ?*const OnKillFocusFn) void {
         const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DBLCLICK_CB: Action generated when the user double click an item.
     /// Called only when DROPDOWN=NO.
     /// (since 3.0) int function (Ihandle *ih, int item, char *text); [in
     /// C]ih:dblclick_cb(item: number, text: string) -> (ret: number) [in Lua]
-    pub fn setDblClickCallback(self: *Self, callback: ?OnDblClickFn) void {
+    pub fn setDblClickCallback(self: *Self, callback: ?*const OnDblClickFn) void {
         const Handler = CallbackHandler(Self, OnDblClickFn, "DBLCLICK_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataCallback(self: *Self, callback: ?OnDragDataFn) void {
+    pub fn setDragDataCallback(self: *Self, callback: ?*const OnDragDataFn) void {
         const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataSizeCallback(self: *Self, callback: ?OnDragDataSizeFn) void {
+    pub fn setDragDataSizeCallback(self: *Self, callback: ?*const OnDragDataSizeFn) void {
         const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DROPFILES_CB DROPFILES_CB Action called when a file is "dropped" into the control.
     /// When several files are dropped at once, the callback is called several
     /// times, once for each file.
@@ -3284,29 +3195,29 @@ pub const List = opaque {
     /// Returns: If IUP_IGNORE is returned the callback will NOT be called for the
     /// next dropped files, and the processing of dropped files will be interrupted.
     /// Affects IupDialog, IupCanvas, IupGLCanvas, IupText, IupList
-    pub fn setDropFilesCallback(self: *Self, callback: ?OnDropFilesFn) void {
+    pub fn setDropFilesCallback(self: *Self, callback: ?*const OnDropFilesFn) void {
         const Handler = CallbackHandler(Self, OnDropFilesFn, "DROPFILES_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+    pub fn setUnmapCallback(self: *Self, callback: ?*const OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// This is the same CARET_CB callback definition as for the IupText.
-    pub fn setCaretCallback(self: *Self, callback: ?OnCaretFn) void {
+    pub fn setCaretCallback(self: *Self, callback: ?*const OnCaretFn) void {
         const Handler = CallbackHandler(Self, OnCaretFn, "CARET_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// GETFOCUS_CB GETFOCUS_CB Action generated when an element is given keyboard focus.
     /// This callback is called after the KILLFOCUS_CB of the element that loosed
     /// the focus.
@@ -3316,12 +3227,12 @@ pub const List = opaque {
     /// number) [in Lua] ih: identifier of the element that received keyboard focus.
     /// Affects All elements with user interaction, except menus.
     /// See Also KILLFOCUS_CB, IupGetFocus, IupSetFocus
-    pub fn setGetFocusCallback(self: *Self, callback: ?OnGetFocusFn) void {
+    pub fn setGetFocusCallback(self: *Self, callback: ?*const OnGetFocusFn) void {
         const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// BUTTON_CB BUTTON_CB Action generated when a mouse button is pressed or released.
     /// Callback int function(Ihandle* ih, int button, int pressed, int x, int y,
     /// char* status); [in C] ih:button_cb(button, pressed, x, y: number, status:
@@ -3366,48 +3277,48 @@ pub const List = opaque {
     /// So the BUTTON_CB callback when released and the MOTION_CB callback can be
     /// called with coordinates outside the element rectangle.
     /// Affects IupCanvas, IupButton, IupText, IupList, IupGLCanvas
-    pub fn setButtonCallback(self: *Self, callback: ?OnButtonFn) void {
+    pub fn setButtonCallback(self: *Self, callback: ?*const OnButtonFn) void {
         const Handler = CallbackHandler(Self, OnButtonFn, "BUTTON_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// VALUECHANGED_CB: Called after the value was interactively changed by the user.
     /// Called when the selection is changed or when the text is edited.
     /// (since 3.0) int function(Ihandle *ih); [in C]ih:valuechanged_cb() -> (ret:
     /// number) [in Lua]
-    pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
+    pub fn setValueChangedCallback(self: *Self, callback: ?*const OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DROPDOWN_CB: Action generated when the list of a dropdown is shown or hidden.
     /// Called only when DROPDOWN=YES.
     /// (since 3.0) int function (Ihandle *ih, int state); [in
     /// C]ih:dropdown_cb(state: boolean) -> (ret: number) [in Lua]
-    pub fn setDropDownCallback(self: *Self, callback: ?OnDropDownFn) void {
+    pub fn setDropDownCallback(self: *Self, callback: ?*const OnDropDownFn) void {
         const Handler = CallbackHandler(Self, OnDropDownFn, "DROPDOWN_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MULTISELECT_CB: Action generated when the state of an item in the multiple
     /// selection list is changed.
     /// But it is called only when the interaction is over.
     /// int function (Ihandle *ih, char *value); [in C]ih:multiselect_cb(value:
     /// string) -> (ret: number) [in Lua]
-    pub fn setMultiSelectCallback(self: *Self, callback: ?OnMultiSelectFn) void {
+    pub fn setMultiSelectCallback(self: *Self, callback: ?*const OnMultiSelectFn) void {
         const Handler = CallbackHandler(Self, OnMultiSelectFn, "MULTISELECT_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+    pub fn setLDestroyCallback(self: *Self, callback: ?*const OnLDestroyFn) void {
         const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// LEAVEWINDOW_CB LEAVEWINDOW_CB Action generated when the mouse leaves the
     /// native element.
     /// Callback int function(Ihandle *ih); [in C] ih:leavewindow_cb() -> (ret:
@@ -3421,23 +3332,23 @@ pub const List = opaque {
     /// GTK the callbacks are called.
     /// Affects All controls with user interaction.
     /// See Also ENTERWINDOW_CB
-    pub fn setLeaveWindowCallback(self: *Self, callback: ?OnLeaveWindowFn) void {
+    pub fn setLeaveWindowCallback(self: *Self, callback: ?*const OnLeaveWindowFn) void {
         const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+    pub fn setPostMessageCallback(self: *Self, callback: ?*const OnPostMessageFn) void {
         const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// EDIT_CB: Action generated when the text in the text box is manually changed
     /// by the user, but before its value is actually updated.
     /// Valid only when EDITBOX=YES.
     /// int function(Ihandle *ih, int c, char *new_value); [in C]ih:edit_cb(c:
     /// number, new_value: string) -> (ret: number) [in Lua]
-    pub fn setEditCallback(self: *Self, callback: ?OnEditFn) void {
+    pub fn setEditCallback(self: *Self, callback: ?*const OnEditFn) void {
         const Handler = CallbackHandler(Self, OnEditFn, "EDIT_CB");
         Handler.setCallback(self, callback);
     }

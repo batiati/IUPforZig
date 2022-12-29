@@ -20,14 +20,14 @@ fn addIupReference(step: *std.build.LibExeObjStep) !void {
         // #9002 Find native include and libraries is broken with msvc ABI
         // https://github.com/ziglang/zig/issues/9002
 
-        step.addLibPath("../lib/uwp");
-        step.addLibPath("../lib/um");
-        step.addLibPath("../lib/ucrt");
+        step.addLibraryPath("../lib/uwp");
+        step.addLibraryPath("../lib/um");
+        step.addLibraryPath("../lib/ucrt");
 
-        step.addLibPath("C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.16.27023\\lib\\x64");
+        step.addLibraryPath("C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.16.27023\\lib\\x64");
 
         // Link againts .lib files
-        step.addLibPath("../lib/win64");
+        step.addLibraryPath("../lib/win64");
 
         step.linkSystemLibrary("iupfiledlg");
         step.linkSystemLibrary("iupole");
@@ -57,12 +57,11 @@ fn addIupReference(step: *std.build.LibExeObjStep) !void {
     step.linkSystemLibrary("iupweb");
 
     // Includes .h
-    step.addIncludeDir("../lib/include");
+    step.addIncludePath("../lib/include");
     step.addPackagePath("iup", "../src/iup.zig");
 }
 
 pub fn build(b: *std.build.Builder) void {
-   
     addExample(b, "counter", "1. Counter", "src/counter.zig");
     addExample(b, "tempConv", "2. Temperature Converter", "src/temp_conv.zig");
     addExample(b, "bookFlight", "3. Flight Booker", "src/book_flight.zig");
@@ -78,7 +77,7 @@ pub fn build(b: *std.build.Builder) void {
     try addIupReference(main_tests);
 
     const test_step = b.step("test", "Run library tests");
-    test_step.dependOn(&main_tests.step);    
+    test_step.dependOn(&main_tests.step);
 }
 
 fn addExample(b: *Builder, comptime name: []const u8, comptime description: []const u8, comptime file: []const u8) void {

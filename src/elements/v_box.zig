@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Creates a void container for composing elements vertically.
 /// It is a box that arranges the elements it contains from top to bottom.
 /// It does not have a native representation.
@@ -35,7 +35,7 @@ pub const VBox = opaque {
 
     pub const OnLDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -52,7 +52,7 @@ pub const VBox = opaque {
 
     pub const OnUpDateAttribfromFontFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -65,14 +65,14 @@ pub const VBox = opaque {
 
     pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
     pub const OnUnmapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
     /// the biggest natural size among them.
     /// All natural width will be set to the biggest width, and all natural height
@@ -87,7 +87,7 @@ pub const VBox = opaque {
         Both,
         None,
     };
-    /// 
+    ///
     /// EXPAND (non inheritable*): The default value is "YES".
     /// See the documentation of the attribute for EXPAND inheritance.
     pub const Expand = enum {
@@ -98,7 +98,7 @@ pub const VBox = opaque {
         VerticalFree,
         No,
     };
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -108,14 +108,14 @@ pub const VBox = opaque {
         Ignore,
         No,
     };
-    /// 
+    ///
     /// ORIENTATION (read-only) (non inheritable): Returns "VERTICAL".
     /// (since 3.28)
     pub const Orientation = enum {
         Horizontal,
         Vertical,
     };
-    /// 
+    ///
     /// ALIGNMENT (non inheritable): Horizontally aligns the elements.
     /// Possible values: "ALEFT", "ACENTER", "ARIGHT".
     /// Default: "ALEFT".
@@ -143,108 +143,108 @@ pub const VBox = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setChildren(self: *Initializer, tuple: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setChildren(self: Initializer, tuple: anytype) Initializer {
+            if (self.last_error) |_| return self;
 
             Self.appendChildren(self.ref, tuple) catch |err| {
-                self.last_error = err;
+                return .{
+                    .ref = self.ref,
+                    .last_error = err,
+                };
             };
 
-            return self.*;
+            return self;
         }
 
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUserSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontStyle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontSize(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
         /// expand weight, then it is used to multiply the free space used for expansion.
         /// (since 3.1)
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
         /// of the SIZE attribute.
         /// Its value has the format "widthxheight", where width and height are integer
         /// values corresponding to the horizontal and vertical margins, respectively.
         /// Default: "0x0" (no margin).
         /// (CMARGIN since 3.0)
-        pub fn setMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMargin(self: Initializer, horiz: i32, vert: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
             interop.setStrAttribute(self.ref, "MARGIN", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaxSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
         /// the biggest natural size among them.
         /// All natural width will be set to the biggest width, and all natural height
@@ -253,8 +253,8 @@ pub const VBox = opaque {
         /// Default: "NO".
         /// Same as using IupNormalizer.
         /// (since 3.0)
-        pub fn setNormalizeSize(self: *Initializer, arg: ?NormalizeSize) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNormalizeSize(self: Initializer, arg: ?NormalizeSize) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Horizontal => interop.setStrAttribute(self.ref, "NORMALIZESIZE", .{}, "HORIZONTAL"),
                 .Vertical => interop.setStrAttribute(self.ref, "NORMALIZESIZE", .{}, "VERTICAL"),
@@ -263,189 +263,178 @@ pub const VBox = opaque {
             } else {
                 interop.clearAttribute(self.ref, "NORMALIZESIZE", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
         /// (since 3.0)
-        pub fn setNGap(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNGap(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "NGAP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setActive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPANDCHILDREN (non inheritable): forces all children to expand
         /// horizontally and to fully occupy its space available inside the box.
         /// Default: "NO".
         /// This has the same effect as setting EXPAND=HORIZONTAL on each child.
         /// (since 3.0)
-        pub fn setExpandChildren(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandChildren(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "EXPANDCHILDREN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// GAP, CGAP: Defines a vertical space in pixels between the children, CGAP is
         /// in the same units of the SIZE attribute for the height.
         /// Default: "0".
         /// (CGAP since 3.0)
-        pub fn setGap(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setGap(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "GAP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
         /// of the SIZE attribute.
         /// Its value has the format "widthxheight", where width and height are integer
         /// values corresponding to the horizontal and vertical margins, respectively.
         /// Default: "0x0" (no margin).
         /// (CMARGIN since 3.0)
-        pub fn setCMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCMargin(self: Initializer, horiz: i32, vert: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
             interop.setStrAttribute(self.ref, "CMARGIN", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// HOMOGENEOUS (non inheritable): forces all children to get equal vertical space.
         /// The space height will be based on the highest child.
         /// Default: "NO".
         /// Notice that this does not changes the children size, only the available
         /// space for each one of them to expand.
         /// (since 3.0)
-        pub fn setHomogeneous(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHomogeneous(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "HOMOGENEOUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontFace(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPropagateFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// SIZE / RASTERSIZE (non inheritable): Defines the height of the box.
         /// When consulted behaves as the standard SIZE/RASTERSIZE attributes.
         /// The standard format "wxh" can also be used, but width will be ignored
         /// (since 3.3).
-        pub fn setSize(self: *Initializer, arg: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSize(self: Initializer, arg: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             if (arg == null) {
                 interop.setStrAttribute(self.ref, "SIZE", .{}, null);
             } else {
                 interop.setIntAttribute(self.ref, "SIZE", .{}, arg.?);
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNormalizerGroup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// GAP, CGAP: Defines a vertical space in pixels between the children, CGAP is
         /// in the same units of the SIZE attribute for the height.
         /// Default: "0".
         /// (CGAP since 3.0)
-        pub fn setCGap(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCGap(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "CGAP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFont(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
         /// (since 3.0)
-        pub fn setNMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNMargin(self: Initializer, horiz: i32, vert: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
             interop.setStrAttribute(self.ref, "NMARGIN", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
         /// (since 3.0)
-        pub fn setNcMargin(self: *Initializer, horiz: i32, vert: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNcMargin(self: Initializer, horiz: i32, vert: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Margin.intIntToString(&buffer, horiz, vert);
             interop.setStrAttribute(self.ref, "NCMARGIN", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPAND (non inheritable*): The default value is "YES".
         /// See the documentation of the attribute for EXPAND inheritance.
-        pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpand(self: Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -456,31 +445,30 @@ pub const VBox = opaque {
             } else {
                 interop.clearAttribute(self.ref, "EXPAND", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCanFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRasterSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
         /// then its size and position will be ignored by the layout processing.
         /// Default: "NO".
         /// (since 3.0)
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -488,48 +476,46 @@ pub const VBox = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
         /// (since 3.0)
-        pub fn setNcGap(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNcGap(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "NCGAP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosition(self: Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ALIGNMENT (non inheritable): Horizontally aligns the elements.
         /// Possible values: "ALEFT", "ACENTER", "ARIGHT".
         /// Default: "ALEFT".
-        pub fn setAlignment(self: *Initializer, arg: ?Alignment) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setAlignment(self: Initializer, arg: ?Alignment) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .ARight => interop.setStrAttribute(self.ref, "ALIGNMENT", .{}, "ARIGHT"),
                 .ACenter => interop.setStrAttribute(self.ref, "ALIGNMENT", .{}, "ACENTER"),
@@ -537,11 +523,10 @@ pub const VBox = opaque {
             } else {
                 interop.clearAttribute(self.ref, "ALIGNMENT", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -554,24 +539,23 @@ pub const VBox = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -588,19 +572,19 @@ pub const VBox = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+        pub fn setLDestroyCallback(self: Initializer, callback: ?*const OnLDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
         /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
@@ -613,19 +597,19 @@ pub const VBox = opaque {
         /// release memory allocated by the binding for the element.
         /// Also the callback will be called before the language callback.
         /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+        pub fn setDestroyCallback(self: Initializer, callback: ?*const OnDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setUpDateAttribfromFontCallback(self: *Initializer, callback: ?OnUpDateAttribfromFontFn) Initializer {
+        pub fn setUpDateAttribfromFontCallback(self: Initializer, callback: ?*const OnUpDateAttribfromFontFn) Initializer {
             const Handler = CallbackHandler(Self, OnUpDateAttribfromFontFn, "UPDATEATTRIBFROMFONT_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
         /// When the element is a dialog, it is called after the layout is updated.
@@ -634,27 +618,27 @@ pub const VBox = opaque {
         /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
         /// Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+        pub fn setMapCallback(self: Initializer, callback: ?*const OnMapFn) Initializer {
             const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+        pub fn setPostMessageCallback(self: Initializer, callback: ?*const OnPostMessageFn) Initializer {
             const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+        pub fn setUnmapCallback(self: Initializer, callback: ?*const OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -717,14 +701,14 @@ pub const VBox = opaque {
         }
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -779,19 +763,19 @@ pub const VBox = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
@@ -823,8 +807,7 @@ pub const VBox = opaque {
         interop.setIntAttribute(self, "FONTSIZE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -832,8 +815,7 @@ pub const VBox = opaque {
         return interop.getDoubleAttribute(self, "EXPANDWEIGHT", .{});
     }
 
-
-    /// 
+    ///
     /// EXPANDWEIGHT (non inheritable) (at children only): If a child defines the
     /// expand weight, then it is used to multiply the free space used for expansion.
     /// (since 3.1)
@@ -841,8 +823,7 @@ pub const VBox = opaque {
         interop.setDoubleAttribute(self, "EXPANDWEIGHT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
     /// of the SIZE attribute.
     /// Its value has the format "widthxheight", where width and height are integer
@@ -854,8 +835,7 @@ pub const VBox = opaque {
         return Margin.parse(str);
     }
 
-
-    /// 
+    ///
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
     /// of the SIZE attribute.
     /// Its value has the format "widthxheight", where width and height are integer
@@ -879,8 +859,7 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
     /// the biggest natural size among them.
     /// All natural width will be set to the biggest width, and all natural height
@@ -899,8 +878,7 @@ pub const VBox = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// NORMALIZESIZE (non inheritable): normalizes all children natural size to be
     /// the biggest natural size among them.
     /// All natural width will be set to the biggest width, and all natural height
@@ -920,16 +898,14 @@ pub const VBox = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
     /// (since 3.0)
     pub fn getNGap(self: *Self) i32 {
         return interop.getIntAttribute(self, "NGAP", .{});
     }
 
-
-    /// 
+    ///
     /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
     /// (since 3.0)
     pub fn setNGap(self: *Self, arg: i32) void {
@@ -952,8 +928,7 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// EXPANDCHILDREN (non inheritable): forces all children to expand
     /// horizontally and to fully occupy its space available inside the box.
     /// Default: "NO".
@@ -963,8 +938,7 @@ pub const VBox = opaque {
         return interop.getBoolAttribute(self, "EXPANDCHILDREN", .{});
     }
 
-
-    /// 
+    ///
     /// EXPANDCHILDREN (non inheritable): forces all children to expand
     /// horizontally and to fully occupy its space available inside the box.
     /// Default: "NO".
@@ -974,8 +948,7 @@ pub const VBox = opaque {
         interop.setBoolAttribute(self, "EXPANDCHILDREN", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// GAP, CGAP: Defines a vertical space in pixels between the children, CGAP is
     /// in the same units of the SIZE attribute for the height.
     /// Default: "0".
@@ -984,8 +957,7 @@ pub const VBox = opaque {
         return interop.getIntAttribute(self, "GAP", .{});
     }
 
-
-    /// 
+    ///
     /// GAP, CGAP: Defines a vertical space in pixels between the children, CGAP is
     /// in the same units of the SIZE attribute for the height.
     /// Default: "0".
@@ -994,8 +966,7 @@ pub const VBox = opaque {
         interop.setIntAttribute(self, "GAP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
     /// of the SIZE attribute.
     /// Its value has the format "widthxheight", where width and height are integer
@@ -1007,8 +978,7 @@ pub const VBox = opaque {
         return Margin.parse(str);
     }
 
-
-    /// 
+    ///
     /// MARGIN, CMARGIN: Defines a margin in pixels, CMARGIN is in the same units
     /// of the SIZE attribute.
     /// Its value has the format "widthxheight", where width and height are integer
@@ -1034,8 +1004,7 @@ pub const VBox = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// HOMOGENEOUS (non inheritable): forces all children to get equal vertical space.
     /// The space height will be based on the highest child.
     /// Default: "NO".
@@ -1046,8 +1015,7 @@ pub const VBox = opaque {
         return interop.getBoolAttribute(self, "HOMOGENEOUS", .{});
     }
 
-
-    /// 
+    ///
     /// HOMOGENEOUS (non inheritable): forces all children to get equal vertical space.
     /// The space height will be based on the highest child.
     /// Default: "NO".
@@ -1092,8 +1060,7 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "HANDLENAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// SIZE / RASTERSIZE (non inheritable): Defines the height of the box.
     /// When consulted behaves as the standard SIZE/RASTERSIZE attributes.
     /// The standard format "wxh" can also be used, but width will be ignored
@@ -1102,8 +1069,7 @@ pub const VBox = opaque {
         return interop.getIntAttribute(self, "SIZE", .{});
     }
 
-
-    /// 
+    ///
     /// SIZE / RASTERSIZE (non inheritable): Defines the height of the box.
     /// When consulted behaves as the standard SIZE/RASTERSIZE attributes.
     /// The standard format "wxh" can also be used, but width will be ignored
@@ -1124,8 +1090,7 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "NORMALIZERGROUP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// GAP, CGAP: Defines a vertical space in pixels between the children, CGAP is
     /// in the same units of the SIZE attribute for the height.
     /// Default: "0".
@@ -1134,8 +1099,7 @@ pub const VBox = opaque {
         return interop.getIntAttribute(self, "CGAP", .{});
     }
 
-
-    /// 
+    ///
     /// GAP, CGAP: Defines a vertical space in pixels between the children, CGAP is
     /// in the same units of the SIZE attribute for the height.
     /// Default: "0".
@@ -1144,15 +1108,13 @@ pub const VBox = opaque {
         interop.setIntAttribute(self, "CGAP", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
 
-
-    /// 
+    ///
     /// FONT, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE, MAXSIZE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONT", .{}, arg);
@@ -1166,8 +1128,7 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     /// (since 3.0)
     pub fn getNMargin(self: *Self) Margin {
@@ -1175,8 +1136,7 @@ pub const VBox = opaque {
         return Margin.parse(str);
     }
 
-
-    /// 
+    ///
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     /// (since 3.0)
     pub fn setNMargin(self: *Self, horiz: i32, vert: i32) void {
@@ -1185,8 +1145,7 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "NMARGIN", .{}, value);
     }
 
-
-    /// 
+    ///
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     /// (since 3.0)
     pub fn getNcMargin(self: *Self) Margin {
@@ -1194,8 +1153,7 @@ pub const VBox = opaque {
         return Margin.parse(str);
     }
 
-
-    /// 
+    ///
     /// NMARGIN, NCMARGIN (non inheritable): Same as MARGIN but are non inheritable.
     /// (since 3.0)
     pub fn setNcMargin(self: *Self, horiz: i32, vert: i32) void {
@@ -1204,8 +1162,7 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "NCMARGIN", .{}, value);
     }
 
-
-    /// 
+    ///
     /// EXPAND (non inheritable*): The default value is "YES".
     /// See the documentation of the attribute for EXPAND inheritance.
     pub fn getExpand(self: *Self) ?Expand {
@@ -1220,8 +1177,7 @@ pub const VBox = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// EXPAND (non inheritable*): The default value is "YES".
     /// See the documentation of the attribute for EXPAND inheritance.
     pub fn setExpand(self: *Self, arg: ?Expand) void {
@@ -1256,8 +1212,7 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "RASTERSIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -1271,8 +1226,7 @@ pub const VBox = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// FLOATING (non inheritable) (at children only): If a child has FLOATING=YES
     /// then its size and position will be ignored by the layout processing.
     /// Default: "NO".
@@ -1287,8 +1241,7 @@ pub const VBox = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// ORIENTATION (read-only) (non inheritable): Returns "VERTICAL".
     /// (since 3.28)
     pub fn getOrientation(self: *Self) ?Orientation {
@@ -1307,23 +1260,20 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// WID (read-only): returns -1 if mapped.
     pub fn getWId(self: *Self) i32 {
         return interop.getIntAttribute(self, "WID", .{});
     }
 
-
-    /// 
+    ///
     /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
     /// (since 3.0)
     pub fn getNcGap(self: *Self) i32 {
         return interop.getIntAttribute(self, "NCGAP", .{});
     }
 
-
-    /// 
+    ///
     /// NGAP, NCGAP (non inheritable): Same as GAP but are non inheritable.
     /// (since 3.0)
     pub fn setNcGap(self: *Self, arg: i32) void {
@@ -1357,8 +1307,7 @@ pub const VBox = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// ALIGNMENT (non inheritable): Horizontally aligns the elements.
     /// Possible values: "ALEFT", "ACENTER", "ARIGHT".
     /// Default: "ALEFT".
@@ -1371,8 +1320,7 @@ pub const VBox = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// ALIGNMENT (non inheritable): Horizontally aligns the elements.
     /// Possible values: "ALEFT", "ACENTER", "ARIGHT".
     /// Default: "ALEFT".
@@ -1386,8 +1334,7 @@ pub const VBox = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -1408,8 +1355,7 @@ pub const VBox = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -1431,8 +1377,7 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -1453,8 +1398,7 @@ pub const VBox = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -1475,12 +1419,12 @@ pub const VBox = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+    pub fn setLDestroyCallback(self: *Self, callback: ?*const OnLDestroyFn) void {
         const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -1493,17 +1437,17 @@ pub const VBox = opaque {
     /// release memory allocated by the binding for the element.
     /// Also the callback will be called before the language callback.
     /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+    pub fn setDestroyCallback(self: *Self, callback: ?*const OnDestroyFn) void {
         const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setUpDateAttribfromFontCallback(self: *Self, callback: ?OnUpDateAttribfromFontFn) void {
+    pub fn setUpDateAttribfromFontCallback(self: *Self, callback: ?*const OnUpDateAttribfromFontFn) void {
         const Handler = CallbackHandler(Self, OnUpDateAttribfromFontFn, "UPDATEATTRIBFROMFONT_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -1512,22 +1456,22 @@ pub const VBox = opaque {
     /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
     /// Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+    pub fn setMapCallback(self: *Self, callback: ?*const OnMapFn) void {
         const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+    pub fn setPostMessageCallback(self: *Self, callback: ?*const OnPostMessageFn) void {
         const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+    pub fn setUnmapCallback(self: *Self, callback: ?*const OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }

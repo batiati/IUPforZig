@@ -68,7 +68,7 @@ const Cells = struct {
                             .setHeight(0, 8)
                             .setWidthDef(40)
                             .setResizeMatrix(true)
-                            .setMarkMultiple(true)
+                            .setMarkMultiple("YES")
                             .setMarkMode(.Cell),
                         iup.HBox.init()
                             .setMargin(10, 10)
@@ -98,7 +98,7 @@ const Cells = struct {
         if (row == 0 and col == 0) return EMPTY;
 
         if (row == 0) return Cell.getColName(&self.spreadsheet, col) catch return Cell.ERR;
-        if (col == 0) return Cell.getRowName(&self.spreadsheet,row) catch return Cell.ERR;
+        if (col == 0) return Cell.getRowName(&self.spreadsheet, row) catch return Cell.ERR;
 
         if (self.spreadsheet.getCell(row, col)) |cell| {
             if (matrix.getEditCell()) |edit_pos| {
@@ -255,7 +255,6 @@ const Cell = struct {
     data: Data,
 
     pub fn getColName(spreadsheet: *const Spreadsheet, col: i32) ![:0]const u8 {
-
         var fba = std.heap.FixedBufferAllocator.init(spreadsheet.fixed_buffer);
         var allocator = fba.allocator();
 
@@ -263,11 +262,10 @@ const Cell = struct {
         try list.append(@intCast(u8, 'A' + col - 1));
         try list.append(0);
 
-        return std.meta.assumeSentinel(list.toOwnedSlice(), 0);
+        return std.meta.assumeSentinel(try list.toOwnedSlice(), 0);
     }
 
     pub fn getRowName(spreadsheet: *const Spreadsheet, row: i32) ![:0]const u8 {
-
         var fba = std.heap.FixedBufferAllocator.init(spreadsheet.fixed_buffer);
         var allocator = fba.allocator();
 
@@ -278,7 +276,7 @@ const Cell = struct {
         std.log.debug("parse {s}", .{index});
 
         if (index.len < 2) return null;
-        if (!std.ascii.isAlpha(index[0])) return null;
+        if (!std.ascii.isAlphabetic(index[0])) return null;
         if (std.fmt.parseInt(i32, index[1..], 10)) |row| {
             return Index{
                 .col = @intCast(i32, std.ascii.toUpper(index[0]) - 'A' + 1),
@@ -290,7 +288,6 @@ const Cell = struct {
     }
 
     pub fn displayText(self: *const Self, spreadsheet: *const Spreadsheet) ![:0]const u8 {
-
         var fba = std.heap.FixedBufferAllocator.init(spreadsheet.fixed_buffer);
         var allocator = fba.allocator();
 
@@ -310,7 +307,6 @@ const Cell = struct {
     }
 
     pub fn editText(self: *const Self, spreadsheet: *const Spreadsheet) ![:0]const u8 {
-        
         switch (self.data) {
             .Formula => |formula| return formula.text,
             else => return self.displayText(spreadsheet),
@@ -415,7 +411,7 @@ const Formula = struct {
             self.err = true;
             return;
         } else {
-            self.cells = getInterval(allocator, args[0 .. args.len - 1]) orelse {
+            self.cells = try getInterval(allocator, args[0 .. args.len - 1]) orelse {
                 self.err = true;
                 return;
             };
@@ -424,7 +420,7 @@ const Formula = struct {
         self.err = false;
     }
 
-    fn getInterval(allocator: Allocator, args: []const u8) ?[]Cell.Index {
+    fn getInterval(allocator: Allocator, args: []const u8) !?[]Cell.Index {
         var args_iterator = std.mem.split(u8, args, ":");
         var initial = args_iterator.next() orelse return null;
         var final = args_iterator.next() orelse return null;
@@ -446,7 +442,7 @@ const Formula = struct {
             }
         }
 
-        return list.toOwnedSlice();
+        return try list.toOwnedSlice();
     }
 
     pub fn value(self: *const Self, spreadsheet: *const Spreadsheet) ?f64 {

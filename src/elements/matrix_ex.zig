@@ -227,159 +227,159 @@ pub const MatrixEx = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextLayoutCenter(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextLayoutCenter(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAWTEXTLAYOUTCENTER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragTypes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DRAGTYPES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHiddenTextMarks(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHiddenTextMarks(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HIDDENTEXTMARKS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setXMax(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setXMax(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "XMAX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFrameVertColor(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrameVertColor(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FRAMEVERTCOLOR", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn numEricUnitSymbolSearch(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn numEricUnitSymbolSearch(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICUNITSYMBOLSEARCH", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setVisibleCol(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisibleCol(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "VISIBLECOL", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setAlign(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setAlign(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ALIGN", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFreeze(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFreeze(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FREEZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn addCol(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn addCol(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ADDCOL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFrameHorizColor(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrameHorizColor(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FRAMEHORIZCOLOR", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setValue(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "VALUE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricFormatPrecision(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricFormatPrecision(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICFORMATPRECISION", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setType(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setType(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TYPE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSortImageDown(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSortImageDown(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SORTIMAGEDOWN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn moveCol(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn moveCol(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MOVECOL", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipFgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipFgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPFGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricDecimalSymbol(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricDecimalSymbol(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICDECIMALSYMBOL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpand(self: Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -390,29 +390,29 @@ pub const MatrixEx = opaque {
             } else {
                 interop.clearAttribute(self.ref, "EXPAND", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextOrientation(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextOrientation(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "DRAWTEXTORIENTATION", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setArea(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArea(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "AREA", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMerged(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMerged(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MERGED", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextAlignment(self: *Initializer, arg: ?DrawTextAlignment) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextAlignment(self: Initializer, arg: ?DrawTextAlignment) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .ACenter => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ACENTER"),
                 .ARight => interop.setStrAttribute(self.ref, "DRAWTEXTALIGNMENT", .{}, "ARIGHT"),
@@ -420,428 +420,428 @@ pub const MatrixEx = opaque {
             } else {
                 interop.clearAttribute(self.ref, "DRAWTEXTALIGNMENT", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setDragSource(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragSource(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGSOURCE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "DRAWCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setArrowImages(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setArrowImages(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "ARROWIMAGES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHtmltd(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHtmltd(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HTML<TD>", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn undoPushCell(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn undoPushCell(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "UNDOPUSHCELL", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn undoPushEnd(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn undoPushEnd(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "UNDOPUSHEND", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setOrigInOffset(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setOrigInOffset(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ORIGINOFFSET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawLineWidth(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawLineWidth(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "DRAWLINEWIDTH", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumColNoScroll(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumColNoScroll(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMCOL_NOSCROLL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFitMaxHeight(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFitMaxHeight(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FITMAXHEIGHT", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn mergeSplit(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn mergeSplit(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MERGESPLIT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUserSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setMarked(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMarked(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MARKED", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricFormatDef(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricFormatDef(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICFORMATDEF", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn clearValue(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn clearValue(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "CLEARVALUE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setXMin(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setXMin(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "XMIN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextEllipsis(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextEllipsis(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAWTEXTELLIPSIS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn delLin(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn delLin(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DELLIN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaskInt(self: *Initializer, index: i32, begin: i32, end: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaskInt(self: Initializer, index: i32, begin: i32, end: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.Range.intIntToString(&buffer, begin, end, ',');
             interop.setStrAttribute(self.ref, "MASKINT", .{index}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setResizeDrag(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setResizeDrag(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "RESIZEDRAG", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn clAsSupDate(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn clAsSupDate(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "CLASSUPDATE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn paste(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn paste(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "PASTE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricUnitSpell(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricUnitSpell(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICUNITSPELL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHtmlth(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHtmlth(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HTML<TH>", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn showDialog(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn showDialog(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SHOWDIALOG", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumLinVisibleLast(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumLinVisibleLast(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMLIN_VISIBLE_LAST", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn sortColUmn(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn sortColUmn(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SORTCOLUMN", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFrameColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrameColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "FRAMECOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setIdValue(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIdValue(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IDVALUE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn show(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn show(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SHOW", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageBottomInactive(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageBottomInactive(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGEBOTTOMINACTIVE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageBottomInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageBottomInactiveHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGEBOTTOMINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMarkArea(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMarkArea(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MARKAREA", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFrameTitleHighlight(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrameTitleHighlight(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FRAMETITLEHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageTopPress(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageTopPress(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGETOPPRESS", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageTopPressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageTopPressHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGETOPPRESS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBorder(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBorder(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "BORDER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCanFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageTop(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageTop(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGETOP", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageTopHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageTopHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGETOP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setToggleImageOff(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setToggleImageOff(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TOGGLEIMAGEOFF", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMerge(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMerge(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MERGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSortSign(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSortSign(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SORTSIGN", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageRightInactive(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageRightInactive(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGERIGHTINACTIVE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageRightInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageRightInactiveHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGERIGHTINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSortColUmnCaseSensitive(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSortColUmnCaseSensitive(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SORTCOLUMNCASESENSITIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setToggleImageOn(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setToggleImageOn(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TOGGLEIMAGEON", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setYAutoHide(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setYAutoHide(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "YAUTOHIDE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextClip(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextClip(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAWTEXTCLIP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn zOrder(self: *Initializer, arg: ?ZOrder) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn zOrder(self: Initializer, arg: ?ZOrder) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Top => interop.setStrAttribute(self.ref, "ZORDER", .{}, "TOP"),
                 .Bottom => interop.setStrAttribute(self.ref, "ZORDER", .{}, "BOTTOM"),
             } else {
                 interop.clearAttribute(self.ref, "ZORDER", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSkipLines(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSkipLines(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SKIPLINES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setRasterHeight(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRasterHeight(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "RASTERHEIGHT", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn copyFile(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn copyFile(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "COPYFILE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFocusCell(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFocusCell(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FOCUSCELL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setLineAlignment(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setLineAlignment(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "LINEALIGNMENT", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setVisibleLin(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisibleLin(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "VISIBLELIN", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setWidthDef(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setWidthDef(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "WIDTHDEF", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setRasterWidth(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRasterWidth(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "RASTERWIDTH", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFInDDirection(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFInDDirection(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FINDDIRECTION", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumLinNoScroll(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumLinNoScroll(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMLIN_NOSCROLL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBgColor(self: *Initializer, index: i32, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBgColor(self: Initializer, index: i32, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BGCOLOR", .{index}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn addLin(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn addLin(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ADDLIN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRasterSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawStyle(self: *Initializer, arg: ?DrawStyle) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawStyle(self: Initializer, arg: ?DrawStyle) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Fill => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "FILL"),
                 .StrokeDash => interop.setStrAttribute(self.ref, "DRAWSTYLE", .{}, "STROKE_DASH"),
@@ -852,253 +852,253 @@ pub const MatrixEx = opaque {
             } else {
                 interop.clearAttribute(self.ref, "DRAWSTYLE", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn numEricAddQuantitY(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn numEricAddQuantitY(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICADDQUANTITY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setShowFillValue(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setShowFillValue(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SHOWFILLVALUE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropTarget(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPTARGET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaskNoEmpty(self: *Initializer, index: i32, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaskNoEmpty(self: Initializer, index: i32, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MASKNOEMPTY", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHideFocus(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHideFocus(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HIDEFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumCol(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumCol(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "NUMCOL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn numEricAddUnitSymbol(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn numEricAddUnitSymbol(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICADDUNITSYMBOL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn moveLin(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn moveLin(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MOVELIN", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSortColUmNoRder(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSortColUmNoRder(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SORTCOLUMNORDER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageBottom(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageBottom(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGEBOTTOM", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageBottomHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageBottomHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGEBOTTOM", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUndoRedo(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUndoRedo(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "UNDOREDO", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawMakeInactive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawMakeInactive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAWMAKEINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn numEricAddUnitFactor(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn numEricAddUnitFactor(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICADDUNITFACTOR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDX(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDX(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "DX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDY(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDY(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "DY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTypeColorInactive(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTypeColorInactive(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TYPECOLORINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMultiline(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMultiline(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MULTILINE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCellFrameVertColor(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCellFrameVertColor(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "CELLFRAMEVERTCOLOR", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCaret(self: *Initializer, lin: i32, col: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCaret(self: Initializer, lin: i32, col: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.LinColPos.intIntToString(&buffer, lin, col, ',');
             interop.setStrAttribute(self.ref, "CARET", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHtmltr(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHtmltr(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HTML<TR>", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFreezeColor(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFreezeColor(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FREEZECOLOR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumColVisibleLast(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumColVisibleLast(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMCOL_VISIBLE_LAST", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosition(self: Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setMinColWidthDef(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinColWidthDef(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "MINCOLWIDTHDEF", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setResizeMatrixColor(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setResizeMatrixColor(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "RESIZEMATRIXCOLOR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setLineX(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setLineX(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "LINEX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setLineY(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setLineY(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "LINEY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricUnitSymbol(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricUnitSymbol(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICUNITSYMBOL", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn numEricAddUnit(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn numEricAddUnit(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICADDUNIT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCopyData(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCopyData(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "COPYDATA", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropTypes(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropTypes(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DROPTYPES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontFace(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageTopInactive(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageTopInactive(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGETOPINACTIVE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageTopInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageTopInactiveHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGETOPINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn showMenuCOnText(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn showMenuCOnText(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SHOWMENUCONTEXT", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMark(self: *Initializer, index: i32, arg: ?Mark) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMark(self: Initializer, index: i32, arg: ?Mark) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .BLock => interop.setStrAttribute(self.ref, "MARK", .{index}, "BLOCK"),
                 .ClearAll => interop.setStrAttribute(self.ref, "MARK", .{index}, "CLEARALL"),
@@ -1108,680 +1108,680 @@ pub const MatrixEx = opaque {
             } else {
                 interop.clearAttribute(self.ref, "MARK", .{index});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setFInDmatchCase(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFInDmatchCase(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FINDMATCHCASE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMask(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMask(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MASK", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn pasteFile(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn pasteFile(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "PASTEFILE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaxSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setFlat(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFlat(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "FLAT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNoScrollAsTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNoScrollAsTitle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NOSCROLLASTITLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn clearAttrib(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn clearAttrib(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "CLEARATTRIB", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHeight(self: *Initializer, index: i32, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHeight(self: Initializer, index: i32, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "HEIGHT", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontStyle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontStyle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFrameTitleVertColor(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrameTitleVertColor(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FRAMETITLEVERTCOLOR", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn fitToSize(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn fitToSize(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FITTOSIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFont(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFont(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONT", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMultiple(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMultiple(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MULTIPLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageRightPress(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageRightPress(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGERIGHTPRESS", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageRightPressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageRightPressHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGERIGHTPRESS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCursor(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCursor(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "CURSOR", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setCursorHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCursorHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "CURSOR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMinColWidth(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinColWidth(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MINCOLWIDTH", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSortImageUp(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSortImageUp(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SORTIMAGEUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricUnitShown(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricUnitShown(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICUNITSHOWN", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setWheelDropFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setWheelDropFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "WHEELDROPFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFileFormat(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFileFormat(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FILEFORMAT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricQuantitY(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricQuantitY(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICQUANTITY", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontSize(self: *Initializer, index: i32, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontSize(self: Initializer, index: i32, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn undoPushBegin(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn undoPushBegin(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "UNDOPUSHBEGIN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn copyCol(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn copyCol(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "COPYCOL", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn pasteData(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn pasteData(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "PASTEDATA", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipMarkup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipMarkup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPMARKUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageLeftHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageLeftHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGELEFTHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageLeftHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageLeftHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGELEFTHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCellFrameHorizColor(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCellFrameHorizColor(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "CELLFRAMEHORIZCOLOR", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setRedo(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRedo(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "REDO", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setYMax(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setYMax(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "YMAX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageLeft(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageLeft(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGELEFT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageLeftHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageLeftHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGELEFT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFitMaxWidth(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFitMaxWidth(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FITMAXWIDTH", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn undoClear(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn undoClear(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "UNDOCLEAR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSkipColumns(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSkipColumns(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SKIPCOLUMNS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragSourceMove(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragSourceMove(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGSOURCEMOVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumLin(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumLin(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "NUMLIN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricUnit(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricUnit(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICUNIT", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setResizeMatrix(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setResizeMatrix(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "RESIZEMATRIX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setActive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageTopHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageTopHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGETOPHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageTopHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageTopHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGETOPHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFgColor(self: *Initializer, index: i32, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFgColor(self: Initializer, index: i32, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "FGCOLOR", .{index}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setHlColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHlColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "HLCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipIcon(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipIcon(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIPICON", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaskCasei(self: *Initializer, index: i32, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaskCasei(self: Initializer, index: i32, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MASKCASEI", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn fitToText(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn fitToText(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FITTOTEXT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setLimitExpand(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setLimitExpand(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "LIMITEXPAND", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn numEricUnitSearch(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn numEricUnitSearch(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICUNITSEARCH", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosX(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosX(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "POSX", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosY(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosY(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "POSY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricQuantitYIndex(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricQuantitYIndex(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICQUANTITYINDEX", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMenuCOnText(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMenuCOnText(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MENUCONTEXT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setXAutoHide(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setXAutoHide(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "XAUTOHIDE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TIPVISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMarkMode(self: *Initializer, arg: ?MarkMode) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMarkMode(self: Initializer, arg: ?MarkMode) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .SInGle => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "SINGLE"),
                 .Multiple => interop.setStrAttribute(self.ref, "MARKMODE", .{}, "MULTIPLE"),
             } else {
                 interop.clearAttribute(self.ref, "MARKMODE", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawFont(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DRAWFONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHeightDef(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHeightDef(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "HEIGHTDEF", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCopyKeepstruct(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCopyKeepstruct(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "COPYKEEPSTRUCT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTextSeparator(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTextSeparator(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TEXTSEPARATOR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "TIPBGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setOrigIn(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setOrigIn(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ORIGIN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn copy(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn copy(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "COPY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setLateXLabel(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setLateXLabel(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "LATEXLABEL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawBgColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawBgColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "DRAWBGCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setTextSkipLines(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTextSkipLines(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TEXTSKIPLINES", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setEditMode(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setEditMode(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "EDITMODE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setEditNext(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setEditNext(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "EDITNEXT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setYMin(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setYMin(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "YMIN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setToggleCenterEd(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setToggleCenterEd(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TOGGLECENTERED", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNormalizerGroup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setScrollBar(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setScrollBar(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "SCROLLBAR", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBusY(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBusY(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "BUSY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUseTitleSize(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUseTitleSize(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "USETITLESIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropFilesTarget(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDropFilesTarget(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DROPFILESTARGET", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setAlignmentLin0(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setAlignmentLin0(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "ALIGNMENTLIN0", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFrameBorder(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrameBorder(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FRAMEBORDER", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricUnitShowNIndex(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricUnitShowNIndex(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICUNITSHOWNINDEX", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFrameTitleHorizColor(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrameTitleHorizColor(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FRAMETITLEHORIZCOLOR", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMarkAtTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMarkAtTitle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MARKATTITLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCopyColTo(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCopyColTo(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "COPYCOLTO", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setEditHideOnFocus(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setEditHideOnFocus(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "EDITHIDEONFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageRightHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageRightHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGERIGHTHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageRightHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageRightHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGERIGHTHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUndo(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUndo(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "UNDO", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricUnitIndex(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricUnitIndex(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICUNITINDEX", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHtmlCaption(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHtmlCaption(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HTML<CAPTION>", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageLeftPress(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageLeftPress(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGELEFTPRESS", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageLeftPressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageLeftPressHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGELEFTPRESS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCopyCaption(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCopyCaption(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "COPYCAPTION", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHlColorAlpha(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHlColorAlpha(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "HLCOLORALPHA", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setHtmlTable(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHtmlTable(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HTML<TABLE>", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageBottomHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageBottomHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGEBOTTOMHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageBottomHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageBottomHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGEBOTTOMHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricUnitSymbolShown(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricUnitSymbolShown(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICUNITSYMBOLSHOWN", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawTextWrap(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDrawTextWrap(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAWTEXTWRAP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn delCol(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn delCol(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "DELCOL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTip(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTip(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TIP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDrop(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setDragDrop(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "DRAGDROP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTipDelay(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTipDelay(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "TIPDELAY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setToggleValue(self: *Initializer, index: i32, arg: ?ToggleValue) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setToggleValue(self: Initializer, index: i32, arg: ?ToggleValue) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .On => interop.setStrAttribute(self.ref, "TOGGLEVALUE", .{index}, "ON"),
                 .Off => interop.setStrAttribute(self.ref, "TOGGLEVALUE", .{index}, "OFF"),
@@ -1789,73 +1789,73 @@ pub const MatrixEx = opaque {
             } else {
                 interop.clearAttribute(self.ref, "TOGGLEVALUE", .{index});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn copyLin(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn copyLin(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "COPYLIN", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumColVisible(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumColVisible(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMCOL_VISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageRight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageRight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGERIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageRightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageRightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGERIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFInd(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFInd(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FIND", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricFormatTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricFormatTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICFORMATTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageLeftInactive(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageLeftInactive(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGELEFTINACTIVE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageLeftInactiveHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageLeftInactiveHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGELEFTINACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMarkMultiple(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
-            interop.setBoolAttribute(self.ref, "MARKMULTIPLE", .{}, arg);
-            return self.*;
+        pub fn setMarkMultiple(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
+            interop.setStrAttribute(self.ref, "MARKMULTIPLE", .{}, arg);
+            return self;
         }
 
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -1863,105 +1863,104 @@ pub const MatrixEx = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricFormat(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumEricFormat(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMERICFORMAT", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setWidth(self: *Initializer, index: i32, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setWidth(self: Initializer, index: i32, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "WIDTH", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setTouch(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTouch(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "TOUCH", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBusYProgress(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBusYProgress(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "BUSYPROGRESS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setReadonly(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setReadonly(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "READONLY", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFInDmatchWholeCell(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFInDmatchWholeCell(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FINDMATCHWHOLECELL", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumLinVisible(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNumLinVisible(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NUMLIN_VISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPropagateFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBackingStore(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackingStore(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "BACKINGSTORE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageBottomPress(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageBottomPress(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "SB_IMAGEBOTTOMPRESS", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSbImageBottomPressHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSbImageBottomPressHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "SB_IMAGEBOTTOMPRESS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMdiClient(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiClient(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "MDICLIENT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMdiMenu(self: *Initializer, arg: *iup.Menu) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiMenu(self: Initializer, arg: *iup.Menu) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandleAttribute(self.ref, "MDIMENU", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMdiMenuHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMdiMenuHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "MDIMENU", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -1974,24 +1973,23 @@ pub const MatrixEx = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -2008,388 +2006,388 @@ pub const MatrixEx = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setColResizeCallback(self: *Initializer, callback: ?OnColResizeFn) Initializer {
+        pub fn setColResizeCallback(self: Initializer, callback: ?*const OnColResizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnColResizeFn, "COLRESIZE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setWheelCallback(self: *Initializer, callback: ?OnWheelFn) Initializer {
+        pub fn setWheelCallback(self: Initializer, callback: ?*const OnWheelFn) Initializer {
             const Handler = CallbackHandler(Self, OnWheelFn, "WHEEL_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setEditMouseMoveCallback(self: *Initializer, callback: ?OnEditMouseMoveFn) Initializer {
+        pub fn setEditMouseMoveCallback(self: Initializer, callback: ?*const OnEditMouseMoveFn) Initializer {
             const Handler = CallbackHandler(Self, OnEditMouseMoveFn, "EDITMOUSEMOVE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropCheckCallback(self: *Initializer, callback: ?OnDropCheckFn) Initializer {
+        pub fn setDropCheckCallback(self: Initializer, callback: ?*const OnDropCheckFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropCheckFn, "DROPCHECK_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+        pub fn setDestroyCallback(self: Initializer, callback: ?*const OnDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricSetValueCallback(self: *Initializer, callback: ?OnNumEricSetValueFn) Initializer {
+        pub fn setNumEricSetValueCallback(self: Initializer, callback: ?*const OnNumEricSetValueFn) Initializer {
             const Handler = CallbackHandler(Self, OnNumEricSetValueFn, "NUMERICSETVALUE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setKillFocusCallback(self: *Initializer, callback: ?OnKillFocusFn) Initializer {
+        pub fn setKillFocusCallback(self: Initializer, callback: ?*const OnKillFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setMotionCallback(self: *Initializer, callback: ?OnMotionFn) Initializer {
+        pub fn setMotionCallback(self: Initializer, callback: ?*const OnMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragEndCallback(self: *Initializer, callback: ?OnDragEndFn) Initializer {
+        pub fn setDragEndCallback(self: Initializer, callback: ?*const OnDragEndFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setSortColUmncompareCallback(self: *Initializer, callback: ?OnSortColUmncompareFn) Initializer {
+        pub fn setSortColUmncompareCallback(self: Initializer, callback: ?*const OnSortColUmncompareFn) Initializer {
             const Handler = CallbackHandler(Self, OnSortColUmncompareFn, "SORTCOLUMNCOMPARE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+        pub fn setPostMessageCallback(self: Initializer, callback: ?*const OnPostMessageFn) Initializer {
             const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setTranslateValueCallback(self: *Initializer, callback: ?OnTranslateValueFn) Initializer {
+        pub fn setTranslateValueCallback(self: Initializer, callback: ?*const OnTranslateValueFn) Initializer {
             const Handler = CallbackHandler(Self, OnTranslateValueFn, "TRANSLATEVALUE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setScrollCallback(self: *Initializer, callback: ?OnScrollFn) Initializer {
+        pub fn setScrollCallback(self: Initializer, callback: ?*const OnScrollFn) Initializer {
             const Handler = CallbackHandler(Self, OnScrollFn, "SCROLL_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setMouseMoveCallback(self: *Initializer, callback: ?OnMouseMoveFn) Initializer {
+        pub fn setMouseMoveCallback(self: Initializer, callback: ?*const OnMouseMoveFn) Initializer {
             const Handler = CallbackHandler(Self, OnMouseMoveFn, "MOUSEMOVE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
+        pub fn setActionCallback(self: Initializer, callback: ?*const OnActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnActionFn, "ACTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setWomCallback(self: *Initializer, callback: ?OnWomFn) Initializer {
+        pub fn setWomCallback(self: Initializer, callback: ?*const OnWomFn) Initializer {
             const Handler = CallbackHandler(Self, OnWomFn, "WOM_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropDataCallback(self: *Initializer, callback: ?OnDropDataFn) Initializer {
+        pub fn setDropDataCallback(self: Initializer, callback: ?*const OnDropDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setKAnyCallback(self: *Initializer, callback: ?OnKAnyFn) Initializer {
+        pub fn setKAnyCallback(self: Initializer, callback: ?*const OnKAnyFn) Initializer {
             const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setScrollTopCallback(self: *Initializer, callback: ?OnScrollTopFn) Initializer {
+        pub fn setScrollTopCallback(self: Initializer, callback: ?*const OnScrollTopFn) Initializer {
             const Handler = CallbackHandler(Self, OnScrollTopFn, "SCROLLTOP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropCallback(self: *Initializer, callback: ?OnDropFn) Initializer {
+        pub fn setDropCallback(self: Initializer, callback: ?*const OnDropFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropFn, "DROP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setMarkCallback(self: *Initializer, callback: ?OnMarkFn) Initializer {
+        pub fn setMarkCallback(self: Initializer, callback: ?*const OnMarkFn) Initializer {
             const Handler = CallbackHandler(Self, OnMarkFn, "MARK_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setEnterItemCallback(self: *Initializer, callback: ?OnEnterItemFn) Initializer {
+        pub fn setEnterItemCallback(self: Initializer, callback: ?*const OnEnterItemFn) Initializer {
             const Handler = CallbackHandler(Self, OnEnterItemFn, "ENTERITEM_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+        pub fn setUnmapCallback(self: Initializer, callback: ?*const OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setEnterWindowCallback(self: *Initializer, callback: ?OnEnterWindowFn) Initializer {
+        pub fn setEnterWindowCallback(self: Initializer, callback: ?*const OnEnterWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setLeaveWindowCallback(self: *Initializer, callback: ?OnLeaveWindowFn) Initializer {
+        pub fn setLeaveWindowCallback(self: Initializer, callback: ?*const OnLeaveWindowFn) Initializer {
             const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setClickCallback(self: *Initializer, callback: ?OnClickFn) Initializer {
+        pub fn setClickCallback(self: Initializer, callback: ?*const OnClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnClickFn, "CLICK_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setMarkedItCallback(self: *Initializer, callback: ?OnMarkedItFn) Initializer {
+        pub fn setMarkedItCallback(self: Initializer, callback: ?*const OnMarkedItFn) Initializer {
             const Handler = CallbackHandler(Self, OnMarkedItFn, "MARKEDIT_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragBeginCallback(self: *Initializer, callback: ?OnDragBeginFn) Initializer {
+        pub fn setDragBeginCallback(self: Initializer, callback: ?*const OnDragBeginFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setTypeCallback(self: *Initializer, callback: ?OnTypeFn) Initializer {
+        pub fn setTypeCallback(self: Initializer, callback: ?*const OnTypeFn) Initializer {
             const Handler = CallbackHandler(Self, OnTypeFn, "TYPE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDataSizeCallback(self: *Initializer, callback: ?OnDragDataSizeFn) Initializer {
+        pub fn setDragDataSizeCallback(self: Initializer, callback: ?*const OnDragDataSizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setEditReleaseCallback(self: *Initializer, callback: ?OnEditReleaseFn) Initializer {
+        pub fn setEditReleaseCallback(self: Initializer, callback: ?*const OnEditReleaseFn) Initializer {
             const Handler = CallbackHandler(Self, OnEditReleaseFn, "EDITRELEASE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+        pub fn setLDestroyCallback(self: Initializer, callback: ?*const OnLDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setCanvasActionCallback(self: *Initializer, callback: ?OnCanvasActionFn) Initializer {
+        pub fn setCanvasActionCallback(self: Initializer, callback: ?*const OnCanvasActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnCanvasActionFn, "ACTION");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setEditClickCallback(self: *Initializer, callback: ?OnEditClickFn) Initializer {
+        pub fn setEditClickCallback(self: Initializer, callback: ?*const OnEditClickFn) Initializer {
             const Handler = CallbackHandler(Self, OnEditClickFn, "EDITCLICK_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPasteSizeCallback(self: *Initializer, callback: ?OnPasteSizeFn) Initializer {
+        pub fn setPasteSizeCallback(self: Initializer, callback: ?*const OnPasteSizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnPasteSizeFn, "PASTESIZE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setValueEditCallback(self: *Initializer, callback: ?OnValueEditFn) Initializer {
+        pub fn setValueEditCallback(self: Initializer, callback: ?*const OnValueEditFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueEditFn, "VALUE_EDIT_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontCallback(self: *Initializer, callback: ?OnFontFn) Initializer {
+        pub fn setFontCallback(self: Initializer, callback: ?*const OnFontFn) Initializer {
             const Handler = CallbackHandler(Self, OnFontFn, "FONT_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropMotionCallback(self: *Initializer, callback: ?OnDropMotionFn) Initializer {
+        pub fn setDropMotionCallback(self: Initializer, callback: ?*const OnDropMotionFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setKeyPressCallback(self: *Initializer, callback: ?OnKeyPressFn) Initializer {
+        pub fn setKeyPressCallback(self: Initializer, callback: ?*const OnKeyPressFn) Initializer {
             const Handler = CallbackHandler(Self, OnKeyPressFn, "KEYPRESS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setBusYCallback(self: *Initializer, callback: ?OnBusYFn) Initializer {
+        pub fn setBusYCallback(self: Initializer, callback: ?*const OnBusYFn) Initializer {
             const Handler = CallbackHandler(Self, OnBusYFn, "BUSY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setToggleValueCallback(self: *Initializer, callback: ?OnToggleValueFn) Initializer {
+        pub fn setToggleValueCallback(self: Initializer, callback: ?*const OnToggleValueFn) Initializer {
             const Handler = CallbackHandler(Self, OnToggleValueFn, "TOGGLEVALUE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setResizeCallback(self: *Initializer, callback: ?OnResizeFn) Initializer {
+        pub fn setResizeCallback(self: Initializer, callback: ?*const OnResizeFn) Initializer {
             const Handler = CallbackHandler(Self, OnResizeFn, "RESIZE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setGetFocusCallback(self: *Initializer, callback: ?OnGetFocusFn) Initializer {
+        pub fn setGetFocusCallback(self: Initializer, callback: ?*const OnGetFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setHelpCallback(self: *Initializer, callback: ?OnHelpFn) Initializer {
+        pub fn setHelpCallback(self: Initializer, callback: ?*const OnHelpFn) Initializer {
             const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setFocusCallback(self: *Initializer, callback: ?OnFocusFn) Initializer {
+        pub fn setFocusCallback(self: Initializer, callback: ?*const OnFocusFn) Initializer {
             const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropSelectCallback(self: *Initializer, callback: ?OnDropSelectFn) Initializer {
+        pub fn setDropSelectCallback(self: Initializer, callback: ?*const OnDropSelectFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropSelectFn, "DROPSELECT_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDropFilesCallback(self: *Initializer, callback: ?OnDropFilesFn) Initializer {
+        pub fn setDropFilesCallback(self: Initializer, callback: ?*const OnDropFilesFn) Initializer {
             const Handler = CallbackHandler(Self, OnDropFilesFn, "DROPFILES_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setEditIOnCallback(self: *Initializer, callback: ?OnEditIOnFn) Initializer {
+        pub fn setEditIOnCallback(self: Initializer, callback: ?*const OnEditIOnFn) Initializer {
             const Handler = CallbackHandler(Self, OnEditIOnFn, "EDITION_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setMenuDropCallback(self: *Initializer, callback: ?OnMenuDropFn) Initializer {
+        pub fn setMenuDropCallback(self: Initializer, callback: ?*const OnMenuDropFn) Initializer {
             const Handler = CallbackHandler(Self, OnMenuDropFn, "MENUDROP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDrawCallback(self: *Initializer, callback: ?OnDrawFn) Initializer {
+        pub fn setDrawCallback(self: Initializer, callback: ?*const OnDrawFn) Initializer {
             const Handler = CallbackHandler(Self, OnDrawFn, "DRAW_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setMenuCOnTextCloseCallback(self: *Initializer, callback: ?OnMenuCOnTextCloseFn) Initializer {
+        pub fn setMenuCOnTextCloseCallback(self: Initializer, callback: ?*const OnMenuCOnTextCloseFn) Initializer {
             const Handler = CallbackHandler(Self, OnMenuCOnTextCloseFn, "MENUCONTEXTCLOSE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setValueCallback(self: *Initializer, callback: ?OnValueFn) Initializer {
+        pub fn setValueCallback(self: Initializer, callback: ?*const OnValueFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueFn, "VALUE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setValueChangedCallback(self: *Initializer, callback: ?OnValueChangedFn) Initializer {
+        pub fn setValueChangedCallback(self: Initializer, callback: ?*const OnValueChangedFn) Initializer {
             const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setReleaseCallback(self: *Initializer, callback: ?OnReleaseFn) Initializer {
+        pub fn setReleaseCallback(self: Initializer, callback: ?*const OnReleaseFn) Initializer {
             const Handler = CallbackHandler(Self, OnReleaseFn, "RELEASE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setDragDataCallback(self: *Initializer, callback: ?OnDragDataFn) Initializer {
+        pub fn setDragDataCallback(self: Initializer, callback: ?*const OnDragDataFn) Initializer {
             const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setButtonCallback(self: *Initializer, callback: ?OnButtonFn) Initializer {
+        pub fn setButtonCallback(self: Initializer, callback: ?*const OnButtonFn) Initializer {
             const Handler = CallbackHandler(Self, OnButtonFn, "BUTTON_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+        pub fn setMapCallback(self: Initializer, callback: ?*const OnMapFn) Initializer {
             const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setFgColorCallback(self: *Initializer, callback: ?OnFgColorFn) Initializer {
+        pub fn setFgColorCallback(self: Initializer, callback: ?*const OnFgColorFn) Initializer {
             const Handler = CallbackHandler(Self, OnFgColorFn, "FGCOLOR_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setNumEricGetValueCallback(self: *Initializer, callback: ?OnNumEricGetValueFn) Initializer {
+        pub fn setNumEricGetValueCallback(self: Initializer, callback: ?*const OnNumEricGetValueFn) Initializer {
             const Handler = CallbackHandler(Self, OnNumEricGetValueFn, "NUMERICGETVALUE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setBgColorCallback(self: *Initializer, callback: ?OnBgColorFn) Initializer {
+        pub fn setBgColorCallback(self: Initializer, callback: ?*const OnBgColorFn) Initializer {
             const Handler = CallbackHandler(Self, OnBgColorFn, "BGCOLOR_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setMenuCOnTextCallback(self: *Initializer, callback: ?OnMenuCOnTextFn) Initializer {
+        pub fn setMenuCOnTextCallback(self: Initializer, callback: ?*const OnMenuCOnTextFn) Initializer {
             const Handler = CallbackHandler(Self, OnMenuCOnTextFn, "MENUCONTEXT_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setLeaveItemCallback(self: *Initializer, callback: ?OnLeaveItemFn) Initializer {
+        pub fn setLeaveItemCallback(self: Initializer, callback: ?*const OnLeaveItemFn) Initializer {
             const Handler = CallbackHandler(Self, OnLeaveItemFn, "LEAVEITEM_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setResizeMatrixCallback(self: *Initializer, callback: ?OnResizeMatrixFn) Initializer {
+        pub fn setResizeMatrixCallback(self: Initializer, callback: ?*const OnResizeMatrixFn) Initializer {
             const Handler = CallbackHandler(Self, OnResizeMatrixFn, "RESIZEMATRIX_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -2452,14 +2450,14 @@ pub const MatrixEx = opaque {
         }
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -2495,19 +2493,19 @@ pub const MatrixEx = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
@@ -4621,12 +4619,12 @@ pub const MatrixEx = opaque {
         interop.setStrAttribute(self, "SB_IMAGELEFTINACTIVE", .{}, arg);
     }
 
-    pub fn getMarkMultiple(self: *Self) bool {
-        return interop.getBoolAttribute(self, "MARKMULTIPLE", .{});
+    pub fn getMarkMultiple(self: *Self) [:0]const u8 {
+        return interop.getStrAttribute(self, "MARKMULTIPLE", .{});
     }
 
-    pub fn setMarkMultiple(self: *Self, arg: bool) void {
-        interop.setBoolAttribute(self, "MARKMULTIPLE", .{}, arg);
+    pub fn setMarkMultiple(self: *Self, arg: [:0]const u8) void {
+        interop.setStrAttribute(self, "MARKMULTIPLE", .{}, arg);
     }
 
     pub fn getFloating(self: *Self) ?Floating {
@@ -4781,8 +4779,7 @@ pub const MatrixEx = opaque {
         interop.setStrAttribute(self, "MDIMENU", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -4803,8 +4800,7 @@ pub const MatrixEx = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -4826,8 +4822,7 @@ pub const MatrixEx = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -4848,8 +4843,7 @@ pub const MatrixEx = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -4870,317 +4864,317 @@ pub const MatrixEx = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    pub fn setColResizeCallback(self: *Self, callback: ?OnColResizeFn) void {
+    pub fn setColResizeCallback(self: *Self, callback: ?*const OnColResizeFn) void {
         const Handler = CallbackHandler(Self, OnColResizeFn, "COLRESIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setWheelCallback(self: *Self, callback: ?OnWheelFn) void {
+    pub fn setWheelCallback(self: *Self, callback: ?*const OnWheelFn) void {
         const Handler = CallbackHandler(Self, OnWheelFn, "WHEEL_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setEditMouseMoveCallback(self: *Self, callback: ?OnEditMouseMoveFn) void {
+    pub fn setEditMouseMoveCallback(self: *Self, callback: ?*const OnEditMouseMoveFn) void {
         const Handler = CallbackHandler(Self, OnEditMouseMoveFn, "EDITMOUSEMOVE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropCheckCallback(self: *Self, callback: ?OnDropCheckFn) void {
+    pub fn setDropCheckCallback(self: *Self, callback: ?*const OnDropCheckFn) void {
         const Handler = CallbackHandler(Self, OnDropCheckFn, "DROPCHECK_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+    pub fn setDestroyCallback(self: *Self, callback: ?*const OnDestroyFn) void {
         const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setNumEricSetValueCallback(self: *Self, callback: ?OnNumEricSetValueFn) void {
+    pub fn setNumEricSetValueCallback(self: *Self, callback: ?*const OnNumEricSetValueFn) void {
         const Handler = CallbackHandler(Self, OnNumEricSetValueFn, "NUMERICSETVALUE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setKillFocusCallback(self: *Self, callback: ?OnKillFocusFn) void {
+    pub fn setKillFocusCallback(self: *Self, callback: ?*const OnKillFocusFn) void {
         const Handler = CallbackHandler(Self, OnKillFocusFn, "KILLFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMotionCallback(self: *Self, callback: ?OnMotionFn) void {
+    pub fn setMotionCallback(self: *Self, callback: ?*const OnMotionFn) void {
         const Handler = CallbackHandler(Self, OnMotionFn, "MOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragEndCallback(self: *Self, callback: ?OnDragEndFn) void {
+    pub fn setDragEndCallback(self: *Self, callback: ?*const OnDragEndFn) void {
         const Handler = CallbackHandler(Self, OnDragEndFn, "DRAGEND_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setSortColUmncompareCallback(self: *Self, callback: ?OnSortColUmncompareFn) void {
+    pub fn setSortColUmncompareCallback(self: *Self, callback: ?*const OnSortColUmncompareFn) void {
         const Handler = CallbackHandler(Self, OnSortColUmncompareFn, "SORTCOLUMNCOMPARE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+    pub fn setPostMessageCallback(self: *Self, callback: ?*const OnPostMessageFn) void {
         const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setTranslateValueCallback(self: *Self, callback: ?OnTranslateValueFn) void {
+    pub fn setTranslateValueCallback(self: *Self, callback: ?*const OnTranslateValueFn) void {
         const Handler = CallbackHandler(Self, OnTranslateValueFn, "TRANSLATEVALUE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setScrollCallback(self: *Self, callback: ?OnScrollFn) void {
+    pub fn setScrollCallback(self: *Self, callback: ?*const OnScrollFn) void {
         const Handler = CallbackHandler(Self, OnScrollFn, "SCROLL_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMouseMoveCallback(self: *Self, callback: ?OnMouseMoveFn) void {
+    pub fn setMouseMoveCallback(self: *Self, callback: ?*const OnMouseMoveFn) void {
         const Handler = CallbackHandler(Self, OnMouseMoveFn, "MOUSEMOVE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
+    pub fn setActionCallback(self: *Self, callback: ?*const OnActionFn) void {
         const Handler = CallbackHandler(Self, OnActionFn, "ACTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setWomCallback(self: *Self, callback: ?OnWomFn) void {
+    pub fn setWomCallback(self: *Self, callback: ?*const OnWomFn) void {
         const Handler = CallbackHandler(Self, OnWomFn, "WOM_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropDataCallback(self: *Self, callback: ?OnDropDataFn) void {
+    pub fn setDropDataCallback(self: *Self, callback: ?*const OnDropDataFn) void {
         const Handler = CallbackHandler(Self, OnDropDataFn, "DROPDATA_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setKAnyCallback(self: *Self, callback: ?OnKAnyFn) void {
+    pub fn setKAnyCallback(self: *Self, callback: ?*const OnKAnyFn) void {
         const Handler = CallbackHandler(Self, OnKAnyFn, "K_ANY");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setScrollTopCallback(self: *Self, callback: ?OnScrollTopFn) void {
+    pub fn setScrollTopCallback(self: *Self, callback: ?*const OnScrollTopFn) void {
         const Handler = CallbackHandler(Self, OnScrollTopFn, "SCROLLTOP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropCallback(self: *Self, callback: ?OnDropFn) void {
+    pub fn setDropCallback(self: *Self, callback: ?*const OnDropFn) void {
         const Handler = CallbackHandler(Self, OnDropFn, "DROP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMarkCallback(self: *Self, callback: ?OnMarkFn) void {
+    pub fn setMarkCallback(self: *Self, callback: ?*const OnMarkFn) void {
         const Handler = CallbackHandler(Self, OnMarkFn, "MARK_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setEnterItemCallback(self: *Self, callback: ?OnEnterItemFn) void {
+    pub fn setEnterItemCallback(self: *Self, callback: ?*const OnEnterItemFn) void {
         const Handler = CallbackHandler(Self, OnEnterItemFn, "ENTERITEM_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+    pub fn setUnmapCallback(self: *Self, callback: ?*const OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setEnterWindowCallback(self: *Self, callback: ?OnEnterWindowFn) void {
+    pub fn setEnterWindowCallback(self: *Self, callback: ?*const OnEnterWindowFn) void {
         const Handler = CallbackHandler(Self, OnEnterWindowFn, "ENTERWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setLeaveWindowCallback(self: *Self, callback: ?OnLeaveWindowFn) void {
+    pub fn setLeaveWindowCallback(self: *Self, callback: ?*const OnLeaveWindowFn) void {
         const Handler = CallbackHandler(Self, OnLeaveWindowFn, "LEAVEWINDOW_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setClickCallback(self: *Self, callback: ?OnClickFn) void {
+    pub fn setClickCallback(self: *Self, callback: ?*const OnClickFn) void {
         const Handler = CallbackHandler(Self, OnClickFn, "CLICK_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMarkedItCallback(self: *Self, callback: ?OnMarkedItFn) void {
+    pub fn setMarkedItCallback(self: *Self, callback: ?*const OnMarkedItFn) void {
         const Handler = CallbackHandler(Self, OnMarkedItFn, "MARKEDIT_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragBeginCallback(self: *Self, callback: ?OnDragBeginFn) void {
+    pub fn setDragBeginCallback(self: *Self, callback: ?*const OnDragBeginFn) void {
         const Handler = CallbackHandler(Self, OnDragBeginFn, "DRAGBEGIN_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setTypeCallback(self: *Self, callback: ?OnTypeFn) void {
+    pub fn setTypeCallback(self: *Self, callback: ?*const OnTypeFn) void {
         const Handler = CallbackHandler(Self, OnTypeFn, "TYPE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataSizeCallback(self: *Self, callback: ?OnDragDataSizeFn) void {
+    pub fn setDragDataSizeCallback(self: *Self, callback: ?*const OnDragDataSizeFn) void {
         const Handler = CallbackHandler(Self, OnDragDataSizeFn, "DRAGDATASIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setEditReleaseCallback(self: *Self, callback: ?OnEditReleaseFn) void {
+    pub fn setEditReleaseCallback(self: *Self, callback: ?*const OnEditReleaseFn) void {
         const Handler = CallbackHandler(Self, OnEditReleaseFn, "EDITRELEASE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+    pub fn setLDestroyCallback(self: *Self, callback: ?*const OnLDestroyFn) void {
         const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setCanvasActionCallback(self: *Self, callback: ?OnCanvasActionFn) void {
+    pub fn setCanvasActionCallback(self: *Self, callback: ?*const OnCanvasActionFn) void {
         const Handler = CallbackHandler(Self, OnCanvasActionFn, "ACTION");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setEditClickCallback(self: *Self, callback: ?OnEditClickFn) void {
+    pub fn setEditClickCallback(self: *Self, callback: ?*const OnEditClickFn) void {
         const Handler = CallbackHandler(Self, OnEditClickFn, "EDITCLICK_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPasteSizeCallback(self: *Self, callback: ?OnPasteSizeFn) void {
+    pub fn setPasteSizeCallback(self: *Self, callback: ?*const OnPasteSizeFn) void {
         const Handler = CallbackHandler(Self, OnPasteSizeFn, "PASTESIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setValueEditCallback(self: *Self, callback: ?OnValueEditFn) void {
+    pub fn setValueEditCallback(self: *Self, callback: ?*const OnValueEditFn) void {
         const Handler = CallbackHandler(Self, OnValueEditFn, "VALUE_EDIT_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFontCallback(self: *Self, callback: ?OnFontFn) void {
+    pub fn setFontCallback(self: *Self, callback: ?*const OnFontFn) void {
         const Handler = CallbackHandler(Self, OnFontFn, "FONT_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropMotionCallback(self: *Self, callback: ?OnDropMotionFn) void {
+    pub fn setDropMotionCallback(self: *Self, callback: ?*const OnDropMotionFn) void {
         const Handler = CallbackHandler(Self, OnDropMotionFn, "DROPMOTION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setKeyPressCallback(self: *Self, callback: ?OnKeyPressFn) void {
+    pub fn setKeyPressCallback(self: *Self, callback: ?*const OnKeyPressFn) void {
         const Handler = CallbackHandler(Self, OnKeyPressFn, "KEYPRESS_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setBusYCallback(self: *Self, callback: ?OnBusYFn) void {
+    pub fn setBusYCallback(self: *Self, callback: ?*const OnBusYFn) void {
         const Handler = CallbackHandler(Self, OnBusYFn, "BUSY_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setToggleValueCallback(self: *Self, callback: ?OnToggleValueFn) void {
+    pub fn setToggleValueCallback(self: *Self, callback: ?*const OnToggleValueFn) void {
         const Handler = CallbackHandler(Self, OnToggleValueFn, "TOGGLEVALUE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setResizeCallback(self: *Self, callback: ?OnResizeFn) void {
+    pub fn setResizeCallback(self: *Self, callback: ?*const OnResizeFn) void {
         const Handler = CallbackHandler(Self, OnResizeFn, "RESIZE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setGetFocusCallback(self: *Self, callback: ?OnGetFocusFn) void {
+    pub fn setGetFocusCallback(self: *Self, callback: ?*const OnGetFocusFn) void {
         const Handler = CallbackHandler(Self, OnGetFocusFn, "GETFOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setHelpCallback(self: *Self, callback: ?OnHelpFn) void {
+    pub fn setHelpCallback(self: *Self, callback: ?*const OnHelpFn) void {
         const Handler = CallbackHandler(Self, OnHelpFn, "HELP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFocusCallback(self: *Self, callback: ?OnFocusFn) void {
+    pub fn setFocusCallback(self: *Self, callback: ?*const OnFocusFn) void {
         const Handler = CallbackHandler(Self, OnFocusFn, "FOCUS_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropSelectCallback(self: *Self, callback: ?OnDropSelectFn) void {
+    pub fn setDropSelectCallback(self: *Self, callback: ?*const OnDropSelectFn) void {
         const Handler = CallbackHandler(Self, OnDropSelectFn, "DROPSELECT_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDropFilesCallback(self: *Self, callback: ?OnDropFilesFn) void {
+    pub fn setDropFilesCallback(self: *Self, callback: ?*const OnDropFilesFn) void {
         const Handler = CallbackHandler(Self, OnDropFilesFn, "DROPFILES_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setEditIOnCallback(self: *Self, callback: ?OnEditIOnFn) void {
+    pub fn setEditIOnCallback(self: *Self, callback: ?*const OnEditIOnFn) void {
         const Handler = CallbackHandler(Self, OnEditIOnFn, "EDITION_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMenuDropCallback(self: *Self, callback: ?OnMenuDropFn) void {
+    pub fn setMenuDropCallback(self: *Self, callback: ?*const OnMenuDropFn) void {
         const Handler = CallbackHandler(Self, OnMenuDropFn, "MENUDROP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDrawCallback(self: *Self, callback: ?OnDrawFn) void {
+    pub fn setDrawCallback(self: *Self, callback: ?*const OnDrawFn) void {
         const Handler = CallbackHandler(Self, OnDrawFn, "DRAW_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMenuCOnTextCloseCallback(self: *Self, callback: ?OnMenuCOnTextCloseFn) void {
+    pub fn setMenuCOnTextCloseCallback(self: *Self, callback: ?*const OnMenuCOnTextCloseFn) void {
         const Handler = CallbackHandler(Self, OnMenuCOnTextCloseFn, "MENUCONTEXTCLOSE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setValueCallback(self: *Self, callback: ?OnValueFn) void {
+    pub fn setValueCallback(self: *Self, callback: ?*const OnValueFn) void {
         const Handler = CallbackHandler(Self, OnValueFn, "VALUE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setValueChangedCallback(self: *Self, callback: ?OnValueChangedFn) void {
+    pub fn setValueChangedCallback(self: *Self, callback: ?*const OnValueChangedFn) void {
         const Handler = CallbackHandler(Self, OnValueChangedFn, "VALUECHANGED_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setReleaseCallback(self: *Self, callback: ?OnReleaseFn) void {
+    pub fn setReleaseCallback(self: *Self, callback: ?*const OnReleaseFn) void {
         const Handler = CallbackHandler(Self, OnReleaseFn, "RELEASE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setDragDataCallback(self: *Self, callback: ?OnDragDataFn) void {
+    pub fn setDragDataCallback(self: *Self, callback: ?*const OnDragDataFn) void {
         const Handler = CallbackHandler(Self, OnDragDataFn, "DRAGDATA_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setButtonCallback(self: *Self, callback: ?OnButtonFn) void {
+    pub fn setButtonCallback(self: *Self, callback: ?*const OnButtonFn) void {
         const Handler = CallbackHandler(Self, OnButtonFn, "BUTTON_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+    pub fn setMapCallback(self: *Self, callback: ?*const OnMapFn) void {
         const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setFgColorCallback(self: *Self, callback: ?OnFgColorFn) void {
+    pub fn setFgColorCallback(self: *Self, callback: ?*const OnFgColorFn) void {
         const Handler = CallbackHandler(Self, OnFgColorFn, "FGCOLOR_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setNumEricGetValueCallback(self: *Self, callback: ?OnNumEricGetValueFn) void {
+    pub fn setNumEricGetValueCallback(self: *Self, callback: ?*const OnNumEricGetValueFn) void {
         const Handler = CallbackHandler(Self, OnNumEricGetValueFn, "NUMERICGETVALUE_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setBgColorCallback(self: *Self, callback: ?OnBgColorFn) void {
+    pub fn setBgColorCallback(self: *Self, callback: ?*const OnBgColorFn) void {
         const Handler = CallbackHandler(Self, OnBgColorFn, "BGCOLOR_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setMenuCOnTextCallback(self: *Self, callback: ?OnMenuCOnTextFn) void {
+    pub fn setMenuCOnTextCallback(self: *Self, callback: ?*const OnMenuCOnTextFn) void {
         const Handler = CallbackHandler(Self, OnMenuCOnTextFn, "MENUCONTEXT_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setLeaveItemCallback(self: *Self, callback: ?OnLeaveItemFn) void {
+    pub fn setLeaveItemCallback(self: *Self, callback: ?*const OnLeaveItemFn) void {
         const Handler = CallbackHandler(Self, OnLeaveItemFn, "LEAVEITEM_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setResizeMatrixCallback(self: *Self, callback: ?OnResizeMatrixFn) void {
+    pub fn setResizeMatrixCallback(self: *Self, callback: ?*const OnResizeMatrixFn) void {
         const Handler = CallbackHandler(Self, OnResizeMatrixFn, "RESIZEMATRIX_CB");
         Handler.setCallback(self, callback);
     }
@@ -7314,12 +7308,12 @@ test "MatrixEx MarkMultiple" {
     try iup.MainLoop.open();
     defer iup.MainLoop.close();
 
-    var item = try (iup.MatrixEx.init().setMarkMultiple(true).unwrap());
+    var item = try (iup.MatrixEx.init().setMarkMultiple("Hello").unwrap());
     defer item.deinit();
 
     var ret = item.getMarkMultiple();
 
-    try std.testing.expect(ret == true);
+    try std.testing.expect(std.mem.eql(u8, ret, "Hello"));
 }
 
 test "MatrixEx Floating" {

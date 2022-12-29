@@ -4,8 +4,6 @@
 [![made with Zig](https://img.shields.io/badge/made%20with%20%E2%9D%A4%20-Zig-orange)]()
 [![made with Zig](https://img.shields.io/badge/unlicensed-public%20domain-brightgreen)]()
 
-## WIP Work in Progress
-
 A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
 
 ## Examples
@@ -29,25 +27,25 @@ A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [
 A simple hello world example looks like this:
 
 ```Zig
-usingnamespace @import("iup.zig");
+const iup = @import("iup.zig");
 
 pub fn main() !void {
-    try MainLoop.open();
-    defer MainLoop.close();
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
 
-    var main_dialog = try (Dialog.init()
+    var main_dialog = try (iup.Dialog.init()
         .setTitle("Hello World")
         .setChildren(
         .{
-            VBox.init()
+            iup.VBox.init()
                 .setMargin(10, 10)
                 .setGap(10)
                 .setAlignment(.ACenter)
                 .setChildren(
                 .{
-                    Label.init()
+                    iup.Label.init()
                         .setTitle("Hello World from IUPforZig"),
-                    Button.init()
+                    iup.Button.init()
                         .setTitle("OK")
                         .setActionCallback(exit),
                 },
@@ -57,11 +55,11 @@ pub fn main() !void {
     defer main_dialog.deinit();
 
     try main_dialog.showXY(.Center, .Center);
-    try MainLoop.beginLoop();
+    try iup.MainLoop.beginLoop();
 }
 
-fn exit(button: *Button) !void {
-    MainLoop.exitLoop();
+fn exit(button: *iup.Button) !void {
+    iup.MainLoop.exitLoop();
 }
 ```
 
@@ -121,21 +119,21 @@ int main(int argc, char **argv)
 2. Equivalent example in Zig:
 
 ```zig
-usingnamespace @import("iup.zig");
+const iup = @import("iup.zig");
 
 pub fn main() !void {
-    try MainLoop.open();
-    defer MainLoop.close();
+    try iup.MainLoop.open();
+    defer iup.MainLoop.close();
 
-    var main_dialog = try (Dialog.init()
+    var main_dialog = try (iup.Dialog.init()
         .setTitle("Simple Notepad")
         .setSize(.Quarter, .Quarter)
         .setChildren(
         .{
-            VBox.init()
+            iup.VBox.init()
                 .setChildren(
                 .{
-                    Text.init()
+                    iup.Text.init()
                         .setMultiline(true)
                         .setExpand(.Yes),
                 },
@@ -145,7 +143,7 @@ pub fn main() !void {
     defer main_dialog.deinit();
 
     try main_dialog.showXY(.Center, .Center);
-    try MainLoop.beginLoop();
+    try iup.MainLoop.beginLoop();
 }
 ```
 

@@ -1,5 +1,5 @@
 ///
-/// Wraps everyhing used from C API 
+/// Wraps everyhing used from C API
 /// No IUP's API is used directly from other place.
 const std = @import("std");
 const iup = @import("iup.zig");
@@ -99,8 +99,8 @@ pub inline fn destroy(element: anytype) void {
 
 pub inline fn open() iup.Error!void {
     if (c.IupOpen(null, null) == c.IUP_ERROR) return iup.Error.OpenFailed;
-    if (c.IupControlsOpen() == c.IUP_ERROR)  return iup.Error.OpenFailed;
-    
+    if (c.IupControlsOpen() == c.IUP_ERROR) return iup.Error.OpenFailed;
+
     c.IupImageLibOpen();
 }
 
@@ -127,7 +127,7 @@ pub inline fn setHandle(handle: anytype, name: [:0]const u8) void {
 }
 
 pub inline fn getStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) [:0]const u8 {
-   return getNullableStrAttribute(handle, attribute, ids_tuple) orelse "";
+    return getNullableStrAttribute(handle, attribute, ids_tuple) orelse "";
 }
 
 pub inline fn getNullableStrAttribute(handle: anytype, attribute: [:0]const u8, ids_tuple: anytype) ?[:0]const u8 {
@@ -312,7 +312,7 @@ pub inline fn getPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]
     };
     if (ret == null) return null;
 
-    return @ptrCast(*T, @alignCast(@alignOf(*T),ret));
+    return @ptrCast(*T, @alignCast(@alignOf(*T), ret));
 }
 
 pub inline fn setPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: ?*T) void {
@@ -391,7 +391,7 @@ pub inline fn setNativeCallback(handle: anytype, attribute: [:0]const u8, callba
     }
 }
 
-pub inline fn setCallbackStoreAttribute(comptime TCallback: type, handle: anytype, attribute: [:0]const u8, value: ?TCallback) void {
+pub inline fn setCallbackStoreAttribute(comptime TCallback: type, handle: anytype, attribute: [:0]const u8, value: ?*const TCallback) void {
     if (value) |ptr| {
         // Global callbacks have null handler
         const handlePtr: ?*Handle = if (@TypeOf(handle) == void) null else getHandle(handle);
@@ -401,14 +401,14 @@ pub inline fn setCallbackStoreAttribute(comptime TCallback: type, handle: anytyp
     }
 }
 
-pub inline fn getCallbackStoreAttribute(comptime TCallback: type, handle: anytype, attribute: [:0]const u8) ?TCallback {
+pub inline fn getCallbackStoreAttribute(comptime TCallback: type, handle: anytype, attribute: [:0]const u8) ?*const TCallback {
 
     // Global callbacks have null handler
     const handlePtr: ?*Handle = if (@TypeOf(handle) == void) null else getHandle(handle);
 
     var ret = c.IupGetAttribute(handlePtr, toCStr(attribute));
     if (ret == null) return null;
-    return @ptrCast(TCallback, ret);
+    return @ptrCast(*const TCallback, ret);
 }
 
 pub inline fn showXY(handle: anytype, x: iup.DialogPosX, y: iup.DialogPosY) iup.Error!void {
@@ -436,7 +436,7 @@ pub inline fn hide(handle: anytype) void {
     _ = c.IupHide(getHandle(handle));
 }
 
-pub inline fn postMessage(handle: anytype, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void { 
+pub inline fn postMessage(handle: anytype, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
     c.IupPostMessage(getHandle(handle), toCStr(s), i, f, p);
 }
 
@@ -469,11 +469,11 @@ pub inline fn update(handle: anytype) void {
 
 pub inline fn updateChildren(handle: anytype) void {
     c.IupUpdateChildren(getHandle(handle));
-}        
+}
 
 pub inline fn redraw(handle: anytype, children: bool) void {
     c.IupRedraw(getHandle(handle), if (children) 1 else 0);
-} 
+}
 
 pub inline fn getChildCount(handle: anytype) i32 {
     return c.IupGetChildCount(getHandle(handle));

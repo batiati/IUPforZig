@@ -337,7 +337,8 @@ const DataSource = struct {
         defer self.deinit();
 
         try self.create("ZZA", "AAA");
-        var person = self.filter("").next() orelse {
+        var it = self.filter("");
+        var person = it.next() orelse {
             try std.testing.expect(false);
             return;
         };

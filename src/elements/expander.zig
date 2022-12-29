@@ -24,7 +24,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
 const Margin = iup.Margin;
 
-/// 
+///
 /// Creates a void container that can interactively show or hide its child.
 /// It does not have a native representation, but it contains also several
 /// elements to implement the bar handler.
@@ -33,7 +33,7 @@ pub const Expander = opaque {
     pub const NATIVE_TYPE = iup.NativeType.Void;
     const Self = @This();
 
-    /// 
+    ///
     /// ACTION ACTION Action generated when the element is activated.
     /// Affects each element differently.
     /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
@@ -44,7 +44,7 @@ pub const Expander = opaque {
     /// IupToggle
     pub const OnActionFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
     /// (since 3.11) int function(Ihandle* ih, int button, int pressed); [in C]
     /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua] ih:
@@ -55,13 +55,13 @@ pub const Expander = opaque {
     /// button: 0 - mouse button was released; 1 - mouse button was pressed.
     pub const OnExtraButtonFn = fn (self: *Self, arg0: i32, arg1: i32) anyerror!void;
 
-    /// 
+    ///
     /// OPENCLOSE_CB: Action generated before the expander state is interactively changed.
     /// (Since 3.11) int function(Ihandle* ih, int state); [in
     /// C]ih:openclose_cb(state: number) -> (ret: number) [in Lua]
     pub const OnOpenCloseFn = fn (self: *Self, arg0: i32) anyerror!void;
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -72,7 +72,7 @@ pub const Expander = opaque {
     /// Affects All that have a native representation.
     pub const OnMapFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -87,7 +87,7 @@ pub const Expander = opaque {
     /// Affects All.
     pub const OnDestroyFn = fn (self: *Self) anyerror!void;
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -98,7 +98,7 @@ pub const Expander = opaque {
 
     pub const OnPostMessageFn = fn (self: *Self, arg0: [:0]const u8, arg1: i32, arg2: f64, arg3: ?*anyopaque) anyerror!void;
 
-    /// 
+    ///
     /// EXPAND (non inheritable): the default value is "YES".
     pub const Expand = enum {
         Yes,
@@ -114,7 +114,7 @@ pub const Expander = opaque {
         Ignore,
         No,
     };
-    /// 
+    ///
     /// STATE (non inheritable): Show or hide the container elements.
     /// Possible values: "OPEN" (expanded) or "CLOSE" (collapsed).
     /// Default: OPEN.
@@ -124,7 +124,7 @@ pub const Expander = opaque {
         Open,
         Closed,
     };
-    /// 
+    ///
     /// ANIMATION (non inheritable): enable animation during open/close.
     /// Works only for BARPOSITION=TOP and does not works for AUTOSHOW.
     /// Also the child must be a native container like IupTabs, IupFrame,
@@ -157,284 +157,282 @@ pub const Expander = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         }
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setChildren(self: *Initializer, tuple: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setChildren(self: Initializer, tuple: anytype) Initializer {
+            if (self.last_error) |_| return self;
 
             Self.appendChildren(self.ref, tuple) catch |err| {
-                self.last_error = err;
+                return .{
+                    .ref = self.ref,
+                    .last_error = err,
+                };
             };
 
-            return self.*;
+            return self;
         }
 
-        pub fn setHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "HANDLENAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFrameTime(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrameTime(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "FRAMETIME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageOpenHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageOpenHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEOPENHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageOpenHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageOpenHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEOPENHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraPress1(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraPress1(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEEXTRAPRESS1", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraPress1HandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraPress1HandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEEXTRAPRESS1", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraPress2(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraPress2(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEEXTRAPRESS2", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraPress2HandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraPress2HandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEEXTRAPRESS2", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraPress3(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraPress3(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEEXTRAPRESS3", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraPress3HandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraPress3HandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEEXTRAPRESS3", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BACKCOLOR (non inheritable): background color of the bar handler.
         /// If not defined it will use the background color of the native parent.
         /// (since 3.9)
-        pub fn setBackColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBackColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "BACKCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setMaxSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMaxSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MAXSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TITLEIMAGE (non inheritable): title image, shown in the bar handler near
         /// the expand/collapse button.
         /// When set it will reset TITLE (image and text title are mutually exclusive).
         /// Shown only when BARPOSITION=TOP.
         /// (since 3.14)
-        pub fn setTitleImage(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleImage(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TITLEIMAGE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTitleImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleImageHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLEIMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPosition(self: *Initializer, x: i32, y: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPosition(self: Initializer, x: i32, y: i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
             interop.setStrAttribute(self.ref, "POSITION", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtra1(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtra1(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEEXTRA1", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtra1HandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtra1HandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEEXTRA1", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtra2(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtra2(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEEXTRA2", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtra2HandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtra2HandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEEXTRA2", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtra3(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtra3(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEEXTRA3", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtra3HandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtra3HandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEEXTRA3", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setCanFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setCanFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "CANFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setVisible(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setVisible(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "VISIBLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// IMAGE (non inheritable): image name to replace the arrow image by a custom
         /// image when STATE=CLOSE.
         /// Works only when BARPOSITION=TOP.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// See also IupImage.
         /// (since 3.11)
-        pub fn setImage(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImage(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGE", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// HIGHCOLOR (non inheritable): title text color when highlighted.
         /// Works only when TITLEEXPAND=Yes.
         /// Defaults to the FORECOLOR if not defined.
         /// (since 3.14)
-        pub fn setHighColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHighColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "HIGHCOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "THEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXPAND (non inheritable): the default value is "YES".
-        pub fn setExpand(self: *Initializer, arg: ?Expand) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpand(self: Initializer, arg: ?Expand) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "EXPAND", .{}, "YES"),
                 .Horizontal => interop.setStrAttribute(self.ref, "EXPAND", .{}, "HORIZONTAL"),
@@ -445,49 +443,48 @@ pub const Expander = opaque {
             } else {
                 interop.clearAttribute(self.ref, "EXPAND", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "SIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontSize(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "FONTSIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setUserSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setUserSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "USERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTitleImageOpenHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleImageOpenHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TITLEIMAGEOPENHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTitleImageOpenHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleImageOpenHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLEIMAGEOPENHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TITLE (non inheritable): title text, shown in the bar handler near the
         /// expand/collapse button.
         /// When set it will reset TITLEIMAGE.
@@ -495,20 +492,20 @@ pub const Expander = opaque {
         /// When the TITLE is defined and BARPOSITION=TOP then the expand/collapse
         /// button is left aligned.
         /// In all other situations the expand/collapse button is centered.
-        pub fn setTitle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setPropagateFocus(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPropagateFocus(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "PROPAGATEFOCUS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setFloating(self: *Initializer, arg: ?Floating) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFloating(self: Initializer, arg: ?Floating) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Yes => interop.setStrAttribute(self.ref, "FLOATING", .{}, "YES"),
                 .Ignore => interop.setStrAttribute(self.ref, "FLOATING", .{}, "IGNORE"),
@@ -516,219 +513,213 @@ pub const Expander = opaque {
             } else {
                 interop.clearAttribute(self.ref, "FLOATING", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setNormalizerGroup(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNormalizerGroup(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NORMALIZERGROUP", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setRasterSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setRasterSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "RASTERSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraHighlight1(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraHighlight1(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEEXTRAHIGHLIGHT1", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraHighlight1HandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraHighlight1HandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEEXTRAHIGHLIGHT1", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraHighlight2(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraHighlight2(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEEXTRAHIGHLIGHT2", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraHighlight2HandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraHighlight2HandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEEXTRAHIGHLIGHT2", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraHighlight3(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraHighlight3(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEEXTRAHIGHLIGHT3", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageExtraHighlight3HandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageExtraHighlight3HandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEEXTRAHIGHLIGHT3", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// BARSIZE (non inheritable): controls the size of the bar handler.
         /// Default: the height or width that fits all its internal elements according
         /// to BARPOSITION.
-        pub fn setBarSize(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBarSize(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "BARSIZE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FRAMECOLOR (non inheritable): frame line color.
         /// Default: the global attribute DLGFGCOLOR.
         /// (since 3.23)
-        pub fn setFrameColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrameColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "FRAMECOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontFace(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontFace(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTFACE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TITLEIMAGEOPEN: image name used when STATE=OPEN.
         /// TITLEIMAGEHIGHLIGHT: image name used when mouse is over the title image and
         /// STATE=CLOSE.TITLEIMAGEOPENHIGHLIGHT: image name used when mouse is over the
         /// title image and STATE=OPEN.
-        pub fn setTitleImageOpen(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleImageOpen(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TITLEIMAGEOPEN", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTitleImageOpenHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleImageOpenHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLEIMAGEOPEN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// STATE (non inheritable): Show or hide the container elements.
         /// Possible values: "OPEN" (expanded) or "CLOSE" (collapsed).
         /// Default: OPEN.
         /// Setting this attribute will automatically change the layout of the entire
         /// dialog so the child can be recomposed.
-        pub fn setState(self: *Initializer, arg: ?State) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setState(self: Initializer, arg: ?State) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Open => interop.setStrAttribute(self.ref, "STATE", .{}, "OPEN"),
                 .Closed => interop.setStrAttribute(self.ref, "STATE", .{}, "CLOSED"),
             } else {
                 interop.clearAttribute(self.ref, "STATE", .{});
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setActive(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setActive(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "ACTIVE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setImageHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setExpandWeight(self: *Initializer, arg: f64) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExpandWeight(self: Initializer, arg: f64) Initializer {
+            if (self.last_error) |_| return self;
             interop.setDoubleAttribute(self.ref, "EXPANDWEIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setMinSize(self: *Initializer, width: ?i32, height: ?i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setMinSize(self: Initializer, width: ?i32, height: ?i32) Initializer {
+            if (self.last_error) |_| return self;
             var buffer: [128]u8 = undefined;
             var value = Size.intIntToString(&buffer, width, height);
             interop.setStrAttribute(self.ref, "MINSIZE", .{}, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setTitleImageHighlight(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleImageHighlight(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TITLEIMAGEHIGHLIGHT", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTitleImageHighlightHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTitleImageHighlightHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TITLEIMAGEHIGHLIGHT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setNTheme(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setNTheme(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "NTHEME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// EXTRABUTTONS (non inheritable) (creation only): sets the number of extra
         /// image buttons at right when BARPOSITION=TOP.
         /// The maximum number of buttons is 3.
         /// See the EXTRABUTTON_CB callback.
         /// Default: 0.
         /// (since 3.11)
-        pub fn setExtraButtons(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setExtraButtons(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "EXTRABUTTONS", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// ANIMATION (non inheritable): enable animation during open/close.
         /// Works only for BARPOSITION=TOP and does not works for AUTOSHOW.
         /// Also the child must be a native container like IupTabs, IupFrame,
@@ -737,8 +728,8 @@ pub const Expander = opaque {
         /// appears as if a curtain is being pulled) or NO.
         /// Default: NO.
         /// ((since 3.14)
-        pub fn setAnimation(self: *Initializer, arg: ?Animation) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setAnimation(self: Initializer, arg: ?Animation) Initializer {
+            if (self.last_error) |_| return self;
             if (arg) |value| switch (value) {
                 .Slide => interop.setStrAttribute(self.ref, "ANIMATION", .{}, "SLIDE"),
                 .Curtain => interop.setStrAttribute(self.ref, "ANIMATION", .{}, "CURTAIN"),
@@ -746,82 +737,76 @@ pub const Expander = opaque {
             } else {
                 interop.clearAttribute(self.ref, "ANIMATION", .{});
             }
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FORECOLOR (non inheritable): title text color.
         /// Default: the global attribute DLGFGCOLOR.
         /// (since 3.9)
-        pub fn setForeColor(self: *Initializer, rgb: iup.Rgb) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setForeColor(self: Initializer, rgb: iup.Rgb) Initializer {
+            if (self.last_error) |_| return self;
             interop.setRgb(self.ref, "FORECOLOR", .{}, rgb);
-            return self.*;
+            return self;
         }
 
-        pub fn setFontStyle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFontStyle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONTSTYLE", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// IMAGEOPEN: image name used when STATE=OPEN.
         /// IMAGEHIGHLIGHT: image name used when mouse is over the bar handler and
         /// STATE=CLOSE.IMAGEOPENHIGHLIGHT: image name used when mouse is over the bar
         /// handler and STATE=OPEN.
-        pub fn setImageOpen(self: *Initializer, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageOpen(self: Initializer, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "IMAGEOPEN", .{}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setImageOpenHandleName(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setImageOpenHandleName(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "IMAGEOPEN", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FRAMEWIDTH (non inheritable): frame line width.
         /// Default: 1.
         /// (since 3.23)
-        pub fn setFrameWidth(self: *Initializer, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrameWidth(self: Initializer, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             interop.setIntAttribute(self.ref, "FRAMEWIDTH", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FRAME (non inheritable): enables the frame line around the bar area.
         /// Default: No.
         /// (since 3.23)
-        pub fn setFrame(self: *Initializer, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFrame(self: Initializer, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             interop.setBoolAttribute(self.ref, "FRAME", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
         /// MAXSIZE, THEME: also accepted.
-        pub fn setFont(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setFont(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "FONT", .{}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
         /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
         /// n starts at 0.
@@ -834,24 +819,23 @@ pub const Expander = opaque {
         /// TABIMAGE (non inheritable) (at children only): Same as TABIMAGEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabImage(self: *Initializer, index: i32, arg: anytype) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImage(self: Initializer, index: i32, arg: anytype) Initializer {
+            if (self.last_error) |_| return self;
             if (interop.validateHandle(.Image, arg)) {
                 interop.setHandleAttribute(self.ref, "TABIMAGE", .{index}, arg);
             } else |err| {
                 self.last_error = err;
             }
-            return self.*;
+            return self;
         }
 
-        pub fn setTabImageHandleName(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabImageHandleName(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABIMAGE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-
-        /// 
+        ///
         /// TABTITLEn (non inheritable): Contains the text to be shown in the
         /// respective tab title.
         /// n starts at 0.
@@ -868,13 +852,13 @@ pub const Expander = opaque {
         /// TABTITLE (non inheritable) (at children only): Same as TABTITLEn but set in
         /// each child.
         /// Works only if set before the child is added to the tabs.
-        pub fn setTabTitle(self: *Initializer, index: i32, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setTabTitle(self: Initializer, index: i32, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             interop.setStrAttribute(self.ref, "TABTITLE", .{index}, arg);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// ACTION ACTION Action generated when the element is activated.
         /// Affects each element differently.
         /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
@@ -883,13 +867,13 @@ pub const Expander = opaque {
         /// Please refer to each element's documentation.
         /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
         /// IupToggle
-        pub fn setActionCallback(self: *Initializer, callback: ?OnActionFn) Initializer {
+        pub fn setActionCallback(self: Initializer, callback: ?*const OnActionFn) Initializer {
             const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
         /// (since 3.11) int function(Ihandle* ih, int button, int pressed); [in C]
         /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua] ih:
@@ -898,23 +882,23 @@ pub const Expander = opaque {
         /// can be 1, 2 or 3.
         /// (this is not the same as BUTTON_CB)pressed: indicates the state of the
         /// button: 0 - mouse button was released; 1 - mouse button was pressed.
-        pub fn setExtraButtonCallback(self: *Initializer, callback: ?OnExtraButtonFn) Initializer {
+        pub fn setExtraButtonCallback(self: Initializer, callback: ?*const OnExtraButtonFn) Initializer {
             const Handler = CallbackHandler(Self, OnExtraButtonFn, "EXTRABUTTON_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// OPENCLOSE_CB: Action generated before the expander state is interactively changed.
         /// (Since 3.11) int function(Ihandle* ih, int state); [in
         /// C]ih:openclose_cb(state: number) -> (ret: number) [in Lua]
-        pub fn setOpenCloseCallback(self: *Initializer, callback: ?OnOpenCloseFn) Initializer {
+        pub fn setOpenCloseCallback(self: Initializer, callback: ?*const OnOpenCloseFn) Initializer {
             const Handler = CallbackHandler(Self, OnOpenCloseFn, "OPENCLOSE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
         /// updated in IupMap.
         /// When the element is a dialog, it is called after the layout is updated.
@@ -923,13 +907,13 @@ pub const Expander = opaque {
         /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
         /// Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setMapCallback(self: *Initializer, callback: ?OnMapFn) Initializer {
+        pub fn setMapCallback(self: Initializer, callback: ?*const OnMapFn) Initializer {
             const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
         /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
@@ -942,33 +926,33 @@ pub const Expander = opaque {
         /// release memory allocated by the binding for the element.
         /// Also the callback will be called before the language callback.
         /// Affects All.
-        pub fn setDestroyCallback(self: *Initializer, callback: ?OnDestroyFn) Initializer {
+        pub fn setDestroyCallback(self: Initializer, callback: ?*const OnDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        /// 
+        ///
         /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
         /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
         /// [in Lua] ih: identifier of the element that activated the event.
         /// Affects All that have a native representation.
-        pub fn setUnmapCallback(self: *Initializer, callback: ?OnUnmapFn) Initializer {
+        pub fn setUnmapCallback(self: Initializer, callback: ?*const OnUnmapFn) Initializer {
             const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setLDestroyCallback(self: *Initializer, callback: ?OnLDestroyFn) Initializer {
+        pub fn setLDestroyCallback(self: Initializer, callback: ?*const OnLDestroyFn) Initializer {
             const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
 
-        pub fn setPostMessageCallback(self: *Initializer, callback: ?OnPostMessageFn) Initializer {
+        pub fn setPostMessageCallback(self: Initializer, callback: ?*const OnPostMessageFn) Initializer {
             const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
             Handler.setCallback(self.ref, callback);
-            return self.*;
+            return self;
         }
     };
 
@@ -1031,14 +1015,14 @@ pub const Expander = opaque {
         }
     }
 
-    /// 
+    ///
     /// Destroys an interface element and all its children.
-    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
+    /// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.
     pub fn deinit(self: *Self) void {
         interop.destroy(self);
     }
 
-    /// 
+    ///
     /// Creates (maps) the native interface objects corresponding to the given IUP interface elements.
     /// It will also called recursively to create the native element of all the children in the element's tree.
     /// The element must be already attached to a mapped container, except the dialog. A child can only be mapped if its parent is already mapped.
@@ -1093,19 +1077,19 @@ pub const Expander = opaque {
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn update(self: *Self) void {
         Impl(Self).update(self);
     }
 
     ///
-    /// Updates the size and layout of all controls in the same dialog. 
+    /// Updates the size and layout of all controls in the same dialog.
     pub fn updateChildren(self: *Self) void {
         Impl(Self).updateChildren(self);
     }
 
     ///
-    /// Force the element and its children to be redrawn immediately. 
+    /// Force the element and its children to be redrawn immediately.
     pub fn redraw(self: *Self, redraw_children: bool) void {
         Impl(Self).redraw(self, redraw_children);
     }
@@ -1194,8 +1178,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "IMAGEEXTRAPRESS3", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BACKCOLOR (non inheritable): background color of the bar handler.
     /// If not defined it will use the background color of the native parent.
     /// (since 3.9)
@@ -1203,8 +1186,7 @@ pub const Expander = opaque {
         return interop.getRgb(self, "BACKCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// BACKCOLOR (non inheritable): background color of the bar handler.
     /// If not defined it will use the background color of the native parent.
     /// (since 3.9)
@@ -1223,8 +1205,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "MAXSIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// TITLEIMAGE (non inheritable): title image, shown in the bar handler near
     /// the expand/collapse button.
     /// When set it will reset TITLE (image and text title are mutually exclusive).
@@ -1238,8 +1219,7 @@ pub const Expander = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TITLEIMAGE (non inheritable): title image, shown in the bar handler near
     /// the expand/collapse button.
     /// When set it will reset TITLE (image and text title are mutually exclusive).
@@ -1332,8 +1312,7 @@ pub const Expander = opaque {
         interop.setBoolAttribute(self, "VISIBLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// IMAGE (non inheritable): image name to replace the arrow image by a custom
     /// image when STATE=CLOSE.
     /// Works only when BARPOSITION=TOP.
@@ -1348,8 +1327,7 @@ pub const Expander = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// IMAGE (non inheritable): image name to replace the arrow image by a custom
     /// image when STATE=CLOSE.
     /// Works only when BARPOSITION=TOP.
@@ -1365,8 +1343,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "IMAGE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// HIGHCOLOR (non inheritable): title text color when highlighted.
     /// Works only when TITLEEXPAND=Yes.
     /// Defaults to the FORECOLOR if not defined.
@@ -1375,8 +1352,7 @@ pub const Expander = opaque {
         return interop.getRgb(self, "HIGHCOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// HIGHCOLOR (non inheritable): title text color when highlighted.
     /// Works only when TITLEEXPAND=Yes.
     /// Defaults to the FORECOLOR if not defined.
@@ -1393,8 +1369,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "THEME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// EXPAND (non inheritable): the default value is "YES".
     pub fn getExpand(self: *Self) ?Expand {
         var ret = interop.getStrAttribute(self, "EXPAND", .{});
@@ -1408,8 +1383,7 @@ pub const Expander = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// EXPAND (non inheritable): the default value is "YES".
     pub fn setExpand(self: *Self, arg: ?Expand) void {
         if (arg) |value| switch (value) {
@@ -1435,8 +1409,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "SIZE", .{}, value);
     }
 
-
-    /// 
+    ///
     /// WID (read-only): returns -1 if mapped.
     pub fn getWId(self: *Self) i32 {
         return interop.getIntAttribute(self, "WID", .{});
@@ -1483,8 +1456,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "TITLEIMAGEOPENHIGHLIGHT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TITLE (non inheritable): title text, shown in the bar handler near the
     /// expand/collapse button.
     /// When set it will reset TITLEIMAGE.
@@ -1496,8 +1468,7 @@ pub const Expander = opaque {
         return interop.getStrAttribute(self, "TITLE", .{});
     }
 
-
-    /// 
+    ///
     /// TITLE (non inheritable): title text, shown in the bar handler near the
     /// expand/collapse button.
     /// When set it will reset TITLEIMAGE.
@@ -1606,8 +1577,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "IMAGEEXTRAHIGHLIGHT3", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// BARSIZE (non inheritable): controls the size of the bar handler.
     /// Default: the height or width that fits all its internal elements according
     /// to BARPOSITION.
@@ -1615,8 +1585,7 @@ pub const Expander = opaque {
         return interop.getIntAttribute(self, "BARSIZE", .{});
     }
 
-
-    /// 
+    ///
     /// BARSIZE (non inheritable): controls the size of the bar handler.
     /// Default: the height or width that fits all its internal elements according
     /// to BARPOSITION.
@@ -1624,8 +1593,7 @@ pub const Expander = opaque {
         interop.setIntAttribute(self, "BARSIZE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FRAMECOLOR (non inheritable): frame line color.
     /// Default: the global attribute DLGFGCOLOR.
     /// (since 3.23)
@@ -1633,8 +1601,7 @@ pub const Expander = opaque {
         return interop.getRgb(self, "FRAMECOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// FRAMECOLOR (non inheritable): frame line color.
     /// Default: the global attribute DLGFGCOLOR.
     /// (since 3.23)
@@ -1650,8 +1617,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "FONTFACE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TITLEIMAGEOPEN: image name used when STATE=OPEN.
     /// TITLEIMAGEHIGHLIGHT: image name used when mouse is over the title image and
     /// STATE=CLOSE.TITLEIMAGEOPENHIGHLIGHT: image name used when mouse is over the
@@ -1664,8 +1630,7 @@ pub const Expander = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TITLEIMAGEOPEN: image name used when STATE=OPEN.
     /// TITLEIMAGEHIGHLIGHT: image name used when mouse is over the title image and
     /// STATE=CLOSE.TITLEIMAGEOPENHIGHLIGHT: image name used when mouse is over the
@@ -1687,8 +1652,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "NAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// STATE (non inheritable): Show or hide the container elements.
     /// Possible values: "OPEN" (expanded) or "CLOSE" (collapsed).
     /// Default: OPEN.
@@ -1702,8 +1666,7 @@ pub const Expander = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// STATE (non inheritable): Show or hide the container elements.
     /// Possible values: "OPEN" (expanded) or "CLOSE" (collapsed).
     /// Default: OPEN.
@@ -1787,8 +1750,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "NTHEME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// ANIMATION (non inheritable): enable animation during open/close.
     /// Works only for BARPOSITION=TOP and does not works for AUTOSHOW.
     /// Also the child must be a native container like IupTabs, IupFrame,
@@ -1806,8 +1768,7 @@ pub const Expander = opaque {
         return null;
     }
 
-
-    /// 
+    ///
     /// ANIMATION (non inheritable): enable animation during open/close.
     /// Works only for BARPOSITION=TOP and does not works for AUTOSHOW.
     /// Also the child must be a native container like IupTabs, IupFrame,
@@ -1841,8 +1802,7 @@ pub const Expander = opaque {
         return Size.parse(str);
     }
 
-
-    /// 
+    ///
     /// FORECOLOR (non inheritable): title text color.
     /// Default: the global attribute DLGFGCOLOR.
     /// (since 3.9)
@@ -1850,8 +1810,7 @@ pub const Expander = opaque {
         return interop.getRgb(self, "FORECOLOR", .{});
     }
 
-
-    /// 
+    ///
     /// FORECOLOR (non inheritable): title text color.
     /// Default: the global attribute DLGFGCOLOR.
     /// (since 3.9)
@@ -1867,8 +1826,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "FONTSTYLE", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// IMAGEOPEN: image name used when STATE=OPEN.
     /// IMAGEHIGHLIGHT: image name used when mouse is over the bar handler and
     /// STATE=CLOSE.IMAGEOPENHIGHLIGHT: image name used when mouse is over the bar
@@ -1881,8 +1839,7 @@ pub const Expander = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// IMAGEOPEN: image name used when STATE=OPEN.
     /// IMAGEHIGHLIGHT: image name used when mouse is over the bar handler and
     /// STATE=CLOSE.IMAGEOPENHIGHLIGHT: image name used when mouse is over the bar
@@ -1896,8 +1853,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "IMAGEOPEN", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FRAMEWIDTH (non inheritable): frame line width.
     /// Default: 1.
     /// (since 3.23)
@@ -1905,8 +1861,7 @@ pub const Expander = opaque {
         return interop.getIntAttribute(self, "FRAMEWIDTH", .{});
     }
 
-
-    /// 
+    ///
     /// FRAMEWIDTH (non inheritable): frame line width.
     /// Default: 1.
     /// (since 3.23)
@@ -1914,8 +1869,7 @@ pub const Expander = opaque {
         interop.setIntAttribute(self, "FRAMEWIDTH", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FRAME (non inheritable): enables the frame line around the bar area.
     /// Default: No.
     /// (since 3.23)
@@ -1923,8 +1877,7 @@ pub const Expander = opaque {
         return interop.getBoolAttribute(self, "FRAME", .{});
     }
 
-
-    /// 
+    ///
     /// FRAME (non inheritable): enables the frame line around the bar area.
     /// Default: No.
     /// (since 3.23)
@@ -1932,24 +1885,21 @@ pub const Expander = opaque {
         interop.setBoolAttribute(self, "FRAME", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn getFont(self: *Self) [:0]const u8 {
         return interop.getStrAttribute(self, "FONT", .{});
     }
 
-
-    /// 
+    ///
     /// FONT, SIZE, RASTERSIZE, CLIENTSIZE, CLIENTOFFSET, POSITION, MINSIZE,
     /// MAXSIZE, THEME: also accepted.
     pub fn setFont(self: *Self, arg: [:0]const u8) void {
         interop.setStrAttribute(self, "FONT", .{}, arg);
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -1970,8 +1920,7 @@ pub const Expander = opaque {
         }
     }
 
-
-    /// 
+    ///
     /// TABIMAGEn (non inheritable): image name to be used in the respective tab.
     /// Use IupSetHandle or IupSetAttributeHandle to associate an image to a name.
     /// n starts at 0.
@@ -1993,8 +1942,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "TABIMAGE", .{index}, arg);
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -2015,8 +1963,7 @@ pub const Expander = opaque {
         return interop.getStrAttribute(self, "TABTITLE", .{index});
     }
 
-
-    /// 
+    ///
     /// TABTITLEn (non inheritable): Contains the text to be shown in the
     /// respective tab title.
     /// n starts at 0.
@@ -2037,7 +1984,7 @@ pub const Expander = opaque {
         interop.setStrAttribute(self, "TABTITLE", .{index}, arg);
     }
 
-    /// 
+    ///
     /// ACTION ACTION Action generated when the element is activated.
     /// Affects each element differently.
     /// Callback int function(Ihandle *ih); [in C] ih:action() -> (ret: number) [in
@@ -2046,12 +1993,12 @@ pub const Expander = opaque {
     /// Please refer to each element's documentation.
     /// Affects IupButton, IupItem, IupList, IupText, IupCanvas, IupMultiline,
     /// IupToggle
-    pub fn setActionCallback(self: *Self, callback: ?OnActionFn) void {
+    pub fn setActionCallback(self: *Self, callback: ?*const OnActionFn) void {
         const Handler = CallbackHandler(Self, OnActionFn, "ACTION");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// EXTRABUTTON_CB: Action generated when any mouse button is pressed or released.
     /// (since 3.11) int function(Ihandle* ih, int button, int pressed); [in C]
     /// ih:extrabutton_cb(button, pressed: number) -> (ret: number) [in Lua] ih:
@@ -2060,21 +2007,21 @@ pub const Expander = opaque {
     /// can be 1, 2 or 3.
     /// (this is not the same as BUTTON_CB)pressed: indicates the state of the
     /// button: 0 - mouse button was released; 1 - mouse button was pressed.
-    pub fn setExtraButtonCallback(self: *Self, callback: ?OnExtraButtonFn) void {
+    pub fn setExtraButtonCallback(self: *Self, callback: ?*const OnExtraButtonFn) void {
         const Handler = CallbackHandler(Self, OnExtraButtonFn, "EXTRABUTTON_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// OPENCLOSE_CB: Action generated before the expander state is interactively changed.
     /// (Since 3.11) int function(Ihandle* ih, int state); [in
     /// C]ih:openclose_cb(state: number) -> (ret: number) [in Lua]
-    pub fn setOpenCloseCallback(self: *Self, callback: ?OnOpenCloseFn) void {
+    pub fn setOpenCloseCallback(self: *Self, callback: ?*const OnOpenCloseFn) void {
         const Handler = CallbackHandler(Self, OnOpenCloseFn, "OPENCLOSE_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// MAP_CB MAP_CB Called right after an element is mapped and its attributes
     /// updated in IupMap.
     /// When the element is a dialog, it is called after the layout is updated.
@@ -2083,12 +2030,12 @@ pub const Expander = opaque {
     /// Callback int function(Ihandle *ih); [in C] ih:map_cb() -> (ret: number) [in
     /// Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setMapCallback(self: *Self, callback: ?OnMapFn) void {
+    pub fn setMapCallback(self: *Self, callback: ?*const OnMapFn) void {
         const Handler = CallbackHandler(Self, OnMapFn, "MAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// DESTROY_CB DESTROY_CB Called right before an element is destroyed.
     /// Callback int function(Ihandle *ih); [in C] ih:destroy_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
@@ -2101,27 +2048,27 @@ pub const Expander = opaque {
     /// release memory allocated by the binding for the element.
     /// Also the callback will be called before the language callback.
     /// Affects All.
-    pub fn setDestroyCallback(self: *Self, callback: ?OnDestroyFn) void {
+    pub fn setDestroyCallback(self: *Self, callback: ?*const OnDestroyFn) void {
         const Handler = CallbackHandler(Self, OnDestroyFn, "DESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    /// 
+    ///
     /// UNMAP_CB UNMAP_CB Called right before an element is unmapped.
     /// Callback int function(Ihandle *ih); [in C] ih:unmap_cb() -> (ret: number)
     /// [in Lua] ih: identifier of the element that activated the event.
     /// Affects All that have a native representation.
-    pub fn setUnmapCallback(self: *Self, callback: ?OnUnmapFn) void {
+    pub fn setUnmapCallback(self: *Self, callback: ?*const OnUnmapFn) void {
         const Handler = CallbackHandler(Self, OnUnmapFn, "UNMAP_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setLDestroyCallback(self: *Self, callback: ?OnLDestroyFn) void {
+    pub fn setLDestroyCallback(self: *Self, callback: ?*const OnLDestroyFn) void {
         const Handler = CallbackHandler(Self, OnLDestroyFn, "LDESTROY_CB");
         Handler.setCallback(self, callback);
     }
 
-    pub fn setPostMessageCallback(self: *Self, callback: ?OnPostMessageFn) void {
+    pub fn setPostMessageCallback(self: *Self, callback: ?*const OnPostMessageFn) void {
         const Handler = CallbackHandler(Self, OnPostMessageFn, "POSTMESSAGE_CB");
         Handler.setCallback(self, callback);
     }

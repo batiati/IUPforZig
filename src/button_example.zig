@@ -126,7 +126,6 @@ fn btn_big_button_cb(self: *Button, button: i32, pressed: i32, x: i32, y: i32, s
 }
 
 const images = struct {
-
     /// Defines button's image
     /// Each index corresponds to a RGB index from 1 to 4
     /// This image is a 16x16 matrix
