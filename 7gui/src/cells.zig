@@ -68,7 +68,8 @@ const Cells = struct {
                             .setHeight(0, 8)
                             .setWidthDef(40)
                             .setResizeMatrix(true)
-                            .setMarkMultiple("YES"),
+                            .setMarkMultiple(true)
+                            .setMarkMode(.Cell),
                         iup.HBox.init()
                             .setMargin(10, 10)
                             .setChildren(

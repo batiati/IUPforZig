@@ -149,25 +149,32 @@ pub fn main() !void {
 
 ## How to build
 
-Installing IUP shared libraries on Linux and Windows:
+1. Download [Zig](https://ziglang.org/download/);
 
+2. Install IUP shared libraries:
+
+**Linux**
 ```bash
 sudo ./install_iup.sh
 ```
 
+**Windows**
 ```cmd
 .\install_iup.bat
 ```
 
+>For more information, please visit IUP's download page for your platform:
+>https://sourceforge.net/projects/iup/files/3.30/
 
-For more information, please visit IUP's download page for your platform:
-https://sourceforge.net/projects/iup/files/3.30/
+>Dependencies for `libim` and `libcd` are also required:
+>https://sourceforge.net/projects/imtoolkit/files/3.15/
+>https://sourceforge.net/projects/canvasdraw/files/5.14/
 
-Dependencies for `libim` and `libcd` are also required:
+3. Build this project:
 
-https://sourceforge.net/projects/imtoolkit/files/3.15/
-
-https://sourceforge.net/projects/canvasdraw/files/5.14/
+```bash
+zig build run
+```
 
 ## Pending work
 

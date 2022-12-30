@@ -18,14 +18,6 @@ fn addIupReference(step: *std.build.LibExeObjStep) !void {
         step.linkSystemLibrary("zlib1");
     }
 
-    // Please visit IUP's download page for your platform
-    // https://sourceforge.net/projects/iup/files/3.30/
-    //
-    // Dependencies for libim and libcd also required
-    // https://sourceforge.net/projects/imtoolkit/files/3.15/
-    // https://sourceforge.net/projects/canvasdraw/files/5.14/
-
-    step.linkSystemLibrary("ftgl");
     step.linkSystemLibrary("iupcd");
     step.linkSystemLibrary("iupgl");
     step.linkSystemLibrary("iup_mglplot");

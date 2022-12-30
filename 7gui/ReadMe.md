@@ -64,12 +64,12 @@ The tasks will also help beginners to understand simple and complex tasks in GUI
 
 # How to run
 
-Each task can be launched by `zig build` using the corresponding task name:
+1. Please refer to [how to build](../ReadMe.md#how-to-build).
+
+2. Each task can be launched by `zig build` using the corresponding task name:
 
 ```sh
 Steps:
-  install (default)            Copy build artifacts to prefix path
-  uninstall                    Remove build artifacts from prefix path
   counter                      1. Counter
   tempConv                     2. Temperature Converter
   bookFlight                   3. Flight Booker

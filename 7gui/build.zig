@@ -16,33 +16,12 @@ fn addIupReference(step: *std.build.LibExeObjStep) !void {
         step.linkSystemLibrary("Ole32");
         step.linkSystemLibrary("Advapi32");
 
-        // Workarround for
-        // #9002 Find native include and libraries is broken with msvc ABI
-        // https://github.com/ziglang/zig/issues/9002
-
-        step.addLibraryPath("../lib/uwp");
-        step.addLibraryPath("../lib/um");
-        step.addLibraryPath("../lib/ucrt");
-
-        step.addLibraryPath("C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.16.27023\\lib\\x64");
-
-        // Link againts .lib files
-        step.addLibraryPath("../lib/win64");
-
         step.linkSystemLibrary("iupfiledlg");
         step.linkSystemLibrary("iupole");
         step.linkSystemLibrary("iupgl");
         step.linkSystemLibrary("zlib1");
     }
 
-    // Please visit IUP's download page for your platform
-    // https://sourceforge.net/projects/iup/files/3.30/
-    //
-    // Dependencies for libim and libcd also required
-    // https://sourceforge.net/projects/imtoolkit/files/3.15/
-    // https://sourceforge.net/projects/canvasdraw/files/5.14/
-
-    step.linkSystemLibrary("ftgl");
     step.linkSystemLibrary("iupcd");
     step.linkSystemLibrary("iupgl");
     step.linkSystemLibrary("iup_mglplot");
@@ -56,7 +35,6 @@ fn addIupReference(step: *std.build.LibExeObjStep) !void {
     step.linkSystemLibrary("iup_scintilla");
     step.linkSystemLibrary("iupweb");
 
-    // Includes .h
     step.addIncludePath("../lib/include");
     step.addPackagePath("iup", "../src/iup.zig");
 }
