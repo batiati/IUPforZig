@@ -1,4 +1,4 @@
 .vscode
-lib
+/lib
 zig-cache
 zig-out

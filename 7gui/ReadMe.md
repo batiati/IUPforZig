@@ -10,7 +10,7 @@ The tasks will also help beginners to understand simple and complex tasks in GUI
 
 ![counter](assets/counter.png)
 
-[counter.zig](src/counter.zig)
+[counter.zig](counter.zig)
 
 ## 2. Temperature Converter
 
@@ -18,7 +18,7 @@ The tasks will also help beginners to understand simple and complex tasks in GUI
 
 ![tempConv](assets/temp_conv.png)
 
-[temp_conv.zig](src/temp_conv.zig)
+[temp_conv.zig](temp_conv.zig)
 
 ## 3. Flight Booker
 
@@ -27,7 +27,7 @@ The tasks will also help beginners to understand simple and complex tasks in GUI
 ![FlightBooker](assets/flightBooker.png)
 ![FlightBooker](assets/flightBooker_dialog.png)
 
-[book_flight.zig](src/book_flight.zig)
+[book_flight.zig](book_flight.zig)
 
 ## 4. Timer
 
@@ -35,7 +35,7 @@ The tasks will also help beginners to understand simple and complex tasks in GUI
 
 ![Timer](assets/timer.png)
 
-[timer.zig](src/timer.zig)
+[timer.zig](timer.zig)
 
 ## 5. CRUD
 
@@ -43,7 +43,7 @@ The tasks will also help beginners to understand simple and complex tasks in GUI
 
 ![CRUD](assets/crud.png)
 
-[crud.zig](src/crud.zig)
+[crud.zig](crud.zig)
 
 ## 6. Circle Drawer
 
@@ -52,7 +52,7 @@ The tasks will also help beginners to understand simple and complex tasks in GUI
 ![Circle](assets/circle.png)
 ![Circle Radius](assets/circle_radius.png)
 
-[circle.zig](src/circle.zig)
+[circle.zig](circle.zig)
 
 ## 7. Cells
 
@@ -60,7 +60,7 @@ The tasks will also help beginners to understand simple and complex tasks in GUI
 
 ![Cells](assets/cells.png)
 
-[cells.zig](src/cells.zig)
+[cells.zig](cells.zig)
 
 # How to run
 

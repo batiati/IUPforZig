@@ -2,7 +2,7 @@
 /// Challenge: Constraints.
 /// https://eugenkiss.github.io/7guis/tasks
 const std = @import("std");
-const iup = @import("iup");
+const iup = @import("../iup.zig");
 const Allocator = std.mem.Allocator;
 const GeneralPurposeAllocator = std.heap.GeneralPurposeAllocator(.{});
 

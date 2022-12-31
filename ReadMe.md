@@ -151,30 +151,28 @@ pub fn main() !void {
 
 1. Download [Zig](https://ziglang.org/download/);
 
-2. Install IUP shared libraries:
+2. Install IUP shared libraries and run:
+
+> NOTE: [curl](https://curl.se/) is needed to download IUP binaries.
 
 **Linux**
 ```bash
-sudo ./install_iup.sh
+./install_iup.sh
+zig build run
 ```
 
 **Windows**
 ```cmd
 .\install_iup.bat
+zig build run
 ```
 
 >For more information, please visit IUP's download page for your platform:
 >https://sourceforge.net/projects/iup/files/3.30/
 
->Dependencies for `libim` and `libcd` are also required:
+>Dependencies for `libim` and `libcd` may be required:
 >https://sourceforge.net/projects/imtoolkit/files/3.15/
 >https://sourceforge.net/projects/canvasdraw/files/5.14/
-
-3. Build this project:
-
-```bash
-zig build run
-```
 
 ## Pending work
 

@@ -2,7 +2,7 @@
 /// Challenges: bidirectional data flow, user-provided text input.
 /// https://eugenkiss.github.io/7guis/tasks
 const std = @import("std");
-const iup = @import("iup");
+const iup = @import("../iup.zig");
 
 const expect = std.testing.expect;
 

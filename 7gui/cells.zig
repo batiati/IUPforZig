@@ -2,7 +2,7 @@
 /// Challenges: change propagation, widget customization, implementing a more authentic/involved GUI application.
 /// https://eugenkiss.github.io/7guis/tasks
 const std = @import("std");
-const iup = @import("iup");
+const iup = @import("../iup.zig");
 const Allocator = std.mem.Allocator;
 const GeneralPurposeAllocator = std.heap.GeneralPurposeAllocator(.{});
 
