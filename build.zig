@@ -119,7 +119,6 @@ const CopyLibrariesStep = struct {
 
     fn make(step: *std.build.Step) !void {
         const self = @fieldParentPtr(Self, "step", step);
-
         const full_dest_path = self.builder.getInstallPath(.bin, "");
 
         inline for (.{ iup_libs_path, cd_libs_path, im_libs_path }) |libs_path| {
@@ -129,7 +128,8 @@ const CopyLibrariesStep = struct {
 
             var it = src_dir.iterate();
             while (try it.next()) |entry| {
-                if (!std.ascii.endsWithIgnoreCase(entry.name, ".dll")) continue;
+                const extension = if (self.artifact.target.isWindows()) ".dll" else ".so";
+                if (!std.ascii.endsWithIgnoreCase(entry.name, extension)) continue;
 
                 const full_path = self.builder.pathJoin(&.{
                     full_src_dir, entry.name,
