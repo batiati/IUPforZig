@@ -20,21 +20,23 @@ fn addIupReference(b: *std.build.Builder, artifact: *std.build.LibExeObjStep) !v
         "iup_scintilla",
     };
 
-    artifact.addLibraryPath(iup_libs_path);
-         
-    var copy_step = b.addInstallDirectory(.{
-        .source_dir = iup_libs_path,
-        .install_dir = .prefix,
-        .install_subdir = "",
-        .exclude_extensions = &.{ ".o", ".a", "include", "Lua51", "Lua52", "Lua53", "Lua54" },
-    });
-    artifact.step.dependOn(&copy_step.step);
-
     inline for (iup_libs) |lib| {
         artifact.linkSystemLibrary(lib);
     }
 
     if (artifact.target.isWindows()) {
+
+        // On windows, we copy all dll to the output folder
+        artifact.addLibraryPath(iup_libs_path);
+
+        var copy_step = b.addInstallDirectory(.{
+            .source_dir = iup_libs_path,
+            .install_dir = .prefix,
+            .install_subdir = "",
+            .exclude_extensions = &.{ ".o", ".a", "include", "Lua51", "Lua52", "Lua53", "Lua54" },
+        });
+        artifact.step.dependOn(&copy_step.step);
+
         const windows_libs = .{
             "iupole",   "iupgl",    "zlib1",
             "Gdi32",    "User32",   "Shell32",
@@ -43,7 +45,7 @@ fn addIupReference(b: *std.build.Builder, artifact: *std.build.LibExeObjStep) !v
         };
 
         inline for (windows_libs) |lib| {
-            artifact.linkSystemLibrary(lib);
+            artifact.linkSystemLibraryWeak(lib);
         }
 
         artifact.subsystem = if (artifact.kind == .exe) .Windows else .Console;
@@ -74,25 +76,25 @@ pub fn build(b: *Builder) !void {
     @"7gui_test_cmd".step.dependOn(&b.addInstallArtifact( @"7gui_test").step);    
     @"7gui_test_step".dependOn(&@"7gui_test".step);    
 
-    addExample(b, "run", "IUP notepad example", "src/notepad_example.zig");
-    addExample(b, "tabs", "IUP tabs example", "src/tabs_example.zig");
-    addExample(b, "button", "IUP buttons example", "src/button_example.zig");
-    addExample(b, "image", "IUP image example", "src/image_example.zig");
-    addExample(b, "list", "IUP list example", "src/list_example.zig");
-    addExample(b, "tree", "IUP tree example", "src/tree_example.zig");
-    addExample(b, "mdi", "IUP mdi example", "src/mdi_example.zig");
-    addExample(b, "gauge", "IUP gauge example", "src/gauge_example.zig");
+    try addExample(b, "run", "IUP notepad example", "src/notepad_example.zig");
+    try addExample(b, "tabs", "IUP tabs example", "src/tabs_example.zig");
+    try addExample(b, "button", "IUP buttons example", "src/button_example.zig");
+    try addExample(b, "image", "IUP image example", "src/image_example.zig");
+    try addExample(b, "list", "IUP list example", "src/list_example.zig");
+    try addExample(b, "tree", "IUP tree example", "src/tree_example.zig");
+    try addExample(b, "mdi", "IUP mdi example", "src/mdi_example.zig");
+    try addExample(b, "gauge", "IUP gauge example", "src/gauge_example.zig");
 
-    addExample(b, "counter", "7GUI Counter", "src/7gui/counter.zig");
-    addExample(b, "tempConv", "7GUI Temperature Converter", "src/7gui/temp_conv.zig");
-    addExample(b, "bookFlight", "7GUI Flight Booker", "src/7gui/book_flight.zig");
-    addExample(b, "timer", "7GUI Timer", "src/7gui/timer.zig");
-    addExample(b, "crud", "7GUI Crud", "src/7gui/crud.zig");
-    addExample(b, "circle", "7GUI Circle Drawer", "src/7gui/circle.zig");
-    addExample(b, "cells", "7GUI Cells", "src/7gui/cells.zig");
+    try addExample(b, "counter", "7GUI Counter", "src/7gui/counter.zig");
+    try addExample(b, "tempConv", "7GUI Temperature Converter", "src/7gui/temp_conv.zig");
+    try addExample(b, "bookFlight", "7GUI Flight Booker", "src/7gui/book_flight.zig");
+    try addExample(b, "timer", "7GUI Timer", "src/7gui/timer.zig");
+    try addExample(b, "crud", "7GUI Crud", "src/7gui/crud.zig");
+    try addExample(b, "circle", "7GUI Circle Drawer", "src/7gui/circle.zig");
+    try addExample(b, "cells", "7GUI Cells", "src/7gui/cells.zig");
 }
 
-fn addExample(b: *Builder, comptime name: []const u8, comptime description: []const u8, comptime file: []const u8) void {
+fn addExample(b: *Builder, comptime name: []const u8, comptime description: []const u8, comptime file: []const u8) !void {
     const mode = b.standardReleaseOptions();
 
     const example = b.addExecutable(name, file);
