@@ -9,7 +9,7 @@ A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [
 ## Examples
 
 - [Simple notepad (in progress)](docs/simple_notepad.md)
-- [7GUIs](7gui/ReadMe.md)
+- [7GUIs](src/7gui/ReadMe.md)
 - [Button](docs/button.md)
 - [Image](docs/image.md)
 - [List](docs/list.md)

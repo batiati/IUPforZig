@@ -66,18 +66,25 @@ The tasks will also help beginners to understand simple and complex tasks in GUI
 
 1. Please refer to [how to build](../ReadMe.md#how-to-build).
 
-2. Each task can be launched by `zig build` using the corresponding task name:
+2. Each task can be launched by `zig build` using the corresponding task name.
+
+Run `zig build --help` for more details:
+
+```
+Steps:
+  counter                      7GUI Counter
+  tempConv                     7GUI Temperature Converter
+  bookFlight                   7GUI Flight Booker
+  timer                        7GUI Timer
+  crud                         7GUI Crud
+  circle                       7GUI Circle Drawer
+  cells                        7GUI Cells
+```
+
+Example:
 
 ```sh
-Steps:
-  counter                      1. Counter
-  tempConv                     2. Temperature Converter
-  bookFlight                   3. Flight Booker
-  timer                        4. Timer
-  crud                         5. Crud
-  circle                       6. Circle Drawer
-  cells                        7. Circle Drawer
-  test                         Run library tests
+zig build cells
 ```
 
 # Acknowledgements
