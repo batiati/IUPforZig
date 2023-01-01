@@ -2,22 +2,18 @@ const std = @import("std");
 const Builder = std.build.Builder;
 const Pkg = std.build.Pkg;
 
+const iup_libs_path = "lib/iup";
+const cd_libs_path = "lib/cd";
+const im_libs_path = "lib/im";
+
 fn addIupReference(b: *std.build.Builder, artifact: *std.build.LibExeObjStep) !void {
-    const iup_libs_path = "lib";
     artifact.addIncludePath(iup_libs_path ++ "/include");
 
     const iup_libs = .{
-        "iupcd",
-        "iupgl",
-        "iup_mglplot",
-        "iup",
-        "iupcontrols",
-        "iupimglib",
-        "iup_plot",
-        "iuptuio",
-        "iupglcontrols",
-        "iupim",
-        "iup_scintilla",
+        "iupcd",    "iupgl",         "iup_mglplot",
+        "iup",      "iupcontrols",   "iupimglib",
+        "iup_plot", "iuptuio",       "iupglcontrols",
+        "iupim",    "iup_scintilla",
     };
 
     inline for (iup_libs) |lib| {
@@ -25,17 +21,11 @@ fn addIupReference(b: *std.build.Builder, artifact: *std.build.LibExeObjStep) !v
     }
 
     if (artifact.target.isWindows()) {
-
-        // On windows, we copy all dll to the output folder
         artifact.addLibraryPath(iup_libs_path);
+        artifact.addLibraryPath(cd_libs_path);
 
-        var copy_step = b.addInstallDirectory(.{
-            .source_dir = iup_libs_path,
-            .install_dir = .prefix,
-            .install_subdir = "",
-            .exclude_extensions = &.{ ".o", ".a", "include", "Lua51", "Lua52", "Lua53", "Lua54" },
-        });
-        artifact.step.dependOn(&copy_step.step);
+        var copy_libs = CopyLibrariesStep.create(b, artifact);
+        artifact.step.dependOn(&copy_libs.step);
 
         const windows_libs = .{
             "iupole",   "iupgl",    "zlib1",
@@ -45,7 +35,7 @@ fn addIupReference(b: *std.build.Builder, artifact: *std.build.LibExeObjStep) !v
         };
 
         inline for (windows_libs) |lib| {
-            artifact.linkSystemLibraryWeak(lib);
+            artifact.linkSystemLibrary(lib);
         }
 
         artifact.subsystem = if (artifact.kind == .exe) .Windows else .Console;
@@ -62,7 +52,7 @@ pub fn build(b: *Builder) !void {
 
     const test_step = b.step("test", "Run bindings tests");
     const main_test_cmd = main_tests.run();
-    main_test_cmd.step.dependOn(&b.addInstallArtifact(main_tests).step);    
+    main_test_cmd.step.dependOn(&b.addInstallArtifact(main_tests).step);
     test_step.dependOn(&main_test_cmd.step);
 
     var @"7gui_test" = b.addTestExe("7gui_test", "src/7gui/tests.zig");
@@ -72,9 +62,9 @@ pub fn build(b: *Builder) !void {
     try addIupReference(b, @"7gui_test");
 
     const @"7gui_test_step" = b.step("7gui_test", "7GUI demo tests");
-    const  @"7gui_test_cmd" =   @"7gui_test".run();
-    @"7gui_test_cmd".step.dependOn(&b.addInstallArtifact( @"7gui_test").step);    
-    @"7gui_test_step".dependOn(&@"7gui_test".step);    
+    const @"7gui_test_cmd" = @"7gui_test".run();
+    @"7gui_test_cmd".step.dependOn(&b.addInstallArtifact(@"7gui_test").step);
+    @"7gui_test_step".dependOn(&@"7gui_test".step);
 
     try addExample(b, "run", "IUP notepad example", "src/notepad_example.zig");
     try addExample(b, "tabs", "IUP tabs example", "src/tabs_example.zig");
@@ -110,3 +100,47 @@ fn addExample(b: *Builder, comptime name: []const u8, comptime description: []co
     const example_step = b.step(name, description);
     example_step.dependOn(&example_cmd.step);
 }
+
+const CopyLibrariesStep = struct {
+    const Self = @This();
+    builder: *std.build.Builder,
+    step: std.build.Step,
+    artifact: *std.build.LibExeObjStep,
+
+    pub fn create(builder: *std.build.Builder, artifact: *std.build.LibExeObjStep) *Self {
+        var self = builder.allocator.create(Self) catch unreachable;
+        self.* = .{
+            .builder = builder,
+            .step = std.build.Step.init(.custom, "Copy shared libraries", builder.allocator, make),
+            .artifact = artifact,
+        };
+        return self;
+    }
+
+    fn make(step: *std.build.Step) !void {
+        const self = @fieldParentPtr(Self, "step", step);
+
+        const full_dest_path = self.builder.getInstallPath(.bin, "");
+
+        inline for (.{ iup_libs_path, cd_libs_path, im_libs_path }) |libs_path| {
+            const full_src_dir = self.builder.pathFromRoot(libs_path);
+            var src_dir = try std.fs.cwd().openIterableDir(full_src_dir, .{});
+            defer src_dir.close();
+
+            var it = src_dir.iterate();
+            while (try it.next()) |entry| {
+                if (!std.ascii.endsWithIgnoreCase(entry.name, ".dll")) continue;
+
+                const full_path = self.builder.pathJoin(&.{
+                    full_src_dir, entry.name,
+                });
+
+                const dest_path = self.builder.pathJoin(&.{
+                    full_dest_path, entry.name,
+                });
+
+                try self.builder.updateFile(full_path, dest_path);
+            }
+        }
+    }
+};
