@@ -123,7 +123,7 @@ pub const DialogSize = struct {
         defer builder.deinit();
 
         const values: [2]?ScreenSize = .{ width, height };
-        for (values) |item, i| {
+        for (values, 0..) |item, i| {
             if (i > 0) builder.appendSlice("x") catch unreachable;
 
             if (item) |value| {

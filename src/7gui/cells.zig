@@ -262,7 +262,7 @@ const Cell = struct {
         try list.append(@intCast(u8, 'A' + col - 1));
         try list.append(0);
 
-        return std.meta.assumeSentinel(try list.toOwnedSlice(), 0);
+        return try list.toOwnedSliceSentinel(0);
     }
 
     pub fn getRowName(spreadsheet: *const Spreadsheet, row: i32) ![:0]const u8 {

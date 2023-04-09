@@ -109,7 +109,7 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
                 const return_type = function_info.return_type orelse void;
 
                 var params: [function_info.params.len]type = undefined;
-                inline for (function_info.params) |param, i| {
+                inline for (function_info.params, 0..) |param, i| {
                     params[i] = param.type.?;
                 }
 

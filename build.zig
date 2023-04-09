@@ -43,10 +43,14 @@ fn addIupReference(b: *std.build.Builder, artifact: *std.build.LibExeObjStep) !v
 }
 
 pub fn build(b: *Builder) !void {
-    const mode = b.standardReleaseOptions();
+    const mode = b.standardOptimizeOption(.{});
 
-    var main_tests = b.addTestExe("test", "src/iup.zig");
-    main_tests.setBuildMode(mode);
+    var main_tests = b.addTest(
+        .{
+            .root_source_file = .{ .path = "src/iup.zig" },
+            .optimize = mode,
+        },
+    );
     main_tests.linkLibC();
     try addIupReference(b, main_tests);
 
@@ -55,9 +59,14 @@ pub fn build(b: *Builder) !void {
     main_test_cmd.step.dependOn(&b.addInstallArtifact(main_tests).step);
     test_step.dependOn(&main_test_cmd.step);
 
-    var @"7gui_test" = b.addTestExe("7gui_test", "src/7gui/tests.zig");
+    var @"7gui_test" = b.addTest(
+        .{
+            .name = "7gui_test",
+            .root_source_file = .{ .path = "src/7gui/tests.zig" },
+            .optimize = mode,
+        },
+    );
     @"7gui_test".setMainPkgPath("src");
-    @"7gui_test".setBuildMode(mode);
     @"7gui_test".linkLibC();
     try addIupReference(b, @"7gui_test");
 
@@ -66,31 +75,34 @@ pub fn build(b: *Builder) !void {
     @"7gui_test_cmd".step.dependOn(&b.addInstallArtifact(@"7gui_test").step);
     @"7gui_test_step".dependOn(&@"7gui_test".step);
 
-    try addExample(b, "run", "IUP notepad example", "src/notepad_example.zig");
-    try addExample(b, "tabs", "IUP tabs example", "src/tabs_example.zig");
-    try addExample(b, "button", "IUP buttons example", "src/button_example.zig");
-    try addExample(b, "image", "IUP image example", "src/image_example.zig");
-    try addExample(b, "list", "IUP list example", "src/list_example.zig");
-    try addExample(b, "tree", "IUP tree example", "src/tree_example.zig");
-    try addExample(b, "mdi", "IUP mdi example", "src/mdi_example.zig");
-    try addExample(b, "gauge", "IUP gauge example", "src/gauge_example.zig");
+    try addExample(b, "run", "IUP notepad example", "src/notepad_example.zig", mode);
+    try addExample(b, "tabs", "IUP tabs example", "src/tabs_example.zig", mode);
+    try addExample(b, "button", "IUP buttons example", "src/button_example.zig", mode);
+    try addExample(b, "image", "IUP image example", "src/image_example.zig", mode);
+    try addExample(b, "list", "IUP list example", "src/list_example.zig", mode);
+    try addExample(b, "tree", "IUP tree example", "src/tree_example.zig", mode);
+    try addExample(b, "mdi", "IUP mdi example", "src/mdi_example.zig", mode);
+    try addExample(b, "gauge", "IUP gauge example", "src/gauge_example.zig", mode);
 
-    try addExample(b, "counter", "7GUI Counter", "src/7gui/counter.zig");
-    try addExample(b, "tempConv", "7GUI Temperature Converter", "src/7gui/temp_conv.zig");
-    try addExample(b, "bookFlight", "7GUI Flight Booker", "src/7gui/book_flight.zig");
-    try addExample(b, "timer", "7GUI Timer", "src/7gui/timer.zig");
-    try addExample(b, "crud", "7GUI Crud", "src/7gui/crud.zig");
-    try addExample(b, "circle", "7GUI Circle Drawer", "src/7gui/circle.zig");
-    try addExample(b, "cells", "7GUI Cells", "src/7gui/cells.zig");
+    try addExample(b, "counter", "7GUI Counter", "src/7gui/counter.zig", mode);
+    try addExample(b, "tempConv", "7GUI Temperature Converter", "src/7gui/temp_conv.zig", mode);
+    try addExample(b, "bookFlight", "7GUI Flight Booker", "src/7gui/book_flight.zig", mode);
+    try addExample(b, "timer", "7GUI Timer", "src/7gui/timer.zig", mode);
+    try addExample(b, "crud", "7GUI Crud", "src/7gui/crud.zig", mode);
+    try addExample(b, "circle", "7GUI Circle Drawer", "src/7gui/circle.zig", mode);
+    try addExample(b, "cells", "7GUI Cells", "src/7gui/cells.zig", mode);
 }
 
-fn addExample(b: *Builder, comptime name: []const u8, comptime description: []const u8, comptime file: []const u8) !void {
-    const mode = b.standardReleaseOptions();
-
-    const example = b.addExecutable(name, file);
+fn addExample(b: *Builder, comptime name: []const u8, comptime description: []const u8, comptime file: []const u8, mode: std.builtin.OptimizeMode) !void {
+    const example = b.addExecutable(
+        .{
+            .name = name,
+            .optimize = mode,
+            .root_source_file = .{ .path = file },
+        },
+    );
     example.setMainPkgPath("src");
 
-    example.setBuildMode(mode);
     example.linkLibC();
     try addIupReference(b, example);
 
@@ -111,35 +123,39 @@ const CopyLibrariesStep = struct {
         var self = builder.allocator.create(Self) catch unreachable;
         self.* = .{
             .builder = builder,
-            .step = std.build.Step.init(.custom, "Copy shared libraries", builder.allocator, make),
+            .step = std.build.Step.init(.{
+                .id = .custom,
+                .name = "Copy shared libraries",
+                .owner = builder,
+                .makeFn = &make,
+            }),
             .artifact = artifact,
         };
         return self;
     }
 
-    fn make(step: *std.build.Step) !void {
+    fn make(step: *std.build.Step, progress: *std.Progress.Node) !void {
+        _ = progress;
         const self = @fieldParentPtr(Self, "step", step);
         const full_dest_path = self.builder.getInstallPath(.bin, "");
 
+        var cwd = std.fs.cwd();
+        defer cwd.close();
+
         inline for (.{ iup_libs_path, cd_libs_path, im_libs_path }) |libs_path| {
             const full_src_dir = self.builder.pathFromRoot(libs_path);
-            var src_dir = try std.fs.cwd().openIterableDir(full_src_dir, .{});
+            var src_dir = try cwd.openIterableDir(full_src_dir, .{});
             defer src_dir.close();
+
+            var dest_dir = try cwd.openIterableDir(full_dest_path, .{});
+            defer dest_dir.close();
 
             var it = src_dir.iterate();
             while (try it.next()) |entry| {
                 const extension = if (self.artifact.target.isWindows()) ".dll" else ".so";
                 if (!std.ascii.endsWithIgnoreCase(entry.name, extension)) continue;
 
-                const full_path = self.builder.pathJoin(&.{
-                    full_src_dir, entry.name,
-                });
-
-                const dest_path = self.builder.pathJoin(&.{
-                    full_dest_path, entry.name,
-                });
-
-                try self.builder.updateFile(full_path, dest_path);
+                _ = try std.fs.Dir.updateFile(src_dir.dir, entry.name, dest_dir.dir, entry.name, .{});
             }
         }
     }
