@@ -6,7 +6,7 @@
 
 ## WIP Work in Progress
 
-A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
+A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://tecgraf.puc-rio.br/iup/)
 
 ## Gauge example
 
@@ -17,7 +17,7 @@ Source code: [gauge_example.zig](../src/gauge_example.zig).
 > Type `zig build gauge` to run this example.
 
 Converted from original example in C
-https://webserver2.tecgraf.puc-rio.br/iup/examples/C/gauge.c
+https://tecgraf.puc-rio.br/iup/examples/C/gauge.c
 
 ## Screenshots
 

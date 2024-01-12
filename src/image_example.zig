@@ -1,7 +1,7 @@
 ///
 /// Creates a button, a label, a toggle and a radio using an image. Uses an image for the cursor as well.
 /// From original example in C
-/// https://webserver2.tecgraf.puc-rio.br/iup/examples/C/image.c
+/// https://tecgraf.puc-rio.br/iup/examples/C/image.c
 const std = @import("std");
 const iup = @import("iup.zig");
 

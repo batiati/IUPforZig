@@ -6,7 +6,7 @@
 
 ## WIP Work in Progress
 
-A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
+A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://tecgraf.puc-rio.br/iup/)
 
 ## Image example
 
@@ -18,7 +18,7 @@ Source code: [image_example.zig](../src/image_example.zig).
 > Type `zig build image` to run this example.
 
 Converted from original example in C
-https://webserver2.tecgraf.puc-rio.br/iup/examples/C/image.c
+https://tecgraf.puc-rio.br/iup/examples/C/image.c
 
 ## Screenshots
 

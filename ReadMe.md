@@ -4,7 +4,7 @@
 [![made with Zig](https://img.shields.io/badge/made%20with%20%E2%9D%A4%20-Zig-orange)]()
 [![made with Zig](https://img.shields.io/badge/unlicensed-public%20domain-brightgreen)]()
 
-A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
+A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://tecgraf.puc-rio.br/iup/)
 
 ## Examples
 
@@ -83,7 +83,7 @@ This project attempts to create Zig bindings for IUP Toolkit with idiomatic and 
 
 ## Comparison:
 
-1. IUP [simple example](https://webserver2.tecgraf.puc-rio.br/iup/examples/tutorial/example3_1.c) in C:
+1. IUP [simple example](https://tecgraf.puc-rio.br/iup/examples/tutorial/example3_1.c) in C:
 
 ```C
 #include <stdlib.h>

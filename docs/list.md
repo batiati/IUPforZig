@@ -6,7 +6,7 @@
 
 ## WIP Work in Progress
 
-A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
+A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://tecgraf.puc-rio.br/iup/)
 
 ## List example
 
@@ -19,7 +19,7 @@ Source code: [list_example.zig](../src/list_example.zig).
 > Type `zig build list` to run this example.
 
 Converted from original example in C
-https://webserver2.tecgraf.puc-rio.br/iup/examples/C/list1.c
+https://tecgraf.puc-rio.br/iup/examples/C/list1.c
 
 ## Screenshots
 

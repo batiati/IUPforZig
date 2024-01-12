@@ -1,5 +1,5 @@
 /// From original example in C
-/// https://webserver2.tecgraf.puc-rio.br/iup/examples/C/gauge.c
+/// https://tecgraf.puc-rio.br/iup/examples/C/gauge.c
 const std = @import("std");
 const iup = @import("iup.zig");
 

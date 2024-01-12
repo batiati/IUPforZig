@@ -1,5 +1,5 @@
 /// From original example in C
-/// https://webserver2.tecgraf.puc-rio.br/iup/examples/C/mdi.c
+/// https://tecgraf.puc-rio.br/iup/examples/C/mdi.c
 const std = @import("std");
 const iup = @import("iup.zig");
 

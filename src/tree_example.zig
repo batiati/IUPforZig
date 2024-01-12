@@ -2,7 +2,7 @@
 /// Two callbacks are registered: one deletes marked nodes when the Del key is pressed,
 /// and the other, called when the right mouse button is pressed, opens a menu with options.
 /// From original example in C
-/// https://webserver2.tecgraf.puc-rio.br/iup/examples/C/tree.c
+/// https://tecgraf.puc-rio.br/iup/examples/C/tree.c
 const std = @import("std");
 const iup = @import("iup.zig");
 

@@ -6,7 +6,7 @@
 
 ## WIP Work in Progress
 
-A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
+A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://tecgraf.puc-rio.br/iup/)
 
 ## Tree example
 
@@ -19,7 +19,7 @@ Source code: [tree_example.zig](../src/tree_example.zig).
 > Type `zig build tree` to run this example.
 
 Converted from original example in C
-https://webserver2.tecgraf.puc-rio.br/iup/examples/C/tree.c
+https://tecgraf.puc-rio.br/iup/examples/C/tree.c
 
 ## Screenshots
 

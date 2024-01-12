@@ -6,13 +6,13 @@
 
 ## WIP Work in Progress
 
-A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/)
+A [Zig language](https://ziglang.org/) idiomatic and type-checked bindings for [IUP Portable User Interface Toolkit](https://tecgraf.puc-rio.br/iup/)
 
 ## Examples
 
 Those examples were directly ported from original C examples, with no feature changes.
 
-https://webserver2.tecgraf.puc-rio.br/iup/examples
+https://tecgraf.puc-rio.br/iup/examples
 
 - [Simple notepad (in progress)](simple_notepad.md)
 - [Tabs](tabs.md)

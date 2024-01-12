@@ -2,7 +2,7 @@
 /// The first is a simple list, the second one is a multiple list and the last one is a drop-down list.
 /// The second list has a callback associated.
 /// From original example in C
-/// https://webserver2.tecgraf.puc-rio.br/iup/examples/C/list1.c
+/// https://tecgraf.puc-rio.br/iup/examples/C/list1.c
 const std = @import("std");
 const iup = @import("iup.zig");
 
