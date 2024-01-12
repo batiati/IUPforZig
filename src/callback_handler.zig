@@ -55,7 +55,7 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
                 var validHandle = handle orelse @panic("Invalid handle from callback");
 
                 if (getCallback(validHandle)) |callback| {
-                    var element = @ptrCast(*T, validHandle);
+                    var element: *T = @ptrCast(validHandle);
                     @call(.auto, callback, .{element} ++ args) catch |err| switch (err) {
                         iup.CallbackResult.Ignore => return interop.consts.IUP_IGNORE,
                         iup.CallbackResult.Continue => return interop.consts.IUP_CONTINUE,
@@ -80,7 +80,7 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
                 var validHandle = handle orelse @panic("Invalid handle from callback");
 
                 if (getCallback(validHandle)) |callback| {
-                    var element = @ptrCast(*T, validHandle);
+                    var element: *T = @ptrCast(validHandle);
                     return @call(.auto, callback, .{element} ++ args);
                 }
             }
@@ -162,7 +162,7 @@ pub fn CallbackHandler(comptime T: type, comptime TCallback: type, comptime acti
                 }
             };
 
-            return @ptrCast(interop.NativeCallbackFn, &native_callback);
+            return @as(interop.NativeCallbackFn, @ptrCast(&native_callback));
         }
 
         // TODO: Add all supported callbacks

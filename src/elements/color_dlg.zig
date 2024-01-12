@@ -1397,7 +1397,7 @@ pub const ColorDlg = opaque {
 
         if (handle) |valid| {
             return .{
-                .ref = @ptrCast(*Self, valid),
+                .ref = @as(*Self, @ptrCast(valid)),
             };
         } else {
             return .{ .ref = undefined, .last_error = Error.NotInitialized };
@@ -1523,7 +1523,7 @@ pub const ColorDlg = opaque {
 
     pub fn getMenu(self: *Self) ?*iup.Menu {
         if (interop.getHandleAttribute(self, "MENU", .{})) |handle| {
-            return @ptrCast(*iup.Menu, handle);
+            return @as(*iup.Menu, @ptrCast(handle));
         } else {
             return null;
         }
@@ -1846,7 +1846,7 @@ pub const ColorDlg = opaque {
 
     pub fn getMdiMenu(self: *Self) ?*iup.Menu {
         if (interop.getHandleAttribute(self, "MDIMENU", .{})) |handle| {
-            return @ptrCast(*iup.Menu, handle);
+            return @as(*iup.Menu, @ptrCast(handle));
         } else {
             return null;
         }
@@ -1938,7 +1938,7 @@ pub const ColorDlg = opaque {
 
     pub fn getDefaultEsc(self: *Self) ?*iup.Button {
         if (interop.getHandleAttribute(self, "DEFAULTESC", .{})) |handle| {
-            return @ptrCast(*iup.Button, handle);
+            return @ptrCast(handle);
         } else {
             return null;
         }
@@ -2099,7 +2099,7 @@ pub const ColorDlg = opaque {
 
     pub fn getDefaultEnter(self: *Self) ?*iup.Button {
         if (interop.getHandleAttribute(self, "DEFAULTENTER", .{})) |handle| {
-            return @ptrCast(*iup.Button, handle);
+            return @ptrCast(handle);
         } else {
             return null;
         }

@@ -259,7 +259,7 @@ const Cell = struct {
         var allocator = fba.allocator();
 
         var list = std.ArrayList(u8).init(allocator);
-        try list.append(@intCast(u8, 'A' + col - 1));
+        try list.append(@as(u8, @intCast('A' + col - 1)));
         try list.append(0);
 
         return try list.toOwnedSliceSentinel(0);
@@ -279,7 +279,7 @@ const Cell = struct {
         if (!std.ascii.isAlphabetic(index[0])) return null;
         if (std.fmt.parseInt(i32, index[1..], 10)) |row| {
             return Index{
-                .col = @intCast(i32, std.ascii.toUpper(index[0]) - 'A' + 1),
+                .col = @as(i32, @intCast(std.ascii.toUpper(index[0]) - 'A' + 1)),
                 .row = row,
             };
         } else |_| {
@@ -317,7 +317,7 @@ const Cell = struct {
         switch (self.data) {
             .Empty => return null,
             .Str => return null,
-            .Int => |int| return @intToFloat(f64, int),
+            .Int => |int| return @as(f64, @floatFromInt(int)),
             .Float => |float| return float,
             .Formula => |formula| return formula.value(spreadsheet),
         }
@@ -464,7 +464,7 @@ const Formula = struct {
             .Avg => return avg(cells.items),
             .Min => return find(cells.items, .Min),
             .Max => return find(cells.items, .Max),
-            .Count => return @intToFloat(f64, cells.items.len),
+            .Count => return @as(f64, @floatFromInt(cells.items.len)),
         }
     }
 
@@ -478,7 +478,7 @@ const Formula = struct {
     }
 
     fn avg(values: []f64) f64 {
-        return sum(values) / @intToFloat(f64, values.len);
+        return sum(values) / @as(f64, @floatFromInt(values.len));
     }
 
     fn find(values: []f64, op: enum { Min, Max }) f64 {

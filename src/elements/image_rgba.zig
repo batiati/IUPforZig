@@ -279,7 +279,7 @@ pub const ImageRgba = opaque {
 
         if (handle) |valid| {
             return .{
-                .ref = @ptrCast(*Self, valid),
+                .ref = @as(*Self, @ptrCast(valid)),
             };
         } else {
             return .{ .ref = undefined, .last_error = Error.NotInitialized };

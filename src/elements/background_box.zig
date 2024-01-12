@@ -1635,7 +1635,7 @@ pub const BackgroundBox = opaque {
 
         if (handle) |valid| {
             return .{
-                .ref = @ptrCast(*Self, valid),
+                .ref = @as(*Self, @ptrCast(valid)),
             };
         } else {
             return .{ .ref = undefined, .last_error = Error.NotInitialized };
@@ -1782,7 +1782,7 @@ pub const BackgroundBox = opaque {
     /// Draws a polygon. Coordinates are stored in the array in the sequence: x1, y1, x2, y2, ...
     /// IMPORTANT: this function can be used only inside the ACTION callback.
     pub inline fn drawPolygon(self: *Self, points: []const i32) void {
-        interop.drawPolygon(self, points.ptr, @intCast(c_int, points.len));
+        interop.drawPolygon(self, points.ptr, @intCast(points.len));
     }
 
     /// Draws a text in the given position using the font defined by DRAWFONT (since 3.22),
@@ -2728,7 +2728,7 @@ pub const BackgroundBox = opaque {
 
     pub fn getMdiMenu(self: *Self) ?*iup.Menu {
         if (interop.getHandleAttribute(self, "MDIMENU", .{})) |handle| {
-            return @ptrCast(*iup.Menu, handle);
+            return @as(*iup.Menu, @ptrCast(handle));
         } else {
             return null;
         }

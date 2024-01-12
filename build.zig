@@ -7,7 +7,9 @@ const cd_libs_path = "lib/cd";
 const im_libs_path = "lib/im";
 
 fn addIupReference(b: *std.build.Builder, artifact: *std.build.LibExeObjStep) !void {
-    artifact.addIncludePath(iup_libs_path ++ "/include");
+    artifact.addIncludePath(.{
+        .path = iup_libs_path ++ "/include",
+    });
 
     const iup_libs = .{
         "iupcd",    "iupgl",         "iup_mglplot",
@@ -21,8 +23,8 @@ fn addIupReference(b: *std.build.Builder, artifact: *std.build.LibExeObjStep) !v
     }
 
     if (artifact.target.isWindows()) {
-        artifact.addLibraryPath(iup_libs_path);
-        artifact.addLibraryPath(cd_libs_path);
+        artifact.addLibraryPath(.{ .path = iup_libs_path });
+        artifact.addLibraryPath(.{ .path = cd_libs_path });
 
         var copy_libs = CopyLibrariesStep.create(b, artifact);
         artifact.step.dependOn(&copy_libs.step);
@@ -55,8 +57,8 @@ pub fn build(b: *Builder) !void {
     try addIupReference(b, main_tests);
 
     const test_step = b.step("test", "Run bindings tests");
-    const main_test_cmd = main_tests.run();
-    main_test_cmd.step.dependOn(&b.addInstallArtifact(main_tests).step);
+    const main_test_cmd = b.addRunArtifact(main_tests);
+    main_test_cmd.step.dependOn(&b.addInstallArtifact(main_tests, .{}).step);
     test_step.dependOn(&main_test_cmd.step);
 
     var @"7gui_test" = b.addTest(
@@ -64,15 +66,15 @@ pub fn build(b: *Builder) !void {
             .name = "7gui_test",
             .root_source_file = .{ .path = "src/7gui/tests.zig" },
             .optimize = mode,
+            .main_pkg_path = .{ .path = "src" },
+            .link_libc = true,
         },
     );
-    @"7gui_test".setMainPkgPath("src");
-    @"7gui_test".linkLibC();
     try addIupReference(b, @"7gui_test");
 
     const @"7gui_test_step" = b.step("7gui_test", "7GUI demo tests");
-    const @"7gui_test_cmd" = @"7gui_test".run();
-    @"7gui_test_cmd".step.dependOn(&b.addInstallArtifact(@"7gui_test").step);
+    const @"7gui_test_cmd" = b.addRunArtifact(@"7gui_test");
+    @"7gui_test_cmd".step.dependOn(&b.addInstallArtifact(@"7gui_test", .{}).step);
     @"7gui_test_step".dependOn(&@"7gui_test".step);
 
     try addExample(b, "run", "IUP notepad example", "src/notepad_example.zig", mode);
@@ -99,15 +101,14 @@ fn addExample(b: *Builder, comptime name: []const u8, comptime description: []co
             .name = name,
             .optimize = mode,
             .root_source_file = .{ .path = file },
+            .main_pkg_path = .{ .path = "src" },
+            .link_libc = true,
         },
     );
-    example.setMainPkgPath("src");
-
-    example.linkLibC();
     try addIupReference(b, example);
 
-    const example_cmd = example.run();
-    example_cmd.step.dependOn(&b.addInstallArtifact(example).step);
+    const example_cmd = b.addRunArtifact(example);
+    example_cmd.step.dependOn(&b.addInstallArtifact(example, .{}).step);
 
     const example_step = b.step(name, description);
     example_step.dependOn(&example_cmd.step);

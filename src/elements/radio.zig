@@ -516,7 +516,7 @@ pub const Radio = opaque {
 
         if (handle) |valid| {
             return .{
-                .ref = @ptrCast(*Self, valid),
+                .ref = @as(*Self, @ptrCast(valid)),
             };
         } else {
             return .{ .ref = undefined, .last_error = Error.NotInitialized };
@@ -730,7 +730,7 @@ pub const Radio = opaque {
     /// (since 3.0)
     pub fn getValueHandle(self: *Self) ?*iup.Toggle {
         if (interop.getHandleAttribute(self, "VALUE_HANDLE", .{})) |handle| {
-            return @ptrCast(*iup.Toggle, handle);
+            return @as(*iup.Toggle, @ptrCast(handle));
         } else {
             return null;
         }
@@ -788,7 +788,7 @@ pub const Radio = opaque {
     /// return value may be NULL or invalid.
     pub fn getValue(self: *Self) ?*iup.Toggle {
         if (interop.getHandleAttribute(self, "VALUE", .{})) |handle| {
-            return @ptrCast(*iup.Toggle, handle);
+            return @as(*iup.Toggle, @ptrCast(handle));
         } else {
             return null;
         }

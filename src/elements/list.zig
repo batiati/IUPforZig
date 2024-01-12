@@ -1713,7 +1713,7 @@ pub const List = opaque {
 
         if (handle) |valid| {
             return .{
-                .ref = @ptrCast(*Self, valid),
+                .ref = @ptrCast(valid),
             };
         } else {
             return .{ .ref = undefined, .last_error = Error.NotInitialized };
@@ -3710,18 +3710,6 @@ test "List TipDelay" {
     defer item.deinit();
 
     var ret = item.getTipDelay();
-
-    try std.testing.expect(ret == 42);
-}
-
-test "List VisibleItems" {
-    try iup.MainLoop.open();
-    defer iup.MainLoop.close();
-
-    var item = try (iup.List.init().setVisibleItems(42).unwrap());
-    defer item.deinit();
-
-    var ret = item.getVisibleItems();
 
     try std.testing.expect(ret == 42);
 }

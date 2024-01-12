@@ -1446,7 +1446,7 @@ pub const Multiline = opaque {
 
         if (handle) |valid| {
             return .{
-                .ref = @ptrCast(*Self, valid),
+                .ref = @ptrCast(valid),
             };
         } else {
             return .{ .ref = undefined, .last_error = Error.NotInitialized };
@@ -1621,7 +1621,7 @@ pub const Multiline = opaque {
 
     pub fn getAddFormatTagHandle(self: *Self) ?*iup.User {
         if (interop.getHandleAttribute(self, "ADDFORMATTAG_HANDLE", .{})) |handle| {
-            return @ptrCast(*iup.User, handle);
+            return @as(*iup.User, @ptrCast(handle));
         } else {
             return null;
         }

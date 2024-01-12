@@ -675,7 +675,7 @@ pub const MessageDlg = opaque {
         pub fn setButtonResponse(self: Initializer, arg: ?ButtonResponse) Initializer {
             if (self.last_error) |_| return self;
             if (arg) |value| {
-                interop.setIntAttribute(self.ref, "BUTTONRESPONSE", .{}, @enumToInt(value));
+                interop.setIntAttribute(self.ref, "BUTTONRESPONSE", .{}, @intFromEnum(value));
             } else {
                 interop.clearAttribute(self.ref, "BUTTONRESPONSE", .{});
             }
@@ -803,7 +803,7 @@ pub const MessageDlg = opaque {
         pub fn setButtonDefault(self: Initializer, arg: ?ButtonDefault) Initializer {
             if (self.last_error) |_| return self;
             if (arg) |value| {
-                interop.setIntAttribute(self.ref, "BUTTONDEFAULT", .{}, @enumToInt(value));
+                interop.setIntAttribute(self.ref, "BUTTONDEFAULT", .{}, @intFromEnum(value));
             } else {
                 interop.clearAttribute(self.ref, "BUTTONDEFAULT", .{});
             }
@@ -1492,7 +1492,7 @@ pub const MessageDlg = opaque {
 
         if (handle) |valid| {
             return .{
-                .ref = @ptrCast(*Self, valid),
+                .ref = @as(*Self, @ptrCast(valid)),
             };
         } else {
             return .{ .ref = undefined, .last_error = Error.NotInitialized };
@@ -1626,7 +1626,7 @@ pub const MessageDlg = opaque {
 
     pub fn getMenu(self: *Self) ?*iup.Menu {
         if (interop.getHandleAttribute(self, "MENU", .{})) |handle| {
-            return @ptrCast(*iup.Menu, handle);
+            return @as(*iup.Menu, @ptrCast(handle));
         } else {
             return null;
         }
@@ -2014,7 +2014,7 @@ pub const MessageDlg = opaque {
     /// Default: "1".
     pub fn getButtonResponse(self: *Self) ButtonResponse {
         var ret = interop.getIntAttribute(self, "BUTTONRESPONSE", .{});
-        return @intToEnum(ButtonResponse, ret);
+        return @as(ButtonResponse, @enumFromInt(ret));
     }
 
     ///
@@ -2023,7 +2023,7 @@ pub const MessageDlg = opaque {
     /// Default: "1".
     pub fn setButtonResponse(self: *Self, arg: ?ButtonResponse) void {
         if (arg) |value| {
-            interop.setIntAttribute(self, "BUTTONRESPONSE", .{}, @enumToInt(value));
+            interop.setIntAttribute(self, "BUTTONRESPONSE", .{}, @intFromEnum(value));
         } else {
             interop.clearAttribute(self, "BUTTONRESPONSE", .{});
         }
@@ -2031,7 +2031,7 @@ pub const MessageDlg = opaque {
 
     pub fn getMdiMenu(self: *Self) ?*iup.Menu {
         if (interop.getHandleAttribute(self, "MDIMENU", .{})) |handle| {
-            return @ptrCast(*iup.Menu, handle);
+            return @as(*iup.Menu, @ptrCast(handle));
         } else {
             return null;
         }
@@ -2123,7 +2123,7 @@ pub const MessageDlg = opaque {
 
     pub fn getDefaultEsc(self: *Self) ?*iup.Button {
         if (interop.getHandleAttribute(self, "DEFAULTESC", .{})) |handle| {
-            return @ptrCast(*iup.Button, handle);
+            return @as(*iup.Button, @ptrCast(handle));
         } else {
             return null;
         }
@@ -2196,7 +2196,7 @@ pub const MessageDlg = opaque {
     /// Default: "1".
     pub fn getButtonDefault(self: *Self) ButtonDefault {
         var ret = interop.getIntAttribute(self, "BUTTONDEFAULT", .{});
-        return @intToEnum(ButtonDefault, ret);
+        return @as(ButtonDefault, @enumFromInt(ret));
     }
 
     ///
@@ -2207,7 +2207,7 @@ pub const MessageDlg = opaque {
     /// Default: "1".
     pub fn setButtonDefault(self: *Self, arg: ?ButtonDefault) void {
         if (arg) |value| {
-            interop.setIntAttribute(self, "BUTTONDEFAULT", .{}, @enumToInt(value));
+            interop.setIntAttribute(self, "BUTTONDEFAULT", .{}, @intFromEnum(value));
         } else {
             interop.clearAttribute(self, "BUTTONDEFAULT", .{});
         }
@@ -2309,7 +2309,7 @@ pub const MessageDlg = opaque {
 
     pub fn getDefaultEnter(self: *Self) ?*iup.Button {
         if (interop.getHandleAttribute(self, "DEFAULTENTER", .{})) |handle| {
-            return @ptrCast(*iup.Button, handle);
+            return @as(*iup.Button, @ptrCast(handle));
         } else {
             return null;
         }

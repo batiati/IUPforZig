@@ -180,78 +180,78 @@ pub const Element = union(enum) {
 
     pub fn fromType(comptime T: type, handle: anytype) Element {
         switch (T) {
-            Fill, *Fill => return .{ .Fill = @ptrCast(*Fill, handle) },
-            DetachBox, *DetachBox => return .{ .DetachBox = @ptrCast(*DetachBox, handle) },
-            Split, *Split => return .{ .Split = @ptrCast(*Split, handle) },
-            HBox, *HBox => return .{ .HBox = @ptrCast(*HBox, handle) },
-            Label, *Label => return .{ .Label = @ptrCast(*Label, handle) },
-            Tree, *Tree => return .{ .Tree = @ptrCast(*Tree, handle) },
-            BackgroundBox, *BackgroundBox => return .{ .BackgroundBox = @ptrCast(*BackgroundBox, handle) },
-            Normalizer, *Normalizer => return .{ .Normalizer = @ptrCast(*Normalizer, handle) },
-            FontDlg, *FontDlg => return .{ .FontDlg = @ptrCast(*FontDlg, handle) },
-            FlatList, *FlatList => return .{ .FlatList = @ptrCast(*FlatList, handle) },
-            Thread, *Thread => return .{ .Thread = @ptrCast(*Thread, handle) },
-            AnimatedLabel, *AnimatedLabel => return .{ .AnimatedLabel = @ptrCast(*AnimatedLabel, handle) },
-            ColorDlg, *ColorDlg => return .{ .ColorDlg = @ptrCast(*ColorDlg, handle) },
-            Timer, *Timer => return .{ .Timer = @ptrCast(*Timer, handle) },
-            VBox, *VBox => return .{ .VBox = @ptrCast(*VBox, handle) },
-            Tabs, *Tabs => return .{ .Tabs = @ptrCast(*Tabs, handle) },
-            Multiline, *Multiline => return .{ .Multiline = @ptrCast(*Multiline, handle) },
-            FlatFrame, *FlatFrame => return .{ .FlatFrame = @ptrCast(*FlatFrame, handle) },
-            Image, *Image => return .{ .Image = @ptrCast(*Image, handle) },
-            DropButton, *DropButton => return .{ .DropButton = @ptrCast(*DropButton, handle) },
-            Space, *Space => return .{ .Space = @ptrCast(*Space, handle) },
-            FlatSeparator, *FlatSeparator => return .{ .FlatSeparator = @ptrCast(*FlatSeparator, handle) },
-            SBox, *SBox => return .{ .SBox = @ptrCast(*SBox, handle) },
-            FlatLabel, *FlatLabel => return .{ .FlatLabel = @ptrCast(*FlatLabel, handle) },
-            Param, *Param => return .{ .Param = @ptrCast(*Param, handle) },
-            Button, *Button => return .{ .Button = @ptrCast(*Button, handle) },
-            FileDlg, *FileDlg => return .{ .FileDlg = @ptrCast(*FileDlg, handle) },
-            List, *List => return .{ .List = @ptrCast(*List, handle) },
-            ZBox, *ZBox => return .{ .ZBox = @ptrCast(*ZBox, handle) },
-            ScrollBox, *ScrollBox => return .{ .ScrollBox = @ptrCast(*ScrollBox, handle) },
-            DatePick, *DatePick => return .{ .DatePick = @ptrCast(*DatePick, handle) },
-            Spin, *Spin => return .{ .Spin = @ptrCast(*Spin, handle) },
-            Clipboard, *Clipboard => return .{ .Clipboard = @ptrCast(*Clipboard, handle) },
-            SubMenu, *SubMenu => return .{ .SubMenu = @ptrCast(*SubMenu, handle) },
-            Cells, *Cells => return .{ .Cells = @ptrCast(*Cells, handle) },
-            MatrixEx, *MatrixEx => return .{ .MatrixEx = @ptrCast(*MatrixEx, handle) },
-            GridBox, *GridBox => return .{ .GridBox = @ptrCast(*GridBox, handle) },
-            ImageRgba, *ImageRgba => return .{ .ImageRgba = @ptrCast(*ImageRgba, handle) },
-            MatrixList, *MatrixList => return .{ .MatrixList = @ptrCast(*MatrixList, handle) },
-            Text, *Text => return .{ .Text = @ptrCast(*Text, handle) },
-            Radio, *Radio => return .{ .Radio = @ptrCast(*Radio, handle) },
-            Matrix, *Matrix => return .{ .Matrix = @ptrCast(*Matrix, handle) },
-            Gauge, *Gauge => return .{ .Gauge = @ptrCast(*Gauge, handle) },
-            ColorBar, *ColorBar => return .{ .ColorBar = @ptrCast(*ColorBar, handle) },
-            ProgressDlg, *ProgressDlg => return .{ .ProgressDlg = @ptrCast(*ProgressDlg, handle) },
-            Val, *Val => return .{ .Val = @ptrCast(*Val, handle) },
-            Dial, *Dial => return .{ .Dial = @ptrCast(*Dial, handle) },
-            MultiBox, *MultiBox => return .{ .MultiBox = @ptrCast(*MultiBox, handle) },
-            Expander, *Expander => return .{ .Expander = @ptrCast(*Expander, handle) },
-            CBox, *CBox => return .{ .CBox = @ptrCast(*CBox, handle) },
-            Separator, *Separator => return .{ .Separator = @ptrCast(*Separator, handle) },
-            Menu, *Menu => return .{ .Menu = @ptrCast(*Menu, handle) },
-            FlatVal, *FlatVal => return .{ .FlatVal = @ptrCast(*FlatVal, handle) },
-            FlatToggle, *FlatToggle => return .{ .FlatToggle = @ptrCast(*FlatToggle, handle) },
-            Calendar, *Calendar => return .{ .Calendar = @ptrCast(*Calendar, handle) },
-            Item, *Item => return .{ .Item = @ptrCast(*Item, handle) },
-            ParamBox, *ParamBox => return .{ .ParamBox = @ptrCast(*ParamBox, handle) },
-            FlatButton, *FlatButton => return .{ .FlatButton = @ptrCast(*FlatButton, handle) },
-            Canvas, *Canvas => return .{ .Canvas = @ptrCast(*Canvas, handle) },
-            Dialog, *Dialog => return .{ .Dialog = @ptrCast(*Dialog, handle) },
-            User, *User => return .{ .User = @ptrCast(*User, handle) },
-            ColorBrowser, *ColorBrowser => return .{ .ColorBrowser = @ptrCast(*ColorBrowser, handle) },
-            Toggle, *Toggle => return .{ .Toggle = @ptrCast(*Toggle, handle) },
-            SpinBox, *SpinBox => return .{ .SpinBox = @ptrCast(*SpinBox, handle) },
-            Link, *Link => return .{ .Link = @ptrCast(*Link, handle) },
-            ImageRgb, *ImageRgb => return .{ .ImageRgb = @ptrCast(*ImageRgb, handle) },
-            FlatTree, *FlatTree => return .{ .FlatTree = @ptrCast(*FlatTree, handle) },
-            ProgressBar, *ProgressBar => return .{ .ProgressBar = @ptrCast(*ProgressBar, handle) },
-            FlatScrollBox, *FlatScrollBox => return .{ .FlatScrollBox = @ptrCast(*FlatScrollBox, handle) },
-            MessageDlg, *MessageDlg => return .{ .MessageDlg = @ptrCast(*MessageDlg, handle) },
-            Frame, *Frame => return .{ .Frame = @ptrCast(*Frame, handle) },
-            FlatTabs, *FlatTabs => return .{ .FlatTabs = @ptrCast(*FlatTabs, handle) },
+            Fill, *Fill => return .{ .Fill = @as(*Fill, @ptrCast(handle)) },
+            DetachBox, *DetachBox => return .{ .DetachBox = @as(*DetachBox, @ptrCast(handle)) },
+            Split, *Split => return .{ .Split = @as(*Split, @ptrCast(handle)) },
+            HBox, *HBox => return .{ .HBox = @as(*HBox, @ptrCast(handle)) },
+            Label, *Label => return .{ .Label = @as(*Label, @ptrCast(handle)) },
+            Tree, *Tree => return .{ .Tree = @as(*Tree, @ptrCast(handle)) },
+            BackgroundBox, *BackgroundBox => return .{ .BackgroundBox = @as(*BackgroundBox, @ptrCast(handle)) },
+            Normalizer, *Normalizer => return .{ .Normalizer = @as(*Normalizer, @ptrCast(handle)) },
+            FontDlg, *FontDlg => return .{ .FontDlg = @as(*FontDlg, @ptrCast(handle)) },
+            FlatList, *FlatList => return .{ .FlatList = @as(*FlatList, @ptrCast(handle)) },
+            Thread, *Thread => return .{ .Thread = @as(*Thread, @ptrCast(handle)) },
+            AnimatedLabel, *AnimatedLabel => return .{ .AnimatedLabel = @as(*AnimatedLabel, @ptrCast(handle)) },
+            ColorDlg, *ColorDlg => return .{ .ColorDlg = @as(*ColorDlg, @ptrCast(handle)) },
+            Timer, *Timer => return .{ .Timer = @as(*Timer, @ptrCast(handle)) },
+            VBox, *VBox => return .{ .VBox = @as(*VBox, @ptrCast(handle)) },
+            Tabs, *Tabs => return .{ .Tabs = @as(*Tabs, @ptrCast(handle)) },
+            Multiline, *Multiline => return .{ .Multiline = @as(*Multiline, @ptrCast(handle)) },
+            FlatFrame, *FlatFrame => return .{ .FlatFrame = @as(*FlatFrame, @ptrCast(handle)) },
+            Image, *Image => return .{ .Image = @as(*Image, @ptrCast(handle)) },
+            DropButton, *DropButton => return .{ .DropButton = @as(*DropButton, @ptrCast(handle)) },
+            Space, *Space => return .{ .Space = @as(*Space, @ptrCast(handle)) },
+            FlatSeparator, *FlatSeparator => return .{ .FlatSeparator = @as(*FlatSeparator, @ptrCast(handle)) },
+            SBox, *SBox => return .{ .SBox = @as(*SBox, @ptrCast(handle)) },
+            FlatLabel, *FlatLabel => return .{ .FlatLabel = @as(*FlatLabel, @ptrCast(handle)) },
+            Param, *Param => return .{ .Param = @as(*Param, @ptrCast(handle)) },
+            Button, *Button => return .{ .Button = @as(*Button, @ptrCast(handle)) },
+            FileDlg, *FileDlg => return .{ .FileDlg = @as(*FileDlg, @ptrCast(handle)) },
+            List, *List => return .{ .List = @as(*List, @ptrCast(handle)) },
+            ZBox, *ZBox => return .{ .ZBox = @as(*ZBox, @ptrCast(handle)) },
+            ScrollBox, *ScrollBox => return .{ .ScrollBox = @as(*ScrollBox, @ptrCast(handle)) },
+            DatePick, *DatePick => return .{ .DatePick = @as(*DatePick, @ptrCast(handle)) },
+            Spin, *Spin => return .{ .Spin = @as(*Spin, @ptrCast(handle)) },
+            Clipboard, *Clipboard => return .{ .Clipboard = @as(*Clipboard, @ptrCast(handle)) },
+            SubMenu, *SubMenu => return .{ .SubMenu = @as(*SubMenu, @ptrCast(handle)) },
+            Cells, *Cells => return .{ .Cells = @as(*Cells, @ptrCast(handle)) },
+            MatrixEx, *MatrixEx => return .{ .MatrixEx = @as(*MatrixEx, @ptrCast(handle)) },
+            GridBox, *GridBox => return .{ .GridBox = @as(*GridBox, @ptrCast(handle)) },
+            ImageRgba, *ImageRgba => return .{ .ImageRgba = @as(*ImageRgba, @ptrCast(handle)) },
+            MatrixList, *MatrixList => return .{ .MatrixList = @as(*MatrixList, @ptrCast(handle)) },
+            Text, *Text => return .{ .Text = @as(*Text, @ptrCast(handle)) },
+            Radio, *Radio => return .{ .Radio = @as(*Radio, @ptrCast(handle)) },
+            Matrix, *Matrix => return .{ .Matrix = @as(*Matrix, @ptrCast(handle)) },
+            Gauge, *Gauge => return .{ .Gauge = @as(*Gauge, @ptrCast(handle)) },
+            ColorBar, *ColorBar => return .{ .ColorBar = @as(*ColorBar, @ptrCast(handle)) },
+            ProgressDlg, *ProgressDlg => return .{ .ProgressDlg = @as(*ProgressDlg, @ptrCast(handle)) },
+            Val, *Val => return .{ .Val = @as(*Val, @ptrCast(handle)) },
+            Dial, *Dial => return .{ .Dial = @as(*Dial, @ptrCast(handle)) },
+            MultiBox, *MultiBox => return .{ .MultiBox = @as(*MultiBox, @ptrCast(handle)) },
+            Expander, *Expander => return .{ .Expander = @as(*Expander, @ptrCast(handle)) },
+            CBox, *CBox => return .{ .CBox = @as(*CBox, @ptrCast(handle)) },
+            Separator, *Separator => return .{ .Separator = @as(*Separator, @ptrCast(handle)) },
+            Menu, *Menu => return .{ .Menu = @as(*Menu, @ptrCast(handle)) },
+            FlatVal, *FlatVal => return .{ .FlatVal = @as(*FlatVal, @ptrCast(handle)) },
+            FlatToggle, *FlatToggle => return .{ .FlatToggle = @as(*FlatToggle, @ptrCast(handle)) },
+            Calendar, *Calendar => return .{ .Calendar = @as(*Calendar, @ptrCast(handle)) },
+            Item, *Item => return .{ .Item = @as(*Item, @ptrCast(handle)) },
+            ParamBox, *ParamBox => return .{ .ParamBox = @as(*ParamBox, @ptrCast(handle)) },
+            FlatButton, *FlatButton => return .{ .FlatButton = @as(*FlatButton, @ptrCast(handle)) },
+            Canvas, *Canvas => return .{ .Canvas = @as(*Canvas, @ptrCast(handle)) },
+            Dialog, *Dialog => return .{ .Dialog = @as(*Dialog, @ptrCast(handle)) },
+            User, *User => return .{ .User = @as(*User, @ptrCast(handle)) },
+            ColorBrowser, *ColorBrowser => return .{ .ColorBrowser = @as(*ColorBrowser, @ptrCast(handle)) },
+            Toggle, *Toggle => return .{ .Toggle = @as(*Toggle, @ptrCast(handle)) },
+            SpinBox, *SpinBox => return .{ .SpinBox = @as(*SpinBox, @ptrCast(handle)) },
+            Link, *Link => return .{ .Link = @as(*Link, @ptrCast(handle)) },
+            ImageRgb, *ImageRgb => return .{ .ImageRgb = @as(*ImageRgb, @ptrCast(handle)) },
+            FlatTree, *FlatTree => return .{ .FlatTree = @as(*FlatTree, @ptrCast(handle)) },
+            ProgressBar, *ProgressBar => return .{ .ProgressBar = @as(*ProgressBar, @ptrCast(handle)) },
+            FlatScrollBox, *FlatScrollBox => return .{ .FlatScrollBox = @as(*FlatScrollBox, @ptrCast(handle)) },
+            MessageDlg, *MessageDlg => return .{ .MessageDlg = @as(*MessageDlg, @ptrCast(handle)) },
+            Frame, *Frame => return .{ .Frame = @as(*Frame, @ptrCast(handle)) },
+            FlatTabs, *FlatTabs => return .{ .FlatTabs = @as(*FlatTabs, @ptrCast(handle)) },
 
             else => @compileError("Type " ++ @typeName(T) ++ " cannot be converted to a Element"),
         }
@@ -345,158 +345,158 @@ pub const Element = union(enum) {
     }
 
     pub fn fromClassName(className: []const u8, handle: anytype) Element {
-        if (ascii.eqlIgnoreCase(className, Fill.CLASS_NAME)) return .{ .Fill = @ptrCast(*Fill, handle) };
-        if (ascii.eqlIgnoreCase(className, DetachBox.CLASS_NAME)) return .{ .DetachBox = @ptrCast(*DetachBox, handle) };
-        if (ascii.eqlIgnoreCase(className, Split.CLASS_NAME)) return .{ .Split = @ptrCast(*Split, handle) };
-        if (ascii.eqlIgnoreCase(className, HBox.CLASS_NAME)) return .{ .HBox = @ptrCast(*HBox, handle) };
-        if (ascii.eqlIgnoreCase(className, Label.CLASS_NAME)) return .{ .Label = @ptrCast(*Label, handle) };
-        if (ascii.eqlIgnoreCase(className, Tree.CLASS_NAME)) return .{ .Tree = @ptrCast(*Tree, handle) };
-        if (ascii.eqlIgnoreCase(className, BackgroundBox.CLASS_NAME)) return .{ .BackgroundBox = @ptrCast(*BackgroundBox, handle) };
-        if (ascii.eqlIgnoreCase(className, Normalizer.CLASS_NAME)) return .{ .Normalizer = @ptrCast(*Normalizer, handle) };
-        if (ascii.eqlIgnoreCase(className, FontDlg.CLASS_NAME)) return .{ .FontDlg = @ptrCast(*FontDlg, handle) };
-        if (ascii.eqlIgnoreCase(className, FlatList.CLASS_NAME)) return .{ .FlatList = @ptrCast(*FlatList, handle) };
-        if (ascii.eqlIgnoreCase(className, Thread.CLASS_NAME)) return .{ .Thread = @ptrCast(*Thread, handle) };
-        if (ascii.eqlIgnoreCase(className, AnimatedLabel.CLASS_NAME)) return .{ .AnimatedLabel = @ptrCast(*AnimatedLabel, handle) };
-        if (ascii.eqlIgnoreCase(className, ColorDlg.CLASS_NAME)) return .{ .ColorDlg = @ptrCast(*ColorDlg, handle) };
-        if (ascii.eqlIgnoreCase(className, Timer.CLASS_NAME)) return .{ .Timer = @ptrCast(*Timer, handle) };
-        if (ascii.eqlIgnoreCase(className, VBox.CLASS_NAME)) return .{ .VBox = @ptrCast(*VBox, handle) };
-        if (ascii.eqlIgnoreCase(className, Tabs.CLASS_NAME)) return .{ .Tabs = @ptrCast(*Tabs, handle) };
-        if (ascii.eqlIgnoreCase(className, Multiline.CLASS_NAME)) return .{ .Multiline = @ptrCast(*Multiline, handle) };
-        if (ascii.eqlIgnoreCase(className, FlatFrame.CLASS_NAME)) return .{ .FlatFrame = @ptrCast(*FlatFrame, handle) };
-        if (ascii.eqlIgnoreCase(className, Image.CLASS_NAME)) return .{ .Image = @ptrCast(*Image, handle) };
-        if (ascii.eqlIgnoreCase(className, DropButton.CLASS_NAME)) return .{ .DropButton = @ptrCast(*DropButton, handle) };
-        if (ascii.eqlIgnoreCase(className, Space.CLASS_NAME)) return .{ .Space = @ptrCast(*Space, handle) };
-        if (ascii.eqlIgnoreCase(className, FlatSeparator.CLASS_NAME)) return .{ .FlatSeparator = @ptrCast(*FlatSeparator, handle) };
-        if (ascii.eqlIgnoreCase(className, SBox.CLASS_NAME)) return .{ .SBox = @ptrCast(*SBox, handle) };
-        if (ascii.eqlIgnoreCase(className, FlatLabel.CLASS_NAME)) return .{ .FlatLabel = @ptrCast(*FlatLabel, handle) };
-        if (ascii.eqlIgnoreCase(className, Param.CLASS_NAME)) return .{ .Param = @ptrCast(*Param, handle) };
-        if (ascii.eqlIgnoreCase(className, Button.CLASS_NAME)) return .{ .Button = @ptrCast(*Button, handle) };
-        if (ascii.eqlIgnoreCase(className, FileDlg.CLASS_NAME)) return .{ .FileDlg = @ptrCast(*FileDlg, handle) };
-        if (ascii.eqlIgnoreCase(className, List.CLASS_NAME)) return .{ .List = @ptrCast(*List, handle) };
-        if (ascii.eqlIgnoreCase(className, ZBox.CLASS_NAME)) return .{ .ZBox = @ptrCast(*ZBox, handle) };
-        if (ascii.eqlIgnoreCase(className, ScrollBox.CLASS_NAME)) return .{ .ScrollBox = @ptrCast(*ScrollBox, handle) };
-        if (ascii.eqlIgnoreCase(className, DatePick.CLASS_NAME)) return .{ .DatePick = @ptrCast(*DatePick, handle) };
-        if (ascii.eqlIgnoreCase(className, Spin.CLASS_NAME)) return .{ .Spin = @ptrCast(*Spin, handle) };
-        if (ascii.eqlIgnoreCase(className, Clipboard.CLASS_NAME)) return .{ .Clipboard = @ptrCast(*Clipboard, handle) };
-        if (ascii.eqlIgnoreCase(className, SubMenu.CLASS_NAME)) return .{ .SubMenu = @ptrCast(*SubMenu, handle) };
-        if (ascii.eqlIgnoreCase(className, Cells.CLASS_NAME)) return .{ .Cells = @ptrCast(*Cells, handle) };
-        if (ascii.eqlIgnoreCase(className, MatrixEx.CLASS_NAME)) return .{ .MatrixEx = @ptrCast(*MatrixEx, handle) };
-        if (ascii.eqlIgnoreCase(className, GridBox.CLASS_NAME)) return .{ .GridBox = @ptrCast(*GridBox, handle) };
-        if (ascii.eqlIgnoreCase(className, ImageRgba.CLASS_NAME)) return .{ .ImageRgba = @ptrCast(*ImageRgba, handle) };
-        if (ascii.eqlIgnoreCase(className, MatrixList.CLASS_NAME)) return .{ .MatrixList = @ptrCast(*MatrixList, handle) };
-        if (ascii.eqlIgnoreCase(className, Text.CLASS_NAME)) return .{ .Text = @ptrCast(*Text, handle) };
-        if (ascii.eqlIgnoreCase(className, Radio.CLASS_NAME)) return .{ .Radio = @ptrCast(*Radio, handle) };
-        if (ascii.eqlIgnoreCase(className, Matrix.CLASS_NAME)) return .{ .Matrix = @ptrCast(*Matrix, handle) };
-        if (ascii.eqlIgnoreCase(className, Gauge.CLASS_NAME)) return .{ .Gauge = @ptrCast(*Gauge, handle) };
-        if (ascii.eqlIgnoreCase(className, ColorBar.CLASS_NAME)) return .{ .ColorBar = @ptrCast(*ColorBar, handle) };
-        if (ascii.eqlIgnoreCase(className, ProgressDlg.CLASS_NAME)) return .{ .ProgressDlg = @ptrCast(*ProgressDlg, handle) };
-        if (ascii.eqlIgnoreCase(className, Val.CLASS_NAME)) return .{ .Val = @ptrCast(*Val, handle) };
-        if (ascii.eqlIgnoreCase(className, Dial.CLASS_NAME)) return .{ .Dial = @ptrCast(*Dial, handle) };
-        if (ascii.eqlIgnoreCase(className, MultiBox.CLASS_NAME)) return .{ .MultiBox = @ptrCast(*MultiBox, handle) };
-        if (ascii.eqlIgnoreCase(className, Expander.CLASS_NAME)) return .{ .Expander = @ptrCast(*Expander, handle) };
-        if (ascii.eqlIgnoreCase(className, CBox.CLASS_NAME)) return .{ .CBox = @ptrCast(*CBox, handle) };
-        if (ascii.eqlIgnoreCase(className, Separator.CLASS_NAME)) return .{ .Separator = @ptrCast(*Separator, handle) };
-        if (ascii.eqlIgnoreCase(className, Menu.CLASS_NAME)) return .{ .Menu = @ptrCast(*Menu, handle) };
-        if (ascii.eqlIgnoreCase(className, FlatVal.CLASS_NAME)) return .{ .FlatVal = @ptrCast(*FlatVal, handle) };
-        if (ascii.eqlIgnoreCase(className, FlatToggle.CLASS_NAME)) return .{ .FlatToggle = @ptrCast(*FlatToggle, handle) };
-        if (ascii.eqlIgnoreCase(className, Calendar.CLASS_NAME)) return .{ .Calendar = @ptrCast(*Calendar, handle) };
-        if (ascii.eqlIgnoreCase(className, Item.CLASS_NAME)) return .{ .Item = @ptrCast(*Item, handle) };
-        if (ascii.eqlIgnoreCase(className, ParamBox.CLASS_NAME)) return .{ .ParamBox = @ptrCast(*ParamBox, handle) };
-        if (ascii.eqlIgnoreCase(className, FlatButton.CLASS_NAME)) return .{ .FlatButton = @ptrCast(*FlatButton, handle) };
-        if (ascii.eqlIgnoreCase(className, Canvas.CLASS_NAME)) return .{ .Canvas = @ptrCast(*Canvas, handle) };
-        if (ascii.eqlIgnoreCase(className, Dialog.CLASS_NAME)) return .{ .Dialog = @ptrCast(*Dialog, handle) };
-        if (ascii.eqlIgnoreCase(className, User.CLASS_NAME)) return .{ .User = @ptrCast(*User, handle) };
-        if (ascii.eqlIgnoreCase(className, ColorBrowser.CLASS_NAME)) return .{ .ColorBrowser = @ptrCast(*ColorBrowser, handle) };
-        if (ascii.eqlIgnoreCase(className, Toggle.CLASS_NAME)) return .{ .Toggle = @ptrCast(*Toggle, handle) };
-        if (ascii.eqlIgnoreCase(className, SpinBox.CLASS_NAME)) return .{ .SpinBox = @ptrCast(*SpinBox, handle) };
-        if (ascii.eqlIgnoreCase(className, Link.CLASS_NAME)) return .{ .Link = @ptrCast(*Link, handle) };
-        if (ascii.eqlIgnoreCase(className, ImageRgb.CLASS_NAME)) return .{ .ImageRgb = @ptrCast(*ImageRgb, handle) };
-        if (ascii.eqlIgnoreCase(className, FlatTree.CLASS_NAME)) return .{ .FlatTree = @ptrCast(*FlatTree, handle) };
-        if (ascii.eqlIgnoreCase(className, ProgressBar.CLASS_NAME)) return .{ .ProgressBar = @ptrCast(*ProgressBar, handle) };
-        if (ascii.eqlIgnoreCase(className, FlatScrollBox.CLASS_NAME)) return .{ .FlatScrollBox = @ptrCast(*FlatScrollBox, handle) };
-        if (ascii.eqlIgnoreCase(className, MessageDlg.CLASS_NAME)) return .{ .MessageDlg = @ptrCast(*MessageDlg, handle) };
-        if (ascii.eqlIgnoreCase(className, Frame.CLASS_NAME)) return .{ .Frame = @ptrCast(*Frame, handle) };
-        if (ascii.eqlIgnoreCase(className, FlatTabs.CLASS_NAME)) return .{ .FlatTabs = @ptrCast(*FlatTabs, handle) };
+        if (ascii.eqlIgnoreCase(className, Fill.CLASS_NAME)) return .{ .Fill = @as(*Fill, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, DetachBox.CLASS_NAME)) return .{ .DetachBox = @as(*DetachBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Split.CLASS_NAME)) return .{ .Split = @as(*Split, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, HBox.CLASS_NAME)) return .{ .HBox = @as(*HBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Label.CLASS_NAME)) return .{ .Label = @as(*Label, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Tree.CLASS_NAME)) return .{ .Tree = @as(*Tree, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, BackgroundBox.CLASS_NAME)) return .{ .BackgroundBox = @as(*BackgroundBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Normalizer.CLASS_NAME)) return .{ .Normalizer = @as(*Normalizer, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FontDlg.CLASS_NAME)) return .{ .FontDlg = @as(*FontDlg, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FlatList.CLASS_NAME)) return .{ .FlatList = @as(*FlatList, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Thread.CLASS_NAME)) return .{ .Thread = @as(*Thread, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, AnimatedLabel.CLASS_NAME)) return .{ .AnimatedLabel = @as(*AnimatedLabel, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, ColorDlg.CLASS_NAME)) return .{ .ColorDlg = @as(*ColorDlg, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Timer.CLASS_NAME)) return .{ .Timer = @as(*Timer, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, VBox.CLASS_NAME)) return .{ .VBox = @as(*VBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Tabs.CLASS_NAME)) return .{ .Tabs = @as(*Tabs, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Multiline.CLASS_NAME)) return .{ .Multiline = @as(*Multiline, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FlatFrame.CLASS_NAME)) return .{ .FlatFrame = @as(*FlatFrame, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Image.CLASS_NAME)) return .{ .Image = @as(*Image, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, DropButton.CLASS_NAME)) return .{ .DropButton = @as(*DropButton, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Space.CLASS_NAME)) return .{ .Space = @as(*Space, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FlatSeparator.CLASS_NAME)) return .{ .FlatSeparator = @as(*FlatSeparator, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, SBox.CLASS_NAME)) return .{ .SBox = @as(*SBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FlatLabel.CLASS_NAME)) return .{ .FlatLabel = @as(*FlatLabel, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Param.CLASS_NAME)) return .{ .Param = @as(*Param, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Button.CLASS_NAME)) return .{ .Button = @as(*Button, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FileDlg.CLASS_NAME)) return .{ .FileDlg = @as(*FileDlg, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, List.CLASS_NAME)) return .{ .List = @as(*List, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, ZBox.CLASS_NAME)) return .{ .ZBox = @as(*ZBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, ScrollBox.CLASS_NAME)) return .{ .ScrollBox = @as(*ScrollBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, DatePick.CLASS_NAME)) return .{ .DatePick = @as(*DatePick, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Spin.CLASS_NAME)) return .{ .Spin = @as(*Spin, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Clipboard.CLASS_NAME)) return .{ .Clipboard = @as(*Clipboard, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, SubMenu.CLASS_NAME)) return .{ .SubMenu = @as(*SubMenu, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Cells.CLASS_NAME)) return .{ .Cells = @as(*Cells, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, MatrixEx.CLASS_NAME)) return .{ .MatrixEx = @as(*MatrixEx, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, GridBox.CLASS_NAME)) return .{ .GridBox = @as(*GridBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, ImageRgba.CLASS_NAME)) return .{ .ImageRgba = @as(*ImageRgba, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, MatrixList.CLASS_NAME)) return .{ .MatrixList = @as(*MatrixList, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Text.CLASS_NAME)) return .{ .Text = @as(*Text, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Radio.CLASS_NAME)) return .{ .Radio = @as(*Radio, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Matrix.CLASS_NAME)) return .{ .Matrix = @as(*Matrix, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Gauge.CLASS_NAME)) return .{ .Gauge = @as(*Gauge, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, ColorBar.CLASS_NAME)) return .{ .ColorBar = @as(*ColorBar, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, ProgressDlg.CLASS_NAME)) return .{ .ProgressDlg = @as(*ProgressDlg, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Val.CLASS_NAME)) return .{ .Val = @as(*Val, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Dial.CLASS_NAME)) return .{ .Dial = @as(*Dial, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, MultiBox.CLASS_NAME)) return .{ .MultiBox = @as(*MultiBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Expander.CLASS_NAME)) return .{ .Expander = @as(*Expander, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, CBox.CLASS_NAME)) return .{ .CBox = @as(*CBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Separator.CLASS_NAME)) return .{ .Separator = @as(*Separator, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Menu.CLASS_NAME)) return .{ .Menu = @as(*Menu, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FlatVal.CLASS_NAME)) return .{ .FlatVal = @as(*FlatVal, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FlatToggle.CLASS_NAME)) return .{ .FlatToggle = @as(*FlatToggle, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Calendar.CLASS_NAME)) return .{ .Calendar = @as(*Calendar, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Item.CLASS_NAME)) return .{ .Item = @as(*Item, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, ParamBox.CLASS_NAME)) return .{ .ParamBox = @as(*ParamBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FlatButton.CLASS_NAME)) return .{ .FlatButton = @as(*FlatButton, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Canvas.CLASS_NAME)) return .{ .Canvas = @as(*Canvas, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Dialog.CLASS_NAME)) return .{ .Dialog = @as(*Dialog, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, User.CLASS_NAME)) return .{ .User = @as(*User, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, ColorBrowser.CLASS_NAME)) return .{ .ColorBrowser = @as(*ColorBrowser, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Toggle.CLASS_NAME)) return .{ .Toggle = @as(*Toggle, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, SpinBox.CLASS_NAME)) return .{ .SpinBox = @as(*SpinBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Link.CLASS_NAME)) return .{ .Link = @as(*Link, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, ImageRgb.CLASS_NAME)) return .{ .ImageRgb = @as(*ImageRgb, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FlatTree.CLASS_NAME)) return .{ .FlatTree = @as(*FlatTree, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, ProgressBar.CLASS_NAME)) return .{ .ProgressBar = @as(*ProgressBar, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FlatScrollBox.CLASS_NAME)) return .{ .FlatScrollBox = @as(*FlatScrollBox, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, MessageDlg.CLASS_NAME)) return .{ .MessageDlg = @as(*MessageDlg, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, Frame.CLASS_NAME)) return .{ .Frame = @as(*Frame, @ptrCast(handle)) };
+        if (ascii.eqlIgnoreCase(className, FlatTabs.CLASS_NAME)) return .{ .FlatTabs = @as(*FlatTabs, @ptrCast(handle)) };
 
-        return .{ .Unknown = @ptrCast(*Handle, handle) };
+        return .{ .Unknown = @as(*Handle, @ptrCast(handle)) };
     }
 
     pub fn getHandle(self: Element) *Handle {
         switch (self) {
-            .Fill => |value| return @ptrCast(*Handle, value),
-            .DetachBox => |value| return @ptrCast(*Handle, value),
-            .Split => |value| return @ptrCast(*Handle, value),
-            .HBox => |value| return @ptrCast(*Handle, value),
-            .Label => |value| return @ptrCast(*Handle, value),
-            .Tree => |value| return @ptrCast(*Handle, value),
-            .BackgroundBox => |value| return @ptrCast(*Handle, value),
-            .Normalizer => |value| return @ptrCast(*Handle, value),
-            .FontDlg => |value| return @ptrCast(*Handle, value),
-            .FlatList => |value| return @ptrCast(*Handle, value),
-            .Thread => |value| return @ptrCast(*Handle, value),
-            .AnimatedLabel => |value| return @ptrCast(*Handle, value),
-            .ColorDlg => |value| return @ptrCast(*Handle, value),
-            .Timer => |value| return @ptrCast(*Handle, value),
-            .VBox => |value| return @ptrCast(*Handle, value),
-            .Tabs => |value| return @ptrCast(*Handle, value),
-            .Multiline => |value| return @ptrCast(*Handle, value),
-            .FlatFrame => |value| return @ptrCast(*Handle, value),
-            .Image => |value| return @ptrCast(*Handle, value),
-            .DropButton => |value| return @ptrCast(*Handle, value),
-            .Space => |value| return @ptrCast(*Handle, value),
-            .FlatSeparator => |value| return @ptrCast(*Handle, value),
-            .SBox => |value| return @ptrCast(*Handle, value),
-            .FlatLabel => |value| return @ptrCast(*Handle, value),
-            .Param => |value| return @ptrCast(*Handle, value),
-            .Button => |value| return @ptrCast(*Handle, value),
-            .FileDlg => |value| return @ptrCast(*Handle, value),
-            .List => |value| return @ptrCast(*Handle, value),
-            .ZBox => |value| return @ptrCast(*Handle, value),
-            .ScrollBox => |value| return @ptrCast(*Handle, value),
-            .DatePick => |value| return @ptrCast(*Handle, value),
-            .Spin => |value| return @ptrCast(*Handle, value),
-            .Clipboard => |value| return @ptrCast(*Handle, value),
-            .SubMenu => |value| return @ptrCast(*Handle, value),
-            .Cells => |value| return @ptrCast(*Handle, value),
-            .MatrixEx => |value| return @ptrCast(*Handle, value),
-            .GridBox => |value| return @ptrCast(*Handle, value),
-            .ImageRgba => |value| return @ptrCast(*Handle, value),
-            .MatrixList => |value| return @ptrCast(*Handle, value),
-            .Text => |value| return @ptrCast(*Handle, value),
-            .Radio => |value| return @ptrCast(*Handle, value),
-            .Matrix => |value| return @ptrCast(*Handle, value),
-            .Gauge => |value| return @ptrCast(*Handle, value),
-            .ColorBar => |value| return @ptrCast(*Handle, value),
-            .ProgressDlg => |value| return @ptrCast(*Handle, value),
-            .Val => |value| return @ptrCast(*Handle, value),
-            .Dial => |value| return @ptrCast(*Handle, value),
-            .MultiBox => |value| return @ptrCast(*Handle, value),
-            .Expander => |value| return @ptrCast(*Handle, value),
-            .CBox => |value| return @ptrCast(*Handle, value),
-            .Separator => |value| return @ptrCast(*Handle, value),
-            .Menu => |value| return @ptrCast(*Handle, value),
-            .FlatVal => |value| return @ptrCast(*Handle, value),
-            .FlatToggle => |value| return @ptrCast(*Handle, value),
-            .Calendar => |value| return @ptrCast(*Handle, value),
-            .Item => |value| return @ptrCast(*Handle, value),
-            .ParamBox => |value| return @ptrCast(*Handle, value),
-            .FlatButton => |value| return @ptrCast(*Handle, value),
-            .Canvas => |value| return @ptrCast(*Handle, value),
-            .Dialog => |value| return @ptrCast(*Handle, value),
-            .User => |value| return @ptrCast(*Handle, value),
-            .ColorBrowser => |value| return @ptrCast(*Handle, value),
-            .Toggle => |value| return @ptrCast(*Handle, value),
-            .SpinBox => |value| return @ptrCast(*Handle, value),
-            .Link => |value| return @ptrCast(*Handle, value),
-            .ImageRgb => |value| return @ptrCast(*Handle, value),
-            .FlatTree => |value| return @ptrCast(*Handle, value),
-            .ProgressBar => |value| return @ptrCast(*Handle, value),
-            .FlatScrollBox => |value| return @ptrCast(*Handle, value),
-            .MessageDlg => |value| return @ptrCast(*Handle, value),
-            .Frame => |value| return @ptrCast(*Handle, value),
-            .FlatTabs => |value| return @ptrCast(*Handle, value),
+            .Fill => |value| return @as(*Handle, @ptrCast(value)),
+            .DetachBox => |value| return @as(*Handle, @ptrCast(value)),
+            .Split => |value| return @as(*Handle, @ptrCast(value)),
+            .HBox => |value| return @as(*Handle, @ptrCast(value)),
+            .Label => |value| return @as(*Handle, @ptrCast(value)),
+            .Tree => |value| return @as(*Handle, @ptrCast(value)),
+            .BackgroundBox => |value| return @as(*Handle, @ptrCast(value)),
+            .Normalizer => |value| return @as(*Handle, @ptrCast(value)),
+            .FontDlg => |value| return @as(*Handle, @ptrCast(value)),
+            .FlatList => |value| return @as(*Handle, @ptrCast(value)),
+            .Thread => |value| return @as(*Handle, @ptrCast(value)),
+            .AnimatedLabel => |value| return @as(*Handle, @ptrCast(value)),
+            .ColorDlg => |value| return @as(*Handle, @ptrCast(value)),
+            .Timer => |value| return @as(*Handle, @ptrCast(value)),
+            .VBox => |value| return @as(*Handle, @ptrCast(value)),
+            .Tabs => |value| return @as(*Handle, @ptrCast(value)),
+            .Multiline => |value| return @as(*Handle, @ptrCast(value)),
+            .FlatFrame => |value| return @as(*Handle, @ptrCast(value)),
+            .Image => |value| return @as(*Handle, @ptrCast(value)),
+            .DropButton => |value| return @as(*Handle, @ptrCast(value)),
+            .Space => |value| return @as(*Handle, @ptrCast(value)),
+            .FlatSeparator => |value| return @as(*Handle, @ptrCast(value)),
+            .SBox => |value| return @as(*Handle, @ptrCast(value)),
+            .FlatLabel => |value| return @as(*Handle, @ptrCast(value)),
+            .Param => |value| return @as(*Handle, @ptrCast(value)),
+            .Button => |value| return @as(*Handle, @ptrCast(value)),
+            .FileDlg => |value| return @as(*Handle, @ptrCast(value)),
+            .List => |value| return @as(*Handle, @ptrCast(value)),
+            .ZBox => |value| return @as(*Handle, @ptrCast(value)),
+            .ScrollBox => |value| return @as(*Handle, @ptrCast(value)),
+            .DatePick => |value| return @as(*Handle, @ptrCast(value)),
+            .Spin => |value| return @as(*Handle, @ptrCast(value)),
+            .Clipboard => |value| return @as(*Handle, @ptrCast(value)),
+            .SubMenu => |value| return @as(*Handle, @ptrCast(value)),
+            .Cells => |value| return @as(*Handle, @ptrCast(value)),
+            .MatrixEx => |value| return @as(*Handle, @ptrCast(value)),
+            .GridBox => |value| return @as(*Handle, @ptrCast(value)),
+            .ImageRgba => |value| return @as(*Handle, @ptrCast(value)),
+            .MatrixList => |value| return @as(*Handle, @ptrCast(value)),
+            .Text => |value| return @as(*Handle, @ptrCast(value)),
+            .Radio => |value| return @as(*Handle, @ptrCast(value)),
+            .Matrix => |value| return @as(*Handle, @ptrCast(value)),
+            .Gauge => |value| return @as(*Handle, @ptrCast(value)),
+            .ColorBar => |value| return @as(*Handle, @ptrCast(value)),
+            .ProgressDlg => |value| return @as(*Handle, @ptrCast(value)),
+            .Val => |value| return @as(*Handle, @ptrCast(value)),
+            .Dial => |value| return @as(*Handle, @ptrCast(value)),
+            .MultiBox => |value| return @as(*Handle, @ptrCast(value)),
+            .Expander => |value| return @as(*Handle, @ptrCast(value)),
+            .CBox => |value| return @as(*Handle, @ptrCast(value)),
+            .Separator => |value| return @as(*Handle, @ptrCast(value)),
+            .Menu => |value| return @as(*Handle, @ptrCast(value)),
+            .FlatVal => |value| return @as(*Handle, @ptrCast(value)),
+            .FlatToggle => |value| return @as(*Handle, @ptrCast(value)),
+            .Calendar => |value| return @as(*Handle, @ptrCast(value)),
+            .Item => |value| return @as(*Handle, @ptrCast(value)),
+            .ParamBox => |value| return @as(*Handle, @ptrCast(value)),
+            .FlatButton => |value| return @as(*Handle, @ptrCast(value)),
+            .Canvas => |value| return @as(*Handle, @ptrCast(value)),
+            .Dialog => |value| return @as(*Handle, @ptrCast(value)),
+            .User => |value| return @as(*Handle, @ptrCast(value)),
+            .ColorBrowser => |value| return @as(*Handle, @ptrCast(value)),
+            .Toggle => |value| return @as(*Handle, @ptrCast(value)),
+            .SpinBox => |value| return @as(*Handle, @ptrCast(value)),
+            .Link => |value| return @as(*Handle, @ptrCast(value)),
+            .ImageRgb => |value| return @as(*Handle, @ptrCast(value)),
+            .FlatTree => |value| return @as(*Handle, @ptrCast(value)),
+            .ProgressBar => |value| return @as(*Handle, @ptrCast(value)),
+            .FlatScrollBox => |value| return @as(*Handle, @ptrCast(value)),
+            .MessageDlg => |value| return @as(*Handle, @ptrCast(value)),
+            .Frame => |value| return @as(*Handle, @ptrCast(value)),
+            .FlatTabs => |value| return @as(*Handle, @ptrCast(value)),
 
-            .Unknown => |value| return @ptrCast(*Handle, value),
+            .Unknown => |value| return @as(*Handle, @ptrCast(value)),
         }
     }
 
@@ -532,7 +532,7 @@ pub const Element = union(enum) {
     }
 
     pub fn eql(self: Element, other: Element) bool {
-        return @ptrToInt(self.getHandle()) == @ptrToInt(other.getHandle());
+        return @intFromPtr(self.getHandle()) == @intFromPtr(other.getHandle());
     }
 
     pub fn deinit(self: Element) void {
@@ -640,7 +640,7 @@ test "retrieve element fromType" {
 
     var fromType = Element.fromType(iup.Label, handle);
     try testing.expect(fromType == .Label);
-    try testing.expect(@ptrToInt(fromType.Label) == @ptrToInt(handle));
+    try testing.expect(@intFromPtr(fromType.Label) == @intFromPtr(handle));
 }
 
 test "retrieve element fromRef" {
@@ -652,7 +652,7 @@ test "retrieve element fromRef" {
 
     var fromRef = Element.fromRef(handle);
     try testing.expect(fromRef == .Label);
-    try testing.expect(@ptrToInt(fromRef.Label) == @ptrToInt(handle));
+    try testing.expect(@intFromPtr(fromRef.Label) == @intFromPtr(handle));
 }
 
 test "retrieve element fromClassName" {
@@ -664,7 +664,7 @@ test "retrieve element fromClassName" {
 
     var fromClassName = Element.fromClassName(Label.CLASS_NAME, handle);
     try testing.expect(fromClassName == .Label);
-    try testing.expect(@ptrToInt(fromClassName.Label) == @ptrToInt(handle));
+    try testing.expect(@intFromPtr(fromClassName.Label) == @intFromPtr(handle));
 }
 
 test "getHandle" {
@@ -676,7 +676,7 @@ test "getHandle" {
 
     var element = Element{ .Label = handle };
     var value = element.getHandle();
-    try testing.expect(@ptrToInt(handle) == @ptrToInt(value));
+    try testing.expect(@intFromPtr(handle) == @intFromPtr(value));
 }
 
 test "children" {

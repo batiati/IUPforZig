@@ -123,7 +123,7 @@ const BookFlight = struct {
 
     fn getSelection(self: *Self) Flight {
         const index = std.fmt.parseInt(u8, self.list.getValue(), 10) catch return .OneWayFlight;
-        return @intToEnum(Flight, index);
+        return @as(Flight, @enumFromInt(index));
     }
 
     fn book(self: *Self) !void {

@@ -517,8 +517,8 @@ pub const Date = struct {
         {
             return Self{
                 .year = year.?,
-                .month = @intCast(u8, month.?),
-                .day = @intCast(u8, day.?),
+                .month = @intCast(month.?),
+                .day = @intCast(day.?),
             };
         } else {
             return null;

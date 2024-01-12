@@ -126,7 +126,7 @@ const Timer = struct {
         var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
 
         const elapsed_ms = std.time.milliTimestamp() - self.start_timestamp;
-        const elapsed_s = @intToFloat(f64, elapsed_ms) / @as(f64, std.time.ms_per_s);
+        const elapsed_s = @as(f64, @floatFromInt(elapsed_ms)) / @as(f64, std.time.ms_per_s);
 
         self.progress.setValue(elapsed_s);
     }

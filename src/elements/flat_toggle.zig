@@ -2383,7 +2383,7 @@ pub const FlatToggle = opaque {
 
         if (handle) |valid| {
             return .{
-                .ref = @ptrCast(*Self, valid),
+                .ref = @as(*Self, @ptrCast(valid)),
             };
         } else {
             return .{ .ref = undefined, .last_error = Error.NotInitialized };
@@ -4228,7 +4228,7 @@ pub const FlatToggle = opaque {
 
     pub fn getMdiMenu(self: *Self) ?*iup.Menu {
         if (interop.getHandleAttribute(self, "MDIMENU", .{})) |handle| {
-            return @ptrCast(*iup.Menu, handle);
+            return @as(*iup.Menu, @ptrCast(handle));
         } else {
             return null;
         }

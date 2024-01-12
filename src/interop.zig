@@ -51,14 +51,14 @@ pub inline fn getHandle(handle: anytype) *Handle {
     if (HandleType == iup.Element) {
         return handle.getHandle();
     } else if (typeInfo == .Pointer and @typeInfo(typeInfo.Pointer.child) == .Opaque) {
-        return @ptrCast(*Handle, handle);
+        return @as(*Handle, @ptrCast(handle));
     } else {
         @compileError("Invalid handle type " ++ @typeName(@TypeOf(handle)));
     }
 }
 
 pub inline fn fromHandle(comptime T: type, handle: *Handle) *T {
-    return @ptrCast(*T, handle);
+    return @as(*T, @ptrCast(handle));
 }
 
 pub inline fn fromHandleName(comptime T: type, handle_name: [:0]const u8) ?*T {
@@ -69,7 +69,7 @@ pub inline fn fromHandleName(comptime T: type, handle_name: [:0]const u8) ?*T {
 
 pub inline fn toCStr(value: ?[:0]const u8) [*c]const u8 {
     if (value) |ptr| {
-        return @ptrCast([*c]const u8, ptr);
+        return @as([*c]const u8, @ptrCast(ptr));
     } else {
         return null;
     }
@@ -80,7 +80,7 @@ pub inline fn fromCStr(value: [*c]const u8) [:0]const u8 {
 }
 
 pub inline fn create(comptime T: type) ?*T {
-    return @ptrCast(*T, c.IupCreate(T.CLASS_NAME));
+    return @as(*T, @ptrCast(c.IupCreate(T.CLASS_NAME)));
 }
 
 pub inline fn create_image(comptime T: type, width: i32, height: i32, imgdata: ?[]const u8) ?*T {
@@ -88,9 +88,9 @@ pub inline fn create_image(comptime T: type, width: i32, height: i32, imgdata: ?
     // From original C code: (*void)-1
     const SENTINEL = std.math.maxInt(usize);
 
-    var params = [_]usize{ @intCast(usize, width), @intCast(usize, height), if (imgdata) |valid| @ptrToInt(valid.ptr) else SENTINEL, SENTINEL };
+    var params = [_]usize{ @as(usize, @intCast(width)), @as(usize, @intCast(height)), if (imgdata) |valid| @intFromPtr(valid.ptr) else SENTINEL, SENTINEL };
 
-    return @ptrCast(*T, c.IupCreatev(T.CLASS_NAME, @ptrCast([*c]?*anyopaque, &params)));
+    return @as(*T, @ptrCast(c.IupCreatev(T.CLASS_NAME, @as([*c]?*anyopaque, @ptrCast(&params)))));
 }
 
 pub inline fn destroy(element: anytype) void {
@@ -312,7 +312,7 @@ pub inline fn getPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]
     };
     if (ret == null) return null;
 
-    return @ptrCast(*T, @alignCast(@alignOf(*T), ret));
+    return @ptrCast(@alignCast(ret));
 }
 
 pub inline fn setPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]const u8, ids_tuple: anytype, value: ?*T) void {
@@ -320,11 +320,11 @@ pub inline fn setPtrAttribute(comptime T: type, handle: anytype, attribute: [:0]
 
     if (value) |ptr| {
         if (ids_tuple.len == 0) {
-            c.IupSetAttribute(getHandle(handle), getAttribute(attribute), @ptrCast([*c]const u8, ptr));
+            c.IupSetAttribute(getHandle(handle), getAttribute(attribute), @as([*c]const u8, @ptrCast(ptr)));
         } else if (ids_tuple.len == 1) {
-            c.IupSetAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", @ptrCast([*c]const u8, ptr));
+            c.IupSetAttributeId(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", @as([*c]const u8, @ptrCast(ptr)));
         } else {
-            c.IupSetAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", @ptrCast([*c]const u8, ptr));
+            c.IupSetAttributeId2(getHandle(handle), getAttribute(attribute), ids_tuple.@"0", ids_tuple.@"1", @as([*c]const u8, @ptrCast(ptr)));
         }
     } else {
         clearAttribute(handle, attribute, ids_tuple);
@@ -395,7 +395,7 @@ pub inline fn setCallbackStoreAttribute(comptime TCallback: type, handle: anytyp
     if (value) |ptr| {
         // Global callbacks have null handler
         const handlePtr: ?*Handle = if (@TypeOf(handle) == void) null else getHandle(handle);
-        c.IupSetAttribute(handlePtr, toCStr(attribute), @ptrCast([*c]const u8, ptr));
+        c.IupSetAttribute(handlePtr, toCStr(attribute), @as([*c]const u8, @ptrCast(ptr)));
     } else {
         clearAttribute(handle, attribute, .{});
     }
@@ -408,11 +408,11 @@ pub inline fn getCallbackStoreAttribute(comptime TCallback: type, handle: anytyp
 
     var ret = c.IupGetAttribute(handlePtr, toCStr(attribute));
     if (ret == null) return null;
-    return @ptrCast(*const TCallback, ret);
+    return @as(*const TCallback, @ptrCast(ret));
 }
 
 pub inline fn showXY(handle: anytype, x: iup.DialogPosX, y: iup.DialogPosY) iup.Error!void {
-    const ret = c.IupShowXY(getHandle(handle), @enumToInt(x), @enumToInt(y));
+    const ret = c.IupShowXY(getHandle(handle), @intFromEnum(x), @intFromEnum(y));
     if (ret == c.IUP_ERROR) return iup.Error.InvalidAction;
 }
 
@@ -427,7 +427,7 @@ pub inline fn map(handle: anytype) iup.Error!void {
 }
 
 pub inline fn popup(handle: anytype, x: iup.DialogPosX, y: iup.DialogPosY) iup.Error!void {
-    const ret = c.IupPopup(getHandle(handle), @enumToInt(x), @enumToInt(y));
+    const ret = c.IupPopup(getHandle(handle), @intFromEnum(x), @intFromEnum(y));
     if (ret == c.IUP_ERROR) return iup.Error.InvalidAction;
 }
 
@@ -576,7 +576,7 @@ pub inline fn drawArc(handle: anytype, x1: i32, y1: i32, x2: i32, y2: i32, a1: f
 }
 
 pub inline fn drawPolygon(handle: anytype, points: []const i32) void {
-    c.IupDrawPolygon(getHandle(handle), points.ptr, @intCast(c_int, points.len));
+    c.IupDrawPolygon(getHandle(handle), points.ptr, @intCast(points.len));
 }
 
 pub inline fn drawText(handle: anytype, str: [:0]const u8, x: i32, y: i32, w: i32, h: i32) void {
@@ -620,7 +620,7 @@ inline fn getAttribute(value: [:0]const u8) [*c]const u8 {
     const EMPTY = "";
 
     if (std.mem.eql(u8, value, IDVALUE)) {
-        return @ptrCast([*c]const u8, EMPTY);
+        return @as([*c]const u8, @ptrCast(EMPTY));
     } else {
         return toCStr(value);
     }

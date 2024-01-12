@@ -231,7 +231,7 @@ const ConfigDialog = struct {
 
         self.editing_circle = circle;
         self.label.setTitle(label_text);
-        self.val.setValue(@intToFloat(f64, self.editing_circle.?.radius));
+        self.val.setValue(@as(f64, @floatFromInt(self.editing_circle.?.radius)));
 
         try self.dialog.popup(.CenterParent, .CenterParent);
     }
@@ -275,7 +275,7 @@ const ConfigDialog = struct {
         var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
 
         if (self.editing_circle) |circle| {
-            const new_radius = @floatToInt(i32, self.val.getValue());
+            const new_radius = @as(i32, @intFromFloat(self.val.getValue()));
             try self.parent.previewRadius(circle.id, new_radius);
         }
     }
@@ -284,7 +284,7 @@ const ConfigDialog = struct {
         var self = dialog.getPtrAttribute(Self, "parent") orelse @panic("Parent struct not set!");
 
         if (self.editing_circle) |circle| {
-            const new_radius = @floatToInt(i32, self.val.getValue());
+            const new_radius = @as(i32, @intFromFloat(self.val.getValue()));
             if (circle.radius == new_radius) return;
 
             try self.parent.updateRadius(circle.id, circle.radius, new_radius);
@@ -307,7 +307,7 @@ const Circle = struct {
     pub fn collision(self: Self, x: i32, y: i32) ?i32 {
         const dx = self.x - x;
         const dy = self.y - y;
-        const r = @floatToInt(i32, std.math.sqrt(@intToFloat(f64, dx * dx + dy * dy)));
+        const r = @as(i32, @intFromFloat(std.math.sqrt(@as(f64, @floatFromInt(dx * dx + dy * dy)))));
 
         return if (r < self.radius) r else null;
     }

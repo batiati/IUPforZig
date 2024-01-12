@@ -1795,7 +1795,7 @@ pub const Dialog = opaque {
 
         if (handle) |valid| {
             return .{
-                .ref = @ptrCast(*Self, valid),
+                .ref = @as(*Self, @ptrCast(valid)),
             };
         } else {
             return .{ .ref = undefined, .last_error = Error.NotInitialized };
@@ -1930,7 +1930,7 @@ pub const Dialog = opaque {
     /// See also IupMenu.
     pub fn getMenu(self: *Self) ?*iup.Menu {
         if (interop.getHandleAttribute(self, "MENU", .{})) |handle| {
-            return @ptrCast(*iup.Menu, handle);
+            return @as(*iup.Menu, @ptrCast(handle));
         } else {
             return null;
         }
@@ -2583,7 +2583,7 @@ pub const Dialog = opaque {
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn getDefaultEsc(self: *Self) ?*iup.Button {
         if (interop.getHandleAttribute(self, "DEFAULTESC", .{})) |handle| {
-            return @ptrCast(*iup.Button, handle);
+            return @as(*iup.Button, @ptrCast(handle));
         } else {
             return null;
         }
@@ -2856,7 +2856,7 @@ pub const Dialog = opaque {
     /// Use IupSetHandle or IupSetAttributeHandle to associate a button to a name.
     pub fn getDefaultEnter(self: *Self) ?*iup.Button {
         if (interop.getHandleAttribute(self, "DEFAULTENTER", .{})) |handle| {
-            return @ptrCast(*iup.Button, handle);
+            return @as(*iup.Button, @ptrCast(handle));
         } else {
             return null;
         }
